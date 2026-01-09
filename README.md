@@ -1,2 +1,2 @@
-# odoo-19-txt-documentation
-Odoo 19 documentation as text files
+# Odoo 19 text documentation
+Odoo 19 documentation as text files for NotebookLM
