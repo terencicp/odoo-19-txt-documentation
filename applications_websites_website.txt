@@ -1,0 +1,3523 @@
+
+
+==================================================
+SECTION: website.rst
+PATH: applications/websites/website.rst
+==================================================
+
+:nosearch:
+:show-content:
+:hide-page-toc:
+
+=======
+Website
+=======
+
+**Odoo Website** offers a user-friendly platform for creating and managing your website. It includes
+various tools and features to help you design, publish, and maintain web pages without needing
+advanced technical skills. You can easily customize layouts, add multimedia content, and integrate
+with other Odoo apps to expand your website's functionality.
+
+.. cards::
+
+   .. card:: Web design
+      :target: website/web_design
+      :large:
+
+      Design your website using building blocks and website themes.
+
+   .. card:: Structure
+      :target: website/structure
+      :large:
+
+      Manage website pages, menus, and search engine optimization.
+
+   .. card:: Configuration
+      :target: website/configuration
+      :large:
+
+      Configure domain names, address autocompletion, Google Search Console, cookies bar,
+      translations, multiple websites, form spam protection, content delivery network (CDN).
+
+   .. card:: Reporting
+      :target: website/reporting
+
+      Monitor your website's traffic with website analytics and set up link trackers.
+
+   .. card:: Mail groups
+      :target: website/mail_groups
+
+      Configure mail groups to allow website visitors to participate in public discussions via
+      email.
+
+.. note::
+   Odoo offers a :ref:`free custom domain name <domain-name/register>` to all Odoo Online databases
+   for one year. Visitors can then access your website with an address such as `www.example.com`
+   rather than the default `example.odoo.com`.
+
+.. seealso::
+   - `Odoo Tutorials: Website <https://www.odoo.com/slides/website-25>`_
+   - `Odoo Tutorials: eCommerce <https://www.odoo.com/slides/ecommerce-26>`_
+   - :doc:`../general/integrations/unsplash`
+
+.. toctree::
+   :titlesonly:
+
+   website/web_design
+   website/structure
+   website/configuration
+   website/reporting
+   website/mail_groups
+
+
+==================================================
+SECTION: address_autocomplete.rst
+PATH: applications/websites/website/configuration/address_autocomplete.rst
+==================================================
+
+====================
+Address autocomplete
+====================
+
+You can use the Google Places API on your website to ensure that your users' delivery addresses
+exist and are understood by the carrier. The Google Places API allows developers to access detailed
+information about places using HTTP requests. The autocompletion predicts a list of places when the
+user starts typing the address.
+
+.. image:: address_autocomplete/address-autocomplete-example.png
+   :alt: Address autocomplete example
+
+.. seealso::
+   - `Google Maps Platform <https://mapsplatform.google.com/maps-products>`_
+   - `Google Developers Documentation: Google Places API
+     <https://developers.google.com/maps/documentation/places/web-service/autocomplete>`_
+
+To do so, go to :menuselection:`Website --> Configuration --> Settings` and enable
+:guilabel:`Address Autocomplete` in the :guilabel:`SEO` section.
+
+.. image:: address_autocomplete/enable-address-autocomplete.png
+   :alt: Enable address autocomplete
+
+Insert your :guilabel:`Google Places API key` in the :guilabel:`API Key` field. If you don't have
+one, create yours on the `Google Cloud Console <https://console.cloud.google.com/getting-started>`_
+and follow these steps.
+
+.. _address_autocomplete/generate_api_key:
+
+Step 1: Enable the Google Places API
+====================================
+
+**Create a New Project:**
+To enable the **Google Places API**, you first need to create a project. To do so, click
+:guilabel:`Select a project` in the top left corner, :guilabel:`New Project`, and follow the prompts
+to set up your project.
+
+**Enable the Google Places API:**
+Go to the :guilabel:`Enabled APIs & Services` and click :guilabel:`+ ENABLE APIS AND SERVICES.`
+Search for :guilabel:`"Places API"` and select it. Click on the :guilabel:`"Enable"` button.
+
+.. note::
+   Google's pricing depends on the number of requests and their complexity.
+
+Step 2: Create API Credentials
+==============================
+
+Go to `APIs & Services --> Credentials <https://console.cloud.google.com/apis/credentials>`_.
+
+**Create credentials:**
+To create your credentials, go to :guilabel:`Credentials`, click :guilabel:`Create Credentials`, and
+select :guilabel:`API key`.
+
+.. admonition:: Restrict the API Key (Optional)
+
+   For security purposes, you can restrict the usage of your API key. You can go to the
+   :guilabel:`API restrictions` section to specify which APIs your key can access. For the Google
+   Places API, you can restrict it to only allow requests from specific websites or apps.
+
+.. important::
+   - Save Your API Key: copy your API key and securely store it.
+   - Do not share it publicly or expose it in client-side code.
+
+
+==================================================
+SECTION: analytics.rst
+PATH: applications/websites/website/reporting/analytics.rst
+==================================================
+
+=================
+Website analytics
+=================
+
+Website analytics helps website owners monitor how people use their site. It provides data on
+visitor demographics, behavior, and interactions, helping improve websites and marketing strategies.
+
+You can track your Odoo website's traffic using :ref:`analytics/plausible` or
+:ref:`analytics/google-analytics`. We recommend using Plausible.io as it is privacy-friendly,
+lightweight, and easy to use.
+
+The Plausible Analytics dashboard is also integrated into Odoo and can be accessed
+via :menuselection:`Website --> Reporting --> Analytics`.
+
+.. _analytics/plausible:
+
+Plausible.io
+============
+
+Odoo hosts its own Plausible.io server and provides a free and ready-to-use Plausible.io
+solution for **Odoo Online** databases that use the odoo.com domain. Odoo automatically creates and
+sets up your account. Start using it by going to :menuselection:`Website --> Reporting -->
+Analytics`.
+
+.. note::
+   - If you use a custom :doc:`domain name <../configuration/domain_names>` (e.g., `example.com`),
+     you need to create your own Plausible.io account and subscription.
+   - **If you already have a Plausible.io account** and you want to connect it to your Odoo Online
+     database, you must create two `ir.config.parameters` to use Plausible.io's servers. To do so,
+     enable the :ref:`developer mode <developer-mode>` and go to :menuselection:`General Settings -->
+     Technical --> System Parameters`. Click :guilabel:`New` and fill in the following
+     :guilabel:`Key` and :guilabel:`Value` fields:
+
+     .. list-table::
+        :header-rows: 1
+
+        * - Key
+          - Value
+        * - `website.plausible_script`
+          - `https://plausible.io/js/plausible.js`
+        * - `website.plausible_server`
+          - `https://plausible.io`
+
+   Then, follow the steps below to connect your existing account with Plausible.io servers.
+
+   .. warning::
+      Deactivating the free Plausible.io account linked to your **Odoo Online** database
+      will also remove the existing keys. As a result, new keys will be generated, while all
+      historical data will remain associated with the old keys. If you plan to deactivate the
+      account, it is recommended to save the existing keys to preserve access to that data.
+
+If your database is hosted on **Odoo.sh** or **On-premise**, or if you wish to use your own
+Plausible.io account, proceed as follows:
+
+#. Create or sign in to a Plausible.io account using the following link: `<https://plausible.io/register>`_.
+#. If you are creating a new account, go through the registration and activation steps.
+   On the :guilabel:`Add website info` page, add the :guilabel:`Domain` of your website without
+   including `www` (e.g., `example.odoo.com`) and change the :guilabel:`Reporting Timezone`,
+   if necessary. Click :guilabel:`Install Plausible` to proceed to the next step. Ignore the
+   :guilabel:`Manual installation` instructions and click :guilabel:`Start collecting data`.
+#. Once done, click the Plausible.io logo in the upper-left part of the page to access your `list of
+   websites <https://plausible.io/sites>`_, then click the :icon:`fa-ellipsis-v`
+   (:guilabel:`ellipsis`) icon next to the website and select :icon:`fa-cog` :guilabel:`Settings`
+   from the drop-down menu.
+
+   .. image:: analytics/plausible-gear-icon-settings.png
+      :alt: Click the gear icon in the list of websites.
+
+#. In the sidebar, select :guilabel:`Visibility`, then click :guilabel:`Add Shared link`.
+#. Enter a :guilabel:`Name`, leave the :guilabel:`Password (optional)` field empty, as the Plausible
+   analytics dashboard integration in Odoo does not support it, then click :guilabel:`Create
+   shared link`.
+
+#. Copy the shared link.
+
+   .. image:: analytics/plausible-copy-shared-link.png
+      :alt: Copy the shared link URL from Plausible.io
+
+#. In Odoo, go to :menuselection:`Website --> Configuration --> Settings`.
+#. In the :guilabel:`SEO` section, enable :guilabel:`Plausible Analytics`, then paste the
+   :guilabel:`Shared Link Auth` and click :guilabel:`Save`.
+
+.. tip::
+   If you have :doc:`multiple websites <../configuration/multi_website>`, add your websites to your
+   Plausible.io account by going to `<https://plausible.io/sites>`_ and clicking :guilabel:`+ Add
+   Website`. In Odoo, in the **Website settings**, make sure to select the website in the
+   :guilabel:`Settings of Website` field at the top of the page before pasting the
+   :guilabel:`Shared link`.
+
+.. note::
+   Odoo automatically pushes two custom goals: `Lead Generation` and `Shop`.
+
+.. seealso::
+   `Plausible Analytics documentation <https://plausible.io/docs>`_
+
+.. _analytics/google-analytics:
+
+Google Analytics
+================
+
+To follow your Odoo website's traffic with Google Analytics:
+
+#. Create or sign in to a Google account using the following link: `<https://analytics.google.com>`_.
+#. - If you are setting up Google Analytics for the first time, click :guilabel:`Start measuring`
+     and go through the account creation step.
+   - If you already have a Google Analytics account, sign in and click the :icon:`fa-cog` icon
+     in the bottom-left corner of the page to access the **Admin** page. Then, click
+     :guilabel:`+ Create` and select :guilabel:`Property` from the drop-down menu.
+
+#. Complete the next steps: `property creation <https://support.google.com/analytics/answer/9304153?hl=en/&visit_id=638278591144564289-3612494643&rd=2#property>`_,
+   business details and business objectives.
+#. When you reach the **Data collection** step, choose the :guilabel:`Web` platform.
+
+   .. image:: analytics/GA-platform.png
+      :alt: Choose a platform for your Google Analytics property.
+
+#. Set up your data stream: Specify your :guilabel:`Website URL` and a :guilabel:`Stream name`, then
+   click :guilabel:`Create & continue`.
+#. Copy the :guilabel:`Measurement ID`.
+
+   .. image:: analytics/GA-measurement-id.png
+      :alt: Measurement ID in Google Analytics.
+
+#. In Odoo, go to :menuselection:`Website --> Configuration --> Settings`.
+#. In the :guilabel:`SEO` section, enable :guilabel:`Google Analytics`, then paste the
+   :guilabel:`Measurement ID` and click :guilabel:`Save`.
+
+.. tip::
+   If you have :doc:`multiple websites <../configuration/multi_website>` with separate domains, it
+   is recommended to create `one property <https://support.google.com/analytics/answer/9304153?hl=en/&visit_id=638278591144564289-3612494643&rd=2#property>`_
+   per domain. In Odoo, in the **Website settings**, make sure to select the website in the
+   :guilabel:`Settings of Website` field at the top of the page before pasting the
+   :guilabel:`Measurement ID`.
+
+.. seealso::
+   `Google documentation on setting up Analytics for a website
+   <https://support.google.com/analytics/answer/1008015?hl=en/>`_
+
+.. _analytics/google-tag-manager:
+
+Google Tag Manager
+==================
+
+Google Tag Manager is a tag management system that allows you to easily update
+measurement codes and related code fragments, collectively known as tags on your website or mobile
+app, directly through the code injector.
+
+.. note::
+   :abbr:`GTM (Google Tag Manager)` is not an analytics tool and does not offer reporting features;
+   it is used to collect data and works alongside Google Analytics to provide more detailed
+   insights. In order to use GTM properly, it is recommended to configure Google Analytics as well.
+
+   For more information refer to the `documentation on linking Google Analytics and
+   Google Tag Manager <https://support.google.com/tagmanager/answer/9442095?hl=en>`_.
+
+.. warning::
+   - Some GTM tags use data layers (e.g., advanced eCommerce tracking data layers) to retrieve
+     variables and send them to Google Analytics. Data layers are currently not managed in Odoo.
+   - Google Tag Manager may not be compliant with local data protection regulations.
+
+To configure GTM, proceed as follows:
+
+#. Create or sign in to a Google account by going to https://tagmanager.google.com/.
+
+#. In the :guilabel:`Accounts` tab, click :guilabel:`Create Account`.
+
+#. Enter an :guilabel:`Account Name` and select the account's :guilabel:`Country`.
+
+#. Enter your website's URL in the :guilabel:`Container name` field and select the :guilabel:`Target
+   platform`.
+
+#. Click :guilabel:`Create` and agree to the Terms of Service.
+
+#. Copy the `<head>` and `<body>` codes from the popup window. Then, go to your website, click
+   :guilabel:`Edit`, go to the :guilabel:`Theme` tab, scroll down to the
+   :guilabel:`Advanced` section, then click :guilabel:`<head>` and :guilabel:`</body>` next to
+   :guilabel:`Code Injection` to paste the codes.
+
+   .. image:: analytics/gtm-codes.png
+      :alt: Install Google Tag Manager
+
+.. note::
+   The data is collected in the marketing tools used to monitor the website (e.g., Google Analytics,
+   Plausible, Facebook Pixel), not in Odoo.
+
+.. seealso::
+   `Setting up click triggers on Google
+   <https://support.google.com/tagmanager/answer/7679320?hl=en&ref_topic=7679108&sjid=17684856364781654579-EU>`_
+
+
+==================================================
+SECTION: building_blocks.rst
+PATH: applications/websites/website/web_design/building_blocks.rst
+==================================================
+
+:show-content:
+
+===============
+Building blocks
+===============
+
+You can design your website by :ref:`dragging and dropping building blocks
+<website/building_blocks/add>`, then :ref:`editing them <website/building_blocks/edit>` to fit your
+content and layout needs.
+
+.. seealso::
+   `Odoo Tutorial: Design your website: text and colors <https://www.odoo.com/slides/slide/design-your-website-text-and-colors-6930?fullscreen=1>`_
+
+.. _website/building_blocks/add:
+
+Add a building block
+====================
+
+To add a block to a :doc:`website page <../structure/pages>`, access the page, click :guilabel:`Edit`, then
+drag and drop the desired building block into the appropriate location. Two types of building blocks
+are available: :guilabel:`Categories` and :guilabel:`Inner Content`. :guilabel:`Inner Content`
+building blocks can only be added into :guilabel:`Categories` building blocks.
+
+When clicking on a category block, a popup appears, allowing you to select between multiple
+templates for each category.
+
+.. tip::
+   You can also search for a specific block in the :guilabel:`Insert a block` popup using the
+   search bar.
+
+  .. image:: building_blocks/insert-a-block.png
+      :alt: Pop-up block selection
+
+Once the category block is placed, you can drag and drop :guilabel:`Inner content` blocks
+within it. The :guilabel:`Inner content` blocks allow you to add elements, such as videos, images,
+social media buttons, etc., into pre-existing category blocks.
+
+.. note::
+   Access to certain blocks requires the installation of their respective application or module
+   (e.g., eCommerce for the :guilabel:`Products` block).
+
+.. example::
+   Add all your social media accounts in one place with the inner content :guilabel:`Social Media`
+   block. Toggle the switch on or off next to the desired platform and copy/paste your account URL.
+
+   .. image:: building_blocks/social-media-inner-content.png
+      :alt: Social Media inner content block
+
+.. _website/building_blocks/form:
+
+Form
+----
+
+The :guilabel:`Form` block is used to collect information from website visitors and create records
+in your database, if applicable. To add a form to a website page, drag and drop the
+:guilabel:`Contact & Forms` category, then select the :guilabel:`Form block`.
+
+.. image:: building_blocks/form-block.png
+   :alt: Example of a form block
+
+.. _website/building_blocks/action:
+
+Action
+~~~~~~
+
+By default, when the form is submitted, an email containing the information entered by the visitor
+is automatically sent. Depending on the apps installed on your database, additional actions that can
+automatically create records may become available. To choose a different action, click
+:guilabel:`Edit`, click the form, navigate to the :guilabel:`Customize` tab, and select the desired
+:guilabel:`Action`:
+
+- :guilabel:`Apply for a Job` (:doc:`Recruitment </applications/hr/recruitment>`)
+- :guilabel:`Create a Customer` (:doc:`eCommerce <../../ecommerce>`)
+- :guilabel:`Create a Ticket` (:doc:`Helpdesk </applications/services/helpdesk>`)
+- :guilabel:`Create an Opportunity` (:doc:`CRM </applications/sales/crm>`)
+- :guilabel:`Subscribe to Newsletter` (:doc:`Email Marketing </applications/marketing/email_marketing>`)
+- :guilabel:`Create a Task` (:doc:`Project </applications/services/project>`)
+
+.. image:: building_blocks/inner-content-edit-form.png
+   :alt: Editing a form to change its action
+
+By default, submitting the form redirects visitors to a *Thank you* page. Use the :guilabel:`URL`
+field to send them to a different page. Alternatively, you can choose not to redirect and keep
+them on the form's page by selecting :guilabel:`Nothing` or :guilabel:`Show Message` in the
+:guilabel:`On Success` field.
+
+Fields
+~~~~~~
+
+To add a new field to the form, navigate to the :guilabel:`Customize tab` and click the
+:guilabel:`+ Field` button next to the :guilabel:`Form` or :guilabel:`Field` section. To modify the
+new (or any other) field on the form, select the field, then use the options available in the
+:guilabel:`Field` section of the :guilabel:`Customize` tab. For example, you can:
+
+- Change the field :guilabel:`Type`.
+
+  .. tip::
+     It is also possible to select an :guilabel:`Existing Field` from the database and use the data
+     it contains. The fields available depend on the selected action. Property fields added to the
+     database can also be used.
+
+  .. spoiler:: Click here to preview all field types.
+
+     .. image:: building_blocks/all-types-of-field.png
+        :alt: All types of form fields
+
+     Some fields are visually similar, but the data entered must follow a specific format.
+
+- Edit the field's :guilabel:`Label` and adapt its :guilabel:`Position`.
+- Enable a field :guilabel:`Description`. Click the default description on the form to modify it.
+- Add a :guilabel:`Placeholder` or :guilabel:`Default value`.
+- Specify if the field is :guilabel:`Required`.
+- Edit the field's :doc:`visibility <visibility>` settings.
+- Add an :ref:`animation <website/elements/animations>`.
+
+Once you have made the desired changes, click :guilabel:`Save`.
+
+Add an Odoo contact form on a non-Odoo website
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can display an Odoo contact form on another website using an iframe. To do so, follow these
+steps:
+
+#. **Prepare the Odoo form:** Create a contact form on a page in Odoo Website and remove the
+   :ref:`header design <website/header_footer/header-design>` and the :ref:`footer design
+   <website/header_footer/footer-design>`. Make sure only the contact form remains on the page.
+#. **Generate an embeddable code:** Copy the URL of the Odoo form page and paste it into an iframe
+   generator, such as `La Digitale.dev <https://ladigitale.dev/digitools/generateur-iframe>`_ or
+   `iFrame Generator <https://www.iframe-generator.com/>`_ . Adjust the width and height for proper
+   display.
+#. **Add the embedded code to the non-Odoo website:** Open the relevant page’s HTML (in the code
+   editor or CMS) and insert the embedded code where the form should be displayed.
+
+.. example::
+   Example of an embedded code:
+
+   .. code-block:: html
+
+       <iframe src="https://example.com/odoo-form"
+               style="border:0;"
+               name="odooForm"
+               scrolling="no"
+               frameborder="0"
+               marginheight="0"
+               marginwidth="0"
+               height="400px"
+               width="600px"
+               allowfullscreen>
+        </iframe>
+
+
+.. _website/building_blocks/embed_code:
+
+Embed code
+----------
+
+Embedding code allows you to integrate content from third-party services into a page, such as videos
+from YouTube, maps from Google Maps, social media posts from Instagram, etc.
+
+After adding the block to a page, click the block, then go to the :guilabel:`Customize` tab and
+click :guilabel:`Edit`. Replace the placeholder code with your custom embed code.
+
+.. image:: building_blocks/embed-code-pop-up.png
+   :alt: Add the link to the embedded code you want to point to
+
+.. warning::
+   Do not copy/paste code you do not understand, as it could put your data at risk.
+
+.. _website/building_blocks/move_switch_delete:
+
+Move, switch, or delete a building block
+========================================
+
+Pull the turquoise borders on the block to reduce or increase the space at the top or bottom of it.
+
+Change the block order by clicking :icon:`fa-chevron-up` (:guilabel:`chevron up`) or
+:icon:`fa-chevron-down` (:guilabel:`chevron down`) and move the block on the page by clicking
+:icon:`fa-arrows` (:guilabel:`arrows`). When you have multiple :ref:`columns
+<website/building_blocks/cols>`, move a column to the left or right by clicking
+:icon:`fa-chevron-left` (:guilabel:`chevron left`) or :icon:`fa-chevron-right`
+(:guilabel:`chevron right`).
+
+To delete a block, click :icon:`fa-trash` (:guilabel:`trash`).
+
+   .. image:: building_blocks/padding-building-block.png
+      :alt: Extend margins on building block
+
+.. tip::
+   Quickly change the block category by clicking :icon:`fa-exchange` (:guilabel:`exchange`).
+
+.. _website/building_blocks/edit:
+
+Edit a building block
+=====================
+
+To edit the content of a building block, click on it and go to the :guilabel:`Customize` tab.
+Available customization options vary depending on the type of block selected.
+
+.. seealso::
+   - :doc:`Web design elements <elements>`
+   - :doc:`Visibility <visibility>`
+
+Background
+----------
+
+To modify the background of a building block, select the block, go to the :guilabel:`Customize` tab,
+and click the color dot or another :guilabel:`Background` option. You can change the
+color and/or add an image, video, and/or shape. Once you've selected a shape, new fields appear to
+allow you to customize the shape.
+
+.. tip::
+   - Position an element (image, text, etc.) behind or in front of another one by using the
+     :guilabel:`Send to back` or :guilabel:`Bring to front` icons.
+
+     .. image:: building_blocks/change-block-position.png
+        :alt: Change block position
+
+   - To resize a block, click and drag the dots around its edges to adjust it as needed.
+
+     .. image:: building_blocks/adapt-block-size.png
+       :alt: Adapt block size
+
+.. seealso::
+   :doc:`General theme <themes>`
+
+Layout: grid and columns
+------------------------
+
+For most building blocks, you can choose between two layout styles: :ref:`grid
+<website/building_blocks/grid>` or :ref:`columns (cols) <website/building_blocks/cols>`. To change
+the default layout style, click the block, go to the :guilabel:`Customize` tab, and set the
+:guilabel:`Layout` field to :guilabel:`Grid` or :guilabel:`Cols`.
+
+.. _website/building_blocks/grid:
+
+Grid
+~~~~
+
+The :guilabel:`Grid` layout allows you to reposition and resize elements, such as images or text, by
+dragging and dropping them. When :guilabel:`Grid` is selected, additional options are available to
+:guilabel:`Add Elements` by clicking :guilabel:`Image`, :guilabel:`Text`, or :guilabel:`Button`.
+
+.. image:: building_blocks/grid-layout.png
+   :alt: When the grid layout is selected, choose an image and drag and drop it where needed.
+
+.. _website/building_blocks/cols:
+
+Cols
+~~~~
+
+Choosing the :guilabel:`Cols` layout allows you to determine the number of elements per line within
+the block. To do so, select the block to modify, click the dropdown next to the :guilabel:`Cols`
+field, and adjust the number. You can then modify a specific column's settings using the options in
+the :guilabel:`Column` section of the :guilabel:`Customize` tab.
+
+.. note::
+   By default, :doc:`on mobile devices <visibility>`, only one element (column) is visible per line
+   to ensure that content remains easily readable and accessible on smaller screens. To adjust
+   the value, click the :icon:`fa-mobile` (:guilabel:`mobile icon`) at the top of the website editor
+   and adapt the number of columns. Shapes are hidden by default on mobiles.
+
+.. _website/building_blocks/duplicate:
+
+Duplicate a building block
+==========================
+
+To duplicate a building block, click the :icon:`fa-clone` (:guilabel:`duplicate`) icon at the top of
+the :guilabel:`Customize` tab. Once duplicated, the new block appears on the page beneath the
+original one.
+
+.. _website/building_blocks/custom:
+
+Save a custom building block
+============================
+
+You can save a customized building block to reuse it elsewhere. To do so, select it, navigate to
+the :guilabel:`Customize` tab, and click the :icon:`fa-floppy-o` (:guilabel:`floppy disk`) icon.
+Click the :guilabel:`Save and reload` button in the popup to confirm saving your custom block.
+
+To add a saved building block to the page, navigate to the :guilabel:`Blocks` tab and drag and drop
+the :guilabel:`Custom` block from the :guilabel:`Categories` section. In the popup that opens, click
+the desired block in the :guilabel:`Custom` category.
+
+.. tip::
+   In the :guilabel:`Insert a block` popup, click :icon:`fa-pencil` (:guilabel:`edit`) to rename the
+   custom block or :icon:`fa-trash` (:guilabel:`delete`) to delete it.
+
+.. _website/building_blocks/anchor:
+
+Create an anchor link
+=====================
+
+Anchor links are hyperlinks that direct users to a **specific section** of a page. To create an
+anchor link for a block, follow these steps:
+
+#. Click :guilabel:`Edit` and select the block you want to link to.
+#. Click :icon:`fa-link` (:guilabel:`link`) at the top of the :guilabel:`Customize` tab.
+#. To edit the default anchor name, click :guilabel:`Edit` in the green popup message that opens.
+#. Replace the anchor name and click :guilabel:`Save & copy`.
+
+Once the anchor is saved, you can :ref:`link to it <website/elements/links>` from anywhere on your
+website.
+
+
+==================================================
+SECTION: cdn.rst
+PATH: applications/websites/website/configuration/cdn.rst
+==================================================
+
+=======================================
+Set up a content delivery network (CDN)
+=======================================
+
+.. _reference/cdn/keycdn:
+
+Deploying with KeyCDN
+=====================
+
+A :abbr:`CDN (Content Delivery Network)` or *content distribution network*, is a geographically
+distributed network of servers that provides high speed internet content. The :abbr:`CDN (Content
+Delivery Network)` provides quick, high-quality content delivery for content-heavy websites.
+
+This document will guide you through the setup of a KeyCDN_ account with an Odoo powered website.
+
+Create a pull zone in the KeyCDN dashboard
+------------------------------------------
+
+On the KeyCDN dashboard, start by navigating to the :menuselection:`Zones` menu item on the left. On
+the form, give a value to the :guilabel:`Zone Name`, which will appear as part of the :abbr:`CDN
+(Content Delivery Network)`'s :abbr:`URL (Uniform Resource Locator)`. Then, set the :guilabel:`Zone
+Status` to :guilabel:`active` to engage the zone. For the :guilabel:`Zone Type` set the value to
+:guilabel:`Pull`, and then, finally, under the :guilabel:`Pull Settings`, enter the
+:guilabel:`Origin URL`— this address should be the full Odoo database :abbr:`URL (Uniform Resource
+Locator)`.
+
+.. example::
+   Use ``https://yourdatabase.odoo.com`` and replace the *yourdatabase* subdomain prefix with the
+   actual name of the database. A custom :abbr:`URL (Uniform Resource Locator)` can be used, as
+   well, in place of the Odoo subdomain that was provided to the database.
+
+.. image:: cdn/keycdn-zone.png
+   :align: center
+   :alt: KeyCDN's Zone configuration page.
+
+Under the :guilabel:`General Settings` heading below the zone form, click the :guilabel:`Show all
+settings` button to expand the zone options. This should be the last option on the page. After
+expanding the :guilabel:`General Settings` ensure that the :guilabel:`CORS` option is
+:guilabel:`enabled`.
+
+Next, scroll to the bottom of the zone configuration page and :guilabel:`Save` the changes. KeyCDN
+will indicate that the new zone will be deployed. This can take about 10 minutes.
+
+.. image:: cdn/zone-url.png
+   :align: center
+   :alt: KeyCDN deploying the new Zone.
+
+.. note::
+   A new :guilabel:`Zone URL` has been generated for your Zone, in this example it is
+   ``pulltest-xxxxx.kxcdn.com``. This value will differ for each database.
+
+Copy this :guilabel:`Zone URL` to a text editor for later, as it will be used in the next steps.
+
+Configure the Odoo instance with the new zone
+---------------------------------------------
+
+In the Odoo :guilabel:`Website` app, go to the :menuselection:`Settings` and then activate the
+:guilabel:`Content Delivery Network (CDN)` setting and copy/paste the :guilabel:`Zone URL` value
+from the earlier step into the :guilabel:`CDN Base URL` field. This field is only visible and
+configurable when the :ref:`developer mode <developer-mode>` is activated.
+
+.. note::
+   Ensure that there are two *forward slashes* (`//`) before the :guilabel:`CDN Base URL` and one
+   forward slash (`/`) after the :guilabel:`CDN Base URL`.
+
+:guilabel:`Save` the settings when complete.
+
+.. image:: cdn/cdn-base-url.png
+   :align: center
+   :alt: Activate the CDN setting in Odoo.
+
+Now the website is using the CDN for the resources matching the :guilabel:`CDN filters` regular
+expressions.
+
+In the HTML of the Odoo website, the :abbr:`CDN (content delivery network)` integration is evidenced
+as working properly by checking the :abbr:`URL (Uniform Resource Locators)` of images. The *CDN Base
+URL* value can be seen by using your web browser's :guilabel:`Inspect` feature on the Odoo website.
+Look for it's record by searching within the :guilabel:`Network` tab inside of devtools.
+
+.. image:: cdn/test-pull.png
+   :align: center
+   :alt: The CDN Base URL can be seen using the inspect function on the Odoo website.
+
+Prevent security issues by activating cross-origin resource sharing (CORS)
+--------------------------------------------------------------------------
+
+A security restriction in some browsers (such as Mozilla Firefox and Google Chrome) prevents a
+remotely linked CSS file to fetch relative resources on this same external server.
+
+If the :abbr:`CORS (Cross-Origin Resource Sharing)` option isn't enabled in the :guilabel:`CDN
+Zone`, the more obvious resulting problem on a standard Odoo website will be the lack of *Font
+Awesome* icons because the font file declared in the *Font Awesome* CSS won't be loaded from the
+remote server.
+
+When these cross-origin resource issues occur, a security error message similar to the output
+below will appear in the web browser's developer console:
+
+``Font from origin 'http://pulltest-xxxxx.kxcdn.com' has been blocked from loading /shop:1 by
+Cross-Origin Resource Sharing policy: No 'Access-Control-Allow-Origin' header is present on the
+requested resource. Origin 'http://yourdatabase.odoo.com' is therefore not allowed access.``
+
+.. image:: cdn/odoo-security-message.png
+   :align: center
+   :alt: Error message populated in the browser console.
+
+Enabling the :abbr:`CORS (Cross-Origin Resource Sharing)` option in the :abbr:`CDN (Content Delivery
+Network)` settings fixes this issue.
+
+.. _KeyCDN: https://www.keycdn.com
+
+
+==================================================
+SECTION: configuration.rst
+PATH: applications/websites/website/configuration.rst
+==================================================
+
+:nosearch:
+
+=============
+Configuration
+=============
+
+.. toctree::
+   :titlesonly:
+
+   configuration/domain_names
+   configuration/address_autocomplete
+   configuration/google_search_console
+   configuration/cookies_bar
+   configuration/translate
+   configuration/multi_website
+   configuration/spam_protection
+   configuration/cdn
+
+
+==================================================
+SECTION: cookies_bar.rst
+PATH: applications/websites/website/configuration/cookies_bar.rst
+==================================================
+
+===========
+Cookies bar
+===========
+
+**Cookies** are small text files sent to your device when you visit a website. They are processed
+and stored by your browser and record visitor information like login details, preferences, and
+browsing history. **Essential cookies** are necessary for the website to function, while
+**optional cookies** are used to analyze behavior or display ads.
+
+Data protection laws require notifying visitors about data collection methods and purposes.
+**Cookies bar** fulfill this obligation by informing visitors on their first visit and allowing them
+to decide whether to store all or only essential cookies on their device.
+
+.. note::
+   - Cookies bars are required to obtain visitors' consent for optional cookies only. Consent is not
+     required for essential cookies.
+
+   - Odoo is compliant with `Google consent mode v2 <https://support.google.com/tagmanager/answer/13695607>`_.
+
+Configuration
+=============
+
+To add a cookies bar on your website, go to :menuselection:`Website --> Configuration -->
+Settings` and enable :guilabel:`Cookies Bar` in the :guilabel:`Tracking & SEO` section. This
+activates :guilabel:`Block tracking 3rd-party services` by default, including social media, video
+hosting platforms, and Google services. Click :guilabel:`Add domains to the block list` to include
+other external websites. These services remain blocked on your website until visitors accept
+optional cookies.
+
+.. note::
+   Using third-party cookies without a cookies bar does not prevent them from being triggered. Only
+   the presence of a cookie bar **and** the visitor’s refusal ensure that these cookies are blocked.
+
+.. _cookies-bar/policy:
+
+Cookies policy
+==============
+
+When you enable the cookies bar for your website, Odoo creates the **Cookie Policy** page
+(`/cookie-policy`) containing a list of cookies set by default, with their purpose and examples.
+
+.. spoiler:: Click here to preview the list of default cookies
+
+   .. list-table::
+      :header-rows: 1
+      :stub-columns: 1
+
+      * - Category
+        - Role
+        - Name
+      * - Essential - Session & Security
+        - Authenticate visitors, protect visitor data and allow the website to deliver the services
+          visitors expects, such as maintaining the content of their cart, or allowing file uploads.
+          The website will not work properly without these cookies.
+        - session_id (Odoo)
+      * - Essential - Preferences
+        - Remember information about the preferred look or behavior of the website, such as the
+          preferred language or region. The website will continue to function without these cookies,
+          but the visitor’s experience may be affected.
+        - frontend_lang (Odoo)
+      * - Optional - Interaction History
+        - Collect information about your interactions with the website, the pages you've seen, and
+          any specific marketing campaign that brought you to the website. The website will work
+          without these cookies, but some features or services may not perform optimally.
+        - im_livechat_previous_operator (Odoo),
+          utm_campaign (Odoo),
+          utm_source (Odoo),
+          utm_medium (Odoo)
+      * - Optional - Advertising & Marketing
+        - Make advertising more engaging to visitors and more valuable to publishers and advertisers,
+          such as providing more relevant ads when you visit other websites that display ads or to
+          improve reporting on ad campaign performance. Note that some third-party services may
+          install additional cookies on your browser in order to identify you.
+        - __gads (Google),
+          __gac (Google)
+      * - Optional - Analytics
+        - Understand how visitors engage with the website, via Google Analytics. The website will
+          still work without these cookies.
+        - _ga (Google),
+          _gat (Google),
+          _gid (Google),
+          _gac_* (Google)
+
+.. note::
+   It is not possible to let visitors customize or select which optional cookies they want to allow.
+
+.. tip::
+   You could add a link to this page in your website's footer, for example.
+
+.. _cookies-bar/edit-policy-page:
+
+Edit the Cookies policy page
+----------------------------
+
+To access it, click the :guilabel:`Cookie Policy` hyperlink in the cookies bar or open the page from
+:menuselection:`Website --> Site --> Pages`.
+
+To adapt the content of the page according to your needs, click the :guilabel:`Edit` button.
+
+.. note::
+   You have to list every cookie you added yourself on the `/cookie-policy` page including their
+   name, role, category and duration.
+
+.. tip::
+   To check the duration of cookies, use your browser’s developer tools.
+
+.. seealso::
+   :doc:`Pages <../structure/pages>`
+
+.. _cookies-bar/customization:
+
+Customization
+=============
+
+To adapt the display of the cookies bar on your website, click :guilabel:`Edit` on the website
+editor, go to the :guilabel:`Invisible Elements` section at the bottom of the panel, and click
+:guilabel:`Cookies Bar`. You can modify the :guilabel:`Layout` and :guilabel:`Size` of the
+cookies bar, and enable :guilabel:`Backdrop` to gray out the page in the background when the cookies
+bar is displayed on the screen.
+
+Click anywhere in the building block to further customize the appearance of the cookies bar using
+:guilabel:`Block`, :guilabel:`Column` and/or :guilabel:`Inline Text` customization options.
+
+To edit the contents of the cookies bar (i.e., the consent message), click directly in the building
+block.
+
+
+==================================================
+SECTION: domain_names.rst
+PATH: applications/websites/website/configuration/domain_names.rst
+==================================================
+
+============
+Domain names
+============
+
+Domain names are text-based addresses identifying online locations, such as websites. They provide a
+more memorable and recognizable way for people to navigate the internet than numerical IP addresses.
+
+**Odoo Online** and **Odoo.sh** databases use a **subdomain** of the `odoo.com` **domain** by
+default (e.g., `mycompany.odoo.com`).
+
+However, you can use a custom domain name instead by :ref:`registering a free domain name
+<domain-name/register>` (only available for Odoo Online databases) or by :ref:`configuring a
+domain name you already own <domain-name/existing>`.
+
+.. seealso::
+   - `Odoo Tutorials: Register a free domain name [video]
+     <https://www.odoo.com/slides/slide/register-a-free-domain-name-1663>`_
+   - `Magic Sheet - Website domain configuration [PDF]
+     <https://drive.google.com/drive/folders/1sXbp7sC6TKG2v-8hcRAMhA6ftKmRxba_>`_
+
+.. _domain-name/register:
+
+Register a free domain name with Odoo
+=====================================
+
+To register a one-year free domain name for your Odoo Online database, sign in to your account and
+go to the `database manager <https://www.odoo.com/my/databases>`_. Click the :icon:`fa-gear`
+(:guilabel:`gear`) button next to the database name and select :icon:`fa-globe` :guilabel:`Domain
+Names`.
+
+.. image:: domain_names/domain-names.png
+   :alt: Accessing a database's domain names configuration
+
+Search for the desired domain name and check its availability.
+
+.. image:: domain_names/domain-search.png
+   :alt: Searching for an available domain name
+
+.. tip::
+   Ensure the Website app is installed if the domain name registration option does not appear.
+
+Select the desired domain name, fill in the :guilabel:`Domain Owner` form, and click
+:guilabel:`Register`. The chosen domain name is directly linked to the database.
+
+.. image:: domain_names/domain-owner.png
+   :alt: Filling in the domain owner information
+
+Next, you should :ref:`map your domain name to your Odoo website <domain-name/website-map>`.
+
+.. important::
+   A verification email from `noreply@domainnameverification.net` will be sent to the email address
+   provided in the :guilabel:`Domain Owner` form. It is essential to verify your email address to
+   keep the domain active and receive the renewal quote before expiration.
+
+The domain name registration is free for the first year. After this period, Odoo will continue to
+manage the domain in partnership with **Gandi.net**, the domain name registrar, and you will be
+charged `Gandi.net's renewal rate <https://www.gandi.net/en/domain>`_. Odoo sends a renewal
+quotation every year to the email address mentioned in the :guilabel:`Domain Owner` form several
+weeks before the expiration date of the domain. The domain is renewed automatically when the
+quotation is confirmed.
+
+.. note::
+   - The offer is only available for **Odoo Online** databases.
+   - The offer is limited to **one** domain name per client.
+   - The offer is limited to the registration of a **new** domain name.
+   - The offer is available to *One App Free* plans. Ensure that your website contains enough
+     original content for Odoo to verify that your request is legitimate and respects `Odoo's
+     Acceptable Use Policy <https://www.odoo.com/acceptable-use>`_. Given the high number of
+     requests, it can take Odoo several days to review them.
+
+.. _domain-name/register-dns:
+
+DNS records
+-----------
+
+To manage your free domain name :abbr:`DNS (domain name system)` records, open the `database manager
+<https://www.odoo.com/my/databases>`_, click the :icon:`fa-gear` (:guilabel:`gear`) button next to
+the database name, select :icon:`fa-globe` :guilabel:`Domain Names`, and click :guilabel:`DNS`.
+
+- :guilabel:`A`: the A record holds the IP address of the domain. It is automatically created and
+  **cannot** be edited or deleted.
+- :guilabel:`CNAME`: CNAME records forward one domain or subdomain to another domain. One is
+  automatically created to map the `www.` subdomain to the database. If the database is renamed, the
+  CNAME record **must** also be renamed.
+- :guilabel:`MX`: MX records instruct servers on where to deliver emails.
+- :guilabel:`TXT`: TXT records can be used for different purposes (e.g., to verify domain name
+  ownership).
+
+Any modification to the DNS records can take up to **72 hours** to propagate worldwide on all
+servers.
+
+.. note::
+   `Contact Odoo support <https://www.odoo.com/help>`_ if you need assistance to manage your domain
+   name.
+
+Mailbox
+-------
+
+The one-year free domain name offer does **not** include a mailbox. There are two options to link
+your domain name with a mailbox.
+
+Use a subdomain
+~~~~~~~~~~~~~~~
+
+You can create a subdomain (e.g., `subdomain.yourdomain.com`) to use as an alias domain for the
+database. It allows users to create records in the database from emails received on their
+`email@subdomain.yourdomain.com` alias.
+
+To do so, open the `database manager <https://www.odoo.com/my/databases>`_, click the
+:icon:`fa-gear` (:guilabel:`gear`) button next to the database name and select :icon:`fa-globe`
+:guilabel:`Domain Names`. Click :guilabel:`DNS`, then :guilabel:`Add DNS record` and select
+:guilabel:`CNAME`. Next, enter the desired subdomain in the :guilabel:`Name` field (e.g.,
+`subdomain`), the original database domain with a period at the end (e.g., `mycompany.odoo.com.`) in
+the :guilabel:`Content` field, and click :guilabel:`Add record`.
+
+Then, add the alias domain as your *own domain* by clicking :guilabel:`Use my own domain`, entering
+the alias domain (e.g., `subdomain.yourdomain.com`), clicking :guilabel:`Verify`, and then
+:guilabel:`I confirm, it's done`.
+
+Finally, go to your database and open the :guilabel:`Settings`. Under the :guilabel:`Alias Domain`
+field, enter the alias domain (e.g., `subdomain.yourdomain.com`), click :guilabel:`Create`, and then
+:guilabel:`Save`.
+
+Use an external email provider
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To use an external email provider, you should configure an MX record. To do so, open the `database
+manager <https://www.odoo.com/my/databases>`_, click the :icon:`fa-gear` (:guilabel:`gear`) button
+next to the database name and select :icon:`fa-globe` :guilabel:`Domain Names`. Click
+:guilabel:`DNS`, then :guilabel:`Add DNS record` and select :guilabel:`MX`. The values you should
+enter for the :guilabel:`Name`, :guilabel:`Content`, and :guilabel:`Priority` fields depend on the
+external email provider.
+
+.. seealso::
+   - `Google Workspace: MX record values <https://support.google.com/a/answer/174125?hl=en>`_
+   - `Outlook and Exchange Online: Add an MX record for email <https://learn.microsoft.com/en-us/microsoft-365/admin/get-help-with-domains/create-dns-records-at-any-dns-hosting-provider?view=o365-worldwide#add-an-mx-record-for-email-outlook-exchange-online>`_
+
+Google Workspace
+****************
+
+To use your free domain name on Gmail, register to `Google Workspace
+<https://workspace.google.com>`_.
+
+During the registration process, select :guilabel:`Set up using your existing domain` when asked to
+:guilabel:`Choose a way to set up your account`, and enter your domain (e.g., `yourdomain.com`) when
+asked :guilabel:`What's your business's domain name?`.
+
+Domain ownership verification
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Sign in to Google Workspace. When asked to verify you own your domain, click :guilabel:`Switch to
+   manual verification`.
+
+   .. image:: domain_names/workspace-verify-switch.png
+      :alt: Switching to manual domain verification on Google Workspace
+
+#. Select `gandi.net` as the :guilabel:`Domain host` and click :guilabel:`Continue`.
+
+   .. image:: domain_names/workspace-verify-domain.png
+      :alt: Selecting the domain host on Google Workspace
+
+#. Copy the content of the :guilabel:`Value` field under :guilabel:`TXT record`. Leave the window
+   open.
+
+   .. image:: domain_names/workspace-verify-code.png
+      :alt: Copying the TXT value on Google Workspace
+
+#. Open the `database manager <https://www.odoo.com/my/databases>`_, click the :icon:`fa-gear`
+   (:guilabel:`gear`) button next to the database name and select :icon:`fa-globe` :guilabel:`Domain
+   Names`. Click :guilabel:`DNS`, then :guilabel:`Add DNS record` and select :guilabel:`TXT`.
+
+#. Enter `@` in the :guilabel:`Name` field, paste the :guilabel:`Value` provided by Google in the
+   :guilabel:`Content` field, and click :guilabel:`Add record`.
+
+   .. image:: domain_names/workspace-txt.png
+      :alt: Creating a TXT record to verify domain name ownership
+
+#. Go back to Google Workspace, tick the box at the bottom, and click :guilabel:`Confirm`.
+
+.. seealso::
+   `Google Workspace Admin Help: Verify your domain with a TXT record
+   <https://support.google.com/a/answer/16018515>`_
+
+Redirect emails to Gmail
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Open the `database manager <https://www.odoo.com/my/databases>`_, click the :icon:`fa-gear`
+   (:guilabel:`gear`) button next to the database name and select :icon:`fa-globe` :guilabel:`Domain
+   Names`. Click :guilabel:`DNS`, then :guilabel:`Add DNS record`, and select :guilabel:`MX`.
+
+#. Enter `@` in the :guilabel:`Name` field, `1` in the :guilabel:`Priority` field,
+   `smtp.google.com.` in the :guilabel:`Content` field, and click :guilabel:`Add record`.
+
+   .. image:: domain_names/workspace-mx.png
+      :alt: Creating an MX record to redirect emails to Gmail
+
+#. Open the `Google Workspace Admin console <https://admin.google.com/ac/domains/manage>`_, click
+   :guilabel:`Activate Gmail` for your domain, and follow the steps.
+
+.. seealso::
+   `Google Workspace Admin Help: Set up MX records for Google Workspace
+   <https://support.google.com/a/answer/16004259>`_
+
+.. _domain-name/existing:
+
+Configure an existing domain name
+=================================
+
+If you already have a domain name, you can use it for your Odoo website.
+
+.. warning::
+   It is strongly recommended to follow **in order** these three steps to avoid any :ref:`SSL
+   certificate validation <domain-name/ssl>` issues:
+
+   #. :ref:`Add a CNAME record <domain-name/cname>`
+   #. :ref:`Redirect your naked domain name <domain-name/naked>` (optional, but recommended)
+   #. :ref:`Map your domain name to your Odoo database <domain-name/db-map>`
+   #. :ref:`Map your domain name to your Odoo website <domain-name/website-map>`
+
+.. _domain-name/cname:
+
+Add a CNAME record
+------------------
+
+Adding a CNAME record to forward your domain name to the address of your Odoo database is required.
+
+.. tabs::
+
+   .. group-tab:: Odoo Online
+
+      The CNAME record's target address should be your database's address as defined at its creation
+      (e.g., `mycompany.odoo.com`).
+
+   .. group-tab:: Odoo.sh
+
+      The CNAME record's target address should be the project's main address, which can be found on
+      Odoo.sh by going to :menuselection:`Settings --> Project Name`, or a specific branch
+      (production, staging or development) by going to :menuselection:`Branches --> select the
+      branch --> Settings --> Custom domains`, and clicking :guilabel:`How to set up my domain?`. A
+      message indicates which address your CNAME record should target.
+
+The specific instructions depend on your DNS hosting service.
+
+.. seealso::
+   - `GoDaddy: Add a CNAME record <https://www.godaddy.com/help/add-a-cname-record-19236>`_
+   - `Namecheap: How to create a CNAME record for your domain <https://www.namecheap.com/support/knowledgebase/article.aspx/9646/2237/how-to-create-a-cname-record-for-your-domain>`_
+   - `OVHcloud: Add a new DNS record <https://docs.ovh.com/us/en/domains/web_hosting_how_to_edit_my_dns_zone/#add-a-new-dns-record>`_
+   - `Cloudflare: Manage DNS records
+     <https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/>`_
+
+.. _domain-name/naked:
+
+Redirect a naked domain
+-----------------------
+
+.. note::
+   Although optional, completing this step is advised.
+
+To let visitors use your naked domain name :dfn:`(a domain name without any subdomains or prefixes)`
+(`yourdomain.com`), creating a 301 redirect :dfn:`(a permanent redirect from one URL to another)`
+to `www.yourdomain.com` is required:
+
+- from `http://yourdomain.com` to `https://www.yourdomain.com`, and
+- from `https://yourdomain.com` to `https://www.yourdomain.com`.
+
+The specific instructions depend on your DNS hosting service. However, not all of them offer to
+redirect a naked domain with a secure HTTPS connection. If you encounter any issue, we recommend
+:ref:`using Cloudflare <domain-name/naked/cloudflare>`.
+
+.. _domain-name/naked/cloudflare:
+
+Using Cloudflare to secure and redirect a naked domain
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#. `Sign up and log in to Cloudflare <https://dash.cloudflare.com/sign-up>`_.
+#. Enter your domain name on `Cloudflare's dashboard <https://dash.cloudflare.com/login>`_ and
+   select :guilabel:`Quick scan for DNS records`.
+#. Choose a plan (the free plan is sufficient).
+#. Follow Cloudflare's instructions and recommendations to complete the activation.
+#. Add a CNAME record to redirect your naked domain (`yourdomain.com`) to the `www` subdomain
+   (e.g., `www.yourdomain.com`) by clicking :guilabel:`DNS` in the navigation menu, then clicking
+   the :guilabel:`Add record` button, and using the following configuration:
+
+   - :guilabel:`Type`: CNAME
+   - :guilabel:`Name`: `@` (or `yourdomain.com`)
+   - :guilabel:`Target`: e.g., `www.yourdomain.com`
+   - :guilabel:`Proxy status`: Proxied
+
+   .. image:: domain_names/cloudflare-cname-www.png
+      :alt: Adding a CNAME DNS record to Cloudflare to redirect a naked domain to a www subdomain
+
+#. Add another second CNAME record to redirect the `www` subdomain (e.g., `www.yourdomain.com`) to
+   your database address (e.g., `mycompany.odoo.com`) using the following configuration:
+
+   - :guilabel:`Type`: CNAME
+   - :guilabel:`Name`: e.g., `www.yourdomain.com`
+   - :guilabel:`Target`: e.g., `mycompany.odoo.com`
+   - :guilabel:`Proxy status`: DNS only
+
+   .. image:: domain_names/cloudflare-cname-db.png
+      :alt: Adding a CNAME DNS record to Cloudflare to redirect a www subdomain to an Odoo database
+
+#. Define a redirect rule to permanently redirect (301) your naked domain (e.g., `yourdomain.com`)
+   to both `http://` and `https://` by going to :menuselection:`Rules --> Create rule --> Products`,
+   and clicking :guilabel:`Create a Rule` under :guilabel:`Redirect Rules`:
+
+   - Enter any :guilabel:`Rule name`.
+   - Under the :guilabel:`If incoming requests match...` section, select :guilabel:`Custom filter
+     expression` and use the following configuration:
+
+     - :guilabel:`Field`: Hostname
+     - :guilabel:`Operator`: equals
+     - :guilabel:`Value`: e.g., `yourdomain.com`
+
+   - Under the :guilabel:`Then...` section, use the following configuration:
+
+     - :guilabel:`Type`: Dynamic
+     - :guilabel:`Expression`: e.g., `concat("https://www.yourdomain.com", http.request.uri.path)`
+     - :guilabel:`Status code`: 301
+     - :guilabel:`Preserve query string`: enabled
+
+   .. image:: domain_names/cloudflare-redirect-rule.png
+      :alt: Defining a Cloudflare redirect rule to create a permanent redirect (301)
+
+#. Go to :guilabel:`SSL/TLS` and set the encryption mode to :guilabel:`Full`.
+
+   .. image:: domain_names/cloudflare-encryption.png
+      :alt: Setting the encryption mode to full on Cloudflare
+
+.. _domain-name/db-map:
+
+Map a domain name to an Odoo database
+-------------------------------------
+
+.. warning::
+   Ensure you have :ref:`added a CNAME record <domain-name/cname>` to your domain name's DNS
+   **before** mapping your domain name to your Odoo database.
+
+   Failing to do so may prevent the validation of the :ref:`SSL certificate <domain-name/ssl>` and
+   could result in a *certificate name mismatch* error. Web browsers often display this as a
+   warning, such as *"Your connection is not private"*.
+
+   If you encounter this error after mapping the domain name to your database, wait up to five
+   days, as the validation may still happen. If not, you can `submit a support ticket
+   <https://www.odoo.com/help-form>`_, including screenshots of your CNAME records.
+
+.. tabs::
+
+   .. group-tab:: Odoo Online
+
+      Open the `database manager <https://www.odoo.com/my/databases>`_, click the :icon:`fa-gear`
+      (:guilabel:`gear`) button next to the database name, select :icon:`fa-globe` :guilabel:`Domain
+      Names`, and click :guilabel:`Use my own domain`. Then, enter the domain name (e.g.,
+      `www.yourdomain.com`), click :guilabel:`Verify` and :guilabel:`I confirm, it's done`.
+
+      .. image:: domain_names/map-database-online.png
+         :alt: Mapping a domain name to an Odoo Online database
+
+   .. group-tab:: Odoo.sh
+
+      On Odoo.sh, go to :menuselection:`Branches --> select your branch --> Settings --> Custom
+      domains`, type the domain name to add, then click :guilabel:`Add domain`.
+
+      .. image:: domain_names/map-database-sh.png
+         :alt: Mapping a domain name to an Odoo.sh branch
+
+      .. seealso::
+         :ref:`Odoo.sh branches: settings tab <odoo-sh/branches/tabs/settings>`
+
+.. _domain-name/ssl:
+
+SSL encryption (HTTPS protocol)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**SSL encryption** allows visitors to navigate a website through a secure connection, which appears
+as the *https://* protocol at the beginning of a web address rather than the non-secure *http://*
+protocol.
+
+Odoo generates a separate SSL certificate for each domain :ref:`mapped to a database
+<domain-name/db-map>` using `Let's Encrypt's certificate authority and ACME protocol
+<https://letsencrypt.org/how-it-works/>`_.
+
+.. note::
+   - Certificate generation may take up to 24 hours.
+   - Several attempts to validate your certificate are made for five days after you map your domain
+     name to your database.
+   - If you use another service, you can keep using it or change to Odoo's.
+
+.. important::
+   No SSL certificate is generated for naked domains :dfn:`(domain names without any subdomains
+   or prefixes)`.
+
+.. _domain-name/web-base-url:
+
+Web base URL of a database
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+   If the Website app is installed on your database, skip this section and continue from the
+   :ref:`Map a domain name to a website <domain-name/website-map>` section.
+
+The *web base URL* or root URL of a database affects your main website address and all the
+links sent to your customers (e.g., quotations, portal links, etc.).
+
+To make your custom domain name the *web base URL* of your database, access your database using your
+custom domain name and log in as an administrator :dfn:`(a user part of the Settings access right
+group under Administration)`.
+
+.. important::
+   If you access your database with the original Odoo address (e.g., `mycompany.odoo.com`), the *web
+   base URL* of your database will be updated accordingly. To prevent the automatic update of the
+   *web base URL* when an administrator logs in to the database, activate the :ref:`developer mode
+   <developer-mode>`, go to :menuselection:`Settings --> Technical --> System Parameters --> New`,
+   and enter `web.base.url.freeze` as the :guilabel:`Key` and `True` as the :guilabel:`Value`.
+
+.. note::
+   You can also set the web base URL manually. To do so, activate the :ref:`developer mode
+   <developer-mode>`, go to :menuselection:`Settings --> Technical --> System Parameters`, and
+   search for the `web.base.url` key (create it if necessary) and enter the full address of your
+   website as the value (e.g., `https://www.yourdomain.com`). The URL must include the protocol
+   `https://` (or `http://`) and *not* end with a slash (`/`).
+
+.. _domain-name/website-map:
+
+Map a domain name to an Odoo website
+------------------------------------
+
+Mapping your domain name to your website is different than mapping it to your database:
+
+- It defines your domain name as the main one for your website, helping search engines to index your
+  website correctly.
+- It defines your domain name as the base URL for your database, including portal links sent by
+  email to your customers.
+- If you have multiple websites, it maps your domain name to the appropriate website.
+
+Go to :menuselection:`Website --> Configuration --> Settings`. If you have multiple websites, select
+the one you want to configure. In the :guilabel:`Domain` field, enter the address of your website
+(e.g., `https://www.yourdomain.com`) and :guilabel:`Save`.
+
+.. warning::
+   Mapping your domain name to your Odoo website prevents Google Search from indexing your original
+   database address (e.g., `mycompany.odoo.com`).
+
+   If both addresses are already indexed, it may take some time before the indexation of the second
+   address is removed from Google Search. You can use the `Google Search Console
+   <https://search.google.com/search-console/welcome>`_ to fix the issue.
+
+.. note::
+   If you have multiple websites and companies on your database, make sure to select the right
+   :guilabel:`Company` under :menuselection:`Website --> Configuration --> Settings`. Doing so
+   indicates Odoo which URL to use as the :ref:`base URL <domain-name/web-base-url>` according to
+   the company in use.
+
+.. tip::
+   When migrating from an existing website, make sure to set up the necessary :ref:`redirects <website/pages/url-redirection>`
+   before adding your domain name. For example, if a previous URL like `/path/about/something`
+   existed, redirect it to the new corresponding page on your Odoo website, such as `/something`.
+
+
+==================================================
+SECTION: elements.rst
+PATH: applications/websites/website/web_design/elements.rst
+==================================================
+
+========
+Elements
+========
+
+Elements help structure and present content effectively. They range from text-based components like
+:ref:`titles <website/elements/titles>`, :ref:`lists <website/elements/lists>` and
+:ref:`text highlights <website/elements/text_highlights>` to interactive ones such as
+:ref:`buttons <website/elements/buttons>` and :ref:`links <website/elements/links>`. Visual elements
+like :ref:`images <website/elements/images>`, :ref:`icons <website/elements/icons>`,
+:ref:`videos <website/elements/videos>`, and :ref:`animations <website/elements/animations>` can
+also be added to improve content presentation and organization.
+
+To add or modify a website element:
+
+#. Navigate to the relevant website page and click on :guilabel:`Edit`.
+#. Click the section on the page where you want to add or modify an element.
+#. Make the necessary changes.
+#. Click on :guilabel:`Save`.
+
+.. note::
+   The default styles for headings, buttons, links, and paragraph text, for example, are defined in
+   the :doc:`Theme tab <themes>` of the website editor.
+
+.. image:: elements/webdesign-elements.png
+   :alt: Type / to add website elements.
+
+.. _website/elements/titles:
+
+Titles
+======
+
+Titles define headings and organize website content into different levels for clarity and structure.
+To insert a title, type `/title`, choose the heading style (:guilabel:`Heading 1`,
+:guilabel:`Heading 2`, or :guilabel:`Heading 3`), and type the text.
+
+.. tip::
+  Alternatively, type the text, select it, and choose the appropriate style from the
+  :guilabel:`Inline Text` section in the :guilabel:`Customize` tab of the website editor. Additional
+  formatting options, such as fonts and colors, are also available in this section.
+
+.. _website/elements/buttons:
+
+Buttons
+=======
+
+Buttons are interactive elements that allow to link to another page or to a page anchor. To insert a
+button:
+
+#. Type `/button`.
+#. Enter the button's label in the :guilabel:`Link Label` field.
+#. Add the :guilabel:`URL or Email`. Type `/` to search for a page and `#` to link to an anchor.
+#. Set the :guilabel:`Style`, :guilabel:`Size`, and :guilabel:`Layout` to
+   define the button's appearance.
+#. If needed, toggle the switch to open the linked page or anchor in a new tab.
+#. Click :guilabel:`Apply` to save changes.
+
+.. tip::
+   To modify an existing button, click the button and edit the options in the
+   :guilabel:`Inline text` section of the website editor.
+
+.. _website/elements/images:
+
+Images
+======
+
+To insert an image:
+
+#. Type `/image`.
+#. :doc:`Search the Unsplash database </applications/general/integrations/unsplash>` or click
+   :guilabel:`Upload an image` to choose a file from your local images.
+#. Click :guilabel:`Add`.
+#. To customize the image, click on the image and edit the options in the :guilabel:`Image`
+   section of the website editor. For example:
+
+   -  :guilabel:`Replace` the image.
+   -  Define an `alt tag <https://help.siteimprove.com/support/solutions/articles/80000448480-where-are-alt-tags- used-and-why-are-they-important>`_
+      in the :guilabel:`Description` field.
+   -  Enter a title tag in the :guilabel:`Tooltip` field. This text will appear when visitors hover
+      their mouse over the image.
+   -  Add a :guilabel:`Shape`; some shapes also allow for color customization.
+   -  Adjust the image's :guilabel:`Width`, e.g., to improve performance. A smaller size may be
+      suggested if it is sufficient for display.
+   -  Resize the image using the :guilabel:`Transform` tool.
+   -  Adjust the :guilabel:`Padding` to add space (in pixels) around the image.
+   -  Etc.
+
+.. _website/elements/videos:
+
+Videos
+======
+
+To add a video, type `/video`, insert the URL, and turn on the desired options:
+
+- :guilabel:`Autoplay`: to automatically play the video when the page is accessed. The video is
+  automatically muted by default.
+- :guilabel:`Loop`: to play the video on a loop.
+- :guilabel:`Hide player controls`
+- :guilabel:`Hide fullscreen button`
+
+.. _website/elements/icons:
+
+Icons
+=====
+
+To insert an icon, type `/image`, go to the :guilabel:`Icons` tab, select an icon, and click
+:guilabel:`Add`. To modify an icon, click on it and use the :guilabel:`Icon` section of the website
+editor to customize options, such as :guilabel:`Color`, :guilabel:`Size`, :ref:`Animations
+<website/elements/animations>`, :guilabel:`Shape`, etc.
+
+.. _website/elements/links:
+
+Links
+=====
+
+Links are used to connect different pages and resources, guiding visitors and improving navigation.
+To add a link, type `/link`, then, in the pop-up that opens, enter the link's :guilabel:`Label` and
+add the :guilabel:`URL or Email`. Type `/` to search for a page and `#` to link to an :ref:`anchor
+<website/building_blocks/anchor>`.
+
+.. tip::
+   By default, the :guilabel:`Style` field is set to :guilabel:`Link`. Select a different style to
+   transform the link into a :ref:`button <website/elements/buttons>`.
+
+.. _website/elements/lists:
+
+Lists
+=====
+
+Lists help organize content clearly, making information easier to read and improving web pages'
+structures. Type `/list` and choose from three different types of lists: :guilabel:`Bulleted lists`,
+:guilabel:`Numbered lists`, or :guilabel:`Checklists`.
+
+.. _website/elements/text_highlights:
+
+Text highlights
+===============
+
+Highlights can be added to titles and text using in the :guilabel:`Inline Text` section of the
+website editor. To add a highlight:
+
+#. Select the text or title you want to highlight.
+#. In the website editor, click on :guilabel:`Highlight`.
+#. Select the highlight style.
+#. Modify its :guilabel:`Color`.
+#. Choose its :guilabel:`Thickness`.
+
+.. image:: elements/highlights-elements.png
+   :alt: Highlight texts and titles
+
+.. _website/elements/animations:
+
+Animations
+==========
+
+Animations are used to add movement to :doc:`building blocks <building_blocks>` and website
+elements such as images and text. Three types of animation are available: :guilabel:`On Scroll`,
+:guilabel:`On Appearance`, and :guilabel:`On Hover` (for images only).
+
+To add an animation to a website element:
+
+#. Click on the element.
+#. In the website editor, go to the relevant section for the element (e.g., :guilabel:`Button`,
+   :guilabel:`Column`, :guilabel:`Inline Text`, etc.).
+#. In the :guilabel:`Animation` field, select the desired animation type.
+#. Customize the animation settings as needed. Available options vary based on the selected
+   animation type.
+
+Animations on scroll
+--------------------
+
+For animations on scroll, it is possible to:
+
+ - Choose :guilabel:`In` to add the animation when the element enters the screen and :guilabel:`Out`
+   to add it when it leaves the screen.
+ - Select an :guilabel:`Effect`.
+ - Choose the :guilabel:`Direction` of the effect.
+ - Adapt the :guilabel:`Intensity` of the effect.
+ - Define the :guilabel:`Scroll Zone`, where the first value represents the percentage of the screen
+   shown when the effect starts, and the second value represents its percentage at the end.
+
+Animations on appearance
+------------------------
+
+For animations on appearance, it is possible to:
+
+ - Choose among different effects.
+ - Choose the :guilabel:`Direction` of the effect.
+ - Pick a :guilabel:`Trigger` option to define when the animation occurs: either the
+   :guilabel:`First Time only` or :guilabel:`Every Time`.
+ - Adapt the :guilabel:`Intensity` of the effect.
+ - If you want the animation to be triggered after a number of seconds, define this number in the
+   :guilabel:`Start After` field.
+ - Choose a :guilabel:`Duration` for the animation.
+
+Animations on hover (for images only)
+-------------------------------------
+
+Animations :guilabel:`On hover` can be added to :ref:`images <website/elements/images>`. You can
+choose the :guilabel:`Effect` of the animation, as well as the :guilabel:`Color` and the
+:guilabel:`Stroke Width`.
+
+.. seealso::
+   :doc:`Odoo HTML editor </applications/essentials/html_editor>`
+
+
+==================================================
+SECTION: google_search_console.rst
+PATH: applications/websites/website/configuration/google_search_console.rst
+==================================================
+
+=====================
+Google Search Console
+=====================
+
+Google Search Console is a free web service provided by Google that allows website owners to
+monitor, maintain, and troubleshoot their site's presence in Google Search results. It offers
+valuable insights into how Google views and interacts with your site, helping you optimize its
+performance.
+
+To enable Google Search Console for your website, go to `Google Search Console
+<https://search.google.com/search-console/welcome>`_. Then, select the property type
+:ref:`GSC-Domain` or :ref:`GSC-URL prefix`.
+
+.. image:: google_search_console/add-domain-or-url-prefix.png
+   :alt: Google Search Console domain or URL prefix
+
+.. _GSC-Domain:
+
+Domain property
+===============
+
+A domain property in Search Console tracks all versions of your website, including subdomains and
+protocols (http/https). This comprehensive view allows you to analyze your overall website's search
+performance and make informed decisions to optimize its visibility. Enter the domain, e.g.,
+`example.com` and click :guilabel:`Continue`.
+
+.. note::
+   - The domain property type can only be verified via
+     `DNS record <https://support.google.com/webmasters/answer/9008080?hl=en#domain_name_verification&zippy=%2Chtml-tag>`_.
+   - Google suggests creating at least one domain property to represent your site, as it is the most
+     complete view of your website information.
+
+.. _GSC-URL prefix:
+
+URL prefix property
+===================
+
+This type of verification is usually simpler as you have multiple verification methods, such as
+using your existing Google Analytics or Tag Manager account. It also makes sense to view a section
+of your website separately. For example, if you work with a consultant on a specific part of your
+website, you might want to verify this part separately to limit access to your data. Enter the URL,
+e.g., `https://example.odoo.com/` and click :guilabel:`Continue`.
+
+
+Site ownership verification
+===========================
+
+Before using Google Search Console for your website, you must verify your site ownership. This
+verification process is a security measure that protects both you and Google. It ensures that only
+authorized users have access to sensitive data and that you have control over how your website is
+treated in Google Search.
+
+Five methods are available to do this:
+
+.. _website/google-search-console:
+
+#. :ref:`GSC-HTML-file-upload`
+#. `DNS record <https://support.google.com/webmasters/answer/9008080?hl=en#domain_name_verification&zippy=%2Chtml-tag>`_
+#. `HTML tag <https://support.google.com/webmasters/answer/9008080?hl=en#meta_tag_verification&zippy=%2Chtml-tag>`_
+#. `Google Analytics tracking code <https://support.google.com/webmasters/answer/9008080?hl=en#google_analytics_verification>`_
+#. `Google Tag Manager container snippet <https://support.google.com/webmasters/answer/9008080?hl=en#google_tag_manager_verification>`_
+
+.. note::
+   The best method for you depends on your comfort level and technical expertise. For beginners,
+   using a file upload or HTML tag might be easiest. Those options are convenient if you already use
+   :ref:`Google Analytics <analytics/google-analytics>` or :ref:`Google Tag Manager
+   <analytics/google-tag-manager>`. You need to access your domain registrar's settings for domain
+   verification.
+
+.. _GSC-HTML-file-upload:
+
+HTML file upload
+----------------
+
+This method involves uploading an HTML file provided by Google containing the verification code you
+have to put in your Odoo's Website Settings. Google verifies ownership by checking for this code.
+
+#. Once you added your website URL under the URL prefix option and clicked :guilabel:`continue`,
+   expand the HTML file section where you find a download :icon:`fa-download` button.
+
+   .. image:: google_search_console/html-file-download.png
+      :alt: HTML file download
+
+#. Download your HTML verification file and copy the verification code (e.g., `google123abc.html`).
+
+   .. image:: google_search_console/open-copy-html-file.png
+      :alt: Open and copy html file
+
+#. In your Odoo database, go to :menuselection:`Website --> Configuration --> Settings`,
+   and enable :guilabel:`Google Search Console` in the :guilabel:`SEO` section. Paste the
+   verification code (e.g., `google123abc.html`) in the dedicated field.
+
+   .. image:: google_search_console/paste-html-code-settings.png
+      :alt: Paste html code in Odoo
+
+#. In Google Search Console, click :guilabel:`Verify`. If you perform the steps above correctly,
+   verification should be done immediately.
+
+.. _website/google_search_console/HTML-tag:
+
+HTML tag
+--------
+
+This method involves copying a meta tag provided by Google and pasting it into your Odoo website.
+To verify your site ownership using an HTML tag, follow these instructions:
+
+#. Expand the HTML tag section.
+
+   .. image:: google_search_console/gsc-html-tag.png
+      :alt: Open HTML tag section.
+
+#. :guilabel:`Copy` the HTML tag to clipboard.
+#. On your Odoo website, click :guilabel:`Edit` in the upper-right corner, go to
+   the :guilabel:`Theme` tab, scroll down to the :guilabel:`Advanced` section, then
+   click :guilabel:`<head> and </body>` next to :guilabel:`Code Injection`.
+   Paste the copied tag into the first field (:guilabel:`<head>`), and click :guilabel:`Save`.
+
+   .. image:: google_search_console/gsc-paste-tag.png
+      :alt: Paste tag in head field.
+
+#. Return to :abbr:`GSC (Google Search Console)` and click :guilabel:`Verify`.
+
+.. seealso::
+   :doc:`domain_names`
+
+
+==================================================
+SECTION: header_footer.rst
+PATH: applications/websites/website/structure/header_footer.rst
+==================================================
+
+===================
+Headers and footers
+===================
+
+The website header is the top section of a web page and usually contains elements such as the logo,
+the :ref:`menu <website/header_footer/header-content>`, the search bar, the sign-in/customer account
+button, etc. The footer is displayed at the bottom of a web page and usually contains information
+such as contact details, links, legal notices, and other options.
+
+.. _website/header_footer/header-design:
+
+Header design
+=============
+
+To modify the header's design, click on :guilabel:`Edit`, then click on the header. The following
+options are available in the :guilabel:`Header` section of the :guilabel:`Customize` tab in the
+website editor:
+
+- Choose a :guilabel:`Template` from the drop-down menu.
+- Select :guilabel:`Background` settings to change the color palette through different
+  :ref:`Theme styles <website/themes/theme-colors>`, :guilabel:`Custom` color options, and
+  :guilabel:`Gradient` ones.
+- When adding a :guilabel:`Border` to the header, its size, style, and color can be defined.
+- Adapt :guilabel:`Round corners` to fit the design.
+- Add a :guilabel:`Shadow` and define its :guilabel:`Color`, :guilabel:`Offset`, :guilabel:`Blur`,
+  and :guilabel:`Spread`.
+- Add a :guilabel:`Scroll Effect`. Hover on an effect to preview it.
+- Choose the :guilabel:`Header Position` between :guilabel:`Regular`, :guilabel:`Hidden`, and
+  :guilabel:`Over The Content`. When :guilabel:`Over The Content` is selected, you can customize
+  the :guilabel:`Background` and :guilabel:`Text Color`.
+- Show or hide :guilabel:`Elements` such as text, the search bar, :guilabel:`Sign in` button, social
+  media links, :guilabel:`Contact us` button, and logo.
+
+To finalize changes, click on :guilabel:`Save`.
+
+.. tip::
+   To hide the header, click on :guilabel:`Edit`, click on the header, and go to the
+   :guilabel:`Theme` tab of the website editor. Scroll down to the :guilabel:`Advanced` section and
+   toggle the :guilabel:`Show Header` switch to hide/show the header.
+
+.. _website/header_footer/header-content:
+
+Header content
+==============
+
+Menus organize the header’s content and help users navigate through web pages effectively.
+User-friendly and well-structured menus also play a crucial role in improving
+:doc:`search engine rankings <seo>`.
+
+.. _website/header_footer/menu-editor:
+
+Menu editor
+-----------
+
+The menu editor allows to edit the website's header and add
+:ref:`menu items <website/header_footer/menu-items>` and
+:ref:`mega menus <website/header_footer/mega-menus>`.
+
+To edit the header's content, go to :menuselection:`Website --> Site --> Menu Editor`. From there,
+you can:
+
+- **rename** a menu item or change its URL using the :guilabel:`Edit Menu Item` icon;
+- **delete** a menu item using the :guilabel:`Delete Menu Item` icon;
+- **move** a menu item by dragging and dropping it to the desired place in the menu;
+- **create a regular drop-down menu** by dragging and dropping the sub-menu items to the right,
+  underneath their parent menu.
+
+.. image:: header_footer/menu-editor.png
+   :alt: Menu editor with sub-menus
+
+.. note::
+   You can also access the menu editor by clicking :guilabel:`Edit`, selecting any menu item, and
+   clicking the :guilabel:`Edit Menu` icon.
+
+  .. image:: header_footer/edit-menu-icon.png
+     :alt: Access the Menu editor while in Edit mode.
+
+.. _website/header_footer/menu-items:
+
+Add menu items
+--------------
+
+By default, pages are added to the menu as drop-down menu items when
+:doc:`they are created <../structure/pages>`. To add a new menu item, follow these steps:
+
+#. Go to :menuselection:`Website --> Site --> Menu Editor`.
+#. In the menu editor, click :guilabel:`Add Menu Item`.
+#. In the pop-up window, enter the :guilabel:`Name` to be displayed in the menu.
+#. Type `/` in the :guilabel:`URL or Email` field to search for a page on your website or `#` to
+   search for an existing custom anchor.
+#. Click :guilabel:`OK`.
+#. Edit the :ref:`menu structure <website/header_footer/menu-editor>` if needed, then
+   :guilabel:`Save`.
+
+Menu item design
+~~~~~~~~~~~~~~~~
+
+To modify the menu items, click on :guilabel:`Edit`, click on a menu item, then go to the
+:guilabel:`Navbar` section of the website editor. The following options are available:
+
+- Adapt the :guilabel:`Mobile Alignment`.
+- Choose the :guilabel:`Font` for the menu items.
+- Change the font size, color, and alignment in the :guilabel:`Format` field.
+- Select a :guilabel:`Links Style` to highlight the current page in the menu.
+- Change the :ref:`style of the header buttons <website/themes/button-styles>`.
+- Choose to display the :guilabel:`Sub Menus` :guilabel:`On Hover` or :guilabel:`On Click`.
+
+.. note::
+   The fields available in the :guilabel:`Navbar` section can vary depending on the chosen template.
+
+To finalize changes, click on :guilabel:`Save`.
+
+.. _website/header_footer/mega-menus:
+
+Mega menus
+----------
+
+Mega menus are similar to drop-down menus, but instead of a simple list of sub-menus, they display a
+panel divided into groups of navigation options. This makes them suitable for websites with large
+amounts of content or :doc:`e-commerce websites <../../ecommerce>`, as they can help include all of
+your web pages or :doc:`e-commerce categories <../../ecommerce/products/catalog>` in the menu while
+still making all menu items visible at once.
+
+.. image:: header_footer/mega-menu.png
+   :alt: Mega menu in the navigation bar.
+
+To create a mega menu, go to :menuselection:`Website --> Site --> Menu Editor` and click
+:guilabel:`Add Mega Menu Item`. Enter the :guilabel:`Name` of the mega menu in the pop-up, click
+:guilabel:`OK`, then :guilabel:`Save`.
+
+To adapt the options and content of the mega menu, click on a mega menu item in the header, then
+click :guilabel:`Edit`. Mega menus are composed of building blocks, which means you can customize
+each component individually. For example:
+
+- Edit the text directly in the building block.
+- Edit a menu item's URL by selecting the menu item and clicking the :guilabel:`Edit link` button
+  in the small preview pop-up. Type `/` to search for a page on your website, or `#` to search for
+  an existing custom anchor.
+
+  .. image:: header_footer/mega-menu-option.png
+     :alt: Edit a mega menu option.
+
+- Move a menu item by dragging and dropping the related block to the desired position in the mega
+  menu.
+- Delete a menu item by deleting the related block.
+
+To adapt the general layout of the mega menu, go to the :guilabel:`Customize` tab of the website
+editor, then, in the :guilabel:`Mega Menu` section:
+
+- Choose a :guilabel:`Template`.
+- Pick the :guilabel:`Size`: either :guilabel:`Full-Width` or :guilabel:`Narrow`.
+
+To finalize changes, click on :guilabel:`Save`.
+
+Hide a dynamic menu item for non-logged in users
+------------------------------------------------
+
+To hide a dynamic menu item (i.e., a menu item generated automatically by Odoo, for example, when
+you install an app or module, such as `Events`, `Courses`, etc.) for non-logged in users, follow
+these steps:
+
+#. :ref:`Enable developer mode <developer-mode>`.
+#. Go to :menuselection:`Website --> Configuration --> Menus`.
+#. Expand the list of menus for the relevant website if needed, then click the menu item you wish to
+   hide.
+#. In the :guilabel:`Visible Groups` section, click :guilabel:`Add a line` under
+   :guilabel:`Group Name`.
+#. Search for the group :guilabel:`User types / Portal`, select it, then click :guilabel:`Select`.
+#. Save.
+
+.. tip::
+   To hide the `Shop` menu item, :doc:`restrict ecommerce access to logged-in users
+   <../../ecommerce/customer_accounts>`.
+
+.. _website/header_footer/footer-design:
+
+Footer design
+=============
+
+To modify the footer, click on :guilabel:`Edit`, click on the footer, and in the :guilabel:`Footer`
+section of the :guilabel:`Customize` tab in the website editor:
+
+- Select a :guilabel:`Template`.
+- Choose its :guilabel:`Colors`.
+- Choose a :guilabel:`Slideout Effect`: :guilabel:`Regular` (i.e., no effect),
+  :guilabel:`Slide Hover`, or :guilabel:`Shadow`.
+- Toggle the :guilabel:`Copyright` switch to hide or show the copyright.
+- Choose the :guilabel:`Border` size.
+- Add a :guilabel:`Shadow`.
+- Add a :guilabel:`Scroll Top Button` and choose its position.
+- Hide or show the footer by toggling the :guilabel:`Page visibility` switch.
+
+To finalize changes, click on :guilabel:`Save`.
+
+
+==================================================
+SECTION: link_tracker.rst
+PATH: applications/websites/website/reporting/link_tracker.rst
+==================================================
+
+============
+Link tracker
+============
+
+The link tracker allow you to create tracked links to measure your marketing campaigns'
+effectiveness. They let you determine which channels bring you the most visitors and make informed
+decisions.
+
+Configuration
+=============
+
+The :guilabel:`Link Tracker` module is not installed by default. You need to enable the
+:guilabel:`Email Marketing` option by going to :menuselection:`Website --> Configuration -->
+Settings.` Alternatively, you can :doc:`install <../../../general/apps_modules>` the :guilabel:`Link
+Tracker` module itself or one of the marketing apps.
+
+Create a traceable URL
+======================
+
+To create and manage tracked links, navigate to :menuselection:`Website --> Site --> Link Tracker`.
+Fill in the following information and click :guilabel:`Get tracked link` to generate a tracking URL.
+
+#. :guilabel:`URL`: The URL which is the target of the campaign. It is automatically populated with
+   the URL from where you access the menu.
+
+#. :guilabel:`Campaign`: The specific campaign the link should be associated with. This parameter is
+   used to distinguish the different campaigns.
+
+#. :guilabel:`Medium`: The medium describes the category or method through which the visitor arrives
+   at your site, such as organic search, paid search, social media ad, email, etc.
+
+#. :guilabel:`Source`: The source identifies the precise platform or website that referred the
+   visitor, such as a search engine, a newsletter, or a website.
+
+.. image:: link_tracker/create-link-tracker.png
+   :alt: Create a link tracker URL
+
+The :guilabel:`Campaign`, :guilabel:`Medium`, and :guilabel:`Source` are called :abbr:`UTM (Urchin
+Tracking Module)` parameters. They are incorporated in the tracked URL.
+
+  .. tip::
+     You can customize the :ref:`visibility <website/visibility/conditions>` of building blocks
+     using the :abbr:`UTM (Urchin Tracking Module)` parameters, amongst other conditions.
+
+Tracked links overview
+======================
+
+To get an overview of your tracked links, go to :menuselection:`Website --> Site --> Link Tracker`
+and scroll down to :guilabel:`Your tracked links` section.
+
+.. image:: link_tracker/your-tracked-links.png
+   :alt: Get an overview of all the links you track.
+
+Statistics
+----------
+
+To measure the performance of tracked links, click the :guilabel:`Stats` button.
+
+.. image:: link_tracker/statistics.png
+   :alt: View the statistics related to a specific tracked link.
+
+Scroll down to the :guilabel:`Statistics` section to get an overview of the number of clicks of your
+tracked links. You can display information for a specific period by clicking the
+:guilabel:`All Time`, :guilabel:`Last Month`, or :guilabel:`Last Week` options.
+
+
+==================================================
+SECTION: mail_groups.rst
+PATH: applications/websites/website/mail_groups.rst
+==================================================
+
+===========
+Mail groups
+===========
+
+The **mail groups** feature allows website visitors to have a public discussion by email. They can
+join a group to receive emails from other group members (i.e., website users who have subscribed to
+the group) and send new ones to all group members.
+
+To activate the feature, :ref:`install <general/install>` the :guilabel:`Website Mail Group`
+(`website_mail_group`) module.
+
+.. note::
+   The **mail groups** feature is not to be confused with the
+   :doc:`../../marketing/email_marketing/mailing_lists` in the Email Marketing app.
+
+.. _website/mailing_lists/configure_groups:
+
+Configuring mail groups
+=======================
+
+To configure mail groups, proceed as follows:
+
+#. Configure a custom email alias domain by accessing the **General settings**, scrolling down to
+   the :guilabel:`Discuss` section, enabling the :guilabel:`Custom Email Server` feature, and
+   entering the :guilabel:`Alias domain` (e.g., `@mycompany.com`).
+#. Go to :menuselection:`Website --> Configuration --> Mailing Lists`, then click :guilabel:`New`.
+#. Specify a :guilabel:`Group Name`, the :guilabel:`Email Alias`, and a :guilabel:`Description`.
+#. Enable :guilabel:`Moderate this group` and specify the :guilabel:`Moderators` if you wish to
+   :ref:`moderate messages <website/mailing_lists/moderate>` from this group. Alternatively, if the
+   group is not moderated, you can define :guilabel:`Responsible Users` who can manage the messages
+   in the group.
+#. In the :guilabel:`Privacy` tab, define who can subscribe to the mail group:
+
+   - :guilabel:`Everyone`: to make the mail group public so anyone can subscribe to it;
+   - :guilabel:`Members only`: to only allow users defined as members to subscribe to the mail group;
+   - :guilabel:`Selected group of users`: to only allow users from the :guilabel:`Authorized group`
+     to subscribe to the mail group.
+
+#. If the mail group is moderated, you can automatically notify authors when their message is
+   pending moderation by enabling :guilabel:`Automatic notification` in the :guilabel:`Notify
+   Members` tab and writing the :guilabel:`Notification message`.
+#. If you wish to send out guidelines to new subscribers, enable :guilabel:`Send guidelines to new
+   subscribers` and write them in the :guilabel:`Guidelines` tab. This is particularly useful when
+   the mail group is moderated.
+
+Using mail groups
+=================
+
+Subscribing/unsubscribing
+-------------------------
+
+Based on the :ref:`configuration of the mail group <website/mailing_lists/configure_groups>`,
+users can subscribe to and unsubscribe from mail groups from the website page (`/groups` by default).
+
+.. image:: mail_groups/mail-group-page.png
+   :alt: Mail group web page.
+
+Internal users can also do this from :menuselection:`Website --> Configuration --> Mailing Lists`,
+using the :guilabel:`Join` and :guilabel:`Leave` buttons.
+
+Sending messages
+----------------
+
+To send messages to a mail group, website users can email the :ref:`mail group's email address
+<website/mailing_lists/configure_groups>`. Internal users can also create messages directly from
+Odoo. To do so, go to :menuselection:`Website --> Configuration --> Mailing Lists`, select the mail
+group, click the :guilabel:`Emails` smart button, and click :guilabel:`New`. Then, fill in the
+fields and click :guilabel:`Send`.
+
+.. tip::
+   - The list of messages can also be accessed by selecting the group from the `/groups` website
+     page.
+   - Group members can also unsubscribe from the group, access the mail group page, and send emails
+     to the group using the URLs in the footer of any group email they have received.
+
+     .. image:: mail_groups/mail-group-URLs.png
+        :alt: URLs in the footer of a group email.
+
+.. _website/mailing_lists/moderate:
+
+Moderating mail group messages
+==============================
+
+If the :guilabel:`Moderate this group` feature has been enabled for the
+:ref:`mail group <website/mailing_lists/configure_groups>`, one of the :guilabel:`Moderators` must
+approve the group's messages before they are dispatched to the other members.
+
+To moderate messages, go to :menuselection:`Website --> Configuration --> Mailing Lists`, select the
+mail group, and click the :guilabel:`To review` smart button. You can moderate messages using the
+buttons at the end of the message line or select a message to view its content and moderate it
+accordingly.
+
+   .. image:: mail_groups/mail-group-moderation.png
+      :alt: Moderation buttons in the message line.
+
+The following actions are available:
+
+- :guilabel:`Accept`: to accept the email and send it to the mail group members.
+- :guilabel:`Reject`: to reject the email. In the pop-up window that opens, click
+  :guilabel:`Reject Silently` to reject the email without notifying the author, or specify an
+  explanation for rejecting the message, then click :guilabel:`Send & Reject` to reject the message
+  and send the explanation to the author.
+- :guilabel:`Whitelist`: to whitelist the author, i.e. automatically accept all of their emails. As
+  a result, a :ref:`moderation rule <website/mailing_lists/moderate>` is created for the author's
+  email address with the status :guilabel:`Always allow`.
+- :guilabel:`Ban`: to blacklist the author, i.e. automatically discard all their emails. In the
+  pop-up window that opens, click :guilabel:`Ban` to ban the author without notifying them, or
+  specify an explanation, then click :guilabel:`Send & Ban` to ban the author and send them the
+  explanation. As a result, a :ref:`moderation rule <website/mailing_lists/moderate>` is created for
+  the author's email address with the status :guilabel:`Permanent ban`.
+
+.. note::
+   Messages can also be moderated from the group's list of messages. Go to :menuselection:`Website
+   --> Groups --> Mailing List Groups`, select the mail group and click the :guilabel:`Emails` smart
+   button.
+
+.. _website/mailing_lists/moderation_rules:
+
+Whitelisting/Blacklisting authors
+=================================
+
+You can whitelist or blacklist an author either directly :ref:`from a mail group message
+<website/mailing_lists/moderate>`, or by creating a moderation rule. To do so, go to
+:menuselection:`Website --> Configuration --> Moderation Rules` and click :guilabel:`New`. Then,
+select the :guilabel:`Group`, specify the author's :guilabel:`Email` and set the :guilabel:`Status`
+field.
+
+.. tip::
+   You can also access the mail group's moderation rules by going to :menuselection:`Website -->
+   Configuration --> Mailing Lists`, selecting the group, then clicking the :guilabel:`Moderations`
+   smart button.
+
+
+==================================================
+SECTION: multi_website.rst
+PATH: applications/websites/website/configuration/multi_website.rst
+==================================================
+
+=================
+Multiple websites
+=================
+
+Odoo allows you to create multiple websites from the same database. This can be useful, for example,
+if you have multiple brands operating under your organization, or to create separate websites for
+different products/services, or different audiences. In these cases, having different websites can
+help avoid confusion and make it easier to tailor your digital outreach strategies and reach your
+target audience.
+
+Each website can be designed and configured independently with its own :doc:`domain name
+<domain_names>`, :doc:`theme <../web_design/themes>`, :doc:`pages <../structure/pages>`, :doc:`menus
+<../structure/header_footer>`, :doc:`languages <translate>`, :doc:`products
+<../../ecommerce/products>`, assigned sales team, etc. They can also
+:ref:`share content and pages <multi-website/website_content>`.
+
+.. tip::
+   Duplicate content (i.e., pages and content shared between multiple websites) can have a negative
+   impact on :doc:`../structure/seo`.
+
+Website creation
+================
+
+To create a new website, proceed as follows:
+
+#. Go to :menuselection:`Website --> Configuration --> Settings`.
+#. Click :guilabel:`+ New Website`.
+
+   .. image:: multi_website/create-website.png
+      :alt: New website button
+
+#. Specify the :guilabel:`Website Name` and :guilabel:`Website domain`. Each website must be
+   published under its own :doc:`domain <domain_names>`.
+#. Adapt the :guilabel:`Company name`, :guilabel:`Languages` and :guilabel:`Default language`
+   if needed.
+#. Click the :guilabel:`Create` button.
+
+You can then start building your new website.
+
+.. note::
+   By default, all website-related apps that you have installed (e.g. **eCommerce**,
+   **Forum**, **Blog**, etc.) and their related website pages are also available on the
+   new website. You can remove them by amending the website's menu.
+
+Switching websites
+==================
+
+To switch from one website to another, click the menu next to the :guilabel:`+New` button in the
+top right corner and select the website you want to switch to.
+
+.. image:: multi_website/switch-websites.png
+   :alt: Website selector
+
+.. note::
+   When you switch websites, you are redirected to the homepage of the other website.
+
+Website-specific configuration
+==============================
+
+Most website settings are website-specific, which means they can be enabled/disabled per website. To
+adapt the settings for a website, go to :menuselection:`Website --> Configuration --> Settings`.
+Select the desired website in the field :guilabel:`Settings of Website` at the top of the
+:guilabel:`Settings` page, in the **yellow** banner. Then, adapt the options for that specific
+website.
+
+.. note::
+   - Websites are created with the default settings; the settings are not copied from one website to
+     the other.
+   - In a :doc:`multi-company environment </applications/general/companies>`, each website can be
+     linked to a specific company in your database so that only company-related data (e.g.,
+     products, jobs, events, etc.) is displayed on the website. To display company-specific data,
+     set the desired company in the :guilabel:`Company` field.
+
+.. _multi-website/website_content:
+
+Content availability
+--------------------
+
+By default, pages, products, events, etc. created from the frontend (using the
+:guilabel:`+New` button) are only available on the website from which it was created. Records
+created from the backend, however, are made available on all websites by default. The content's
+availability can be changed in the backend, in the :guilabel:`Website` field. For example, for
+products, go to :menuselection:`eCommerce --> Products`, then select the product and go to the
+:guilabel:`Sales` tab. For forums, go to :menuselection:`Configuration --> Forums`, then select the
+forum.
+
+.. image:: multi_website/forum-multi-website.png
+   :alt: Website field in Forum form
+
+.. _website_field:
+
+Records and features can be made available:
+
+- On all websites: leave the :guilabel:`Website` field empty;
+- Only on one website: set the :guilabel:`Website` field accordingly;
+- On some websites: in this case, you should duplicate the item and set the :guilabel:`Website`
+  field.
+
+Website pages
+~~~~~~~~~~~~~
+
+To modify the website on which a page is to be published, proceed as follows:
+
+#. Go to :menuselection:`Website --> Site --> Pages`.
+#. Open the search panel and select the website on which the page is currently published.
+
+   .. image:: multi_website/pages-switch-websites.png
+      :alt: Display pages per website
+
+#. Tick the check box next to the page(s) you want to change.
+#. Click the :guilabel:`Website` field and select the website, or empty it to publish the page on
+   all websites.
+
+.. note::
+   Each website must have its own homepage; you may not use the same homepage for several websites.
+
+eCommerce features
+==================
+
+eCommerce features such as products, eCommerce categories, pricelists, discounts, payment providers,
+etc. can be restricted to :ref:`a specific website <website_field>`.
+
+Customer accounts
+-----------------
+
+You can :doc:`allow your customers to use the same account
+<../../ecommerce/customer_accounts>` on all of your websites by enabling the :guilabel:`Shared
+Customer Accounts` check box in the website settings.
+
+Pricing
+-------
+
+Products can be priced differently based on the website using :ref:`pricelists
+<ecommerce/prices/selectable-pricelists>`. The following configuration is required:
+
+#. Go to :menuselection:`Website --> Configuration --> Settings`.
+#. Scroll down to the :guilabel:`Shop - Products` section and select the :guilabel:`Pricelists`
+   option :guilabel:`Multiple prices per product`.
+#. Click :guilabel:`Pricelists` to define new pricelists or edit existing ones.
+#. Select the pricelist or click :guilabel:`New` to create a new one, then select the
+   :guilabel:`Configuration` tab and set the :guilabel:`Website` field.
+
+Reporting
+=========
+
+Analytics
+---------
+
+Each website has its own :ref:`analytics <analytics/plausible>`. To switch between websites, click
+the buttons in the upper right corner.
+
+.. image:: multi_website/analytics-switch-websites.png
+   :alt: Switch websites in analytics
+
+Other reporting data
+--------------------
+
+Other reporting data such as eCommerce dashboard data, online sales analyses and visitors can be
+grouped by website if necessary. Open the search panel and select :guilabel:`Group by --> Website`.
+
+
+==================================================
+SECTION: pages.rst
+PATH: applications/websites/website/structure/pages.rst
+==================================================
+
+:show-content:
+
+=====
+Pages
+=====
+
+Odoo allows you to create pages for your website and customize their content and appearance to your
+needs.
+
+.. _website/pages/page_type:
+
+**Static** pages, such as the homepage or any :ref:`custom-created <website/pages/page_creation>`,
+contain fixed content that does not change dynamically. You can manually create these pages, define
+their URLs, and adapt their :ref:`properties <website/pages/page_management>` as needed. **Dynamic**
+pages, on the other hand, are generated dynamically. All pages generated automatically by Odoo, for
+example, when you install an app or module (e.g., `/shop` or `/blog`) or publish a new product or
+:doc:`blog post <../../blog>`, are dynamic pages and are therefore managed differently.
+
+.. _website/pages/page_creation:
+
+Page creation
+=============
+
+Website pages can be created from the **frontend** and the **backend**. To create a new website
+page, proceed as follows:
+
+  #. - Either open the **Website** app, click :guilabel:`+ New` in the top-right corner, then select
+       :guilabel:`Page`;
+     - Or go to :menuselection:`Website --> Site --> Pages` and click :guilabel:`New`.
+  #. In the :guilabel:`New Page` selection menu, click on a template. They are sorted by type:
+
+     - :guilabel:`Basic`: Multi-purpose page. A blank page is also available to start from scratch.
+     - :guilabel:`About`: Information about your brand.
+     - :guilabel:`Landing Pages`: Summary of company content and info.
+     - :guilabel:`Gallery`: Photos and media showcase.
+     - :guilabel:`Services`: Focus on what you're selling and contact.
+     - :guilabel:`Pricing Plans`: Highlight on subscription and prices.
+     - :guilabel:`Team`: The people behind your company.
+     - :guilabel:`Custom`: To select a custom template. To add a template to this category, open the
+       page you want to save as a template, then go to :menuselection:`Site --> Properties`, enter
+       the :guilabel:`Page Title`, :ref:`edit the page's properties
+       <website/pages/page_properties>`, enable :guilabel:`Is a template`, and click
+       :guilabel:`Save`.
+
+  #. Enter a :guilabel:`Page Title`; this title is used in the menu and the page's URL.
+  #. Click :guilabel:`Create`.
+  #. If needed, :doc:`customize the page's content and appearance <../web_design>` using the website
+     editor, then click :guilabel:`Save`.
+  #. :ref:`Publish <website/pages/un-publish-page>` the page.
+
+.. tip::
+   Disable :guilabel:`Add to menu` if the page should not appear in the menu.
+
+.. _website/pages/page_management:
+
+Page management
+===============
+
+.. _website/pages/un-publish-page:
+
+Publishing/unpublishing pages
+-----------------------------
+
+Pages need to be published to make them visible to website visitors. To publish or unpublish a
+page, access it and toggle the switch in the upper-right corner from :guilabel:`Unpublished`
+to :guilabel:`Published`, or vice versa.
+
+.. image:: pages/un-published_toggle.png
+   :alt: Unpublished/Published toggle
+
+.. note::
+   It is also possible to:
+
+    - Publish/unpublish a page from the :ref:`page properties <website/pages/page_properties>`,
+      where you can define a publishing date and/or restrict the page's visibility if needed;
+    - Publish/unpublish several pages at once: go to :menuselection:`Website --> Site --> Pages`,
+      select the pages, then click :guilabel:`Action` and select :guilabel:`Publish` or
+      :guilabel:`Unpublish`.
+
+
+Alternatively, you can define any :ref:`static page <website/pages/page_type>` as your homepage by
+going to :menuselection:`Website --> Site --> Properties`. Select the :guilabel:`Publish` tab and
+enable :guilabel:`Use as Homepage`.
+
+.. _website/pages/page_properties:
+
+Page properties
+---------------
+
+To modify a :ref:`static page's <website/pages/page_type>` properties, access the page you wish to
+modify, then go to :menuselection:`Site --> Properties`, where you can change the following
+properties:
+
+ - :guilabel:`Page URL` : Modify the page URL in the field. In this case, you can redirect the
+   old URL to the new one if needed. To do so, enable :guilabel:`Redirect old URL`, then select the
+   :guilabel:`Type` of :ref:`redirection <website/pages/URL-redirection>`:
+
+    - :guilabel:`301 Moved permanently`: to redirect the page permanently.
+    - :guilabel:`302 Moved temporarily`: to redirect the page temporarily.
+
+   .. image:: pages/page-properties.png
+      :alt: Redirect old URL
+
+ - :guilabel:`In Menu`: Disable if you don't want the page to appear in the menu.
+ - :guilabel:`Is Homepage`: Enable if you want the page to be the homepage of your website.
+ - :guilabel:`Published`: Enable to publish the page.
+ - :guilabel:`Publishing Date`: To publish the page at a specific date and time, click the field,
+   set the date and time, then press **Enter** or click :guilabel:`Apply` to validate your selection.
+ - :guilabel:`Indexed`: Disable if you don't want the page to appear in search engine results.
+ - :guilabel:`Visibility`: Select who can access the page:
+
+    - :guilabel:`Public`: Everyone can access the page.
+    - :guilabel:`Signed In`: Only signed-in users can access the page.
+    - :guilabel:`Restricted Group`: Select the :doc:`user access group(s)
+      </applications/general/users/access_rights>` in the :guilabel:`Authorized group` field.
+    - :guilabel:`With Password`: Type the password required to access the page in the
+      :guilabel:`Password` field.
+
+ - :guilabel:`Is a template`: Toggle the switch to save the page as a template and add it to the
+   :guilabel:`Custom`  category.
+
+.. tip::
+   *Some* of these properties can also be modified in batch from
+   :menuselection:`Website --> Site --> Pages`.
+
+.. _website/pages/duplicate-page:
+
+Duplicating pages
+~~~~~~~~~~~~~~~~~
+
+To duplicate a page, access the page, then go to :menuselection:`Site --> Properties`, and click
+:guilabel:`Duplicate Page`. Enter a :guilabel:`Page Name`, then click :guilabel:`OK`. By default,
+the new page is added after the duplicated page in the menu, but you can remove it from the menu or
+change its position using the :doc:`menu editor <header_footer>`.
+
+.. _website/pages/delete-page:
+
+Deleting pages
+~~~~~~~~~~~~~~
+
+To delete a page, proceed as follows:
+
+#. Access the page, then go to :menuselection:`Site --> Properties` and click :guilabel:`Delete Page`.
+#. A pop-up window shows all links referring to the page you want to delete,
+   organized by category. To ensure website visitors don't land on an error page, you must update
+   all the links on your website referring to the page. To do so, expand a category, then click on a
+   link to open it in a new window. Alternatively, you can set up a :ref:`redirection
+   <website/pages/URL-redirection>` for the deleted page.
+#. Once you have updated the links (or set up a :ref:`redirection <website/pages/URL-redirection>`),
+   tick the :guilabel:`I am sure about this` check box, then click :guilabel:`OK`.
+
+.. _website/pages/URL-redirection:
+
+URL redirect mapping
+--------------------
+
+URL redirect mapping consists in sending visitors and search engines to a URL different from
+the one they initially requested. This technique is used, for example, to prevent broken links when
+you :ref:`delete a page <website/pages/delete-page>`,
+:ref:`modify its URL <website/pages/page_properties>`, or migrate your site from another platform to
+an Odoo :doc:`domain <../configuration/domain_names>`. It can also be used to improve :doc:`seo`.
+
+To access existing URL redirections and create new ones, :doc:`activate the developer mode
+</applications/general/developer_mode>` and go to :menuselection:`Website --> Configuration -->
+Redirects`.
+
+.. note::
+   - A redirect record is added automatically every time you :ref:`modify a page's URL
+     <website/pages/page_properties>` and enable :guilabel:`Redirect Old URL`.
+   - You can set up redirections for :ref:`static and dynamic pages <website/pages/page_type>`.
+
+To create a new redirection, click the :guilabel:`New` button, then fill in the fields:
+
+- :guilabel:`Name`: Enter a name to identify the redirect.
+- :guilabel:`Action`: Select the type of redirection:
+
+   - :guilabel:`404 Not found`: visitors are redirected to a 404 error page when they try to access
+     an unpublished or deleted page.
+   - :guilabel:`301 Moved Permanently`: for permanent redirections of unpublished or deleted
+     :ref:`static pages <website/pages/page_type>`. The new URL is shown in search engine results,
+     and the redirect is cached by browsers.
+   - :guilabel:`302 Moved Temporarily`: for short-term redirections, for example, if you are
+     redesigning or updating a page. The new URL is neither cached by browsers nor shown in search
+     engine results.
+   - :guilabel:`308 Redirect/Rewrite`: for permanent redirections of existing :ref:`dynamic pages
+     <website/pages/page_type>`. The URL is renamed; the new name is shown in search engine results
+     and is cached by browsers. Use this redirect type to rename a dynamic page, for example, if you
+     wish to rename `/shop` into `/market`.
+
+- :guilabel:`URL from`: Enter the URL to be redirected (e.g., `/about-the-company`) or search for
+  the desired :ref:`dynamic page <website/pages/page_type>` and select it from the list.
+- :guilabel:`URL to`: For 301, 302, and 308 redirects, enter the URL to be redirected to. If you
+  want to redirect to an external URL, include the protocol (e.g., `https://`).
+- :guilabel:`Website`: Select a specific website.
+- :guilabel:`Sequence`: To define the order in which redirections are performed, e.g., in the case
+  of redirect chains (i.e., a series of redirects where one URL is redirected to another one, which
+  is itself further redirected to another URL).
+
+Toggle the :guilabel:`Activate` switch to deactivate the redirection.
+
+.. important::
+   404, 301, and 302 redirections are meant to migrate traffic from
+   :ref:`unpublished <website/pages/un-publish-page>` or :ref:`deleted <website/pages/delete-page>` pages
+   to *new* pages, while the 308 redirect is used for *permanent* redirections of *existing* pages.
+
+.. seealso::
+   - `Google documentation on redirects and search <https://developers.google.com/search/docs/crawling-indexing/301-redirects>`_
+   - :doc:`seo`
+
+
+==================================================
+SECTION: reporting.rst
+PATH: applications/websites/website/reporting.rst
+==================================================
+
+:nosearch:
+
+=========
+Reporting
+=========
+
+.. toctree::
+   :titlesonly:
+
+   reporting/analytics
+   reporting/link_tracker
+
+
+==================================================
+SECTION: seo.rst
+PATH: applications/websites/website/structure/seo.rst
+==================================================
+
+================================
+Search Engine Optimization (SEO)
+================================
+
+Search Engine Optimization, often abbreviated as SEO, is a digital marketing strategy to improve a
+website's visibility and ranking in search engine results (e.g., in Google). It involves optimizing
+various elements on your website, including its content, social sharing, URLs, images, and page
+speed.
+
+.. note::
+   - Odoo provides several modules to help you build your website content, such as
+     :doc:`eCommerce <../../ecommerce>`, :doc:`Blog <../../blog>`, :doc:`eLearning
+     <../../elearning>`, and :doc:`Forum <../../forum>`.
+   - All Odoo :doc:`themes <../web_design/themes>` rely on the CSS Framework `Bootstrap
+     <https://getbootstrap.com/>`_ to render efficiently according to the device: desktop, tablet,
+     or mobile, which positively impacts ranking in search engines.
+
+.. seealso::
+   `Magic Sheet - Optimize your website [PDF]
+   <https://drive.google.com/drive/folders/1Ywip4tWF2DPkcBaEbeXJxIZg2CjkwKgb>`_
+
+Content optimization
+====================
+
+To optimize a webpage's SEO, access the page, then go to :menuselection:`Website --> Site -->
+Optimize SEO`.
+
+.. image:: seo/optimize-seo.png
+   :alt: Optimize SEO
+
+.. note::
+   If you change the title of a blog post or the name of a product, the link to the related webpage
+   is automatically updated. The old link still functions as Odoo creates a
+   :ref:`301 redirect <website/pages/URL-redirection>`, maintaining the SEO.
+
+Keywords and meta tags
+----------------------
+
+There are two types of keywords in SEO, which serve different purposes.
+
+In-text keywords
+~~~~~~~~~~~~~~~~
+
+In-text keywords appear naturally throughout a page’s visible content (titles, headings, and body
+text) and help search engines determine the topic and relevance of the page. These keywords have a
+real impact on ranking. They cannot be edited in the :guilabel:`optimize SEO` pop-up.
+
+.. important::
+   It is strongly recommended to only use one H1 title per page for SEO.
+
+.. _seo/meta-tags:
+
+Meta tags and meta keywords
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Meta tags** are HTML elements that provide information about a webpage to search engines and
+website visitors. They play a crucial role in SEO by helping search engines understand the content
+and context of a webpage and attract visitors with appealing content. They can be edited in the
+:guilabel:`optimize SEO` pop-up. There are two types of meta tags in Odoo:
+
+- :guilabel:`Title` tags specify a webpage's title and are displayed as a clickable link in search
+  engine results. They should be concise, descriptive, and relevant to the page's content. You can
+  update the title tag of your webpage or keep it empty to use the default value based on the page’s
+  content.
+
+- :guilabel:`Description` tags summarize the webpage's content, often displayed in search engine
+  results below the title. They are used to encourage the user to visit the page. You can update
+  the description tag of your webpage or keep it empty to use the default value based on the page’s
+  content.
+
+.. note::
+   The :guilabel:`Preview` card displays how the title and description tags should appear in search
+   results. It also includes the URL of your page.
+
+**Meta keywords** are placed in a hidden HTML tag `<meta name="keywords">`. Once used to describe a
+page’s topic, this tag is now ignored by major search engines and has little or no impact on SEO.
+To edit :guilabel:`Keywords`, enter the keywords you consider essential in this field and click
+:guilabel:`Add` to see how they are used at different levels in your content (H1, H2, page title,
+page description, page content) and the related searches in Google. The tool also suggests relevant
+keywords.
+
+.. _seo/images:
+
+Images
+------
+
+The size of images has a significant impact on page speed, which is an essential criterion for
+search engines to optimize SEO ranking.
+
+.. tip::
+   Compare how your website ranks using `Google Page Speed <https://pagespeed.web.dev/?utm_source=psi&utm_medium=redirect>`_
+   or `Pingdom Website Speed Test <https://tools.pingdom.com/>`_.
+
+Odoo automatically compresses uploaded images and converts them to `Webp`. With this file format,
+photos are smaller, which increases the page loading speed and, therefore, gives a better ranking in
+SEO. All images used in Odoo official :doc:`themes <../web_design/themes>` are also compressed by
+default. If you are using a third-party theme, it may provide images that are not compressed
+efficiently.
+
+**To modify an image** from your website, select the image, click :guilabel:`Edit`, then go to the
+:guilabel:`Customize` tab, and adapt the :guilabel:`Format` in the :guilabel:`Image` section.
+
+.. important::
+   Alt tags are used to provide context to what an image is displaying, informing search engine
+   crawlers and allowing them to index an image correctly. Adding alt tags keywords in the
+   :guilabel:`Description` field is essential from an SEO perspective. This description is added to
+   the HTML code of your image, and it is shown when the image cannot be displayed.
+
+Image for social share
+~~~~~~~~~~~~~~~~~~~~~~
+
+When you share your page on social media, your website logo is selected by default, but you can
+search the :doc:`Unsplash image library <../../../general/integrations/unsplash>` or upload any
+other image by clicking the :icon:`fa-upload` :guilabel:`(upload)` button.
+
+.. tip::
+   You can set a default social share image. Go to :menuselection:`Website --> Configuration --> Settings`
+   in the :guilabel:`SEO`section and tick the :guilabel:`Default Social Share Image` checkbox.
+
+.. note::
+   - The :guilabel:`Social Preview` card displays how the page's information would appear when
+     shared.
+
+Indexation
+==========
+
+Website indexation is the process by which search engines, such as Google, discover, analyze, and
+store information about a website's content in their database. Search engine bots, known as crawlers
+or spiders, visit web pages and follow links to collect data, including text, images, and other
+media. The purpose of indexation is to make a website's content searchable and discoverable to
+users. Without being indexed, a website or a specific page on that site will not appear in search
+engine results, regardless of how relevant or well-designed it is. Indexation is a fundamental step
+in :abbr:`SEO (Search Engine Optimization)`, serving as the foundation for a website's visibility
+and organic traffic.
+
+.. note::
+   **When you first create your website on Odoo, it will not appear directly in search engine
+   results.** Search engines need time to crawl and index it, which can take anywhere from a few
+   days to several weeks. For Google, you can use the :doc:`Search Console <../configuration/google_search_console>`
+   and request indexing for specific URLs, though this does not guarantee faster results.
+   If you have an existing website and are migrating, your previous website may still appear instead
+   of the new one during that timeframe.
+
+SEO impact when migrating your existing website to Odoo
+-------------------------------------------------------
+
+In most cases, migrating to Odoo will not negatively impact your SEO. While no platform can
+guarantee that rankings will remain unchanged, follow these best practices to significantly reduce
+the risk.
+
+- Keep your existing content.
+
+- Implement :ref:`redirects <website/pages/URL-redirection>` from old URLs to their new counterparts.
+
+- Monitor traffic and indexation to make sure that everything is going well, using :doc:`../configuration/google_search_console`.
+
+By doing this, you help search engines reindex your site and maintain your visibility in search
+results.
+
+.. note::
+   It is normal to experience a traffic decrease in the first days.
+
+Prevent a page from being indexed
+---------------------------------
+
+To effectively prevent a page from appearing in search engine results, use one of the following
+methods:
+
+ - **noindex tag:** Access the page's :ref:`properties <website/pages/page_properties>` and toggle
+   the :guilabel:`Indexed` switch off.
+
+   .. note::
+      This option is not yet available for :ref:`dynamic pages <website/pages/page_type>`.
+
+ - **404 or 403:** Configure the page to return a 404 (Not Found) or 403 (Forbidden) HTTP status
+   code. These codes signal to search engines that the page does not exist or is inaccessible,
+   leading to its eventual removal from the index.
+
+    - **404:** :ref:`Configure a 404 redirection. <website/pages/URL-redirection>`
+    - **403:** Access the page's :ref:`properties <website/pages/page_properties>`
+      and toggle the :guilabel:`Visibility` switch off or :ref:`unpublish the page <website/pages/un-publish-page>`.
+
+ - **Google Search Console:** Use Google Search Console to request the removal of specific URLs from
+   Google's index.
+
+.. seealso::
+   - :doc:`../configuration/google_search_console`
+   - :doc:`pages`
+
+Prevent a website from being indexed
+------------------------------------
+
+To prevent a website from appearing in search engine results, go to
+:menuselection:`Configuration --> Settings`, then in the :guilabel:`Website Info` section, add a
+random value in the :guilabel:`Domain` field. Doing so automatically inserts the following tag into
+the page source:
+
+.. code-block:: html
+
+       <meta name="robots" content="noindex"/>
+
+This tag instructs search engines not to index the site. After applying the change, it may take
+several days or weeks for search engines to update their results and remove the website.
+
+.. example::
+   This can be used to prevent websites from test databases from appearing in search results.
+
+Sitemap
+=======
+
+The sitemap points out website pages and their relation to each other to search engine crawlers.
+Odoo generates a `/sitemap.xml` file, including all URLs. For performance reasons, this file is
+cached and updated every 12 hours.
+
+.. note::
+   If your website has a lot of pages, Odoo automatically creates a Sitemap Index file, respecting
+   the `sitemaps.org protocol <http://www.sitemaps.org/protocol.html>`_, grouping sitemap URLs in
+   45000 chunks per file.
+
+Every sitemap entry has three attributes that are computed automatically:
+
+- `<loc>`: the URL of a page.
+- `<lastmod>`: last modification date of the resource, computed automatically based on the related
+  object. For a page related to a product, this could be the last modification date of the product
+  or the page.
+- `<priority>`: modules may implement their priority algorithm based on their content (for example,
+  a forum might assign a priority based on the number of votes on a specific post). The priority of
+  a static page is defined by its priority field, which is normalized (16 is the default).
+
+.. tip::
+   To prevent pages from appearing in a sitemap, go to :menuselection:`Site --> Properties`, and
+   toggle off the :guilabel:`Indexed` feature.
+
+     .. image:: seo/page-properties.png
+        :alt: toggle off the “Indexed” field
+
+robots.txt
+==========
+
+A `robots.txt` file instructs search engine crawlers which parts of a website they are permitted to
+access. Its primary purpose is to:
+
+ - **Prevent overloading the website:** By guiding crawlers away from certain sections, robots.txt
+   helps manage server load.
+ - **Control access to resources and detailed descriptions:** It can prevent crawlers from accessing
+   media files (images, videos), CSS stylesheets, and JavaScript files, and from reading the content
+   (text) of specific pages.
+
+When indexing your website, search engines first look at the robots.txt file. Odoo automatically
+creates one robot.txt file available on `mydatabase.odoo.com/robots.txt`.
+
+.. note::
+   Reputable bots adhere to robots.txt; others may require blocking via
+   :ref:`Cloudflare <domain-name/naked/cloudflare>` on your custom domain.
+
+Edit robots.txt
+---------------
+
+By editing a robots.txt file, you can control which site pages are accessible to search engine
+crawlers. To add custom instructions to the file, go to :menuselection:`Website --> Configuration
+--> Settings`, scroll down to the :guilabel:`SEO` section, and click :guilabel:`Edit robots.txt`.
+
+.. example::
+   If you do not want robots to crawl the `/about-us` page of your site, you can edit the
+   robots.txt file to add `Disallow: /about-us`.
+
+.. important::
+   While `robots.txt` prevents content from being crawled, **it does not guarantee that a page
+   will not be indexed**. A page can still appear in search results if it is linked to from other
+   crawled pages (indexed by "reference"). Google generally does not recommend using robots.txt to
+   block webpages that you wish to keep out of search results entirely.
+
+Advanced features
+=================
+
+Structured data markup
+----------------------
+
+Structured data markup is used to generate rich snippets in search engine results. It is a way for
+websites to send structured data to search engine crawlers, helping them understand your content and
+create well-presented search results.
+
+By default, Google supports many `rich snippets <https://developers.google.com/search/blog/2009/05/introducing-rich-snippets>`_
+for content types, including Reviews, People, Products, Businesses, Events, and Organizations.
+
+Microdata is a set of tags, introduced with HTML5, that help search engines better understand your
+content and display it in a relevant way. Odoo implements microdata as defined in the schema.org
+`specification <https://schema.org/docs/gs.html>`_ for events, eCommerce products, forum posts, and
+contact addresses. This allows your product pages to be displayed in Google using extra information
+like the price and rating of a product:
+
+.. image:: seo/rich-snippet.png
+   :alt: snippets in search engine results
+
+Hreflang HTML tags
+------------------
+
+Odoo automatically includes `hreflang` and `x-default` tags in the code of your website's
+multilingual pages. These HTML attributes are crucial in informing search engines about a specific
+page's language and geographical targeting.
+
+.. seealso::
+   :doc:`../configuration/translate`
+
+
+==================================================
+SECTION: spam_protection.rst
+PATH: applications/websites/website/configuration/spam_protection.rst
+==================================================
+
+=====================
+Forms spam protection
+=====================
+
+:ref:`Cloudflare Turnstile <cloudflare-turnstile>` and :ref:`Google reCAPTCHA v3 <google-recaptcha>`
+protect website forms, web sign-up pages, and password reset pages against spam and abuse. They
+attempt to distinguish between human and bot submissions using non-interactive challenges based on
+telemetry and visitor behavior.
+
+.. important::
+   We recommend using **Cloudflare Turnstile** as reCAPTCHA v3 may not be compliant with local data
+   protection regulations.
+
+.. note::
+   All pages using the :guilabel:`Form`, :guilabel:`Newsletter Block`, :guilabel:`Newsletter Popup`
+   snippets, and the eCommerce :guilabel:`Extra Step During Checkout` form are protected by both
+   tools. **Web sign-up pages** and **password reset pages** are also protected.
+
+.. seealso::
+   - `Cloudflare Turnstile's documentation <https://developers.cloudflare.com/turnstile/>`_
+   - `Google's reCAPTCHA v3 guide <https://developers.google.com/recaptcha/docs/v3>`_
+
+.. _cloudflare-turnstile:
+
+Cloudflare Turnstile configuration
+==================================
+
+On Cloudflare
+-------------
+
+- `Create <https://dash.cloudflare.com/sign-up>`_ a Cloudflare account or use an existing one and
+  `log in <https://dash.cloudflare.com/login>`_.
+- On the dashboard navigation sidebar, click :guilabel:`Turnstile`.
+- On the :guilabel:`Turnstile Sites` page, click :guilabel:`Add Site`.
+- Add a :guilabel:`Site name` to identify it easily.
+- Enter or select the website's :guilabel:`Domain` (e.g., *example.com* or *subdomain.example.com*).
+- Select a :guilabel:`Widget Mode`:
+
+  - The :guilabel:`Managed` mode is **recommended**, as visitors can be prompted to check a box
+    confirming they are human if deemed necessary by Turnstile.
+
+    .. image:: spam_protection/turnstile-human.png
+       :alt: Cloudflare Turnstile human verification widget
+
+  - For the :guilabel:`Non-interactive` and :guilabel:`Invisible` modes, visitors are never
+    prompted to interact. In :guilabel:`Non-interactive` mode, a loading widget can be displayed to
+    warn visitors that Turnstile protects the form; however, the widget is not supported by Odoo.
+
+    .. note::
+       If the Turnstile check fails, visitors are not able to submit the form, and the following
+       error message is displayed:
+
+       .. image:: spam_protection/turnstile-error.png
+          :alt: Cloudflare Turnstile verification error message
+
+- Click :guilabel:`Create`.
+
+.. image:: spam_protection/turnstile-configuration.png
+   :alt: Adding a website to Cloudflare Turnstile
+
+The generated keys are then displayed. Leave the page open for convenience, as copying the keys in
+Odoo is required next.
+
+On Odoo
+-------
+
+- From the database dashboard, click :guilabel:`Settings`. Under :guilabel:`Integrations`, enable
+  :guilabel:`Cloudflare Turnstile` and click :guilabel:`Save`.
+- Open the Cloudflare Turnstile page, copy the :guilabel:`Site Key`, and paste it into the
+  :guilabel:`CF Site Key` field in Odoo.
+- Open the Cloudflare Turnstile page, copy the :guilabel:`Secret Key`, and paste it into the
+  :guilabel:`CF Secret Key` field in Odoo.
+- Click :guilabel:`Save`.
+
+.. tip::
+   Navigate to Turnstile on your Cloudflare account to view the solve rates and access more
+   settings.
+
+.. _google-recaptcha:
+
+reCAPTCHA v3 configuration
+==========================
+
+.. warning::
+   reCAPTCHA v3 may not be compliant with local data protection regulations.
+
+On Google
+---------
+
+Open `the reCAPTCHA website registration page <https://www.google.com/recaptcha/admin/create>`_. Log
+in or create a Google account if necessary.
+
+On the website registration page:
+
+- Give the website a :guilabel:`Label`.
+- Leave the :guilabel:`reCAPTCHA type` on :guilabel:`Score based (v3)`.
+- Enter one or more :guilabel:`Domains` (e.g., *example.com* or *subdomain.example.com*).
+- Under :guilabel:`Google Cloud Platform`, a project is automatically selected if one was already
+  created with the logged-in Google account. If not, one is automatically created. Click
+  :guilabel:`Google Cloud Platform` to select a project yourself or rename the automatically created
+  project.
+- Agree to the terms of service.
+- Click :guilabel:`Submit`.
+
+.. image:: spam_protection/recaptcha-google-configuration.png
+   :alt: reCAPTCHA website registration example
+
+A new page with the generated keys is then displayed. Leave it open for convenience, as copying the
+keys to Odoo is required next.
+
+On Odoo
+-------
+
+- From the database dashboard, click :guilabel:`Settings`. Under :guilabel:`Integrations`, enable
+  :guilabel:`reCAPTCHA` if needed.
+
+  .. warning::
+     Do not disable the :guilabel:`reCAPTCHA` feature or uninstall the :guilabel:`Google reCAPTCHA
+     integration` module, as many other modules would also be removed.
+
+- Open the Google reCAPTCHA page, copy the :guilabel:`Site key`, and paste it into the
+  :guilabel:`Site Key` field in Odoo.
+- Open the Google reCAPTCHA page, copy the :guilabel:`Secret key`, and paste it into the
+  :guilabel:`Secret Key` field in Odoo.
+- Change the default :guilabel:`Minimum score` (`0.70`) if necessary, using a value between `1.00`
+  and `0.00`. The higher the threshold is, the more difficult it is to pass the reCAPTCHA, and vice
+  versa.  Out of the 11 levels, only the following four score levels are available by default:
+  `0.1`, `0.3`, `0.7` and `0.9`.
+- Click :guilabel:`Save`.
+
+.. seealso::
+   `Interpret reCAPTCHA scores - Google documentation <https://cloud.google.com/recaptcha/docs/interpret-assessment-website#interpret_scores>`_
+
+You can notify visitors that reCAPTCHA protects a form. To do so, open the website editor and
+navigate to the form. Then, click somewhere on the form, and on the right sidebar's
+:guilabel:`Customize` tab, toggle :guilabel:`Show reCAPTCHA Policy` found under the :guilabel:`Form`
+section.
+
+.. image:: spam_protection/recaptcha-policy.png
+   :alt: reCAPTCHA policy message displayed on a form
+
+.. note::
+   If the reCAPTCHA check fails, the following error message is displayed:
+
+   .. image:: spam_protection/recaptcha-error.png
+      :alt: Google reCAPTCHA verification error message
+
+.. tip::
+   Analytics and additional settings are available on `Google's reCAPTCHA administration page
+   <https://www.google.com/recaptcha/admin/>`_. For example, you can receive email alerts if Google
+   detects suspicious traffic on your website or view the percentage of suspicious requests, which
+   could help you determine the right minimum score.
+
+
+==================================================
+SECTION: structure.rst
+PATH: applications/websites/website/structure.rst
+==================================================
+
+:nosearch:
+:show-content:
+:hide-page-toc:
+
+=========
+Structure
+=========
+
+Structure your website using :doc:`pages <../website/structure/pages>`, provide consistent visual
+and navigational framework with :doc:`headers and footers <../website/structure/header_footer>` and
+optimize your online presence with :doc:`Search Engine Optimization (SEO) <../website/structure/seo>`.
+
+.. cards::
+
+   .. card:: Pages
+      :target: structure/pages
+      :large:
+
+      Create pages for your website and customize their content and appearance to your needs.
+
+   .. card:: Headers and footers
+      :target: structure/header_footer
+      :large:
+
+      Create a consistent look and feel for your website by customizing the header and footer, and
+      help users navigate through web pages effectively by providing clear menus, links, and calls
+      to action.
+
+
+   .. card:: Search Engine Optimization (SEO)
+      :target: structure/seo
+      :large:
+
+      Improve your website’s visibility and ranking in search engine results.
+
+.. seealso::
+   `Odoo Tutorials: Website <https://www.odoo.com/slides/website-25>`_
+
+.. toctree::
+   :titlesonly:
+
+   structure/pages
+   structure/header_footer
+   structure/seo
+
+
+==================================================
+SECTION: themes.rst
+PATH: applications/websites/website/web_design/themes.rst
+==================================================
+
+=============
+General theme
+=============
+
+Odoo offers various options to shape your website’s theme, including its
+:ref:`colors <website/themes/colors>`, :ref:`fonts <website/themes/fonts>`, and
+:ref:`layout <website/themes/page-layouts>`.
+
+When setting up your website for the first time, you are prompted to select a theme. Hover your
+mouse over the themes to see an extended preview of each one. Click on a theme to select it.
+
+.. note::
+   - If you leave without selecting a theme, your website is created using the default one.
+   - You can :ref:`switch themes later <website/themes/switch>` if needed.
+
+In the website builder, the :guilabel:`Theme` tab offers various options to customize your website's
+general theme. To access it, click :guilabel:`Edit` and go to the :guilabel:`Theme` tab.
+
+Once you have made the desired changes, click on :guilabel:`Save` to confirm and apply them to your
+website.
+
+.. _website/themes/switch:
+
+Theme
+=====
+
+In the :guilabel:`Website` section, click on :guilabel:`Switch Theme` to open the theme selector.
+Hover your mouse over the themes to see an extended preview of each one. Click on a theme to apply
+it to your website.
+
+.. _website/themes/colors:
+
+Colors
+======
+
+Odoo's website editor features two main types of colors: :ref:`theme colors <website/themes/theme-colors>`
+and :ref:`status colors <website/themes/status-colors>`.
+
+.. _website/themes/theme-colors:
+
+Theme colors
+------------
+
+Theme colors refer to the set of colors displayed across all pages of your website. These are made
+of five colors: three main colors and two light and dark colors.
+
+To edit your website's colors, go to the :guilabel:`Colors` section in the website editor, then:
+
+- Click on the color dot you want to change, then select a :guilabel:`Solid` color or click on
+  :guilabel:`Custom` to pick a specific color tone manually (or add its #HEX or RGBA code).
+- Click on the paint palette icon and choose a color palette. As a result, all color customizations
+  are reset; click a color dot to change a specific color.
+
+Odoo automatically creates :guilabel:`Color Presets` for your chosen palette. These are predefined
+color combinations applied to different elements of your website to provide a structured and
+visually appealing design. When you select a color palette, its presets define how those colors are
+distributed across different elements from a building block, such as buttons, backgrounds, and text.
+If you want to modify them, click on :guilabel:`Color Presets` and click on a preset to customize it
+further. Each color preset contains colors for your building block’s background, text, headings,
+links, primary buttons, and secondary buttons.
+
+.. image:: themes/color-presets.png
+   :scale: 80%
+   :alt: Color presets
+
+To apply a color preset to a building block on your site, select the building block, go to the
+:guilabel:`Customize` tab, click the color dot located next to :guilabel:`Background`, and choose a
+:guilabel:`Theme`.
+
+.. note::
+   Changing a color preset automatically updates the colors of both the default preset and the
+   building blocks where the preset is used.
+
+.. _website/themes/status-colors:
+
+Status colors
+-------------
+
+Status colors are used to indicate the status of certain actions (e.g., :guilabel:`Success`,
+:guilabel:`Warning`, etc.). They're used in pop-up messages that appear to provide feedback to
+users and website visitors. To customize your website's :guilabel:`Status Colors`, scroll down to
+the :guilabel:`Advanced` section and click on the dots to change their color.
+
+.. example::
+   .. image:: themes/advanced.png
+      :alt: Status color selection
+
+   .. image:: themes/success.png
+      :alt: Success pop-up
+
+.. _website/themes/page-layouts:
+
+Page layout
+===========
+
+The :guilabel:`Page layout` option in the :guilabel:`Website` section allows you to change the
+overall display and spacing of building blocks and website elements on pages. Click the dropdown
+menu and select the desired layout. Under :guilabel:`Page Layout`, customize your
+:guilabel:`Background` by choosing an :guilabel:`Image`, using a selected image in a
+:guilabel:`Pattern`, or leaving it blank.
+
+.. _website/themes/fonts:
+
+Fonts
+=====
+
+Odoo allows you to customize the font family and size for specific elements on your website,
+including paragraphs, headings, buttons, and input fields.
+
+- :guilabel:`Font Family`: In the :guilabel:`Paragraph`, :guilabel:`Headings`, and
+  :guilabel:`Button` sections, select a font from the dropdown menu.
+
+- :guilabel:`Font Size`: In the :guilabel:`Paragraph`, :guilabel:`Headings`, :guilabel:`Button`, and
+  :guilabel:`Input Fields` sections, use the :guilabel:`Font Size` field to set a default size.
+  Click the :icon:`fa-caret-right` (arrow) icon to expand the section and define custom sizes
+  (e.g., based on the heading level, button size, etc.).
+
+Additionally, each element-specific section offers extra styling options, such as
+:guilabel:`Line Height` and :guilabel:`Margins`, for further customization.
+
+Custom fonts
+------------
+
+It is possible to use fonts on your website that are not offered by default in Odoo. To add a custom
+font, click the dropdown menu related to the :guilabel:`Font Family` field and select :guilabel:`Add
+a Custom Font` at the bottom of the dropdown menu. In the pop-up window:
+
+- To add a Google font, click on :guilabel:`Select a Google Font` and click on the desired font
+  in the list. Toggle off the :guilabel:`Serve font from Google servers` if your website is operated
+  from a location where regulations require compliance with laws such as, but not limited to, the
+  European Union's GDPR. This will ensure that the Google Font is stored on your website's server
+  instead of Google's.
+- To upload a custom font from your computer, click on :guilabel:`Choose File`.
+
+Once done, click on :guilabel:`Save and Reload`.
+
+.. _website/themes/button-styles:
+
+Button styles
+=============
+
+To customize the style of your website's primary and secondary buttons, navigate to the
+:guilabel:`Button` section in the website editor and edit the relevant options:
+
+- Click the arrow next to the :guilabel:`Primary Style` or :guilabel:`Secondary Style` fields and
+  select one of the available styles for each type of button: :guilabel:`Fill`, :guilabel:`Outline`,
+  or :guilabel:`Flat`. When selecting :guilabel:`Outline`, the :guilabel:`Border Width` option
+  appears below, allowing you to adjust the width of the button's outline.
+- :ref:`Modify the fonts <website/themes/fonts>`.
+- Adjust the :guilabel:`Padding` to change the size of the spacing (in pixels) around the buttons'
+  labels.
+- Customize the buttons' border radius using the :guilabel:`Round Corners` option.
+- Add an animation when a button is clicked in the :guilabel:`On Click Effect` dropdown menu.
+
+.. image:: themes/buttons.png
+   :alt: Primary and secondary buttons
+
+.. tip::
+   You can define custom :guilabel:`Small` and :guilabel:`Large` sizes for the buttons'
+   :guilabel:`Padding`, :guilabel:`Font Size`, and :guilabel:`Round Corners`: Click on the
+   :icon:`fa-caret-right` (arrow) icon and use the related fields.
+
+   .. image:: themes/button-settings.png
+      :scale: 80%
+      :alt: Button padding, font size and round corners settings
+
+Link style
+==========
+
+In the :guilabel:`Link` section, click on :guilabel:`Link Style` to choose the appearance of links
+on your website. Select :guilabel:`No Underline`, :guilabel:`Underline On Hover`, or
+:guilabel:`Always Underline` in the dropdown menu.
+
+
+==================================================
+SECTION: translate.rst
+PATH: applications/websites/website/configuration/translate.rst
+==================================================
+
+============
+Translations
+============
+
+Your website can be translated into multiple languages, allowing visitors to view its content in
+their preferred language.
+
+Configuration
+=============
+
+Before translating a website into one or more languages, :doc:`install them on the database
+<../../../general/users/language>`. To do so:
+
+- Go to :menuselection:`Website --> Configuration --> Settings`.
+- Under the :guilabel:`General` section, click :icon:`oi-arrow-right` :guilabel:`Install new
+  languages`.
+- In the dialog box, select one or more :guilabel:`Languages` from the dropdown menu, click
+  :guilabel:`Add`, then :guilabel:`Close`.
+
+Next, add the installed language(s) to the website by selecting them under the :guilabel:`Languages`
+field and clicking :guilabel:`Save`.
+
+.. tip::
+   To remove a language from a website, click the :icon:`oi-close` :guilabel:`(Delete)` icon next to
+   it.
+
+.. _translate/language-selector:
+
+Language selector
+=================
+
+Once another language is added to a website, the language selector is displayed in the website's
+header and footer, allowing visitors to switch between languages.
+
+.. tip::
+   - Refresh your browser if the language selector or a language option does not appear.
+   - If the visitor's browser language is not available, the website will use the website's default
+     language. To edit it, go to :menuselection:`Website --> Configuration --> Settings`. Under the
+     :guilabel:`General` section, select the language using the :guilabel:`Default` field.
+
+To hide or customize the appearance of one of the language selectors, open the website in the
+default language, click :guilabel:`Edit`, then select the language selector.
+
+- To edit the header's language selector:
+
+  #. In the sidebar, scroll down to the :guilabel:`Language Selector` section.
+  #. Set the :guilabel:`Style` to :guilabel:`Dropdown` or :guilabel:`Inline`.
+  #. Set the :guilabel:`Label` to :guilabel:`Text`, :guilabel:`Flag`, :guilabel:`Flag and Text`,
+     :guilabel:`Code`, or :guilabel:`Flag and Code`.
+  #. Click :guilabel:`Save`.
+
+  .. tip::
+     To hide the language selector in the header, go to the :guilabel:`Show/Hide Elements` section
+     and click the :icon:`fa-flag` (:guilabel:`Language selector`) button next to the
+     :guilabel:`Actions` field.
+
+- To edit the footer's language selector:
+
+  #. Set the :guilabel:`Language selector` field to :guilabel:`Dropdown`, :guilabel:`Inline`,
+     or :guilabel:`None`.
+  #. Set the :guilabel:`Label` to :guilabel:`Text`, :guilabel:`Flag`, :guilabel:`Flag and Text`,
+     :guilabel:`Code`, or :guilabel:`Flag and Code`.
+  #. Click :guilabel:`Save`.
+
+.. tip::
+   You can :ref:`display or hide website elements <website/visibility/conditions>` based on the
+   website's language.
+
+.. _translate/translate:
+
+Translate a page
+================
+
+To translate a website page, switch to the language to translate and click :menuselection:`Edit -->
+Translate` in the top-right corner to activate the translation mode.
+
+.. note::
+   - In this mode, only translatable text can be edited. Any other type of modification with the
+     website builder must be carried out while using the default language.
+   - Depending on the language added, some default content may already be translated. However, the
+     content you added manually should be translated using the :guilabel:`Translate` feature.
+   - When text is highlighted in green, it indicates that it has already been translated (manually
+     or automatically). When text is highlighted in yellow, it indicates that it has not been
+     translated.
+
+Click the green button next to the :guilabel:`Translated to` field to automatically translate all
+text highlighted in yellow. You can also manually translate or adapt text, whether it is highlighted
+in green or yellow, by selecting it and editing it. Click :guilabel:`Save` when you are done
+translating.
+
+.. image:: translate/text-translation.png
+   :alt: Entering the translation mode
+
+.. tip::
+   - The core URL structure remains consistent across languages, while specific elements like
+     product names or categories are translated. For example,
+     `https://www.mywebsite.com/shop/product/my-product-1` is the default version of a product page,
+     while `https://www.mywebsite.com/fr/shop/product/mon-produit-1` is the translated version of
+     the same product page. The structure (`/shop/product/`) remains unchanged, but the product name
+     (`my-product`) is translated (`mon-produit`).
+   - Some elements can also be translated from the backend (e.g., product names).
+
+Translate SEO-related elements
+------------------------------
+
+To translate an :ref:`image's alt tag <seo/images>` (i.e., the image's :guilabel:`Description`
+field) and title tag (i.e., the image's :guilabel:`Tooltip` field), switch to the language to
+translate, click :menuselection:`Edit --> Translate`, and select the image. In the
+:guilabel:`Translate Attribute` box, enter the translation for the :guilabel:`alt` and/or the
+:guilabel:`title` tags.
+
+To add translated :ref:`meta tags <seo/meta-tags>`, go to :menuselection:`Website --> Site -->
+Optimize SEO`. In the :guilabel:`Keywords` section, select the language and add the keywords.
+
+.. note::
+   When viewing a website in its default language, all keywords are displayed, regardless of their
+   language. However, when viewing a website in another language, only the keywords relevant to that
+   language are displayed.
+
+.. seealso::
+   :doc:`Search Engine Optimization <../structure/seo>`
+
+
+==================================================
+SECTION: visibility.rst
+PATH: applications/websites/website/web_design/visibility.rst
+==================================================
+
+==========
+Visibility
+==========
+
+You can choose to display or hide building blocks based on a visitor's:
+
+- device type (mobile or computer),
+- country (IP-based geolocation),
+- website language,
+- :doc:`UTM parameters <../reporting/link_tracker>`, and
+- login state.
+
+.. _website/visibility/mobile-and-computer:
+
+Mobile/computer
+===============
+
+.. role:: raw-html(raw)
+   :format: html
+
+.. |desktop icon| replace:: :raw-html:`<svg viewBox="0 0 465 462" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path d="M456.969 9.84743L454.026 6.90425C444.956 -2.16512 429.098 -1.01124 418.605 9.48152L10.8984 417.188C0.405681 427.681 -0.748186 443.539 8.32118 452.609L11.2644 455.552C20.3337 464.621 36.1919 463.467 46.6847 452.975L454.392 45.2678C464.884 34.775 466.038 18.9168 456.969 9.84743Z"></path><path d="M346.673 26.269H39.1908C17.8303 26.269 0.5 43.6036 0.5 64.9695V322.973C0.5 336.409 7.35309 348.251 17.752 355.19L114.47 258.472H62.9696C56.9597 258.472 52.0878 253.601 52.0878 247.591V88.7515C52.0878 82.7417 56.9597 77.8697 62.9696 77.8697H295.072L346.673 26.269Z"></path><path d="M296.331 258.472H402.32C408.33 258.472 413.202 253.601 413.202 247.591V141.602L464.79 90.0139V322.973C464.79 344.339 447.46 361.674 426.099 361.674H271.336L284.233 400.375H342.269C352.949 400.375 361.614 409.042 361.614 419.725C361.614 430.408 352.949 439.075 342.269 439.075H123.021C120.837 439.075 118.734 438.708 116.771 438.033L154.429 400.375H181.057L193.954 361.674H193.13L226.244 328.56C228.268 329.181 230.417 329.516 232.645 329.516C244.665 329.516 254.409 319.772 254.409 307.753C254.409 305.525 254.074 303.376 253.452 301.352L296.331 258.472Z"></path></svg>`
+
+.. |mobile icon| replace:: :raw-html:`<svg viewBox="0 0 566.93 566.93" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><rect transform="translate(283.46 -117.41) rotate(45)" x="255.56" y="-16.93" width="55.81" height="600.8" rx="25.61"></rect><path d="m395.46 399.46a12 12 0 0 1-12 12h-128.4l-115.68 115.69a47.8 47.8 0 0 0 32.08 12.31h224a48 48 0 0 0 48-48v-268.4l-48 48zm-112 108a32 32 0 1 1 32-32 32 32 0 0 1-32 32z"></path><path d="m171.46 87.46a12 12 0 0 1 12-12h200a11.89 11.89 0 0 1 6.48 1.93l37.61-37.61a47.82 47.82 0 0 0-32.09-12.32h-224a48 48 0 0 0-48 48v268.41l48-48z"></path></svg>`
+
+To toggle the visibility of a building block based on the visitor's device type:
+
+- Open the website editor and select a block.
+- In the :guilabel:`Customize` tab, under the block's customization options, look for
+  :guilabel:`Visibility`.
+
+  - Click the |desktop icon| (:guilabel:`Show/Hide on Desktop`) button to hide
+    the block for users visiting your website from a computer.
+  - Click the |mobile icon| (:guilabel:`Show/Hide on Mobile`) button to hide the block
+    for users visiting your website from a mobile device.
+
+- Click :guilabel:`Save` to apply the changes.
+
+It is also sometimes possible to hide elements within blocks. It is mostly used to hide specific
+elements inside blocks that may be too wide to be correctly displayed on mobile devices. To see if
+the option is available, select an element within a block and look for the :guilabel:`Visibility`
+option under the element's customization option.
+
+.. example::
+   The selected image is hidden on mobile devices.
+
+   .. image:: visibility/element-visibility.png
+      :alt: Example of an column element hidden on mobile devices
+
+.. _website/visibility/conditions:
+
+Conditions
+==========
+
+To access the country, website language, UTM parameters, and login state conditions:
+
+- Open the website editor and select a building block.
+- In the :guilabel:`Customize` tab, look for :guilabel:`Visibility`.
+- Click :guilabel:`No condition` and select :guilabel:`Conditionally` instead to display the
+  different options:
+
+  - :guilabel:`Country`: the country of the visitor's IP address.
+  - :guilabel:`Languages`: the website language used by the visitor.
+
+    .. note::
+       This option is only available if more than one :doc:`language is installed
+       <../configuration/translate>`.
+
+  - :guilabel:`UTM Campaign`: the selected campaign.
+  - :guilabel:`UTM Medium`: the selected medium of any campaign.
+  - :guilabel:`UTM Source`: the selected source of any campaign.
+  - :guilabel:`Users`: select whether the visitor should be :guilabel:`Logged In` or
+    :guilabel:`Logged Out` to view the block. By default, the option is set to :guilabel:`Visible
+    for Everyone`.
+
+- For one or more of the first five options, choose if the block should be :guilabel:`Visible for`
+  or :guilabel:`Hidden for`, then click :guilabel:`Choose a record...` and select it.
+
+.. tip::
+   - You can select multiple records for each option by clicking :guilabel:`Choose a record...`
+     again.
+   - Click the :icon:`fa-minus` (:guilabel:`remove`) button to remove an option.
+
+Click :guilabel:`Save` to apply the changes.
+
+.. example::
+   A block with the following configuration will only be displayed to visitors with a Belgian IP
+   address, for which the website is displayed in French, unless they visit the page using the
+   `Sales` campaign tracked URL.
+
+   .. image:: visibility/visibility-conditions.png
+      :alt: Example of a block configured with several visibility conditions
+
+.. _website/visibility/invisible-elements:
+
+Invisible elements
+==================
+
+Blocks and elements with custom visibility settings are listed at the bottom of the website editor
+sidebar. You can preview how the page would look like by clicking the :icon:`fa-eye`
+(:guilabel:`visible`) button to hide a block or element, or the :icon:`fa-eye-slash`
+(:guilabel:`hidden`) to show it in the website editor.
+
+.. image:: visibility/invisible-elements.png
+   :alt: Blocks and elements with custom visibility settings displayed at the bottom of the editor
+
+
+==================================================
+SECTION: web_design.rst
+PATH: applications/websites/website/web_design.rst
+==================================================
+
+:nosearch:
+:show-content:
+:hide-page-toc:
+
+==========
+Web design
+==========
+
+Design your website using :doc:`building blocks <../website/web_design/building_blocks>`, customize
+its :doc:`theme <../website/web_design/themes>` with various options, structure and present content
+with :doc:`elements <../website/web_design/elements>`, and display or hide building blocks using
+:doc:`visibility settings <../website/web_design/visibility>`.
+
+.. cards::
+
+   .. card:: Building blocks
+      :target: web_design/building_blocks
+      :large:
+
+      Design your website by dragging and dropping building blocks, then editing them to fit your
+      content and layout needs.
+
+   .. card:: General theme
+      :target: web_design/themes
+      :large:
+
+      Customize your website’s theme by adjusting its colors, fonts, and layout.
+
+   .. card:: Elements
+      :target: web_design/elements
+      :large:
+
+      Structure and present content effectively with elements such as titles, lists, etc.
+
+   .. card:: Visibility
+      :target: web_design/visibility
+      :large:
+
+      Display or hide building blocks based on several criteria.
+
+.. seealso::
+   `Odoo Tutorials: Website <https://www.odoo.com/slides/website-25>`_
+
+.. toctree::
+   :titlesonly:
+
+   web_design/building_blocks
+   web_design/themes
+   web_design/elements
+   web_design/visibility

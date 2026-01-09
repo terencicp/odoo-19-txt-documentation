@@ -1,0 +1,1043 @@
+
+
+==================================================
+SECTION: fleet.rst
+PATH: applications/hr/fleet.rst
+==================================================
+
+:nosearch:
+
+=====
+Fleet
+=====
+
+.. toctree::
+
+   fleet/models
+   fleet/new_vehicle
+   fleet/service
+   fleet/accidents
+   fleet/cost_analysis
+
+
+==================================================
+SECTION: accidents.rst
+PATH: applications/hr/fleet/accidents.rst
+==================================================
+
+=========
+Accidents
+=========
+
+When managing a fleet, accidents are inevitable. Tracking accidents is crucial for understanding
+vehicle maintenance costs and identifying safe drivers.
+
+Odoo's **Fleet** app offers multiple ways of tracking accidents. Below are step-by-step instructions
+for one possible method to monitor accidents and repair costs.
+
+Structure
+=========
+
+For this use case, go to :menuselection:`Fleet app --> Fleet --> Services`. On the :ref:`service
+form <fleet/service-form>`, two :ref:`service types <fleet/new-type>` are created: `Accident -
+Driver's Fault` and `Accident - No Fault`.
+
+This setup records repairs associated with accidents and organizes them by fault.
+
+When an accident occurs, a service record is created. The specific repairs needed for the accident
+are logged in the *Description* of the service record, and the details about the accident are logged
+in the *Notes* section.
+
+With this organizational structure, it is possible to view all accidents organized by fault, car,
+driver, or cost.
+
+.. note::
+   To manage accidents, the creation of service records is **required**.
+
+   Refer to the :doc:`service` documentation for detailed instructions on creating service records
+   in Odoo's **Fleet** app.
+
+Log accidents and repairs
+=========================
+
+To log an accident and initiate the repair process, the first step is to :ref:`create a service
+record <fleet/service-form>` detailing the specific repairs needed.
+
+.. note::
+   Some accidents require multiple repairs with several different vendors. For these scenarios, a
+   separate service record is needed for each vendor performing repairs. To keep records organized,
+   it is recommended to keep the *Notes* field identical, and attach the same important
+   documentation, such as a police report.
+
+Navigate to :menuselection:`Fleet app --> Fleet --> Services` to view the main :guilabel:`Services`
+dashboard. Click :guilabel:`New` in the top-left corner, and a blank service form loads.
+
+Enter the following information on the form:
+
+- :guilabel:`Description`: enter the description of repairs needed to fully repair the vehicle, such
+  as `Bodywork`, `Windshield Replacement`, or `Replacement Bumper, Tires, and Windows`.
+- :guilabel:`Service Type`: for this example, select either `Accident - Driver's Fault` or `Accident
+  - No Fault`, depending on the situation.
+
+  When entering either of these two :guilabel:`Service Types` for the first time, type in the new
+  service type, then click :guilabel:`Create (new service type)`. A :guilabel:`Create Service Type`
+  pop-up window appears, with the new service type populating the :guilabel:`Name` field. In the
+  :guilabel:`Category` field, select :guilabel:`Service` from the drop-down menu, then click the
+  :guilabel:`Save & Close` button.
+
+  Once an accident service type has been added to the database, it is available to select from the
+  drop-down menu in the :guilabel:`Service Type` field.
+- :guilabel:`Date`: using the calendar popover window, select the date the accident occurred.
+  Navigate to the desired month using the :icon:`fa-chevron-left` :icon:`fa-chevron-right`
+  :guilabel:`(arrow)` icons, then click the date to select it.
+- :guilabel:`Cost`: leave this field blank, as the repair cost is not yet known.
+- :guilabel:`Vendor`: select the vendor performing the repairs using the drop-down menu. If the
+  vendor has not already been entered in the system, type in the vendor name, and click either
+  :guilabel:`Create` to add them, or :guilabel:`Create and edit...` to :ref:`add and configure the
+  vendor <fleet/new-vendor>`.
+- :guilabel:`Vehicle`: select the vehicle that was in the accident from the drop-down menu. When the
+  vehicle is selected, the :guilabel:`Driver` field is populated, and the unit of measure for the
+  :guilabel:`Odometer Value` field appears.
+- :guilabel:`Driver`: the current driver listed for the selected vehicle populates this field when
+  the :guilabel:`Vehicle` is selected. If a different driver was operating the vehicle when the
+  accident occurred, select the correct driver from the drop-down menu.
+- :guilabel:`Odometer Value`: enter the odometer reading when the accident occurred. The units of
+  measure are either in kilometers (:guilabel:`km`) or miles (:guilabel:`mi`), depending on how the
+  selected vehicle was configured.
+- :guilabel:`NOTES`: enter the specific details of the accident at the bottom of the service form,
+  such as `Hit a deer` or `Rear-ended at an intersection while stopped`.
+
+Odoo provides the ability to attach any important paperwork, such as repair estimates and police
+reports, to the service record. To do so, click the :icon:`fa-paperclip` :guilabel:`(paperclip)`
+icon, located in the *chatter* of the form, and a file explorer pop-up window appears. Navigate to
+the desired record, and click :guilabel:`Open` to upload the file.
+
+  .. note::
+     Once a file is added to a service record, a :guilabel:`Files` section appears in the *chatter*.
+     To attach more records, click :icon:`fa-plus-square` :guilabel:`Attach files` to add more
+     documents.
+
+.. image:: accidents/service-form.png
+   :alt: Enter the information for an accident repair.
+
+Service stages
+==============
+
+In Odoo's **Fleet** app, there are four default service stages:
+
+.. tabs::
+
+   .. tab:: New
+
+      The default stage when a service record is created. The service has been requested, but
+      repairs have not begun. The :guilabel:`Cost` field for this stage remains zero.
+
+   .. tab:: Running
+
+      The repair is in-process, but not yet complete. The estimate for repairs is listed in the
+      :guilabel:`Cost` field.
+
+   .. tab:: Completed
+
+      All repairs listed on the service form have been completed. The :guilabel:`Cost` field is
+      updated to reflect the final total cost charged for the repairs.
+
+   .. tab:: Cancelled
+
+      The service request has been cancelled.
+
+During the repair process, change the service status to reflect the vehicle's current state in one
+of two ways: on the individual :ref:`service record <fleet/service_record>`, or in the :ref:`Kanban
+service view <fleet/Kanban>`.
+
+.. _fleet/service_record:
+
+Service record
+--------------
+
+Open the main *Services* dashboard, by navigating to :menuselection:`Fleet app --> Fleet -->
+Services`. Next, click on the individual service record to open the detailed service form. Click the
+desired stage in the top-right corner, above the service form, to change the status.
+
+.. image:: accidents/running.png
+   :alt: The stages as seen from the service form.
+
+.. _fleet/Kanban:
+
+Kanban view
+-----------
+
+Open the main *Services* dashboard, by navigating to :menuselection:`Fleet app --> Fleet -->
+Services`. First, click the :icon:`oi-view-kanban` :guilabel:`Kanban` icon in the top-right of the
+screen, which organizes all repairs by vehicle.
+
+Next, remove the default :guilabel:`Service Type` filter in the search bar. Upon doing so, all
+services appear in a Kanban view, organized by their respective :guilabel:`Status`.
+
+Drag-and-drop the service record to the desired stage.
+
+.. image:: accidents/drag-n-drop.png
+   :alt: The Kanban view of stages, with a card being dragged and dropped to the Running stage.
+
+Accident reporting
+==================
+
+One of the main reasons to track accidents using the method outlined in this document is the ability
+to view the total accident cost, determine the safest drivers, and calculate the actual total cost
+for specific vehicles.
+
+The main :ref:`Services dashboard <fleet/services_dashboard>` displays all the various accident
+information, while the :ref:`Reporting dashboard <fleet/reporting_dashboard>` displays the total
+cost for specific vehicles.
+
+.. _fleet/services_dashboard:
+
+Services dashboard
+------------------
+
+Navigate to :menuselection:`Fleet app --> Fleet --> Services` to view the :guilabel:`Services`
+dashboard. All service records are displayed in a :icon:`oi-view-list` :guilabel:`(List)` view,
+grouped alphabetically, by :guilabel:`Service Type`.
+
+The two service types created for accident tracking appear in the list: :guilabel:`Accident - Driver
+Fault` and :guilabel:`Accident - No Fault`.
+
+Each grouping displays the number of records within each type, and lists the individual records
+beneath each grouping title.
+
+.. example::
+   In this example, there are three accidents where the driver was at fault, and one accident that
+   was not the driver's fault. This dashboard also displays the estimated total :guilabel:`Cost` for
+   all the accidents in each group.
+
+   An estimated `$3,284.00` dollars are costs from driver-caused accident repairs. The no-fault
+   accident has no cost associated with it, since the repair has not been completed, and no estimate
+   exists yet.
+
+   .. image:: accidents/group-accidents.png
+      :alt: Accident services, with the total costs highlighted.
+
+.. note::
+   The total :guilabel:`Cost` calculates **all** costs on the repair form, including estimated
+   costs, as well as final repair costs. This number may not be accurate, if there are any repairs
+   in the *Running* stage, and the final bill has not yet been calculated.
+
+.. _fleet/reporting_dashboard:
+
+Reporting dashboard
+-------------------
+
+Navigate to :menuselection:`Fleet app --> Reporting --> Costs` to view the :menuselection:`Cost
+Analysis` report. This report displays a  :icon:`fa-bar-chart` :guilabel:`(Bar Chart)` of all
+:guilabel:`Contract` and :guilabel:`Service` costs for the current year, organized by month
+(:guilabel:`Date : (year)`), by default. The :guilabel:`Sum`, represented by a gray dotted line, is
+the combined total of both the :guilabel:`Contract` and :guilabel:`Service` costs.
+
+To view the total cost by vehicle, click the :icon:`fa-caret-down` :guilabel:`(Toggle Search Bar)`
+icon at the right of the search bar, revealing a drop-down menu. Click :guilabel:`Vehicle` in the
+:icon:`oi-group` :guilabel:`Group By` column, and the data is organized by vehicle.
+
+This displays the true cost for each vehicle, including both the contract cost (such as the monthly
+vehicle lease cost) and all service costs, including all accidents. Hover over a column to reveal a
+data popover window, which displays the vehicle name and the total cost. This allows for a more
+complete view of the vehicle cost.
+
+.. image:: accidents/total-costs.png
+   :alt: The Cost Analysis report, displaying total costs by vehicle.
+
+To view the individual cost details for both contract costs and repairs, click the
+:icon:`oi-view-pivot` :guilabel:`(Pivot)` icon in the top-right corner of the :guilabel:`Cost
+Analysis` dashboard. This displays each vehicle on a separate line, and displays the
+:guilabel:`Contract` cost and :guilabel:`Service` cost, as well as the :guilabel:`Total` cost.
+
+.. image:: accidents/fleet-pivot.png
+   :alt: The Cost Analysis report, displaying the contract and service costs separately, as well as
+         the total.
+
+.. note::
+   The :icon:`oi-view-pivot` :guilabel:`(Pivot)` view organizes the data by vehicle, by default,
+   therefore grouping the data by :guilabel:`Vehicle` is not required. If this filer is already
+   activated, it does not affect the presented data.
+
+Manage accident repairs
+=======================
+
+For companies with multiple employees, who manage a large fleet of vehicles, displaying only service
+records in the :guilabel:`New` and :guilabel:`Running` stages can be time-saving, if there are a
+large number of records in the *Services* dashboard.
+
+Navigate to :menuselection:`Fleet app --> Fleet --> Services`, where all service requests are
+organized by :guilabel:`Service Type`. Next, click the :icon:`fa-caret-down` :guilabel:`(Toggle
+Search Panel)` icon at the right of the search bar, revealing a drop-down menu. Click :guilabel:`Add
+Custom Filter` in the :icon:`fa-filter` :guilabel:`Filters` column, and a :guilabel:`Add Custom
+Filter` pop-up window appears.
+
+Three drop-down fields need to be configured on the pop-up window.
+
+In the first field, scroll down, and select :guilabel:`Stage`.
+
+Leave the second field set to :guilabel:`=`.
+
+Select :guilabel:`Running` from the drop-down menu in the last field.
+
+Next, click the :icon:`fa-plus` :guilabel:`(plus)` icon to the right of the last field, and an
+identical rule appears beneath the current rule.
+
+Then, change :guilabel:`Running` to :guilabel:`New` in the third field of the second rule, leaving
+the other fields as-is.
+
+Click the :guilabel:`Add` button at the bottom to add the new custom filter.
+
+.. image:: accidents/custom-filters.png
+   :alt: The filter settings to be added to only display new and running services.
+
+This slight modification only presents services in the :guilabel:`New` and :guilabel:`Running`
+stages. This is a helpful report for a company managing a high number of repairs at any given time.
+
+To have this report appear as the default report when opening the :guilabel:`Services` dashboard,
+click the :icon:`fa-caret-down` :guilabel:`(Toggle Search Panel)` icon at the far-right of the
+search bar. Next, click :guilabel:`Save current search`, beneath the :icon:`fa-star`
+:guilabel:`Favorites` column, which reveals another drop-down column beneath it. Tick the checkbox
+beside :guilabel:`Default Filter`, then click :guilabel:`Save`. Then, this customized
+:guilabel:`Services` dashboard appears, by default, any time the :guilabel:`Services` dashboard is
+accessed.
+
+
+==================================================
+SECTION: cost_analysis.rst
+PATH: applications/hr/fleet/cost_analysis.rst
+==================================================
+
+====================
+Cost analysis report
+====================
+
+The **Fleet** app allows for analysis on :ref:`total vehicle costs <fleet/total-costs>`, including
+both contract costs and service and repair charges. Data can be adjusted to view total costs by
+:ref:`vehicle <fleet/by-vehicle>` or :ref:`driver <fleet/by-driver>`. Additionally, costs can be
+compared with the previous year, quarter, or month, to view changes in fleet costs over time.
+
+.. _fleet/total-costs:
+
+Total costs
+===========
+
+To view the *Cost Analysis Report*, navigate to :menuselection:`Fleet app --> Reporting --> Costs`.
+The default report shows a bar chart of service and contract costs for the current year, organized
+by month.
+
+.. example::
+   In this report, it is possible to determine that June had the highest total costs, with almost
+   $14,000 dollars in contract and repair costs, while January had the lowest costs, with less than
+   $2,000 of contract costs and no repairs.
+
+   .. image:: cost_analysis/cost-analysis.png
+      :alt: The default cost analysis report showing contract and service costs.
+
+.. _fleet/by-vehicle:
+
+Cost by vehicle
+===============
+
+Some companies want to view costs not by month, but by vehicle. This allows fleet managers to
+determine which vehicles cost the most to keep on the road, aiding in decision making for future
+purchases and repairs.
+
+To view these metrics, open the default :ref:`cost analysis report <fleet/total-costs>`. Next, click
+into the search bar, and click :guilabel:`Vehicle` under the :icon:`oi-group` :guilabel:`Group By`
+column.
+
+.. example::
+   From this report, it can be determined the `Toyota Corolla` with the license plate `STU-1718`
+   cost the most, with almost $14,000 in costs for the year. Additionally, the both `Nissan Micro`
+   vehicles and the `Ford Focus` cost the least, with under $5,000 in total costs each.
+
+   .. image:: cost_analysis/by-vehicle.png
+      :alt: The cost analysis report showing annual costs by vehicle.
+
+.. _fleet/by-driver:
+
+Cost by driver
+==============
+
+Another useful metric is to determine which drivers incur the most repair costs, allowing fleet
+managers to determine which vehicles to assign which drivers. To view this configuration, open the
+default :ref:`cost analysis report <fleet/total-costs>`. Next, click into the search bar, and click
+:guilabel:`Driver` under the :icon:`oi-group` :guilabel:`Group By` column. Finally, click the
+:icon:`oi-view-pivot` :guilabel:`(Pivot)` icon.
+
+The report now shows the totals for both :guilabel:`Contract` and :guilabel:`Service` costs for each
+driver in the database. This allows fleet managers to see which drivers incur the most repair costs.
+
+.. example::
+   This report shows that `Sandra Elvis` had no service costs for the year, while both `Doris Cole`
+   and `David Armstrong` had almost $9,000 in repairs. While this does not explain why those two
+   drivers incurred the most costs, it is possible for the fleet manager to :ref:`investigate the
+   service records <fleet/view-services>` for those two drivers, to determine why there were such
+   high costs for the year.
+
+   .. image:: cost_analysis/by-driver.png
+      :alt: The cost analysis report showing costs by driver in a pivot table.
+
+Detailed comparison
+===================
+
+All reports in the **Fleet** app are able to compare costs from previous time periods, either year,
+quarter, or month. To view a detailed cost comparison between the third and fourth quarter, open the
+default :ref:`cost analysis report <fleet/total-costs>`, then click the :icon:`oi-view-pivot`
+:guilabel:`(Pivot)` icon. Next, click into the search bar and click :guilabel:`Q4` in the
+:icon:`fa-filter` :guilabel:`Filters` column, then :guilabel:`Date: Previous Period` in the
+:icon:`fa-adjust` :guilabel:`Comparison` column.
+
+The report now shows detailed contract and service costs for each vehicle, with a
+:guilabel:`Variation` column, showing increases or decreases in costs from the third and fourth
+quarter of the current year.
+
+
+.. example::
+   In this example, it can be determined that the `Ford Focus` had the greatest change in terms of
+   lowered total costs, with a 75.25% reduction in costs. Additionally, the `Nissan Micro` with the
+   license plate of `DEF-456` was the only vehicle with an overall increase in total costs, with an
+   increase of 41.78%.
+
+   .. image:: cost_analysis/detailed-costs.png
+      :alt: A pivot table with a detailed cost comparison between the current and previous year.
+
+
+
+
+==================================================
+SECTION: models.rst
+PATH: applications/hr/fleet/models.rst
+==================================================
+
+======================
+Models & manufacturers
+======================
+
+Odoo's **Fleet** app categorizes each vehicle by *manufacturer* and *model* (e.g. `BMW`, `X2`).
+Before the vehicle can be added to the Odoo database, its :ref:`manufacturer <fleet/manufacturers>`
+and a :ref:`model <fleet/add-model>` records must already exist in the database.
+
+.. _fleet/manufacturers:
+
+Manufacturers
+=============
+
+Odoo's **Fleet** app comes preconfigured with sixty-six commonly used car and bicycle manufacturers
+in the database, along with their logos. To view the pre-loaded manufacturers, go to
+:menuselection:`Fleet app --> Configuration --> Manufacturers`.
+
+The default filter, :guilabel:`With Models`, displays only manufacturers that already have vehicle
+models. Remove the default filter to view *all* manufacturers.
+
+Manufacturers re listed alphabetically, and each card shows how many specific :ref:`models
+<fleet/models>` are configured for each particular manufacturer.
+
+.. image:: models/manufacturer.png
+   :alt: Manufacturer card with the amount of models listed.
+
+.. _fleet/add-manufacturers:
+
+Add a manufacturer
+------------------
+
+To add a new manufacturer to the database, click :guilabel:`New` in the upper-left corner, to open a
+blank manufacturers form. Type the name of the manufacturer in the :guilabel:`Name` field, and
+select an image to upload for the logo.
+
+.. _fleet/models:
+
+Models
+======
+
+When adding a vehicle to the fleet, specify the vehicle model to maintain updated records, which
+keeps track of specific details, like maintenance schedules and parts compatibility.
+
+Unlike :ref:`manufacturers <fleet/manufacturers>`, models do **not** come preconfigured in the
+**Fleet** app. When a new vehicle model joins the fleet, the model (and, if necessary, the
+manufacturer) **must** be :ref:`added to the database <fleet/add-model>`.
+
+.. _fleet/add-model:
+
+Add a model
+-----------
+
+To add a new vehicle model, navigate to :menuselection:`Fleet app --> Configuration --> Models`.
+Click :guilabel:`New` in the upper-left corner, and enter the following information on the new model
+form.
+
+.. note::
+   Depending on the installed :doc:`localization <../../finance/fiscal_localizations>`, some fields
+   or sections may not appear.
+
+- :guilabel:`Model name`: Enter the model name in the field.
+- :guilabel:`Manufacturer`: Using the drop-down menu, select the manufacturer. If it is not
+  configured, :ref:`add the manufacturer <fleet/add-manufacturers>`
+- :guilabel:`Vehicle Type`: Using the drop-down menu, select one of two preconfigured vehicle types,
+  either :guilabel:`Car` or :guilabel:`Bike`.
+
+  .. important::
+     Additional vehicle types can **not** be added. **Fleet** keeps them fixed to preserve its
+     **Payroll** integration, where vehicles may count as employee benefits.
+
+- :guilabel:`Category`: Using the drop-down menu, select a :ref:`category <fleet/categories>` for
+  the vehicle or :ref:`create a new one <fleet/new-category>`.
+
+Information tab
+---------------
+
+In the :guilabel:`Information` tab, specify details about the car model, such as the car size,
+passenger capacity, cost settings (applicable to the Belgium localization only), and engine
+information.
+
+Model
+~~~~~
+
+- :guilabel:`Seats Number`: Enter how many passengers the vehicle can accommodate.
+- :guilabel:`Doors Number`: Enter the number of doors the vehicle has.
+- :guilabel:`Model Year`: Enter the year the vehicle was manufactured.
+- :guilabel:`Trailer Hitch`: Tick this checkbox if the vehicle has a trailer hitch installed.
+
+Salary
+~~~~~~
+
+The :guilabel:`Salary` section **only** appears if the company has their localization setting set to
+Belgium. The cost values are all *monthly*, with the exception of the :guilabel:`Catalog Value (VAT
+Incl.)`.
+
+- :guilabel:`Can be requested`: Tick this checkbox if employees can request this model vehicle, if a
+  vehicle is part of their employee contract.
+- :guilabel:`Catalog Value (VAT Incl.)`: enter the :abbr:`MSRP (Manufacturer's Suggested Retail
+  Price)` for the vehicle at the time of purchase or lease.
+- :guilabel:`C02 fee`: Represents the carbon dioxide emission fee paid to the Belgian government.
+  This value is automatically calculated, based on Belgian laws and regulations, and **cannot** be
+  modified. The value is based on the figure entered in the :guilabel:`CO2 Emissions` field (in the
+  :guilabel:`Engine` section of the :guilabel:`Information` tab) on the vehicle form.
+
+.. important::
+   Modifying the :guilabel:`CO2 Emissions` field adjusts the value in the :guilabel:`CO2 fee` field.
+
+- :guilabel:`Cost (Depreciated)`: Enter the monthly vehicle cost, which appears in the salary
+  configurator for future employees. This value impacts the gross and net salary of the employee
+  assigned to the vehicle. This figure is depreciated over time, according to local tax laws. The
+  :guilabel:`Cost (Depreciated)` does **not** depreciate automatically on the *vehicle model*, it
+  only depreciates based on the *contract* linked to a specific vehicle.
+- :guilabel:`Total Cost (Depreciated)`: This value is the combination of the :guilabel:`Cost
+  (Depreciated)` and the :guilabel:`C02 fee` fields. It also depreciated over time.
+
+Engine
+~~~~~~
+
+- :guilabel:`Fuel Type`: Using the drop-down menu, select the type of fuel the vehicle uses. The
+  default options are :guilabel:`Diesel`, :guilabel:`Gasoline`, :guilabel:`Full Hybrid`
+  :guilabel:`Plug-in Hybrid Diesel`, :guilabel:`Plug-in Hybrid Gasoline`, :guilabel:`CNG`,
+  :guilabel:`LPG`, :guilabel:`Hydrogen`, or :guilabel:`Electric`.
+- :guilabel:`Range`: Enter the distance the vehicle can travel on one tank of gas, or one battery
+  charge, in kilometers.
+- :guilabel:`CO2 Emissions`: Enter the average carbon dioxide emissions the vehicle produces in
+  grams per kilometer (g/km). This information is provided by the car manufacturer.
+- :guilabel:`CO2 Standard`: Enter the standard amount of carbon dioxide in grams per kilometer
+  (g/km) for a similar-sized vehicle.
+- :guilabel:`Transmission`: Using the drop-down menu, select the type of transmission, either
+  :guilabel:`Manual` or :guilabel:`Automatic`.
+- :guilabel:`Power Unit`: Using the drop-down menu, select how the vehicle's power is measured,
+  either in kilowatts or horsepower.
+- :guilabel:`Power`: If the vehicle is electric or hybrid, enter the power the vehicle uses in
+  kilowatts (:guilabel:`kW`). This field only appears if :guilabel:`kW` is selected for the
+  :guilabel:`Power` field.
+- :guilabel:`Horsepower`: Enter the vehicle's horsepower in this field. This field only appears if
+  :guilabel:`Horsepower` is selected for the :guilabel:`Power` field.
+- :guilabel:`Horsepower Taxation`: Enter the amount that is taxed, based on the size of the
+  vehicle's engine. This is determined by local taxes and regulations, and varies depending on the
+  location. It is recommended to check with the accounting department to ensure this value is
+  correct. This field only appears if :guilabel:`Horsepower` is selected for the :guilabel:`Power`
+  field.
+- :guilabel:`Horsepower Taxation`: Enter the amount of taxes incurred according to the engine
+  specifications. The number is dependent on the local tax laws, therefore it is recommended to
+  check with the accounting department to ensure the correct taxation amount is entered. This field
+  only appears if the :guilabel:`Power` field is set to :guilabel:`Horsepower`.
+- :guilabel:`Tax Deduction`: The percentage that can be deducted from taxes is populated based on
+  the localization, and **cannot** be modified. This field only appears for certain localizations.
+
+Vendors tab
+-----------
+
+Specify the vendors a vehicle can be purchased from in this tab. With proper setup, :doc:`requests
+for quotations <../../inventory_and_mrp/purchase/manage_deals/rfq>` for vehicles can be created
+through Odoo's **Purchase** app.
+
+To add a vendor, click :guilabel:`Add` in the upper-left corner of the :guilabel:`Vendors` tab. This
+opens an :guilabel:`Add: Vendors` pop-up window, with a list of all the vendors currently in the
+database. Add a vendor by ticking the checkbox next to the vendor name, then click
+:guilabel:`Select`. No limitations exist on the number of vendors that can be added to this list.
+
+If a vendor is *not* already in the database, add a vendor by clicking :guilabel:`New` in the
+bottom-left of the :guilabel:`Add: Vendors` pop-up window. In the :guilabel:`Create Vendors` form
+that appears, enter the necessary information, then click :guilabel:`Save & Close` to add the
+vendor, or click :guilabel:`Save & New` to add the current vendor and create another new vendor.
+
+.. image:: models/vendor.png
+   :alt: Vendor form to fill out when adding a new vendor.
+
+.. _fleet/categories:
+
+Model category
+==============
+
+To aid with fleet organization, it is recommended to have vehicle models housed under a specific
+category. Model categories are set on the :ref:`vehicle model form <fleet/add-model>`.
+
+Odoo does **not** come with any categories preconfigured; all categories **must** be added.
+
+To view any categories currently set up in the database, navigate to :menuselection:`Fleet app -->
+Configuration --> Categories`. All categories are displayed in a list view.
+
+.. _fleet/new-category:
+
+Add a new model category
+------------------------
+
+To add a new category, click the :guilabel:`New` button in the top-left corner of the
+:guilabel:`Categories` dashboard. A new entry line appears at the bottom of the list. Type in the
+new category, then either click :guilabel:`Save`, or click anywhere on the screen, to save the
+entry.
+
+To reorganize how the categories appear in the list, click on the :icon:`oi-draggable`
+:guilabel:`(draggable)` icon to the left of any desired category name, and drag the line to the
+desired position.
+
+The order of the list does *not* affect the database in any way. However, it may be preferable to
+view the vehicle categories in a specific order, for example, by size, or the number of passengers
+the vehicle can carry.
+
+.. note::
+   When used with the **Inventory** app, the :guilabel:`Max Weight` and :guilabel:`Max Volume`
+   fields track a vehicle's capacity. This helps manage in-house deliveries by :doc:`showing how
+   much space and weight remain for loading products
+   <../../inventory_and_mrp/inventory/shipping_receiving/setup_configuration/dispatch>`.
+
+
+==================================================
+SECTION: new_vehicle.rst
+PATH: applications/hr/fleet/new_vehicle.rst
+==================================================
+
+===============
+Adding vehicles
+===============
+
+Odoo's **Fleet** app manages all vehicles, and the accompanying documentation that comes with
+vehicle maintenance and driver records.
+
+Upon opening the :menuselection:`Fleet` application, all vehicles are organized within the
+:guilabel:`Vehicles` dashboard, which is the default dashboard. Each vehicle is displayed in its
+corresponding Kanban stage, based on its status. The default stages are :guilabel:`New Request`,
+:guilabel:`To Order`, :guilabel:`Registered`, and :guilabel:`Downgraded`.
+
+.. _fleet/settings:
+
+Settings
+========
+
+Before registering any vehicles, review two **Fleet** settings that directly affect day-to-day
+operations and employee benefits:
+
+- :ref:`End Date Contract Alert <fleet/end-contract>` — emails the contract's *Responsible* person a
+  set number of days before the vehicle agreement expires, so renewals or returns aren't missed.
+- :ref:`New Vehicle Request <fleet/request>` — (Belgian Payroll localization only) blocks employees
+  from requesting a new company car through the salary configurator, once the available vehicles
+  already exceeds the defined limit, helping control benefits costs.
+
+To access the settings menu, go to :menuselection:`Fleet app --> Configuration --> Settings`.
+
+.. _fleet/end-contract:
+
+End Date Contract Alert
+-----------------------
+
+The :guilabel:`End Date Contract Alert` field shows how many days before the end of a vehicle
+contract an alert should be sent. The :ref:`responsible parties <fleet/responsible>` receive an
+email informing them that a vehicle contract is about to expire in the number of days defined in
+this field.
+
+.. image:: new_vehicle/fleet-settings.png
+   :alt: Settings available for the Fleet application.
+
+.. _fleet/responsible:
+
+Responsible parties
+~~~~~~~~~~~~~~~~~~~
+
+To determine the responsible person is for a contract, open an individual contract. The person
+listed as :guilabel:`Responsible` under the :guilabel:`Contract Information` section of the contract
+receives the alert.
+
+To open a contract from a list of all contracts, navigate to :menuselection:`Fleet app --> Fleet -->
+Contracts`, and all contracts appear in the list. Click on a :guilabel:`Contract` to open it. In the
+:guilabel:`Information` section of the contract, look under :guilabel:`Responsible` to see who
+receives expiration alerts.
+
+An individual contract can also be opened from a specific vehicle by navigating to
+:menuselection:`Fleet app --> Fleet --> Fleet` and clicking on an individual vehicle. On the vehicle
+form, click the :guilabel:`Contracts` smart button at the top of the page. Only contracts associated
+with the vehicle appear in the list. Click on an individual contract to open it. The
+:guilabel:`Responsible` person is listed on the contract.
+
+.. _fleet/request:
+
+New Vehicle Request (Belgian Payroll - Fleet)
+---------------------------------------------
+
+Enter the maximum fleet size that may be reached through the salary-configurator flow. When the
+total number of available vehicles (vehicles without an assigned driver) is equal to or below this
+limit, employees can request a new company car. Once the available vehicles exceeds the limit, the
+request option is hidden.
+
+.. example::
+   If the :guilabel:`New Vehicle Request` limit is set to 20 vehicles, and there are 25 vehicles
+   available, employees cannot request a new car and must select from the 25 already available. If
+   there are only 10 cars available, then the employee would be able to request a new vehicle.
+
+.. note::
+   This settings option **only** appears if the :guilabel:`Belgian-Payroll-Fleet` module is
+   installed for the Belgian localization.
+
+Add a vehicle
+=============
+
+To add a new vehicle to the fleet from the :guilabel:`Vehicles` dashboard, click the :guilabel:`New`
+button in the top-left corner, and a blank vehicle form loads. Then, proceed to enter the vehicle
+information on the vehicle form.
+
+.. _fleet/new_vehicle/vehicle-form:
+
+Vehicle form fields
+===================
+
+- :guilabel:`Model`: Using the drop-down menu, select the vehicle's model. Once a model is selected,
+  additional fields may appear on the form. If the model is not listed, type in the model name, and
+  click either :guilabel:`Create "model"`, or :guilabel:`Create and edit...` to :ref:`create a new
+  model and edit the model details <fleet/add-model>`.
+- :guilabel:`License Plate`: Enter the vehicle's license plate number.
+- :guilabel:`Tags`: Select any tags from the drop-down menu, or type in a new tag. There is no limit
+  on the amount of tags that can be selected.
+
+.. image:: new_vehicle/model.png
+   :alt: The new vehicle form, showing the model section.
+
+.. note::
+   The :guilabel:`Model` is the *only* required field on the new vehicle form. When a model is
+   selected, other fields appear on the vehicle form, and relevant information auto-populates the
+   fields that apply to the model. If some of the fields do not appear, this may indicate there is
+   no model selected.
+
+.. _fleet/new_vehicle/new-driver:
+
+Driver
+------
+
+This section of the vehicle form relates to the person who is currently driving the car, as well as
+any plans for a change in the driver in the future, and when.
+
+- :guilabel:`Driver`: Using the drop-down menu, select the driver for the vehicle. If the driver is
+  not listed, :ref:`create the new driver, and edit the driver details
+  <fleet/new_vehicle/add-driver>`.
+
+  .. important::
+     A driver does *not* have to be an employee. When creating a new driver, the driver is added to
+     the **Fleet** app, *not* the **Employees** app.
+
+     If the **Contacts** app is installed, the driver information is also stored there.
+
+- :guilabel:`Mobility Card`: If the selected driver has a mobility card (such as a gas card) listed
+  on their employee record in the **Employees** application, the mobility card number automatically
+  appears in this field. If there is no mobility card listed, and one should be added, :ref:`edit
+  the employee record <employees/hr-settings>` in the **Employees** application.
+- :guilabel:`Future Driver`: If the next driver for the vehicle is known, select the next driver
+  from the drop-down menu. Or, type in the next driver and click either :guilabel:`Create "future
+  driver"` or :guilabel:`Create and edit...` to :ref:`create a new future driver, and edit the
+  driver details <fleet/new_vehicle/add-driver>`.
+
+  .. note::
+     If this field is populated, a :guilabel:`Apply New Driver` button appears on the vehicle form.
+     Click the :guilabel:`Apply New Driver` button to change the driver information.
+
+- :guilabel:`Plan To Change Car`: Tick this box when the current driver already knows they'll switch
+  to another vehicle, whether they are awaiting an ordered car, using this one only temporarily, or
+  are leaving the company.
+- :guilabel:`Assignment Date`: Using the calendar selector, select when the vehicle is available for
+  another driver. If this field is left blank, that indicates the vehicle is currently available,
+  and can be assigned to another driver. If it is populated, the vehicle is not available for
+  another driver until the selected date.
+- :guilabel:`Company`: Select the company from the drop-down menu. This field only appears in a
+  multi-company database.
+
+.. _fleet/new_vehicle/add-driver:
+
+Create a new driver
+~~~~~~~~~~~~~~~~~~~
+
+If a driver is not already in the system, the new driver should first be configured and added to the
+database. A new driver can be added either from the :guilabel:`Driver` or :guilabel:`Future Driver`
+fields on the :ref:`vehicle form <fleet/new_vehicle/vehicle-form>`.
+
+First, type in the name of the new driver in either the :guilabel:`Driver` or :guilabel:`Future
+Driver` field, then click :guilabel:`Create and edit...`. A :guilabel:`Create Driver` or
+:guilabel:`Create Future Driver` form appears, depending on which field initiated the form.
+
+Both the :guilabel:`Create Driver` and :guilabel:`Create Future Driver` forms are identical, and are
+stored in the **Contacts** app. :doc:`Configure the new contact <../../essentials/contacts>`, then
+click :guilabel:`Save & Close`.
+
+.. note::
+   Depending on the installed applications, different tabs or fields may be visible on the
+   :guilabel:`Create Driver` and :guilabel:`Create Future Driver` forms.
+
+.. _fleet/new_vehicle/general-info:
+
+Vehicle
+-------
+
+This section captures key physical details of a vehicle. Selecting an existing Model may auto-fill
+some fields.
+
+Fill in the following fields on the form:
+
+- :guilabel:`Category`: Using the drop-down menu, select the vehicle category from the available
+  options. If the **Inventory** app is installed, the category affects any configured :doc:`dispatch
+  management system
+  <../../inventory_and_mrp/inventory/shipping_receiving/setup_configuration/dispatch>`.
+- :guilabel:`Order Date`: Using the calendar selector, select the date the vehicle was ordered.
+  Keeping track of how long vehicles have been in the fleet can help when making decisions on
+  expensive repairs, or help decide when to surrender a vehicle.
+- :guilabel:`Registration Date`: Using the calendar selector, select the date the vehicle was
+  registered. Many regions require proper registration, so keeping track of registration dates is
+  important.
+- :guilabel:`Cancellation Date`: Using the calendar selector, select the date the vehicle lease
+  expires, or when the vehicle is no longer part of the fleet (e.g., sold, plates surrendered).
+- :guilabel:`Chassis Number`: Enter the chassis number in the field. This is known in some countries
+  as the :abbr:`VIN (Vehicle Identification Number)` number. Every vehicle has a unique number, so
+  in the event of a theft or accident, a vehicle can be identified with this unique number.
+- :guilabel:`Last Odometer`: Enter the last known odometer reading in the number field. Using the
+  drop-down menu next to the number field, select whether the odometer reading is in kilometers
+  :guilabel:`(km)` or miles :guilabel:`(mi)`. Keeping track of a vehicle's mileage is crucial when
+  determining the value of the vehicle for both tax purposes and resale value.
+- :guilabel:`Fleet Manager`: Select the fleet manager from the drop-down menu, or type in a new
+  fleet manager, and click either :guilabel:`Create` or :guilabel:`Create and edit...`.
+- :guilabel:`Location`: Type in the specific location where the vehicle is typically located in this
+  field. The entry should clearly explain where the vehicle can be found, such as `Main Garage` or
+  `Building 2 Parking Lot`. This is crucial information for companies with many locations where
+  vehicles are stored.
+
+.. image:: new_vehicle/new-vehicle-type.png
+   :alt: The new vehicle form, showing the vehicle tax section.
+
+Tax Info tab
+------------
+
+Depending on the localization setting for the database, and what additional applications are
+installed, other fields may be present on the form.
+
+The sections below are default and appear for all vehicles, regardless of other installed
+applications or localization settings.
+
+Fiscality
+~~~~~~~~~
+
+- :guilabel:`Horsepower Taxation`: Enter the amount that is taxed based on the size of the vehicle's
+  engine. This is determined by local taxes and regulations, and varies depending on the location.
+  It is recommended to check with the accounting department to ensure this value is correct.
+- :guilabel:`Disallowed Expenses Rate`: Configure the dates and percentages of the vehicle-related
+  costs (fuel, maintenance, depreciation, etc.) that **cannot** be deducted from the company's
+  taxable income.
+
+Contract
+~~~~~~~~
+
+- :guilabel:`First Contract Date`: Select the start date for the vehicle's first contract using the
+  calendar selector. Typically this is the day the vehicle is purchased or leased.
+- :guilabel:`Catalog Value (VAT Incl.)`: Enter the :abbr:`MSRP (Manufacturer's Suggested Retail
+  Price)` for the vehicle at the time of purchase or lease.
+- :guilabel:`Purchase Value`: Enter the purchase price or the original value of the lease for the
+  vehicle.
+- :guilabel:`Residual Value`: Enter the current value of the vehicle.
+
+.. note::
+   The values listed above affect the accounting department. It is recommended to check with the
+   accounting department for more information and/or assistance with these values.
+
+.. image:: new_vehicle/new-vehicle-tax.png
+   :alt: The new vehicle form, showing the vehicle tax section.
+
+Model tab
+---------
+
+If the model for the new vehicle is already configured in the database, the :guilabel:`MODEL` and
+:guilabel:`ENGINE` sections are populated with the corresponding information. If the model is *not*
+already in the database and the :guilabel:`Model` tab needs to be configured, :ref:`configure the
+new vehicle model <fleet/add-model>`.
+
+Check the information in the :guilabel:`Model` tab to ensure it is accurate. For example, the color
+of the vehicle, or if a trailer hitch is installed, are examples of common information that may need
+updating.
+
+Note tab
+--------
+
+Enter any notes for the vehicle in this section.
+
+.. image:: new_vehicle/model-tab.png
+   :alt: The new vehicle form, showing the vehicle tax section.
+
+.. seealso::
+   - :doc:`../fleet/models`
+   - :doc:`../fleet/service`
+   - :doc:`../fleet/accidents`
+
+
+==================================================
+SECTION: service.rst
+PATH: applications/hr/fleet/service.rst
+==================================================
+
+========
+Services
+========
+
+To properly maintain a fleet of vehicles, regular maintenance as well as periodic repairs are
+needed. Scheduling repairs and managing services for an entire fleet is necessary to ensure all
+vehicles are in good working order when they are needed.
+
+Services, such as regular maintenance, like oil changes or tire rotations, can be logged in advance.
+Other repairs are logged as they occur.
+
+.. _fleet/service-form:
+
+Create service records
+======================
+
+To log a service for a vehicle, go to the main :guilabel:`Services` dashboard by navigating to
+:menuselection:`Fleet app --> Fleet --> Services`. Open a new service form by clicking the
+:guilabel:`New` button in the top-left corner.
+
+Fill out the information on the form. The only two fields that are required to be populated are
+:guilabel:`Service Type` and :guilabel:`Vehicle`.
+
+The fields on the form are:
+
+- :guilabel:`Description`: Enter a brief description of the service in this field.
+- :guilabel:`Service Type`: Using the drop-down menu, select the type of service performed. If the
+  desired service does not exist, enter a new type of service, and click either :guilabel:`Create
+  "(service type)"` or :guilabel:`Create and edit...` to :ref:`add the service type and configure it
+  <fleet/new-type>`.
+
+  .. important::
+     Only one :guilabel:`Service Type` comes preconfigured in Odoo: :guilabel:`Vendor Bill`.
+
+- :guilabel:`Date`: Using the calendar selector, select the date the service was provided, or is
+  scheduled to be performed. Navigate to the desired month using the :icon:`oi-chevron-left`
+  :icon:`oi-chevron-right` :guilabel:`(arrow)` icons, then click on the date to select it.
+- :guilabel:`Cost`: Enter the estimated cost of the service, if available. If the service is for a
+  future repair, this field should be left blank. This field is updated as estimates are received,
+  and again, when the final repair cost is known.
+- :guilabel:`Vendor`: Using the drop-down menu, select the vendor who is performing the service. If
+  the vendor has not already been entered in the system, :ref:`add and configure the vendor
+  <fleet/new-vendor>`.
+- :guilabel:`Vehicle`: Using the drop-down menu, select the vehicle that was serviced. When the
+  vehicle is selected, the :guilabel:`Driver` field is populated, and the unit of measure for the
+  :guilabel:`Odometer Value` field appears.
+- :guilabel:`Driver`: The vehicle's current driver automatically populates this field when the
+  :guilabel:`Vehicle` is selected. If the driver needs to be changed, another driver can be selected
+  using the drop-down menu.
+- :guilabel:`Odometer Value`: Enter the odometer reading from when the service was done. The units
+  of measure are either in kilometers (:guilabel:`km`) or miles (:guilabel:`mi`), depending on how
+  the selected vehicle was configured.
+
+  .. tip::
+     To change from kilometers to miles, or vice versa, click the :icon:`oi-arrow-right`
+     :guilabel:`(Internal Link)` icon to the right of the vehicle selected in the :guilabel:`Vehicle`
+     field.
+
+     Change the unit of measure, then navigate back to the service form, via the breadcrumb links.
+     The unit of measure is then updated in the :guilabel:`Odometer Value` field.
+
+- :guilabel:`NOTES`: Enter any notes for the repair at the bottom of the service form. For example,
+  this can include estimate details or parts being replaced.
+
+.. image:: service/new-service.png
+   :alt: Enter the information for a new service. The required fields are Service Type and Vehicle.
+
+.. _fleet/new-type:
+
+Create service type
+-------------------
+
+The **only** method to create service types is from a :ref:`service form <fleet/service-form>`.
+
+On the :ref:`service form <fleet/service-form>`, type in the name of the new :guilabel:`Service
+Type` in the corresponding field. Then, click :guilabel:`Create and edit...`, and a
+:guilabel:`Create Service Type` pop-up form appears.
+
+The service type entered on the service form automatically populates the :guilabel:`Name` field,
+which can be modified, if desired.
+
+Then, select the :guilabel:`Category` for the new service type from the drop-down menu in that
+field. The two default options to choose from are :guilabel:`Contract` or :guilabel:`Service`.
+Additional categories **cannot** be created.
+
+If the service applies to **only** contracts or services, select the corresponding
+:guilabel:`Category`. If the service applies to **both** contracts *and* services, leave this field
+blank.
+
+When done, click :guilabel:`Save & Close`.
+
+.. _fleet/new-vendor:
+
+Create vendor
+-------------
+
+When a service is performed for the first time, typically, the vendor's record has not yet been
+added to the database. It is best practice to add the full details for a vendor in the database, so
+that any necessary information can be retrieved.
+
+Vendors are added with the **Contacts** app. Refer to the :doc:`documentation
+<../../essentials/contacts>` for more details.
+
+.. note::
+   Different tabs or fields may be visible on the :guilabel:`Create Vendor` form, depending on what
+   other applications are installed.
+
+.. _fleet/view-services:
+
+View services
+=============
+
+To view all services logged in the database, including old and new requests, navigate to
+:menuselection:`Fleet app --> Fleet --> Services`. All services appear in a list view, including all
+the details for each service.
+
+The service records are grouped by :ref:`service type <fleet/new-type>`. The number of repairs for
+each service type appears in parentheses after the name of the service type.
+
+Each service listed displays the following information:
+
+- :guilabel:`Date`: the date that the service, or repair, was performed (or requested to be
+  performed).
+- :guilabel:`Description`: a short description of the specific type of service, or repair, performed
+  to clarify the specific service.
+- :guilabel:`Service Type`: the type of service, or repair, performed. This is selected from a list
+  of services that :ref:`must be configured <fleet/new-type>`.
+- :guilabel:`Vehicle`: the specific vehicle the service was performed on.
+- :guilabel:`Driver`: the current driver for the vehicle.
+- :guilabel:`Vendor`: the specific vendor who performed the service, or repair.
+- :guilabel:`Notes`: any information associated with the service, or repair, that is documented to
+  add clarification.
+- :guilabel:`Cost`: the total cost of the service, or repair.
+- :guilabel:`Stage`: the status of the service, or repair. Options are :guilabel:`New`,
+  :guilabel:`Running`, :guilabel:`Done`, or :guilabel:`Cancelled`.
+
+At the bottom of the :guilabel:`Cost` column, the total cost of all services and repairs are listed.
+
+.. image:: service/services.png
+   :alt: The full list of services in the Odoo database.

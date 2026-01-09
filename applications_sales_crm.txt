@@ -1,0 +1,4119 @@
+
+
+==================================================
+SECTION: crm.rst
+PATH: applications/sales/crm.rst
+==================================================
+
+:nosearch:
+:show-content:
+:hide-page-toc:
+:show-toc:
+
+===
+CRM
+===
+
+**Odoo CRM** helps you organize your sales activities: track leads, close opportunities and get
+accurate forecasts. Keep opportunities organized with the pipeline and manage your day-to-day
+activities with meetings and next activities.
+
+.. seealso::
+   - `Odoo Tutorials: CRM <https://www.odoo.com/slides/crm-16>`_
+
+.. toctree::
+   :titlesonly:
+
+   crm/pipeline
+   crm/acquire_leads
+   crm/track_leads
+   crm/performance
+   crm/optimize
+
+
+==================================================
+SECTION: acquire_leads.rst
+PATH: applications/sales/crm/acquire_leads.rst
+==================================================
+
+:nosearch:
+
+=============
+Acquire leads
+=============
+
+.. toctree::
+   :titlesonly:
+
+   acquire_leads/convert
+   acquire_leads/opportunities_form
+   acquire_leads/email_manual
+   acquire_leads/send_quotes
+   acquire_leads/lead_mining
+
+
+==================================================
+SECTION: convert.rst
+PATH: applications/sales/crm/acquire_leads/convert.rst
+==================================================
+
+================================
+Convert leads into opportunities
+================================
+
+*Leads* act as a qualifying step before an opportunity is created. This provides additional time to
+review its potential, and gauge its viability, before the opportunity is assigned to a salesperson.
+
+Configuration
+=============
+
+To activate the *Leads* setting, navigate to :menuselection:`CRM app --> Configuration --> Settings`
+and check the box labeled, :guilabel:`Leads`. Then, click :guilabel:`Save`.
+
+.. image:: convert/convert-leads-leads-setting.png
+   :align: center
+   :alt: Leads setting on CRM configuration page.
+
+Activating this feature adds a new menu option, :guilabel:`Leads`, to the header bar, located along
+the top of the screen.
+
+.. image:: convert/convert-leads-leads-menu.png
+   :align: center
+   :alt: Leads menu on CRM application.
+
+Once the *Leads* setting has been activated, it applies to all sales teams by default. To turn off
+leads for a specific team, navigate to :menuselection:`CRM app --> Configuration --> Sales Teams`.
+Then, select a team from the list to open that team's configuration page. Clear the
+:guilabel:`Leads` checkbox, located beneath the :guilabel:`Sales Team` field, then click
+:guilabel:`Save`.
+
+.. image:: convert/convert-leads-leads-button.png
+   :align: center
+   :alt: Leads menu on CRM application.
+
+Convert a lead into an opportunity
+==================================
+
+To convert a lead into an *opportunity*, navigate to :menuselection:`CRM app --> Leads`, and click
+on a lead from the list to open it.
+
+.. warning::
+   If a :guilabel:`Similar Leads` smart button appears at the top of the page for the lead, it
+   indicates a similar lead or opportunity already exists in the database. Before converting this
+   lead, click the smart button to confirm if the lead should be merged.
+
+   .. image:: convert/similar-leads-smart-button.png
+      :align: center
+      :alt: Close up of a lead with emphasis on the Similar Leads smart button.
+
+Click the :guilabel:`Convert to Opportunity` button, located at the top-left of the page.
+
+.. image:: convert/convert-leads-convert-opp-button.png
+   :align: center
+   :alt: Create opportunity button on a lead record.
+
+This opens a :guilabel:`Convert to opportunity` pop-up modal. Here, in the :guilabel:`Conversion
+Action` field, select the :guilabel:`Convert to opportunity` option.
+
+.. note::
+   To merge this lead with an existing similar lead or opportunity, select :guilabel:`Merge with
+   existing opportunities` in the :guilabel:`Conversion Action` field. This generates a list of the
+   similar leads/opportunities to be merged.
+
+   When merging, Odoo gives priority to whichever lead/opportunity was created in the system first,
+   merging the information into the first created lead/opportunity. However, if a lead and an
+   opportunity are being merged, the resulting record is referred to as an opportunity, regardless
+   of which record was created first.
+
+Then, select a :guilabel:`Salesperson` and a :guilabel:`Sales Team` to which the opportunity should
+be assigned. Neither field is required, though if a selection is made in the :guilabel:`Salesperson`
+field, the :guilabel:`Sales Team` field is populated automatically, based on the salesperson's team
+assignments.
+
+If the lead has already been assigned to a salesperson or a team, these fields automatically
+populate with that information.
+
+.. image:: convert/convert-leads-conversion-action.png
+   :align: center
+   :alt: Create opportunity pop-up.
+
+Under the :guilabel:`Customer` heading, choose from the following options:
+
+- :guilabel:`Create a new customer`: choose this option to use the information in the lead to create
+  a new customer record.
+- :guilabel:`Link to an existing customer`: choose this option, then select a customer from the
+  resulting drop-down menu, to link this opportunity to an existing customer record.
+- :guilabel:`Do not link to a customer`: choose this option to convert the lead, but not link it to
+  a new or existing customer.
+
+Lastly, when all configurations are complete, click :guilabel:`Create Opportunity`.
+
+To view the newly created opportunity, navigate to :menuselection:`CRM app --> My Pipeline`.
+
+.. note::
+   Some filters may need to be removed from the :guilabel:`Search...` bar on the top
+   :guilabel:`Pipeline` page to view all opportunities.
+
+
+
+==================================================
+SECTION: email_manual.rst
+PATH: applications/sales/crm/acquire_leads/email_manual.rst
+==================================================
+
+=====================================
+Create leads (from email or manually)
+=====================================
+
+.. |st-o| replace:: :icon:`fa-star-o`
+.. |st| replace:: :icon:`fa-star`
+
+Leads can be added to the *CRM* app from custom email aliases, and by manually creating new
+records. This is in addition to the leads and opportunities created in the app through the
+:doc:`website contact form <opportunities_form>`.
+
+First, ensure the *Leads* feature is enabled in the database by navigating to :menuselection:`CRM
+app --> Configuration --> Settings`. Tick the :guilabel:`Leads` checkbox, then click
+:guilabel:`Save`.
+
+.. _crm/configure_email_alias:
+
+Configure email aliases
+=======================
+
+Each sales team has the option to create and utilize their own unique email alias. When messages
+are sent to this address, a lead (or opportunity), is created with the information from the
+message.
+
+To create or update a sales teams' email alias, navigate to :menuselection:`CRM app -->
+Configuration --> Sales Teams`. Click on a team from the list to open the team's details page.
+
+.. image:: email_manual/email-alias.png
+   :align: center
+   :alt: The sales team details page, focused on the email alias section.
+
+In the :guilabel:`Email Alias` field, enter a name for the email alias, or edit the existing name.
+In the :guilabel:`Accept Emails From` field, use the drop-down menu to choose who is allowed to send
+messages to this email alias:
+
+- :guilabel:`Everyone`: messages are accepted from any email address.
+- :guilabel:`Authenticated Partners`: only accepts messages from email addresses associated with a
+  a partner (contact or customer) record.
+- :guilabel:`Followers only`: only accepts messages from those who are following a record related to
+  the team, such as a lead or opportunity. Messages are also accepted from team members.
+- :guilabel:`Authenticated Employees`: only accepts messages from email addresses that are connected
+  to a record in the *Employees* app.
+
+Leads created from email
+------------------------
+
+Leads created from email alias messages can be viewed by navigating to :menuselection:`CRM app -->
+Leads`. Click a lead from the list to open it, and view the details.
+
+The email received by the alias is added to the *chatter* thread for the lead. The subject line of
+the message is added to the title field, and the :guilabel:`Email` field is updated with the
+contact's email address.
+
+.. image:: email_manual/chatter-message.png
+   :align: center
+   :alt: The chatter thread of a newly created lead in the CRM app.
+
+.. note::
+   If the *leads* feature is **not** enabled on the database, messages to the email alias are added
+   to the database as opportunities.
+
+.. seealso::
+   :doc:`../../../general/email_communication`
+
+Manually create leads
+=====================
+
+Leads can be added directly to the *CRM* app by manually creating a new record. Navigate to
+:menuselection:`CRM app --> Leads` to view a list of existing leads.
+
+.. tip::
+   Leads can also be added via the :doc:`Generate Leads <lead_mining>` button.
+
+At the top-left of the list, click :guilabel:`New` to open a blank :guilabel:`Leads` form.
+
+In the first field of the new form, enter a title for the new lead. Next, enter a :guilabel:`Contact
+Name`, and a :guilabel:`Company Name`.
+
+.. note::
+   If a lead is :doc:`converted to an opportunity <convert>`, the :guilabel:`Company Name` field is
+   used to either link this opportunity to an existing customer, or to create a new customer.
+
+Manually create opportunities
+-----------------------------
+
+To manually create an opportunity, navigate to :menuselection:`CRM app --> Sales --> My Pipeline`.
+At the top-left of the page, click :guilabel:`New` to create a new opportunity Kanban card. In the
+:guilabel:`Organization/Contact` field, enter the name of the company the opportunity is for.
+
+Choose a name, and enter it in the :guilabel:`Opportunity` field. *This is a required field.* When
+manually creating an opportunity, it is helpful to add a name that relates to the details of the
+opportunity.
+
+.. example::
+   In the example below, the opportunity is named `5 VP Chairs`. This identifies the product the
+   customer is interested in, as well as the potential number of products.
+
+   .. image:: email_manual/opportunity-example.png
+      :align: center
+      :alt: An example of an opportunity in the CRM pipeline.
+
+Enter the contact information for the opportunity in the :guilabel:`Email` and :guilabel:`Phone`
+fields.
+
+In the :guilabel:`Expected Revenue` field, enter an estimated value for the opportunity.
+
+.. note::
+   The information in the :guilabel:`Expected Revenue` and priority fields can be used to track
+   performance for individual salespeople, and on a team basis. See
+   :doc:`../performance/expected_revenue_report` and :doc:`../track_leads/lead_scoring` for more
+   information.
+
+Then, use the |st-o| :guilabel:`(star)` icons to assign a priority.
+
+- |st-o| |st-o| |st-o|: low priority
+- |st| |st-o| |st-o|: medium priority
+- |st| |st| |st-o|: high priority
+- |st| |st| |st|: very high priority
+
+.. note::
+   Assigning a priority changes the order of leads in Kanban view, with higher priority leads
+   displayed first.
+
+Once all the necessary information has been entered, click :guilabel:`Add`.
+
+.. image:: email_manual/create-opportunities.png
+   :align: center
+   :alt: The CRM pipeline with a newly created opportunity.
+
+
+==================================================
+SECTION: expected_revenue_report.rst
+PATH: applications/sales/crm/performance/expected_revenue_report.rst
+==================================================
+
+=======================
+Expected revenue report
+=======================
+
+*Expected revenue* is the total cash value of leads that are expected to close by a certain date,
+usually the end of the current month.
+
+An *expected revenue report* compiles all active leads in a sales pipeline that have a set expected
+closing date, and compares how sales teams are performing in a given time frame.
+
+.. image:: expected_revenue_report/expected-revenue-closing.png
+   :align: center
+   :alt: Close up of the expected closing date on a lead in the CRM app.
+
+By pulling a monthly expected revenue report, sales managers can see which team members are reaching
+their goals, and who may need additional assistance to close valuable deals.
+
+Create an expected revenue report
+=================================
+
+To create an expected revenue report, first navigate to :menuselection:`CRM app --> Reporting -->
+Pipeline`. This opens the :guilabel:`Pipeline Analysis` dashboard.
+
+.. important::
+   The *Pipeline Analysis* dashboard includes several filters in the search bar by default. Remove
+   these before adding any additional custom filters.
+
+On the top-left of the report, click :guilabel:`Measures`, then select :guilabel:`Expected Revenue`
+from the drop-down menu.
+
+At the top of the page, click the :guilabel:`🔻(triangle pointed down)` icon to the right of the
+:guilabel:`Search...` bar to open the drop-down menu that contains :guilabel:`Filters`,
+:guilabel:`Group By`, and :guilabel:`Favorites` columns. Under the :guilabel:`Filters` column, click
+:guilabel:`Add Custom Filter`, which opens an :guilabel:`Add Custom Filter` pop-up window.
+
+.. _expected_revenue_report/custom-filters:
+
+Add custom filters
+------------------
+
+In order to generate an expected revenue report, filters need to be created for the following
+conditions:
+
+ - :ref:`Expected closing date <expected_revenue_report/closing-date>`: limits results to only
+   include leads expected to close within a specific time frame.
+ - :ref:`Exclude unassigned leads <expected_revenue_report/unassigned-leads>`: excludes leads
+   without an assigned salesperson.
+ - :ref:`Specific sales teams <expected_revenue_report/sales-team>`: limits results to only include
+   leads assigned to one or more sales teams. This filter is optional and should not be included if
+   the report is intended for the entire company.
+
+.. _expected_revenue_report/closing-date:
+
+Add filter for expected closing date
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On the :guilabel:`Add Custom Filter` pop-up window, click into the first field of the new rule.
+Type `Expected Closing` into the :guilabel:`Search...` bar, or scroll to select it from the list.
+Click in the second field and select :guilabel:`is set`. This limits the results to only include
+leads where an estimated closing date is listed.
+
+Next, click the :guilabel:`➕ (plus)` icon to the right of the rule to duplicate it.
+
+.. tip::
+   Using the :guilabel:`➕ (plus)` icon makes it easy to add multiple rules based on the same
+   filter.
+
+In the second field of the new rule, select :guilabel:`is between` from the drop-down menu. This
+creates a set time frame during which the expected closing date must occur for leads to be included
+in the results.
+
+Click in each date field, one at a time, and use the calendar popover window to add both a start and
+end date to the rule. This is usually the beginning and ending of the current month, or fiscal
+quarter.
+
+.. _expected_revenue_report/unassigned-leads:
+
+Exclude unassigned leads
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+After filtering for the expected closing date, add a :guilabel:`New Rule`. Then, click into the new
+rule's first field, and type `Salesperson` in the :guilabel:`Search...` bar, or scroll through the
+list to select it. Click in the rule's second field and select :guilabel:`is set` from the drop-down
+menu. This excludes any results without an assigned salesperson.
+
+.. _expected_revenue_report/sales-team:
+
+Add a filter for sales teams
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+   This filter is optional. To view results for the entire company, do **not** add this filter, and
+   continue to :ref:`View results <expected_revenue_report/view-results>`.
+
+To limit the results of the report to one or more sales teams, click :guilabel:`New Rule`. Next,
+click the first field for the new rule, and type `Sales Team` in the :guilabel:`Search...` bar, or
+scroll to search through the list to locate it.
+
+In the rule's second field, select :guilabel:`is in` from the drop-down menu. Selecting this
+operator limits results to the sales teams indicated in the next field.
+
+Lastly, click into the third field, and either: make a selection from the complete list revealed in
+the popover menu, or type the first few characters of the specific sales team's title to quickly
+find and select it as a parameter.
+
+.. tip::
+   Multiple teams can be added to the `Sales Team` rule, where each parameter is treated with an
+   "or" (e.g. "any") operator in the search logic.
+
+.. image:: expected_revenue_report/custom-filters.png
+   :align: center
+   :alt: Add Custom Filters pop-up window with custom filters configured for expected revenue
+         report.
+
+.. _expected_revenue_report/view-results:
+
+View results
+============
+
+At the top of the :guilabel:`Add Custom Filter` form, there is an option to match :guilabel:`any` or
+:guilabel:`all` of the rules. In order to properly run the report, only records that match **all**
+of the following filters should be included. Before adding the filters, make sure :guilabel:`all` is
+selected in this field.
+
+.. image:: expected_revenue_report/match-all-filters.png
+   :align: center
+   :alt: Emphasis on the match all filters option on the Add Custom Filter pop-up window.
+
+At the bottom of the :guilabel:`Add Custom Filter` form, click :guilabel:`Add`.
+
+View options
+------------
+
+The expected revenue report benefits from utilizing multiple views. The default graph view can be
+used to identify which salespeople are expected to bring in the most revenue, while the list view
+and pivot view provide more detail on specific deals.
+
+.. tabs::
+
+   .. tab:: Graph view
+
+      The *graph view* is used to visualize data, and is beneficial in identifying patterns and
+      trends.
+
+      *Bar charts* are used to show the distribution of data across several categories or among
+      several salespeople.
+
+      *Line charts* are useful to show changing trends over a period of time.
+
+      *Pie charts* are useful to show the distribution, or comparison, of data among a small number
+      of categories or salespeople, specifically how they form the meaningful part of a whole
+      picture.
+
+      The default view for the expected revenue report is the bar chart, stacked. To change to a
+      different graph view, click one of the icons at the top-left of the report. While both the
+      line chart and bar chart are available in stacked view, the pie chart is not.
+
+      .. figure:: expected_revenue_report/graph-view-icons.png
+         :align: center
+         :alt: Close up view of the graph icons on the Pipeline analysis report in the CRM app.
+
+         Graph view icons in order: bar chart, line chart, pie chart, stacked.
+
+   .. tab:: List view
+
+      The *list view* provides a list of all leads that are expected to close by the designated
+      date. Clicking on a lead in list view opens the record for detailed analysis, but many
+      insights can be gleaned from the basic view.
+
+      To switch to the list view, click the :guilabel:`≣ (list)` icon at the top-right of the
+      report.
+
+      .. image:: expected_revenue_report/list-icon.png
+         :align: center
+         :alt: Close up of the list view icon in the CRM app.
+
+      To add additional metrics to the report, click the *additional options menu* indicated by the
+      :guilabel:`toggle` icon at the top-right of the list.
+
+      .. figure:: expected_revenue_report/toggle-icon.png
+         :align: center
+         :alt: Close up of the toggle icon in the CRM app.
+
+         Clicking the toggle icon in *list view* opens the *additional options menu*.
+
+      Select any additional metrics from the drop-down menu to add them to the list view. Some
+      options that may be useful are :guilabel:`Expected Closing` and :guilabel:`Probability`.
+
+   .. tab:: Pivot view
+
+      The *pivot view* arranges all leads that are expected to close by the designated date into a
+      dynamic table.
+
+      To switch to the pivot view, click the :guilabel:`Pivot` icon at the top-right of the report.
+
+      .. image:: expected_revenue_report/pivot-view-icon.png
+         :align: center
+         :alt: Close up of the pivot view icon in the CRM app.
+
+      When the pivot view is selected for this report, the X-axis lists the stages in
+      the pipeline, while the Y-axis defaults to group the results by their creation date. To switch
+      these groupings, click the flip access icon (:guilabel:`⇄`) at the top of the report.
+
+      To add additional measures to the report, click the :guilabel:`Measures` button at the
+      top-left of the report. Select any additional metrics from the drop-down menu.
+
+      To add a group to a row or column to the pivot view, click the :guilabel:`➕ (plus sign)` next
+      to :guilabel:`Total`, and then select one of the groups. To remove one, click the
+      :guilabel:`➖ (minus sign)` and de-select the appropriate option.
+
+      Click :guilabel:`Insert in Spreadsheet` to add the pivot view into an editable spreadsheet
+      format within the *Dashboards* app. If the Odoo *Documents* app is installed, the report can
+      be inserted into a blank or existing spreadsheet, and exported.
+
+
+==================================================
+SECTION: forecast_report.rst
+PATH: applications/sales/crm/performance/forecast_report.rst
+==================================================
+
+===============
+Forecast report
+===============
+
+.. |caret| replace:: :icon:`fa-caret-down` :guilabel:`(down)` icon
+.. |pivot| replace:: :icon:`oi-view-pivot` :guilabel:`(pivot)` icon
+.. |list| replace:: :icon:`oi-view-list` :guilabel:`(list)` icon
+
+The *Forecast* report in the *CRM* app allows users to view upcoming opportunities and build a
+forecast of potential sales. Opportunities are grouped by the month of their expected closing date,
+and can be dragged-and-dropped to adjust the deadline.
+
+To access the *Forecast* report, navigate to :menuselection:`CRM app --> Reporting --> Forecast`.
+
+Navigate the forecast report
+============================
+
+The default :guilabel:`Forecast` report includes opportunities assigned to the current user's
+pipeline, and are expected to close within four months. It also shows opportunities without an
+assigned expected closing date. The opportunities are grouped by month in a :icon:`oi-view-kanban`
+:guilabel:`(Kanban)` view.
+
+.. image:: forecast_report/sample-report.png
+   :align: center
+   :alt: A sample version of the Forecast report in the CRM app.
+
+Expected closing date
+---------------------
+
+Opportunities are grouped by the date assigned in the *Expected Closing* field on an opportunity
+form. To change this date directly from the :guilabel:`Forecast` page, select the Kanban card for
+the desired opportunity, then click and drag the card to the desired column.
+
+.. note::
+   The default time frame for the forecast is *month*. This can be changed by clicking the |caret|
+   next to the :guilabel:`Search...` bar at the top of the report. Under the :guilabel:`Group By`
+   heading in the resulting drop-down menu, click :guilabel:`Expected Closing` to expand the list of
+   available options, and select a desired amount of time from the list.
+
+After an opportunity is added to a new month, the *Expected Closing* field on the opportunity form
+is updated to the *last* date of the new month.
+
+.. tip::
+   The *Expected Closing* field can also be manually updated on the opportunity card. To do that,
+   click on the Kanban card for an opportunity on the :guilabel:`Forecast` page to open the
+   opportunity's detail form. Click in the :guilabel:`Expected Closing` field, and use the calendar
+   popover to select a new closing date.
+
+Prorated revenue
+----------------
+
+The prorated revenue is the :guilabel:`Expected Revenue` amount that is displayed at the top of the
+column for each month on the :guilabel:`Forecast` reporting page. This value is situated to the
+right of the progress bar. The calculation for :guilabel:`Expected Revenue` is the total of the
+prorated revenue specific to that particular time frame.
+
+The prorated revenue is calculated using the formula below:
+
+.. math::
+
+   \text{Expected Revenue} \times \text{Probability} = \text{Prorated Revenue}
+
+As opportunities are moved from one column to another, the column's revenue is automatically updated
+to reflect the change.
+
+.. example::
+   A forecast report for June includes two opportunities:
+
+   The first opportunity, `Global Solutions`, has an expected revenue of `$3,800`, and a probability
+   of `90%`. This results in a prorated revenue of `$3,420`.
+
+   The second opportunity, `Quote for 600 Chairs`, has an expected revenue of `$22,500`, and a
+   probability of `20%`. This results in a prorated revenue of `$4,500`.
+
+   The combined prorated revenue of the opportunities is `$7,920`, which is listed at the top of the
+   column for the month.
+
+   .. image:: forecast_report/example-revenue.png
+      :align: center
+      :alt: An example of the prorated revenue for one month of the forecast report.
+
+.. seealso::
+   For more information on how probability is assigned to opportunities, see
+   :doc:`../track_leads/lead_scoring`
+
+View results
+============
+
+Click the :icon:`fa-area-chart` :guilabel:`(area chart)` icon to change to graph view. Then, click
+the corresponding icon at the top of the report to switch to a :icon:`fa-bar-chart` :guilabel:`(bar
+chart)`, :icon:`fa-line-chart` :guilabel:`(line chart)`, or :icon:`fa-pie-chart` :guilabel:`(pie
+chart)`.
+
+.. image:: forecast_report/pie-chart-view.png
+   :align: center
+   :alt: A pie chart view of the Forecast report.
+
+Click the |pivot| to change to the pivot view, or the |list| to change to the list view.
+
+.. tip::
+   The :ref:`pivot view <reporting/using-pivot>` can be used to view and analyze data in a more
+   in-depth manner. Multiple measures can be selected, and data can be viewed by month, and by
+   opportunity stage.
+
+   .. image:: forecast_report/pivot-view.png
+      :align: center
+      :alt: A sample of the forecast report in the pivot view.
+
+.. seealso::
+   To save this report as a *favorite*, see :ref:`search/favorites`.
+
+
+==================================================
+SECTION: gamification.rst
+PATH: applications/sales/crm/optimize/gamification.rst
+==================================================
+
+================
+CRM Gamification
+================
+
+In Odoo's *CRM* app, *gamification tools* provide the opportunity to evaluate and motivate users
+through customizable challenges, goals, and rewards. Goals are created to target actions within the
+*CRM* app, and can be tracked and rewarded automatically to participating sales teams.
+
+Configuration
+=============
+
+To install the *CRM Gamification* module, navigate to the :menuselection:`Apps` application. Click
+into the :guilabel:`Search...` bar at the top of the page and remove the :guilabel:`Apps` filter.
+Type `CRM Gamification` to search.
+
+On the :guilabel:`CRM Gamification` module, click :guilabel:`Install`. This module features goals
+and challenges related to the *CRM* and *Sales* applications.
+
+.. image:: gamification/gamification-module-install.png
+   :align: center
+   :alt: View of the gamification module being installed in Odoo.
+
+.. note::
+   If **both** the *CRM* and *Sales* apps are installed, the *CRM Gamification* module is
+   automatically installed on the database.
+
+To access the *Gamification Tools* menu, first enable :ref:`developer-mode`.
+
+Next, navigate to :menuselection:`Settings app --> Gamification Tools`.
+
+.. image:: gamification/gamification-tools-menu.png
+   :align: center
+   :alt: View if the gamification tools menu in Odoo Settings.
+
+.. _crm/create-rewards:
+
+Create badges
+=============
+
+*Badges* are awarded to users when they have completed a challenge. Different badges can be awarded
+based on the type of task completed, and can be issued to more than one user, depending on the time
+they accomplish the goal.
+
+To view the existing badges, or create a new one, navigate to :menuselection:`Settings -->
+Gamification Tools --> Badges`.
+
+.. image:: gamification/badges.png
+   :align: center
+   :alt: View of the badges page in Odoo.
+
+.. note::
+   Some badges can be awarded outside of challenges, as well. Select the Kanban card for the desired
+   badge, then click :guilabel:`Grant`. This opens a :guilabel:`Grant Badge` pop-up window. Select
+   a user from the :guilabel:`Who would you like to reward?` field.
+
+   Add any additional information regarding why the user is receiving the reward in the field below,
+   then click :guilabel:`Grant Badge`.
+
+To create a new badge, click :guilabel:`New` at the top-left of the page to open a blank form.
+Enter a name for the :guilabel:`Badge`, followed by a description.
+
+The :guilabel:`Allowance to Grant` field determines when a badge can be granted, and by whom:
+
+- :guilabel:`Everyone`: this badge can be manually granted by any user.
+- :guilabel:`A selected list of users`: this badge can only be granted by a select group of users.
+  If this option is selected, it generates a new field, :guilabel:`Authorized Users`. Choose the
+  appropriate users from this drop-down list.
+- :guilabel:`People having some badges`: this badge can only be granted by users who have already
+  been awarded a specific badge. If this option is selected it generates a new field,
+  :guilabel:`Required Badges`. Use this drop-down list to select the badge(s) a user must have
+  before they can award this badge to others.
+- :guilabel:`No one, assigned through challenges`: this badge cannot be manually granted, it can
+  only be awarded through challenges.
+
+To limit the number of badges a user can send, tick the :guilabel:`Monthly Limited Spending`
+checkbox. This sets a limit on the number of times a user can grant this badge. In the
+:guilabel:`Limitation Number` field, enter the maximum number of times this badge can be sent per
+month, per person.
+
+.. image:: gamification/create-badge.png
+   :align: center
+   :alt: The details page for a new badge.
+
+.. _crm/create-challenge:
+
+Create a challenge
+==================
+
+To create a challenge, navigate to to :menuselection:`Settings --> Gamification Tools -->
+Challenges`. Click :guilabel:`New` in the top-left corner to open a blank challenge form.
+
+At the top of the form, enter a :guilabel:`Challenge Name`.
+
+Create assignment rules
+-----------------------
+
+To assign the challenge to specific users, one or more assignment rules must be utilized.
+
+Click into the first field under :guilabel:`Assign Challenge to`, and select a parameter from the
+drop-down list to define the rule. Then, click into the next field to define the rule's operator. If
+necessary, click into the third field to further define the parameter.
+
+.. tip::
+   To include all users with permissions in the *Sales* app, create a rule with the following
+   parameters:
+
+   - :guilabel:`Groups`
+   - :guilabel:`is in`
+   - `Sales/User: Own Documents Only`
+
+   .. image:: gamification/assignation-rule.png
+     :align: center
+     :alt: View of the assignation rules section of a Challenge form.
+
+In the :guilabel:`Periodicity` field, select a time frame for goals to be automatically assessed.
+
+Add goals
+---------
+
+Challenges can be based on a single goal, or can include multiple goals with different targets. To
+add a goal to the challenge, click :guilabel:`Add a line` on the :guilabel:`Goals` tab.
+
+In the :guilabel:`Goal Definition` field, choose a goal from the drop-down list. The
+:guilabel:`Condition` field automatically updates to reflect the condition set on the goal
+definition.
+
+.. tip::
+   The *CRM Gamification* module contains preconfigured goals geared towards salesteams:
+
+   - :guilabel:`New Leads`
+   - :guilabel:`Time to Qualify a Lead`
+   - :guilabel:`Days to Close a Deal`
+   - :guilabel:`New Opportunities`
+   - :guilabel:`New Sales Orders`
+
+Enter a :guilabel:`Target` for the goal based on the :guilabel:`Suffix`.
+
+Repeat these steps for each additional goal.
+
+.. image:: gamification/challenge-goals.png
+   :align: center
+   :alt: The goals tab of a challenge form.
+
+Add rewards
+-----------
+
+Next, click the :guilabel:`Reward` tab. Choose the :ref:`badges <crm/create-rewards>` to be awarded
+:guilabel:`For 1st User` and :guilabel:`For Every Succeeding User` by selecting them from the
+drop-down lists.
+
+.. note::
+   Badges are granted when a challenge is finished. This is either at the end of a running period,
+   at the end date of a challenge, or when the challenge is manually closed.
+
+After setup is complete, click the :guilabel:`Start Challenge` button at the top-left of the page to
+begin the challenge.
+
+
+==================================================
+SECTION: lead_distribution_report.rst
+PATH: applications/sales/crm/track_leads/lead_distribution_report.rst
+==================================================
+
+========================
+Lead distribution report
+========================
+
+A *lead distribution report* can be used to see if active leads are being assigned equitably
+across sales members. It can also be used to view the distribution of good or :doc:`quality leads
+<quality_leads_report>`, and see how frequently each salesperson is receiving (and keeping) leads.
+
+Lead distribution reports can be run each week to help keep salespeople on track, while
+providing them with ample good leads. These reports can also be used to see whether sales members
+are staying productive, if good leads are being lost too often by one salesperson, and what
+percentage of good leads are being retained overall.
+
+Create lead distribution reports
+================================
+
+To create a lead distribution report, first navigate to :menuselection:`CRM app --> Reporting -->
+Pipeline`, which reveals the :guilabel:`Pipeline Analysis` dashboard.
+
+Remove all the default filters in the search bar at the top of the page. Doing so
+displays data related to *all* leads.
+
+:ref:`Custom filters <search/custom-filters>` can now be added by clicking the :icon:`fa-caret-down`
+:guilabel:`(down caret)` icon, to the right of the search bar, to reveal a drop-down menu of search
+and filter options.
+
+Three columns are displayed: :ref:`Filters <search/filters>`, :ref:`Group By <search/group>`, and
+:ref:`Favorites <search/favorites>`. To begin, navigate to the bottom of the :guilabel:`Filters`
+column, and click :guilabel:`Add Custom Filter`. This opens an :guilabel:`Add Custom Filter` pop-up
+window, where the essential filters can be added one at a time.
+
+.. _crm/track_leads/essential-filters:
+
+Essential filters
+-----------------
+
+The following filter conditions are used to create a basic lead distribution report. Together they
+gather all leads created within a certain timespan that have an associated contact method and have
+been assigned to a sales team.
+
+Lead creation date
+~~~~~~~~~~~~~~~~~~
+
+Click the first field, under :guilabel:`Match any of the following rules:`, that has the value
+:guilabel:`Country` in it. In the popover that appears, type `Created on` in the search bar, or
+scroll to search through the list to locate and select it.
+
+Then, in the second field of that row, select :guilabel:`>=` from the drop-down menu. This operator
+**only** includes values greater than (or equal to) the value in the third, rightmost field.
+
+The third field on the :guilabel:`Add Custom Filter` pop-up window should contain the earliest date
+leads are selected from.
+
+For example, setting `01/01/2024 00:00:00` only includes leads created from, and including, the
+first day of 2024.
+
+.. image:: lead_distribution_report/created-on.png
+   :align: center
+   :alt: Add a Created On rule for the start of the year onward.
+
+.. _crm/track_leads/sales-team:
+
+Sales team
+~~~~~~~~~~
+
+Click :guilabel:`New rule` to add another row to the form, and choose :guilabel:`Sales Team` for
+this rule's parameter. Then, click the second field of the new rule, and select :guilabel:`contains`
+from the drop-down menu. Selecting this operator filters for any records that contain the words in
+the third, rightmost field.
+
+.. tip::
+   For certain pre-determined, limited choices like a sales team, the :guilabel:`is in` operator
+   helps make for an easier and more accurate selection, via a drop-down menu in the third field,
+   instead of risking a typo or incorrect value in the text box field that accompanies the
+   :guilabel:`contains` operator.
+
+In this third field, enter the name of the desired sales team(s) that are to be included in the
+report. It is important for all :guilabel:`contains` argument values to be specific enough and
+spelled correctly as they exist in Odoo, otherwise this risks returning multiple (or zero) values.
+
+.. image:: lead_distribution_report/sales-team-location.png
+   :align: center
+   :alt: Use Sales Team to filter the location the lead is associated with.
+
+.. important::
+   By adding more than one rule to the form, a new option emerges at the top of the pop-up window
+   above all the filters, to specify whether :guilabel:`any` :icon:`fa-caret-down` or
+   :guilabel:`all` :icon:`fa-caret-down` of the conditions should match. This distinction is
+   important to set correctly, as it impacts the driving logic of how the filters return data.
+
+Click the default :guilabel:`any` :icon:`fa-caret-down` menu item and be sure the :guilabel:`all`
+:icon:`fa-caret-down` option is chosen instead. This setting will **only** show records that match
+*all* the rules contained inside the form.
+
+.. _crm/track_leads/phone-number:
+
+Contact method
+~~~~~~~~~~~~~~
+
+.. note::
+   The instruction below is not necessary, however, it's highly recommended to add a set contact
+   value to the report's search criteria. A lot of spam, duplicate, or low quality leads can easily
+   be screened out of the report simply by adding either a set :guilabel:`Phone` or
+   :guilabel:`Email` rule.
+
+Add another :guilabel:`New rule` to the form and set the first field to the first field to
+:guilabel:`Phone`. Then, select :guilabel:`is set` from the drop-down menu in the second field.
+Selecting this operator **only** filters for records that have a phone number associated with the
+lead.
+
+Alternatively (or in addition to the above rule), click :guilabel:`New rule` and set the first field
+to :guilabel:`Email`. Then, select :guilabel:`is set` from the drop-down menu in the second field.
+
+These rules add only leads with an associated contact method to the report.
+
+.. _crm/track_leads/active-status:
+
+Active status
+~~~~~~~~~~~~~
+
+Click the :icon:`fa-sitemap` :guilabel:`(Add branch)` icon to the right of the `Phone is set` line,
+to add a new rule that branches from the rules above.
+
+Two horizontal sets of fields appear below a line showing :guilabel:`any` :icon:`fa-caret-down`
+:guilabel:`of:` option. This setting filters for records that match **any** of the rules contained
+inside. This uses the same logic as an OR (`|`) logical operator.
+
+Set the first field to :guilabel:`Active`. Then, select :guilabel:`is set` in the next field.
+
+Next, click the :icon:`fa-plus` :guilabel:`(Add New Rule)` button next to :guilabel:`Active is set`
+to create a new line of fields beneath it.
+
+Set the first field to :guilabel:`Active`. Then, select :guilabel:`is not set` in the next field.
+
+.. image:: lead_distribution_report/active-set.png
+   :align: center
+   :alt: Use Active to include active status in the report.
+
+This rule adds the activity status of the lead to the report.
+
+.. note::
+   Active status is an important filter to include when creating a lead distribution report because
+   it includes **all** leads regardless of won/lost or active/inactive status in the report. This
+   provides a comprehensive view of all the leads assigned to each sales member.
+
+Group by
+~~~~~~~~
+
+Once all filters are set, click the :guilabel:`Add` button to add these filters to the search bar.
+To have the report grouped appropriately, click the :icon:`fa-caret-down` :guilabel:`(down caret)`
+icon, to the right of the search bar, and click :guilabel:`Salesperson` in the :guilabel:`Group
+By` section. All results are now grouped by the salesperson assigned to each lead.
+
+Once the rules for the filter are set, click the purple :guilabel:`Confirm` button at the bottom of
+the pop-up menu to save the custom filter and close the pop-up menu.
+
+The :guilabel:`Pipeline Analysis` dashboard is now displayed again with each filter rule in the
+search bar.
+
+Click the :icon:`fa-area-chart` :guilabel:`(Graph)` icon, to the right of the search bar, to view
+the report as a bar chart. Alternatively, click the :icon:`oi-view-list` :guilabel:`(List)` icon to
+view leads in a grouped list.
+
+.. tip::
+   To save the filter so it can easily be re-applied, click the :guilabel:`Save current search`
+   button in the :guilabel:`Favorites` section of the search bar drop-down menu.
+
+   Next, type a name for the filter in the text box below. Check the :guilabel:`Shared` checkbox to
+   have the filter shared with any user with access to the pipeline. Finally, click the purple
+   :guilabel:`Save` button below to save the filter.
+
+   The filter will now appear with the name it was given under the :guilabel:`Favorites` section of
+   the drop-down menu and can be re-applied by clicking on it.
+
+Filter for quality leads
+------------------------
+
+The following additional conditions are provided as an example of a *good*, but *not comprehensive*,
+set of rules for finding quality leads. These filters should be applied on top of the
+:ref:`crm/track_leads/essential-filters` in the order specified to achieve a heavily-detailed
+filter.
+
+- **Referred-by:** Filter for referrals, such as by appointment or sales member.
+- **Source:** Filter for specific source UTMs, such as Facebook or LinkedIn.
+- **Notes:** Filter for internal notes.
+- **Tags:** Filter for categorical tags.
+- **Email:** Filter for specific email domains, such as gmail.com or yahoo.com.
+- **Salesperson:** Filter for leads associated with certain sales members.
+
+These conditions can be added, removed, or modified to best fit the desired information in the
+report.
+
+.. seealso::
+   - :ref:`quality_leads_report/add-quality-rules`
+   - :doc:`../../../essentials/search`
+
+
+==================================================
+SECTION: lead_enrichment.rst
+PATH: applications/sales/crm/optimize/lead_enrichment.rst
+==================================================
+
+===============
+Lead enrichment
+===============
+
+*Lead enrichment* is a service that provides business information for a contact attached to a lead.
+Lead enrichment is an In-App Purchase (IAP) that requires credits to use, and is available for
+existing leads in an Odoo database.
+
+The information provided by lead enrichment can include general information about the business
+(including full business name and logo), social media accounts, :guilabel:`Company type`,
+:guilabel:`Founded` information, :guilabel:`Sectors` information, the number of
+:guilabel:`Employees`, :guilabel:`Estimated revenue`, :guilabel:`Phone` number,
+:guilabel:`Timezone`, and :guilabel:`Technologies Used`.
+
+.. note::
+   Enterprise Odoo users with a valid subscription get free credits to test :abbr:`IAP (In-App
+   Purchase)` features before deciding to purchase more credits for the database. This includes
+   demo/training databases, educational databases, and one-app-free databases.
+
+.. important::
+   The *leads* feature **must** be activated in the *CRM* settings page in order to use lead
+   enrichment. To access the *CRM* settings, navigate to :menuselection:`CRM app --> Configuration
+   --> Settings`. Under the :guilabel:`CRM` section activate the :guilabel:`Leads` option and click
+   :guilabel:`Save`.
+
+Lead enrichment set up
+======================
+
+To set up lead enrichment in the *CRM* application, navigate to :menuselection:`CRM app -->
+Configuration --> Settings`. Then, under the :guilabel:`Lead Generation` section, tick the checkbox
+next to :guilabel:`Lead Enrichment`, and select either :guilabel:`Enrich leads on demand only` or
+:guilabel:`Enrich all leads automatically`. Click the :guilabel:`Save` button to activate the
+changes.
+
+.. image:: lead_enrichment/lead-enrichment-activate.png
+   :align: center
+   :alt: CRM lead generation settings page, with lead enrichment activation highlighted, and enrich
+         leads on demand only chosen.
+
+Enrich leads
+============
+
+Enrichment of leads is based on the domain of the email address of the customer set on the lead.
+There are two different ways that a lead can be enriched: *automatically* or *manually*.
+
+Automatically enrich leads
+--------------------------
+
+During set up, if :guilabel:`Enrich all leads automatically` was selected on the *CRM*
+:guilabel:`Settings` page, then no action needs to be taken by the user to enrich the lead. A
+scheduled action runs automatically, every sixty minutes, and enrichment occurs on leads, after a
+remote database is contacted.
+
+.. tip::
+   To access the cron that runs for the automatic lead enrichment, activate :ref:`developer mode
+   <developer-mode>`, and navigate to :menuselection:`Settings app --> Technical menu --> Automation
+   section --> Scheduled Actions`. In the :guilabel:`Search...` bar, type in `CRM`. Click into the
+   result labeled :guilabel:`CRM: enrich leads (IAP)`, and make any necessary adjustments. In the
+   :guilabel:`Execute Every` field, enter a value greater than, or equal to, five minutes.
+
+.. example::
+   The following is an example of lead enrichment data that has been autocompleted successfully:
+
+   .. image:: lead_enrichment/lead-enrichment-data.png
+      :align: center
+      :alt: Chatter showing lead enrichment data.
+
+Manually enrich leads
+---------------------
+
+If the :guilabel:`Enrich leads on demand only` option was selected on the *CRM* :guilabel:`Settings`
+page, when activating :guilabel:`Lead Enrichment`, each lead that a user wishes to enrich **must**
+be manually enriched. This is achieved by clicking the :guilabel:`Enrich` button in the top menu of
+the lead.
+
+The same information will be retrieved at the same :abbr:`IAP (In-App Puchase)` credit cost (one per
+enrichment). This method of enrichment is useful when every lead does not need to be enriched, or
+cost is an issue.
+
+.. image:: lead_enrichment/manual-enrichment.png
+   :align: center
+   :alt: Manual enrich button feature highlighted on the CRM lead.
+
+.. tip::
+   Manually enrich leads in bulk using the *list* view. First, navigate to :menuselection:`CRM app
+   --> Leads`, and click the list view button (:guilabel:`☰ (three horizontal lines)` icon). Next,
+   tick the checkboxes for the leads that should be manually enriched. Finally, click the
+   :guilabel:`⚙️ Action` icon, and select :guilabel:`Enrich` from the resulting drop-down menu. This
+   can also be achieved from the *My Pipeline* page. To do so, simply open the *CRM* app, or
+   navigate to :menuselection:`CRM app --> Sales --> My Pipeline`. Either route reveals leads and
+   opportunities on the :guilabel:`Pipeline` page.
+
+Pricing
+=======
+
+Lead enrichment is an In-App Purchase (IAP) feature, and each enriched lead costs one credit.
+
+.. note::
+   See here for full pricing information: `Lead Generation by Odoo IAP
+   <https://iap.odoo.com/iap/in-app-services/273>`_.
+
+To buy credits, navigate to :menuselection:`CRM app --> Configuration --> Settings`. In the
+:guilabel:`Lead Generation` section, under the :guilabel:`Lead Enrichment` feature, click on
+:guilabel:`Buy Credits`.
+
+.. image:: lead_enrichment/buy-lead-enrichment-credits-setting.png
+   :align: center
+   :alt: Buy credits from the lead enrichment settings.
+
+Credits and balances may also be purchased by navigating to the :menuselection:`Settings app`. In
+the :guilabel:`Contacts` section, under the :guilabel:`Odoo IAP` feature, click on :guilabel:`View
+My Services`.
+
+.. image:: lead_enrichment/view-my-services-setting.png
+   :align: center
+   :alt: Buy credits in the Odoo IAP settings.
+
+.. seealso::
+   :doc:`../../../essentials/in_app_purchase`
+
+.. important::
+   When collecting a company's contact information, make sure to be aware of the latest EU
+   regulations. For more information about General Data Protection Regulation, refer to: `Odoo GDPR
+   <http://odoo.com/gdpr>`__.
+
+
+==================================================
+SECTION: lead_mining.rst
+PATH: applications/sales/crm/acquire_leads/lead_mining.rst
+==================================================
+
+===========
+Lead mining
+===========
+
+.. |IAP| replace:: :abbr:`IAP (In-App Purchase)`
+.. |CC| replace:: :guilabel:`Companies and their Contacts`
+
+*Lead mining* is a feature that allows *CRM* users to generate new leads directly into their Odoo
+database. To ensure lead qualification, lead mining output is determined by a variety of filtering
+criteria, such as the country, the company size, and the industry.
+
+Configuration
+=============
+
+To get started, go to :menuselection:`CRM app --> Configuration --> Settings`, and tick the
+:guilabel:`Lead Mining` checkbox to activate the feature. Then, click :guilabel:`Save`.
+
+.. image:: lead_mining/activate-lead-mining.png
+   :align: center
+   :alt: Activate lead mining in Odoo CRM settings.
+
+Generate leads
+==============
+
+After the *Lead Mining* setting is activated, a new button called *Generate Leads* is available to
+use in the upper-left corner of the *CRM* *Pipeline* (:menuselection:`CRM app --> Sales --> My
+Pipeline`).
+
+Lead mining requests are also available through :menuselection:`CRM app --> Configuration --> Lead
+Mining Requests`, or through :menuselection:`CRM app --> Leads --> Leads`, where the
+:guilabel:`Generate Leads` button is also available.
+
+.. image:: lead_mining/generate-leads-button.png
+   :align: center
+   :alt: The Generate Leads button to use the lead mining feature.
+
+Click the :guilabel:`Generate Leads` button, and a pop-up window appears, offering a variety of
+criteria by which to generate leads.
+
+.. image:: lead_mining/generate-leads-popup.png
+   :align: center
+   :alt: The pop-up window with the selection criteria in order to generate leads in Odoo.
+
+Choose to generate leads for :guilabel:`Companies` to get company information only, or choose
+|CC| to get company information and individual employee contact information.
+
+.. note::
+   When targeting |CC|, additional options are available to filter contacts based on
+   :guilabel:`Role` or :guilabel:`Seniority`.
+
+Additional filtering options include the following:
+
+- :guilabel:`Countries`: filter leads based on the country (or countries) they are located in.
+- :guilabel:`States`: further filter leads based on the state in which they are located, if
+  applicable.
+- :guilabel:`Industries`: filter leads based on the specific industry they work in.
+- :guilabel:`Filter on Size`: tick this checkbox to specify the number of employees at the company.
+  This generates a field labeled :guilabel:`Size`. Fill in the blanks to create a range for the
+  desired company size.
+- :guilabel:`Sales Team`: choose which Sales Team the leads will be assigned to.
+- :guilabel:`Salesperson`: choose which member of the Sales Team the leads will be assigned to.
+- :guilabel:`Default Tags`: choose which tags are applied directly to the leads once found.
+
+.. important::
+   Make sure to be aware of the latest EU regulations when receiving contact information. Get more
+   information about the General Data Protection Regulation on `Odoo GDPR <http://odoo.com/gdpr>`_.
+
+View leads
+----------
+
+After leads are generated, they are assigned to the designated salesperson and team. To view
+additional information regarding the lead, select one from the list, and click to open it.
+
+In the chatter thread for the lead, additional information is provided. This can include the number
+of employees, the technology used by the company, the timezone, and direct contact information.
+
+.. image:: lead_mining/generated-lead.png
+   :align: center
+   :alt: The chatter thread of a newly generated lead.
+
+.. note::
+   If :guilabel:`Leads` are **not** enabled for the database, then leads are generated as
+   *opportunities*, and added to the pipeline for the designated salesperson.
+
+   To enable the :guilabel:`Leads` feature, navigate to :menuselection:`CRM app --> Configuration
+   --> Settings`, and tick the :guilabel:`Leads` checkbox. Then, click :guilabel:`Save`.
+
+Pricing
+=======
+
+Lead mining is an *In-App Purchase* feature, and each generated lead costs one :ref:`credit
+<in_app_purchase/credits>`.
+
+.. important::
+   Generating |CC| costs one additional credit for each contact generated. See here for complete
+   pricing information: `Lead Generation by Odoo IAP
+   <https://iap.odoo.com/iap/in-app-services/167?>`_.
+
+To buy credits, navigate to :menuselection:`CRM app --> Configuration --> Settings`. In the
+:guilabel:`Lead Generation` section, under the :guilabel:`Lead Mining` feature, click :guilabel:`Buy
+Credits`.
+
+Credits may also be purchased by navigating to the :menuselection:`Settings app`. In the
+:guilabel:`Contacts` section, under the :guilabel:`Odoo IAP` feature, click :guilabel:`View My
+Services`.
+
+.. image:: lead_mining/view-my-services-setting.png
+   :align: center
+   :alt: Buy credits in the Odoo IAP settings.
+
+.. note::
+   Enterprise Odoo users with a valid subscription get free credits to test |IAP| features before
+   purchasing more credits for the database. This includes demo/training databases, educational
+   databases, and one-app-free databases.
+
+.. seealso::
+   :doc:`/applications/essentials/in_app_purchase`
+
+
+==================================================
+SECTION: lead_scoring.rst
+PATH: applications/sales/crm/track_leads/lead_scoring.rst
+==================================================
+
+=========================================
+Assign leads with predictive lead scoring
+=========================================
+
+The Odoo **CRM** app can automatically assign leads/opportunities to sales teams and salespeople. A
+standard practice is to assign leads based on the probability of winning each lead. Companies can
+prioritize the leads that are more likely to result in successful deals by quickly assigning them to
+the appropriate salespeople.
+
+Odoo automatically calculates the probability of winning each lead using a method called *predictive
+lead scoring*.
+
+Predictive lead scoring
+=======================
+
+Predictive lead scoring is a machine-learning model that uses historical data from Odoo **CRM** to
+score open leads/opportunities.
+
+As a company processes opportunities through the CRM pipeline, Odoo collects data on which
+opportunities are won and lost. Predictive lead scoring uses this data to predict the probability of
+winning each new lead or opportunity.
+
+The more opportunities that are sent through the CRM pipeline, the more data Odoo collects,
+resulting in more accurate probabilities.
+
+Specifically, Odoo's predictive lead scoring uses the *naive Bayes* probability model:
+
+.. math::
+   \begin{equation}
+   P(A | B) = \frac{P(A) \times P(B | A)}{P(B)}
+   \end{equation}
+
+Breaking down the equation:
+
+- P(A|B) = The probability of a successful lead *in this case*
+- P(A) = The overall probability of a lead being successful regardless of the conditions
+- P(B|A) = The probability of this being the case given a lead is successful
+- P(B) = The probability of this being the case
+
+The term *in this case* refers to the variables that can affect a lead being successful in Odoo.
+This can include variables such as the assigned Salesperson, the source of the lead, the language of
+the lead, and other historical and demographic data.
+
+Which variables are considered in this calculation can be :ref:`configured
+<lead_scoring/configuration>` to tailor the calculation to each business's needs.
+
+The probability of success of each opportunity is displayed on the opportunity form, and it updates
+automatically as the opportunity progresses through the CRM pipeline.
+
+.. image:: lead_scoring/probability-opportunity-form.png
+   :alt: The probability of success displayed on the opportunity form.
+
+When an opportunity moves to the next stage, its probability of success automatically increases
+according to the predictive lead scoring algorithm.
+
+.. _lead_scoring/configuration:
+
+Configuration
+-------------
+
+Predictive lead scoring is always active in Odoo **CRM**. However, the variables used to calculate
+the probability of success can be customized in the settings.
+
+To customize the variables used by predictive lead scoring, go to :menuselection:`CRM -->
+Configuration --> Settings`. Under :guilabel:`Predictive Lead Scoring`, click on the
+:guilabel:`Update Probabilities` button.
+
+Then, click on the drop-down menu to choose which variables the predictive lead scoring feature
+takes into account.
+
+.. image:: lead_scoring/update-probabilities.png
+   :alt: The Update Probabilities window in the Predictive Lead Scoring settings.
+
+Any number of the following variables can be activated:
+
+- :guilabel:`State`: the geographical state from which the opportunity originates
+- :guilabel:`Country`: the geographical country from which the opportunity originates
+- :guilabel:`Phone Quality`: whether or not a phone number is listed for the opportunity
+- :guilabel:`Email Quality`: whether or not an email address is listed for the opportunity
+- :guilabel:`Source`: the source of an opportunity (e.g. search engine, social media)
+- :guilabel:`Language`: the spoken language specified on the opportunity
+- :guilabel:`Tags`: the tags placed on the opportunity
+
+.. note::
+   The variables `Stage` and `Team` are always in effect. `Stage` refers to the CRM pipeline stage
+   that an opportunity is in. `Team` refers to the sales team that is assigned to an opportunity.
+   Predictive lead scoring *always* takes into account these two variables, regardless of which
+   optional variables are selected.
+
+Next, click on the date field next to the option :guilabel:`Consider leads created as of the:` to
+select the date from which predictive lead scoring begins its calculations.
+
+Lastly, click :guilabel:`Confirm` to save changes.
+
+Change the probability manually
+-------------------------------
+
+An opportunity's probability of success can be changed manually on the opportunity form. Click on
+the probability number to edit it.
+
+.. important::
+   Manually changing the probability removes the automatic probability updates for that opportunity.
+   The probability no longer automatically updates as the opportunity moves through each stage of
+   the pipeline.
+
+To reactivate automatic probability, click on the gear icon next to the probability percentage.
+
+.. image:: lead_scoring/probability-gear-icon.png
+   :alt: The gear icon used to reactivate automatic probability on an opportunity form.
+
+Assign leads based on probability
+=================================
+
+Odoo **CRM** can assign leads/opportunities to sales teams and salespeople based on specified rules.
+Create assignment rules based on the leads' probability of success to prioritize those that are more
+likely to result in leads and opportunities.
+
+Configure rule-based assignment
+-------------------------------
+
+To activate *rule-based assignment*, navigate to :menuselection:`CRM --> Configuration -->
+Settings`, and activate :guilabel:`Rule-Based Assignment`.
+
+The rule-based assignment feature can be set to run :guilabel:`Manually`, meaning an Odoo user must
+manually trigger the assignment, or :guilabel:`Repeatedly`, meaning Odoo automatically triggers the
+assignment according to the chosen time period.
+
+To configure automatic lead assignment, select :guilabel:`Repeatedly` for the :guilabel:`Running`
+section. The frequency of this automatic assignment is customized within the :guilabel:`Repeat
+every` section. Enter a specific number and select a corresponding time period to establish the
+desired interval. Time periods range from :guilabel:`Minutes` to :guilabel:`Weeks`.
+
+.. image:: lead_scoring/rule-based-assignment.png
+   :alt: The Rule-Based Assignment setting in CRM settings.
+
+If :guilabel:`rule-based assignment` is set to run :guilabel:`Repeatedly`, the assignment can still
+be triggered manually using the circular arrow icon in the :guilabel:`Rule-Based Assignment`
+settings, or using the :guilabel:`Assign Leads` button on the sales team configuration page. Once a
+lead has been assigned to a salesperson via this rule, the leads are automatically converted into an
+opportunity by the system.
+
+Configure assignment rules
+--------------------------
+
+Next, configure the *assignment rules* for each sales team or salesperson. These rules determine
+which leads Odoo assigns to which people. To get started, navigate to :menuselection:`CRM -->
+Configuration --> Sales Teams`, and select a sales team.
+
+On the sales team configuration form, under :guilabel:`Assignment Rules`, click on :guilabel:`Edit
+Domain` to configure the rules that Odoo uses to determine lead assignment for this sales team. The
+rules can include anything that may be relevant for this company or team, and any number of rules
+can be added.
+
+Click :guilabel:`Add Filter` to start creating assignment rules. Click on the :icon:`fa-plus-circle`
+sign on the right of the assignment rule to add another line. Click on the :guilabel:`x` symbol to
+remove the line.
+
+To create an assignment rule based on an opportunity's probability of success, click on the far left
+drop-down menu of an assignment rule line, and select :guilabel:`Probability`.
+
+From the middle drop-down menu, select the desired equation symbol—most likely the symbol for
+*greater than*, *less than*, *greater than or equal to*, or *less than or equal to*.
+
+In the far right space, enter the desired number value of the probability. Finally, click
+:guilabel:`Save` to save changes.
+
+.. example::
+   To configure an assignment rule such that a sales team receives leads that have a probability of
+   success of 20% or greater, create a :guilabel:`Domain` line that reads: `Probability >= 20`.
+
+   .. image:: lead_scoring/probability-domain.png
+      :alt: Sales team domain set to probability greater than or equal to twenty percent.
+
+Separate assignment rules can also be configured for individual team members. From the sales team
+configuration page, click on a team member in the :guilabel:`Members` tab, then edit the
+:guilabel:`Domain` section. Click :guilabel:`Save` to save changes.
+
+If automatic lead assignment is configured in the settings, both the sales team and individual team
+members have the option to :guilabel:`Skip auto assignment`. Check this box to omit a particular
+sales team or salesperson from being assigned leads automatically by Odoo's rule-based assignment
+feature. If :guilabel:`Skip auto assignment` is activated, the sales team or salesperson can still
+be assigned leads manually.
+
+To manually assign leads to this sales team, click on the :guilabel:`Assign Leads` button at the top
+of the sales team configuration page. This assigns any leads that are currently unassigned and match
+this team's specified domain.
+
+
+==================================================
+SECTION: lost_opportunities.rst
+PATH: applications/sales/crm/pipeline/lost_opportunities.rst
+==================================================
+
+==================
+Lost opportunities
+==================
+
+Not every opportunity results in a successful sale. To keep the pipeline up-to-date, *lost*
+opportunities need to be identified. Specifying why an opportunity was lost helps identify recurring
+issues, reveal coaching opportunities, and can assist with improving overall sales strategy.
+
+.. note::
+   :doc:`Merging lost opportunities <merge_similar>` with active ones will pull them back into the
+   pipeline.
+
+Mark an opportunity as lost
+===========================
+
+To mark an opportunity as lost, first open the :menuselection:`CRM app`, and then select an
+opportunity from the pipeline by clicking on its corresponding Kanban card. Doing so reveals that
+opportunity's detail form.
+
+Then, click :guilabel:`Lost`, located at the top of the opportunity's detail form.
+
+.. image:: lost_opportunities/lost-opps-lost-button.png
+   :alt: Buttons from the top of an opportunity record with the lost button emphasized.
+
+This opens the :guilabel:`Mark Lost` pop-up window. From the :guilabel:`Lost Reason` drop-down menu,
+choose an existing lost reason. If no applicable reason is available, then create a new one by
+entering it into the :guilabel:`Lost Reason` field, and then clicking :guilabel:`Create`.
+
+Additional notes and comments can be added below the lost reason in the designated
+:guilabel:`Closing Note` field.
+
+.. tip::
+   Neither the :guilabel:`Lost Reason` field, nor the :guilabel:`Closing Note` field, on the
+   :guilabel:`Mark Lost` pop-up window are required. However, it is recommended to include this
+   information for the sake of traceability, accountability, and reporting purposes.
+
+When all the desired information has been entered in the :guilabel:`Mark Lost` pop-up window, click
+:guilabel:`Mark as Lost`.
+
+.. image:: lost_opportunities/lost-opps-lost-reason.png
+   :alt: Lost reasons popup with sample reasons.
+
+After clicking :guilabel:`Mark as Lost`, a red :guilabel:`Lost` banner is added to the upper-right
+corner of the opportunity.
+
+.. image:: lost_opportunities/lost-banner.png
+   :alt: A lost opportunity with the lost banner added.
+
+.. note::
+   To mark an *inactive* (archived) opportunity as lost, set the :guilabel:`Probability` field to
+   `0` percent.
+
+.. _crm/lost-reasons:
+
+Create/edit lost reasons
+========================
+
+To create a new lost reason, or edit an existing one, navigate to :menuselection:`CRM app -->
+Configuration --> Lost Reasons`.
+
+To edit an existing lost reason, click the reason to be edited to highlight it. From here, change
+the selected lost reason by editing the :guilabel:`Description` field.
+
+To create a new lost reason, click :guilabel:`New` in the upper-left corner of the :guilabel:`Lost
+Reasons` page. Then, type the new lost reason in the :guilabel:`Description` field.
+
+View lost opportunities
+=======================
+
+To retrieve lost opportunities, go :menuselection:`CRM app --> Sales --> My Pipeline`, then click on
+the search bar at the top of the page, and then remove all of the default filters.
+
+.. image:: lost_opportunities/lost-opps-lost-filter.png
+   :alt: Search bar with lost filter emphasized.
+
+Open the :guilabel:`Filters` drop-down menu by clicking the :icon:`fa-caret-down`
+:guilabel:`(dropdown)` icon to the right of the search bar to open the drop-down menu containing
+:guilabel:`Filters`, :guilabel:`Group By`, and :guilabel:`Favorites` options, designated into
+respective columns.
+
+Select the :guilabel:`Lost` option from the :guilabel:`Filters` section. Upon selecting
+:guilabel:`Lost`, only the opportunities marked as `Lost` appear on the :guilabel:`Pipeline` page.
+
+Sort opportunities by lost reason
+---------------------------------
+
+To filter opportunities by a specific lost reason, click the :icon:`fa-caret-down`
+:guilabel:`(dropdown)` icon to the right of the search bar again to open the drop-down menu. In
+addition to the :guilabel:`Lost` filter, under the :guilabel:`Filters` column, click :guilabel:`Add
+Custom Filter`, which opens an :guilabel:`Add Custom Filter` pop-up window.
+
+On the :guilabel:`Add Custom Filter` pop-up window, click in the first field and type `Lost Reason`
+in the search bar, or scroll to search through the list to locate it. Then, click into the next
+field, and select :guilabel:`=` from the drop-down menu. Click into the third field, and then select
+a lost reason from the drop-down menu. Finally, click :guilabel:`Add`.
+
+.. image:: lost_opportunities/lost-opps-lost-custom-filter.png
+   :alt: Search bar with custom filter added for lost reason.
+
+.. tip::
+   To view results for more than one lost reason, select the operator :guilabel:`is in` in the
+   second field of the custom filter in the :guilabel:`Add Custom Filter` pop-up window. Choosing
+   this operator makes it possible to choose multiple lost reasons in the third field.
+
+   .. image:: lost_opportunities/multiple-lost-reasons.png
+      :alt: Add Custom Filter pop-up with multiple lost reasons selected.
+
+Restore lost opportunities
+==========================
+
+To restore a lost opportunity, open the :menuselection:`CRM` app to reveal the :guilabel:`Pipeline`
+dashboard. Or, navigate to :menuselection:`CRM app --> Sales --> My Pipeline`. From here, click the
+:icon:`fa-caret-down` :guilabel:`(dropdown)` icon to the right of the search bar to open the
+drop-down menu that contains :guilabel:`Filters`, :guilabel:`Group By`, and :guilabel:`Favorites`
+columns.
+
+Under the :guilabel:`Filters` column, select :guilabel:`Lost`. Doing so reveals all the lost
+opportunities on the :guilabel:`Pipeline` page.
+
+.. tip::
+   To see all opportunities in the database, remove the default :guilabel:`My Pipeline` filter from
+   the search bar.
+
+From the lost opportunity's detail form, click :guilabel:`Restore` in the upper-left corner. Doing
+so removes the red :guilabel:`Lost` banner from the opportunity form, signifying the opportunity has
+been restored.
+
+.. image:: lost_opportunities/lost-opps-restore.png
+   :alt: Lost opportunity with emphasis on the Restore button.
+
+Restore multiple opportunities at once
+--------------------------------------
+
+To restore multiple opportunities at once, open the dashboard mega menu by clicking the
+:icon:`fa-caret-down` :guilabel:`(dropdown)` icon (to the right of the search bar) and select the
+default :guilabel:`Lost` option located under the left-side :guilabel:`Filters` column.
+
+Next, select the list view option, represented by the :icon:`fa-bars` :guilabel:`(list)` icon in the
+upper-right corner. Doing so places all the opportunities from the :guilabel:`Pipeline` page in a
+list view. With the list view chosen, select the checkbox to the left of each opportunity to be
+restored.
+
+Once the desired opportunities have been selected, click the :icon:`fa-cog` :guilabel:`Actions`
+drop-down menu at the top of the :guilabel:`Pipeline` page. From the :icon:`fa-cog`
+:guilabel:`(Actions)` drop-down menu, select :guilabel:`Unarchive`.
+
+Doing so removes those selected opportunities from the :guilabel:`Pipeline` page because they no
+longer fit the :guilabel:`Lost` filter criteria. Delete the :guilabel:`Lost` filter from the search
+bar to reveal these newly-restored opportunities.
+
+.. image:: lost_opportunities/lost-opps-unarchive.png
+   :alt: Action button from list view with the Unarchive option emphasized.
+
+Manage lost leads
+=================
+
+If *Leads* are enabled on a database, then they can be marked as *lost* in the same manner as
+opportunities. Leads use the same :ref:`lost reasons <crm/lost-reasons>` as opportunities.
+
+.. note::
+   To enable leads, navigate to :menuselection:`CRM app --> Configuration --> Settings` and check
+   the :guilabel:`Leads` checkbox. This adds a new :guilabel:`Leads` menu to the header menu bar at
+   the top of the page.
+
+Mark a lead as lost
+-------------------
+
+To mark a lead as lost, navigate to :menuselection:`CRM app --> Leads`, and select a lead from the
+list. Doing so reveals that lead's detail form. Then, click :guilabel:`Lost`, located at the top of
+the lead's detail form.
+
+This opens the :guilabel:`Mark Lost` pop-up window. From the :guilabel:`Lost Reason` drop-down menu,
+choose an existing lost reason. If no applicable reason is available, then create a new one by
+entering it into the :guilabel:`Lost Reason` field, and selecting :guilabel:`Create`.
+
+Additional notes and comments can be added below the lost reason designated in the
+:guilabel:`Closing Note` field.
+
+When all the desired information has been entered in the :guilabel:`Mark Lost` pop-up window, click
+:guilabel:`Mark as Lost`.
+
+Restore lost leads
+------------------
+
+To restore a lost lead, navigate to :menuselection:`CRM app --> Leads`, and then click the
+:icon:`fa-caret-down` :guilabel:`(dropdown)` icon to the right of the search bar to open the
+drop-down menu that contains the :guilabel:`Filters`, :guilabel:`Group By`, and
+:guilabel:`Favorites` columns.
+
+Under the :guilabel:`Filters` column, select :guilabel:`Lost`. Doing so reveals all the lost leads
+on the :guilabel:`Leads` page.
+
+Then, click on the desired lost lead to restore, which opens that lead's detail form.
+
+From the lost lead's detail form, click :guilabel:`Restore` in the upper-left corner. Doing so
+removes the red :guilabel:`Lost` banner from the lead form, signifying the lead has been restored.
+
+Restore multiple leads at once
+------------------------------
+
+To restore multiple leads at once, navigate to :menuselection:`CRM app --> Leads`, open the
+:guilabel:`Filters` drop-down menu, and select the :guilabel:`Lost` option. Select the checkbox to
+the left of each lead to be restored.
+
+Once the desired leads have been selected, click the :icon:`fa-cog` :guilabel:`(Actions)` drop-down
+menu at the top of the :guilabel:`Leads` page. From the :icon:`fa-cog` :guilabel:`(Actions)`
+drop-down menu, select :guilabel:`Unarchive`.
+
+Doing so removes those selected leads from the :guilabel:`Leads` page because they no longer fit the
+:guilabel:`Lost` filter criteria. Delete the :guilabel:`Lost` filter from the search bar to reveal
+these newly-restored leads.
+
+.. seealso::
+   :doc:`../performance/win_loss`
+
+
+==================================================
+SECTION: manage_sales_teams.rst
+PATH: applications/sales/crm/pipeline/manage_sales_teams.rst
+==================================================
+
+==================
+Manage sales teams
+==================
+
+The *Sales Teams* feature within Odoo's *CRM* app allows for the creation and management of multiple
+sales teams, each with their own assignment rules, invoicing targets, and roster of salespeople.
+
+Create a sales team
+===================
+
+To create a new sales team, go to :menuselection:`CRM app --> Configuration --> Sales Teams`, then
+click :guilabel:`New`.
+
+On the blank sales team form, enter a name in the :guilabel:`Sales Team` field.
+
+Next, select a :guilabel:`Team Leader` from the drop-down list.
+
+Set an :guilabel:`Email Alias` to automatically generate a lead/opportunity for this sales team
+whenever a message is sent to that unique email address. Choose whether to accept emails from
+:guilabel:`Everyone`, :guilabel:`Authenticated Partners`, :guilabel:`Followers Only`, or
+:guilabel:`Authenticated Employees`.
+
+Select a :guilabel:`Company` from the drop-down menu to assign this team to.
+
+.. note::
+   The :guilabel:`Company` field is only visible in multi-company databases, and is not required.
+
+.. image:: manage_sales_teams/sales-team-creation.png
+   :align: center
+   :alt: The settings page for a new sales team.
+
+.. note::
+   If the *Sales* app is installed on the database, an :guilabel:`Invoicing Target` field appears on
+   the sales team form. This is the revenue target for the current month. The amount entered in this
+   field is used to populate the invoicing progress bar on the :ref:`sales team dashboard
+   <crm/sales-team-dashboard>`.
+
+Add sales team members
+----------------------
+
+To add team members, click :guilabel:`Add` under the :guilabel:`Members` tab when editing the sales
+team's configuration page. This opens a :guilabel:`Create Sales Team Members` pop-up window.
+
+.. note::
+   If the :guilabel:`Rule-Based Assignment` feature has **not** been enabled on the *CRM* app's
+   *Settings* page, clicking :guilabel:`Add` under the :guilabel:`Members` tab opens an
+   :guilabel:`Add: Salespersons` pop-up window. Tick the checkbox to the far-left of the
+   salesperson to be added to the team, then click :guilabel:`Select`.
+
+   .. image:: manage_sales_teams/add-salespersons.png
+      :align: center
+      :alt: The Add: Salespersons pop-up window on a new sales team.
+
+Select a user from the :guilabel:`Salesperson` drop-down list to add them to the team. To prevent
+this salesperson from being automatically assigned leads, tick the :guilabel:`Skip auto assignment`
+checkbox. If this feature is activated, the salesperson can still be assigned leads manually.
+
+.. image:: manage_sales_teams/create-sales-team-members.png
+   :align: center
+   :alt: The Create Sales Team Members pop-up window.
+
+The :guilabel:`Leads (30 days)` field tracks how many leads the salesperson has been assigned in the
+past thirty days for this team, and the maximum number of leads they should be assigned. To edit the
+maximum number of leads this salesperson can be assigned, enter that amount in the :guilabel:`Leads
+(30 days)` field.
+
+.. tip::
+   :doc:`Assignment rules <../track_leads/lead_scoring>` can be configured for individual
+   salespeople using the :guilabel:`Domain` section.
+
+Click :guilabel:`Save & Close` when finished, or :guilabel:`Save & New` to add additional members.
+
+Enable multi teams
+==================
+
+To allow salespeople to be assigned to more than one sales team, the *Multi Teams* setting needs to
+be enabled. First, navigate to :menuselection:`CRM app --> Configuration --> Settings`. Under the
+:guilabel:`CRM` section, tick the checkbox labeled :guilabel:`Multi Teams`. Then, click
+:guilabel:`Save` at the top-left of the page.
+
+.. image:: manage_sales_teams/enable-multi-teams.png
+   :align: center
+   :alt: The settings page of the CRM app with the Multi Teams setting enabled.
+
+.. _crm/sales-team-dashboard:
+
+Sales team dashboard
+====================
+
+To view the sales team dashboard, go to :menuselection:`CRM app --> Sales --> Teams`. Any team the
+user is a member of appears in the dashboard.
+
+.. image:: manage_sales_teams/sales-teams-dashboard.png
+   :align: center
+   :alt: The sales team dashboard in the CRM app.
+
+Each Kanban card gives an overview of the sales team's open opportunities, quotations, sales orders,
+and expected revenue, as well as a bar graph of new opportunities per week, and an invoicing
+progress bar.
+
+Click the :guilabel:`Pipeline` button to go directly to that team's *CRM* pipeline.
+
+Click on the :icon:`fa-ellipsis-v` :guilabel:`(vertical ellipsis)` icon in the top-right corner of
+the Kanban card to open a drop-down menu. Then, to view or edit the team's settings, click
+:guilabel:`Configuration`.
+
+.. seealso::
+   - :doc:`../optimize/utilize_activities`
+   - :doc:`../track_leads/lead_scoring`
+
+
+==================================================
+SECTION: marketing_attribution.rst
+PATH: applications/sales/crm/track_leads/marketing_attribution.rst
+==================================================
+
+=============================
+Marketing attribution reports
+=============================
+
+Use the Odoo *CRM* app to compile a *marketing attribution report*, which analyzes the source of
+leads, and groups them in such a way as to calculate marketing's overall impact on lead generation,
+attribution, won rate, and more.
+
+Leads Analysis dashboard
+========================
+
+Begin by navigating to the :guilabel:`Leads Analysis` dashboard by going to :menuselection:`CRM app
+--> Reporting --> Leads`.
+
+.. tip::
+   Reports can also be run on the :menuselection:`CRM app --> Leads` dashboard, which is **only**
+   accessible if the *Leads* feature has been activated on the *Settings* page.
+
+   If the *Leads* feature has **not** been activated, the :menuselection:`CRM app --> Sales --> My
+   Pipeline` dashboard can also be used to run reports.
+
+   Both dashboards contain the necessary *Filters* and *Group By* criteria to run an attribution
+   report.
+
+.. seealso::
+   - :doc:`Convert leads into opportunities <../acquire_leads/convert>`
+   - :doc:`Create leads <../acquire_leads/email_manual>`
+
+.. image:: marketing_attribution/reporting-tab-and-leads.png
+   :align: center
+   :alt: Open the CRM app and click on the Reporting tab at the top of the page, then click Leads.
+
+The :icon:`fa-area-chart` :guilabel:`(graph)` view is shown, by default, with :guilabel:`Active or
+Inactive` and :guilabel:`Created on: [current year]` filters active in the :guilabel:`Search...`
+bar. The graph visualization displays the number of leads generated, by month and by sales team,
+with each sales team attributed to its own color per month shown.
+
+Switch the view to the :icon:`oi-view-list` :guilabel:`(list)` option, by clicking the respective
+icon located at the top-right of the dashboard. This allows leads to easily be displayed in the
+grouping set by the *Group By* parameters.
+
+.. image:: marketing_attribution/list-view-button.png
+   :align: center
+   :alt: Click the button with four horizontal lines on the top right of the Leads Analysis page.
+
+Add UTM parameters
+==================
+
+*Urchin Tracking Modules (UTMs)* are snippets of text embedded in URLs that are used to track
+visitor data. This includes parameters relating to how a visitor reached the link, such as the type
+of website visited, and/or marketing campaign the visit came from.
+
+Odoo can use these UTMs as parameters in the marketing attribution report to track the metrics and
+performance of marketing campaigns.
+
+Create UTMs
+-----------
+
+The :doc:`link tracker <../../../websites/website/reporting/link_tracker>` in Odoo can be used to
+create and configure UTMs.
+
+UTMs can also be automatically generated by the :doc:`Email Marketing
+<../../../marketing/email_marketing>` and :doc:`Marketing Automation
+<../../../marketing/marketing_automation>` apps.
+
+The UTM parameters used in a marketing attribution report are *Medium*, *Source*, and *Campaign*, in
+descending order of coverage.
+
+- *Medium* is the UTM with the widest coverage, and is used to identify the medium used to access
+  the link. This can include mediums such as social media, email, or cost per click (CPC).
+- *Source* is more narrow, and is used to identify the source of traffic. For example, the name of
+  a website, search engine used, or a specific social media platform.
+- *Campaign* is the most narrow, and can track specific marketing campaigns by name. This can
+  include a contest or product name, type of sale, etc.
+
+Create reports
+==============
+
+To start creating a report, click the :icon:`fa-caret-down` :guilabel:`(down arrow)` to the right of
+the :guilabel:`Search...` bar to see the list of filtering and grouping parameters.
+
+:guilabel:`Filters`, located in the left column of the search options, can be used to keep only the
+results that fit the filter. For example, selecting the :guilabel:`Won` filter only shows leads that
+have been won in the attribution report.
+
+:guilabel:`Group By`, found in the middle column, is used to organize the results into groups, and
+can be used with or without filters.
+
+.. image:: marketing_attribution/search-results-multiple-options.png
+   :align: center
+   :alt: Select any number of filters and groups in the search options.
+
+.. tip::
+    Setting multiple :guilabel:`Group By` options creates nested groups, according to which option
+    is selected first. For example, selecting :guilabel:`Medium`, followed by :guilabel:`Source`,
+    and then :guilabel:`Campaign`, in :guilabel:`Group By` column, sorts all results *first* by
+    medium, *then* by the specific sources in each medium, followed by the campaigns in each source.
+
+    This can be verified by looking at the direction, and order, of the selections in the group tile
+    that appears in the :guilabel:`Search...` bar.
+
+    .. image:: marketing_attribution/group-by.png
+       :align: center
+       :alt: The text in the tile is `Country > City`, showing that city is a subgroup of country.
+
+.. example::
+    For a useful first report:
+
+    #. From the :guilabel:`Filters` column, select the :guilabel:`Active` filter to view only leads
+    that are still marked as active.
+    #. From the :guilabel:`Group By` column, select (in this specific order) :guilabel:`Source`,
+    followed by the :guilabel:`City` or :guilabel:`Country`, depending on which grouping is more
+    relevant.
+
+    .. image:: marketing_attribution/campaign-and-country-groups.png
+       :align: center
+       :alt: Each lead is now sorted by source, followed by city or country.
+
+    This report contains all active leads, grouped first by the source of the lead, then by the
+    city or country each lead is from. This is useful to see the density of active opportunities
+    sorted by location.
+
+    With this data, marketing campaigns, such as conferences or billboards, can be targeted to the
+    locations generating the largest amount of potential revenue. Similarly, more attention can be
+    put toward increasing outreach in locations where existing marketing campaigns are less
+    effective.
+
+Export reports
+==============
+
+To set the measures of the report, begin by navigating to the :icon:`oi-view-pivot`
+:guilabel:`(pivot view)` on the :guilabel:`Leads Analysis` dashboard.
+
+Click the :guilabel:`Measures` button to view the available measures of
+the report. Select the desired measures from the drop-down menu (multiple measures can be selected),
+and verify the measures, filters, and groups are all displayed correctly in the pivot table. This
+ensures the data is ready for export.
+
+To quickly export the data in a list, as a .xlsx file, navigate to the :icon:`oi-view-list`
+:guilabel:`(list view)`. Click on the :guilabel:`Actions` :icon:`fa-cog` :guilabel:`(gear)` icon,
+located to the right of :guilabel:`Lead Analysis` in the top-left of the page, and click
+:icon:`fa-upload` :guilabel:`Export All`. The report downloads automatically as a .xlsx file.
+
+For more export options, the report can be exported to the Odoo *Documents* app. From the
+:icon:`oi-view-list` :guilabel:`(list view)` of :guilabel:`Leads Analysis` page, begin by clicking
+the :guilabel:`Actions` :icon:`fa-cog` :guilabel:`(gear)` icon again. Now, navigate to
+:icon:`fa-table` :guilabel:`Spreadsheet`, and click :icon:`oi-view-list` :guilabel:`Insert list in
+spreadsheet`. A pop-up window titled, :guilabel:`Select a spreadsheet to insert your list.` appears.
+
+The report can be renamed using the `Name of the list` field, if desired. The number of items on the
+report can be set with the field labeled: `Insert the first _ records of the list`. Next, select
+either a new :guilabel:`Blank spreadsheet`, or export into an existing spreadsheet. Finally, click
+the :guilabel:`Confirm` button.
+
+.. image:: marketing_attribution/documents-export.png
+   :align: center
+   :alt: Set the name, number of records, and location of the export in the option menu.
+
+To export the report as a .xlsx file, for use in an external spreadsheets program, click the
+:guilabel:`Actions` :icon:`fa-cog` :guilabel:`(gear)` icon, and select the :icon:`fa-upload`
+:guilabel:`Export All` option. If prompted, choose a file location, name the file, then click
+:guilabel:`Save`.
+
+
+==================================================
+SECTION: member_partner_module.rst
+PATH: applications/sales/crm/optimize/member_partner_module.rst
+==================================================
+
+===============================
+Membership / Partnership module
+===============================
+
+The Membership / Partnership module allows for the creation and sale of memberships. Memberships can
+be sold through both sales orders and subscriptions products so that businesses can organize and
+interact with customers as members. This allows for:
+
+- measuring membership activity, inactivity, sign ups, and churn rates
+- viewing membership renewals and expirations
+- following up on membership dues and associated payments
+- communicating with members, including sending email blasts based on members' current status
+- assigning different membership levels to members
+- organizing members-only events
+- creating membership lists populated with contact info and other details about members.
+
+The Membership / Partnership module vs. the Membership app
+==========================================================
+
+Beginning with 19.0, the **Membership** app has been replaced by the Membership / Partnership
+module. This module captures all of the functionality of the **Membership** app, but in a module
+that is better integrated with other essential apps without requiring a specific **Accounting**
+module. This replacement does not break any existing membership information when upgrading to 19.0.
+
+App integrations with the Membership / Partnership module
+=========================================================
+
+Once activated, the Membership / Partnership module is fully integrated with both the **Sales** and
+**Subscriptions** apps. The module is also compatible with the **eCommerce** app, allowing customers
+to purchase memberships through business's websites.
+
+Finally, the Membership / Partnership module is compatible with pricelists both before and after
+sales. Price rules can be set before memberships are sold and applied after they are active.
+
+Activating the new module
+=========================
+
+The Memberships / Partnerships module can be activated within the **CRM** app. To activate the
+Memberships / Partnerships module, go to :menuselection:`CRM app --> Configuration --> Settings`. In
+the :guilabel:`CRM` section, check the :guilabel:`Membership / Partnership` box to activate the
+module. The name given to affiliates can also be customized. By default, it is set to `Members`.
+
+.. seealso::
+   - :doc:`../../../sales/sales`
+   - :doc:`../../../sales/subscriptions`
+   - :doc:`../../../sales/crm`
+   - :doc:`../../../essentials/contacts`
+   - :doc:`../../../sales/sales/products_prices/prices/pricing`
+   - :doc:`../../../websites/ecommerce`
+
+
+==================================================
+SECTION: merge_similar.rst
+PATH: applications/sales/crm/pipeline/merge_similar.rst
+==================================================
+
+=====================================
+Merge similar leads and opportunities
+=====================================
+
+Odoo automatically detects similar *leads* and *opportunities* within the *CRM* app. Identifying
+these duplicated records allows them to be merged without losing any information in the process.
+Not only does this help keep the *pipeline* organized, but it also prevents customers from being
+contacted by more than one salesperson.
+
+.. note::
+   When merging opportunities, no information is lost. Data from the other opportunity is logged in
+   the chatter, and the information fields, for reference.
+
+Identify similar leads and opportunities
+========================================
+
+Similar leads and opportunities are identified by comparing the *email address* and *phone number*
+of the associated contact. If a similar lead/opportunity is found, a *Similar Leads* smart button
+appears at the top of the lead (or opportunity) record.
+
+.. image:: merge_similar/similar-smart-button.png
+   :align: center
+   :alt: An opportunity record with emphasis on the Similar Leads smart button.
+
+Comparing similar leads and opportunities
+-----------------------------------------
+
+To compare the details of similar leads/opportunities, navigate to :menuselection:`CRM app -->
+Pipeline` or :menuselection:`CRM app --> Leads`. Open a lead or opportunity, and click the
+:guilabel:`Similar Leads` smart button. Doing so opens a Kanban view that only displays similar
+leads/opportunities. Click on a card to view the details for the lead/opportunity, and confirm if
+they should be merged.
+
+Merging similar leads and opportunities
+=======================================
+
+.. important::
+   When merging, Odoo gives priority to whichever lead/opportunity was created in the system first,
+   merging the information into the first created lead/opportunity. However, if a lead and an
+   opportunity are being merged, the resulting record is referred to as an opportunity, regardless
+   of which record was created first.
+
+After confirming that the leads/opportunities should be merged, return to the Kanban view using the
+breadcrumb link, or by clicking the :guilabel:`Similar Leads` smart button. Click the
+:icon:`oi-view-list` :guilabel:`(list)` icon to change to list view.
+
+Check the box on the left of the page for the leads/opportunities to be merged. Then, click the
+:icon:`fa-cog` :guilabel:`Actions` icon at the top of the page, to reveal a drop-down menu. From
+that drop-down menu, select the :guilabel:`Merge` option to merge the selected opportunities or
+leads.
+
+When :guilabel:`Merge` is selected from the :icon:`fa-cog` :guilabel:`Actions` drop-down menu, a
+:guilabel:`Merge` pop-up modal appears. In that pop-up modal, under the :guilabel:`Assign
+opportunities to` heading, select a :guilabel:`Salesperson` and :guilabel:`Sales Team` from the
+appropriate drop-down menus.
+
+Below those fields, the leads/opportunities to merge are listed, along with their related
+information. To merge those selected leads/opportunities, click :guilabel:`Merge`.
+
+.. image:: merge_similar/select-merge.png
+   :align: center
+   :alt: List of similar leads and opportunities selected for merge in the CRM app.
+
+.. danger::
+   Merging is an irreversible action. Do **not** merge leads/opportunities unless absolutely certain
+   they should be combined.
+
+When leads/opportunities should not be merged
+=============================================
+
+There may be instances where a similar lead or opportunity is identified, but should *not* be
+merged. These circumstances vary, based on the processes of the sales team and organization. Some
+potential scenarios are listed below.
+
+Lost leads
+----------
+
+If a lead/opportunity has been marked as :doc:`lost <lost_opportunities>`, it can still be merged
+with an active lead or opportunity. The resulting lead/opportunity is marked active, and added to
+the pipeline.
+
+Different contact within an organization
+----------------------------------------
+
+Leads/opportunities from the same organization, but with different points of contact, may not have
+the same needs. In this case, it is beneficial to *not* merge these records, though assigning the
+same salesperson, or sales team, can prevent duplicated work and miscommunication.
+
+Existing duplicates with more than one salesperson
+--------------------------------------------------
+
+If more than one lead/opportunity exists in the database, there may be multiple salespeople assigned
+to them, who are actively working on them independently. While these leads/opportunities may need
+to be managed separately, it is recommended that any affected salespeople be tagged in an internal
+note for visibility.
+
+Contact information is similar but not exact
+--------------------------------------------
+
+Similar leads and opportunities are identified by comparing the email addresses and phone numbers of
+the associated contacts. However, if the email address is *similar*, but not *exact*, they may need
+to remain independent.
+
+.. example::
+   Three different leads were added to the pipeline and assigned to different salespeople. They
+   were identified as *Similar Leads* due to the email addresses of the contacts.
+
+   Two of the leads appear to come from the same individual, `Robin`, and have identical email
+   addresses. These leads should be merged.
+
+   The third lead has the same email domain, but the address is different, as is the contact name.
+   While this lead is most likely from the same organization, it is from a different contact, and
+   should **not** be merged.
+
+   .. image:: merge_similar/contact-info-example.png
+      :align: center
+      :alt: List of similar leads with emphasis on the contact information in the CRM app.
+
+
+==================================================
+SECTION: opportunities_form.rst
+PATH: applications/sales/crm/acquire_leads/opportunities_form.rst
+==================================================
+
+===========================================
+Create opportunities from web contact forms
+===========================================
+
+Adding a contact form to a website makes it easy to convert visitors into leads and opportunities.
+After a visitor submits their information, an opportunity can be created automatically, and assigned
+to a designated sales team and salesperson.
+
+.. _crm/customize-contact-form:
+
+Customize contact forms
+=======================
+
+By default, the *Contact Us* page on an Odoo website displays a preconfigured contact form. This
+form can be customized, as needed, to suit the needs of a specific sales team.
+
+Navigate to :menuselection:`Website app --> Contact Us`, then click :guilabel:`Edit` in the
+top-right of the screen to open the web editor. Click on the form building block in the body of the
+webpage to open the form configuration settings on the right sidebar. The following options are
+available to customize the contact form from the :guilabel:`From` section of the right sidebar:
+
+.. image:: opportunities_form/form-customization.png
+   :align: center
+   :alt: The form configuration settings on an Odoo website.
+
+- :guilabel:`Action`: the default action for a contact form is :guilabel:`Send an Email`. Select
+  :guilabel:`Create an Opportunity` from the drop-down list to capture the information in the *CRM*
+  app.
+- :guilabel:`Sales Team`: choose a sales team from the drop-down menu that the opportunities from
+  this form should be assigned to. This field **only** appears if the :guilabel:`Action` field is
+  set to :guilabel:`Create an Opportunity`.
+- :guilabel:`Salesperson`: if the opportunities should be assigned to a specific salesperson, select
+  them from the drop-down menu. If no selection is made in this field, the opportunities are
+  assigned based on the team's existing rules.
+- :guilabel:`Marked Fields`: use this field to alter how the form handles marked fields. The default
+  option is to treat marked fields as :guilabel:`Required`, which is the recommended setting.
+- :guilabel:`Mark Text`: choose how :guilabel:`Marked Fields` should be identified. The default
+  character is an asterisk (`*`).
+- :guilabel:`Labels Width`: use this field to alter the pixel width of the labels, if desired.
+- :guilabel:`On Success`: select how the webpage reacts after a customer successfully submits a
+  form. :guilabel:`Nothing` keeps the customer on the same screen, with the addition of a
+  confirmation message that the form was submitted successfully. :guilabel:`Redirect` sends the
+  customer to a new webpage, based on the address provided in the :guilabel:`URL` field below.
+  :guilabel:`Show Message` replaces the form with a preconfigured message that informs the customer
+  someone should respond to them as soon as possible.
+- :guilabel:`URL`: if :guilabel:`Redirect` is selected in the :guilabel:`On Success` field, enter
+  the URL for the webpage, where customers should be directed after successfully submitting a form.
+- :guilabel:`Visibility`: use the drop-down menu to add any visibility conditions for this field, if
+  desired.
+
+.. important::
+   If *leads* are activated in *CRM* settings, selecting :guilabel:`Create an Opportunity` generates
+   a lead instead. To activate leads, navigate to :menuselection:`CRM app --> Configuration -->
+   Settings`, and tick the :guilabel:`Leads` checkbox. Then, click :guilabel:`Save`.
+
+Customize contact form fields
+-----------------------------
+
+In addition to the settings for the form, the settings for each field can be customized, as well.
+With the web editor menu still open, click into a field to open the :guilabel:`Field` configuration
+settings section on the sidebar. The following options are available to customize a field:
+
+- :guilabel:`Type`: choose a custom field option or an existing field type.
+- :guilabel:`Input Type`: determine the type of information customers should input. Available
+  options are :guilabel:`Text`, :guilabel:`Email`, :guilabel:`Telephone`, or :guilabel:`Url`. The
+  selection made in this field limits the format that customers can use when entering information.
+- :guilabel:`Label`: enter the name for the field.
+- :guilabel:`Position`: choose the way the label is aligned with the rest of the form. The label can
+  be hidden, above the field, to the left of the field, or right adjusted and closer to the field.
+- :guilabel:`Description`: slide the toggle to add a description for the field, which can provide
+  additional instructions to customers. Click under the field on the form to add the description.
+- :guilabel:`Placeholder`: enter an example to help users know how to input information where
+  formatting is important, such as a phone number or email address.
+- :guilabel:`Default Value`: enter a value to include in the form, by default, if the customer does
+  not provide information in the field. *It is not recommended to include a default value for
+  required fields*.
+- :guilabel:`Required`: slide the toggle to mark this field as required if it **must** be filled in
+  for every submission.
+- :guilabel:`Visibility`: select when this field should be visible. Use the button on the left to
+  choose whether to show or hide this field on a desktop users. Use the button on the right to
+  choose whether to show or hide this field to mobile users.
+- :guilabel:`Animation`: select if this field should have any animation.
+
+.. image:: opportunities_form/field-customization.png
+   :align: center
+   :alt: The field configuration settings on an Odoo website.
+
+View opportunities
+==================
+
+After a customer submits a contact form, and an opportunity is created, it is assigned based on the
+:ref:`form settings <crm/customize-contact-form>`. To view opportunities, navigate to
+:menuselection:`CRM app --> Sales --> My Pipeline`.
+
+.. note::
+   If leads are activated on the database, contact form submissions are generated as leads, not
+   opportunities. To activate leads, navigate to :menuselection:`CRM app --> Configuration -->
+   Settings`, and tick the :guilabel:`Leads` checkbox. Then, click :guilabel:`Save`.
+
+   Navigate to :menuselection:`CRM app --> Leads` to view the newly-created leads.
+
+On the :guilabel:`My Pipeline` dashboard, click on an opportunity card in the Kanban view to open
+the opportunity record. The information submitted by the customer is visible on the opportunity
+record.
+
+.. note::
+   As the contact form fields are customizable, the fields on the opportunity record, where the form
+   information is stored, varies accordingly.
+
+   If the preconfigured contact form is used, the *Subject* field is added to the :guilabel:`Title`
+   field, and the content in the :guilabel:`Notes` field, which is labeled as :guilabel:`Your
+   Question`, is added to the :guilabel:`Internal Notes` tab.
+
+.. seealso::
+   - :doc:`../pipeline/manage_sales_teams`
+   - :doc:`convert`
+   - :doc:`../track_leads/lead_scoring`
+   - :ref:`Website forms <website/building_blocks/form>`
+
+
+==================================================
+SECTION: optimize.rst
+PATH: applications/sales/crm/optimize.rst
+==================================================
+
+:nosearch:
+
+=============================
+Optimize your Day-to-Day work
+=============================
+
+.. toctree::
+   :titlesonly:
+
+   optimize/partner_autocomplete
+   optimize/gamification
+   optimize/utilize_activities
+   optimize/lead_enrichment
+   optimize/member_partner_module
+
+
+==================================================
+SECTION: partner_autocomplete.rst
+PATH: applications/sales/crm/optimize/partner_autocomplete.rst
+==================================================
+
+=========================================
+Enrich contacts with partner autocomplete
+=========================================
+
+*Partner autocomplete* enriches the contacts database with corporate data. In any module, enter the
+new company name into the :guilabel:`Customer` field (`partner_id` technical field), and select one
+of the companies suggested in the drop-down menu. Instantly get valuable company information full of
+hard-to-find data for a desired company.
+
+.. important::
+   A company **cannot** already be manually entered in the *Contacts* application prior to enriching
+   it with data.
+
+The information provided by partner autocomplete can include general information about the business
+(including full business name and logo), :guilabel:`Phone` number, :guilabel:`Email`,
+:guilabel:`Tax ID`, address and UNSPSC activities as :guilabel:`Tags`.
+
+.. important::
+   When getting a company's contact information make sure to be aware of the latest EU regulations.
+   For more information about General Data Protection Regulation refer to: `Odoo GDPR
+   <http://odoo.com/gdpr>`_. In Odoo, individual contact information cannot be searched for with
+   the partner autocomplete feature.
+
+Configuration
+=============
+
+Go to :menuselection:`Settings app --> Contacts section`. Then, activate the :guilabel:`Partner
+Autocomplete` feature, by ticking the checkbox beside it, and clicking :guilabel:`Save`.
+
+.. image:: partner_autocomplete/settings-partner-autocomplete.png
+   :align: center
+   :alt: View of settings page and the activations of the feature in Odoo.
+
+Enrich contacts with corporate data
+===================================
+
+From any module, as the user is typing in the name of a new company contact, Odoo reveals a large
+drop-down menu of potential match suggestions. If any are selected, the contact is then populated
+with corporate data related to that specific selection.
+
+For example, after typing `Odoo`, the following information populates:
+
+.. image:: partner_autocomplete/odoo-autocomplete.png
+   :align: center
+   :alt: Creating a new contact in Odoo
+
+.. tip::
+   Partner Autocomplete also works if a :abbr:`VAT (value-added tax)` number is entered instead of
+   company name.
+
+Pricing
+=======
+
+*Partner Autocomplete* is an *In-App Purchase (IAP)* service, which requires prepaid credits to be
+used. Each request consumes one credit.
+
+To buy credits, go to :menuselection:`Settings app --> Contacts section`. Then, locate either the
+:guilabel:`Partner Autocomplete` feature and click :guilabel:`Buy credits`, or locate the
+:guilabel:`Odoo IAP` feature and click :guilabel:`View My Services`. From the resulting page, select
+a desired package.
+
+.. note::
+   If the database runs out of credits, the only information populated when clicking on the
+   suggested company will be the website link and the logo.
+
+   Learn about our `Privacy Policy <https://iap.odoo.com/privacy>`_.
+
+.. note::
+   Enterprise Odoo users with a valid subscription get free credits to test :abbr:`IAP (In-App
+   Purchase)` features before deciding to purchase more credits for the database. This includes
+   demo/training databases, educational databases, and one-app-free databases.
+
+.. seealso::
+   :doc:`../../../essentials/in_app_purchase`
+
+
+==================================================
+SECTION: performance.rst
+PATH: applications/sales/crm/performance.rst
+==================================================
+
+:nosearch:
+
+===================
+Analyze performance
+===================
+
+.. toctree::
+   :titlesonly:
+
+   performance/win_loss
+   performance/expected_revenue_report
+   performance/forecast_report
+
+
+==================================================
+SECTION: pipeline.rst
+PATH: applications/sales/crm/pipeline.rst
+==================================================
+
+:nosearch:
+
+=====================
+Organize the pipeline
+=====================
+
+.. toctree::
+   :titlesonly:
+
+   pipeline/lost_opportunities
+   pipeline/merge_similar
+   pipeline/manage_sales_teams
+
+
+==================================================
+SECTION: quality_leads_report.rst
+PATH: applications/sales/crm/track_leads/quality_leads_report.rst
+==================================================
+
+====================
+Quality leads report
+====================
+
+A *quality lead* is a lead that is likely to result in a sale. It should match the characteristics
+most commonly believed to help salespeople close a deal, in addition to more precise criteria that
+is specific to each organization.
+
+.. note::
+   The specific criteria that defines a *quality lead* is different for every organization. For more
+   information, see :ref:`Define a quality lead <track_links/define-a-lead>`.
+
+A quality leads *report* compares how many quality leads each salesperson has received over a
+specific amount of time, such as within the past 30 days. Sales managers can use such a report to
+make more informed decisions when assigning new leads to their team
+
+.. example::
+   A sales manager pulls a quality leads report using their company's criteria:
+
+   - Leads must include a phone number and an email address.
+   - The email address must be from a professional domain.
+   - The source for the lead must be from a live chat conversation or an appointment with a
+     salesperson.
+
+  After running the report, the manager can see that, although everyone's ability to close a deal
+  has varied, some members of the sales team have received a higher number of quality leads than
+  others.
+
+   .. image:: quality_leads_report/example-report.png
+      :align: center
+      :alt: An example of a quality leads report in the Odoo CRM application.
+
+   Using this information, the sales manager may decide to assign more quality leads to the sales
+   people currently on the lower end, to balance out the distribution of quality leads.
+
+.. _track_links/create-quality-leads-report:
+
+Create a quality leads report
+=============================
+
+To create a quality leads report, first navigate to :menuselection:`CRM app --> Reporting -->
+Pipeline` to open the :guilabel:`Pipeline Analysis` dashboard. Click into the :guilabel:`Search...`
+bar at the top of the page and remove any active filters.
+
+Click the :guilabel:`🔻(triangle pointed down)` icon to the right of the :guilabel:`Search...` bar
+to open the drop-down mega menu that contains :guilabel:`Filters`, :guilabel:`Group By`, and
+:guilabel:`Favorites` columns. Click :guilabel:`Add Custom Filter`. This opens a :guilabel:`Add
+Custom Filter` pop-up window.
+
+The :guilabel:`Add Custom Filter` pop-up window allows for the creation of more specific filters.
+
+Add custom filters
+------------------
+
+In order to generate a quality leads report, filters need to be created for the following
+conditions:
+
+- :ref:`Starting date <quality_leads_report/starting-date>`: limits results to those created within
+  a specific time frame.
+- :ref:`Specific sales teams <quality_leads_report/sales-team>`: limits results to only include
+  leads for one or more sales teams. This filter is optional and should not be included if the is
+  intended for the entire company.
+- :ref:`Exclude unassigned leads <quality_leads_report/unassigned-leads>`: excludes leads without an
+  assigned salesperson.
+- :ref:`Include archived leads <quality_leads_report/archived-leads>`: ensures that both active and
+  inactive leads are included in the results.
+- :ref:`Add rules for quality leads <quality_leads_report/add-quality-rules>`: includes or excludes
+  results based on criteria that is specific to a company or sales team.
+
+.. figure:: quality_leads_report/configured-custom-rules.png
+   :align: center
+   :alt: An example of the Custom Filter pop-up window with all of the rules configured.
+
+   An example of the *Custom Filter* pop-up window with all of the default rules configured.
+
+.. _quality_leads_report/starting-date:
+
+Add a starting date filter
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Begin by first defining the rule's parameter with a date range, by clicking into the first field, on
+the left of the row, and typing `Created On` in the :guilabel:`Search...` bar, or by scrolling
+through the menu's list to locate it.
+
+In the rule's operator drop-down menu, define the parameter further by selecting either:
+
+- :guilabel:`>= (greater than or equal to)` to specify a start date and include all entries *after*
+  that start date (as well as the initial value itself); or
+- :guilabel:`is between` to more sharply define a time frame with a clear start and end date. All
+  matching entries that fit within the defined start and end dates are included in the report.
+
+With either option, use the pop-up calendar's day and time pickers, in the far right field, to
+define the respective date range. Setting these values concludes the creation of the first rule.
+
+.. _quality_leads_report/sales-team:
+
+Add a sales team filter
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+   This filter is optional. To view results for the entire company, do **not** add this filter.
+
+To limit the results of the report to one or more sales teams, click :guilabel:`New Rule`. Next,
+click the first field for the new rule, and type `Sales Team` in the :guilabel:`Search...` bar, or
+scroll to search through the list to locate it.
+
+In the rule's second field, select :guilabel:`is in` from the drop-down menu. Selecting this
+operator limits results to the sales teams selected in the next field.
+
+Lastly, in the third field, select the desired sales team from the drop-down menu. Multiple teams
+can be added in this field, where each parameter is treated with an "or" (e.g. "any") operator in
+the search logic.
+
+.. _quality_leads_report/unassigned-leads:
+
+Exclude unassigned leads
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Next, add a :guilabel:`New Rule`. Then, click into the first field for the new rule, and type
+`Salesperson` in the :guilabel:`Search...` bar, or scroll to search through the list to locate it.
+
+In the rule's second field, select :guilabel:`is set` from the drop-down menu. Selecting this
+operator excludes any leads not assigned to a specific salesperson.
+
+.. _quality_leads_report/archived-leads:
+
+Include archived leads
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. tip::
+   This filter is also optional, as it adds archived (inactive) leads to the report, however it is
+   recommended to include this since it pulls *all* assigned leads, regardless of status, into the
+   report. This ensures a more accurate representation of assigned leads is captured. However, to
+   pull a report that only includes active leads, do **not** activate this feature.
+
+Next, in the upper-right corner of the :guilabel:`Add Custom filter` pop-up window, move the
+:guilabel:`Include archived` toggle to active.
+
+.. image:: quality_leads_report/include-archived.png
+   :align: center
+   :alt: The Add Custom Filter pop-up with emphasis on the Include Archived toggle.
+
+Enabling this feature adds archived (inactive) leads to the report.
+
+.. _quality_leads_report/add-quality-rules:
+
+Add rules for quality leads
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The filters added in this step vary, based on how an organization defines a *quality lead*.
+
+.. _track_links/define-a-lead:
+
+Define a quality lead
+*********************
+
+As defined earlier, a *quality lead* is a lead that is likely to result in a won opportunity.
+Although the exact criteria for a quality lead varies from organization to organization, it is often
+a combination of factors commonly attributed to positive sales outcomes, in addition to factors
+valued by the specific organization.
+
+In addition to the basic filters and grouping options outlined in the general :ref:`Quality leads
+report <track_links/create-quality-leads-report>`, consider the following filters when defining a
+quality lead:
+
+- :guilabel:`Email` or :guilabel:`Phone`: the information in these fields can help determine whether
+  or not a lead is a professional contact.
+- :guilabel:`Source`: this field links to the marketing and lead generation efforts from other Odoo
+  applications, including *Live Chat*, *Social Marketing*, and *Email Marketing*.
+- :guilabel:`Stage`: this filter can be used to eliminate or target leads that have reached specific
+  stages.
+- :guilabel:`Medium`: a lead's source can indicate its quality level, as various channels have
+  different won rates and expected revenues.
+- :guilabel:`Campaign`: adding this filter helps track of the success of different marketing efforts
+  to capture high quality leads.
+- :guilabel:`Lost Reason`: exclude leads that may appear to be quality based on various criteria,
+  but have been marked as *lost* for specified reasons.
+- :guilabel:`Tags`: include or exclude results based on one or more customized tags.
+
+.. tip::
+   When adding rules to a custom filter, keep the statements preceding each rule in mind. The
+   statement above a rule determines whether the search results must match **all** of the rules
+   below the statement, or **any** of the rules below the statement.
+
+   .. image:: quality_leads_report/match-all-match-any.png
+     :align: center
+     :alt: Close up of the match rule options on a add custom filter pop-up window.
+
+View the report
+===============
+
+.. important::
+   At the top of the :guilabel:`Add Custom Filter` form, there is an option to match :guilabel:`any`
+   or :guilabel:`all` of the rules. In order to properly run the report, only records that match
+   **all** of the following filters should be included. Before adding the filters, make sure
+   :guilabel:`all` is selected in this field.
+
+   .. image:: quality_leads_report/match-all-rules.png
+     :align: center
+     :alt: Close up on the match all rules option on the add a custom filter pop-up window.
+
+After the filters are configured, click :guilabel:`Add`. The default display for the report is a bar
+graph, where the leads are grouped by *stage*.
+
+To group the results by salesperson, click the :guilabel:`🔻(triangle pointed down)` icon to the
+right of the :guilabel:`Search...` bar to open the drop-down mega menu. Under the :guilabel:`Group
+By` heading, select :guilabel:`Salesperson`. In the same column, under the :guilabel:`Group By`
+heading, click :guilabel:`Add a Custom Group`, then select :guilabel:`Active` on the resulting
+drop-down menu to layer in lead *status*, under the parent :guilabel:`Salesperson` grouping.
+
+The report now displays the total count of *quality leads* each salesperson has received in the
+designated time period. Because there are layered :guilabel:`Group By` filters, the grouped leads
+are also color-coded to identify whether they are *active* or *marked as lost*.
+
+.. tip::
+   To save this search for later, click the :guilabel:`🔻(triangle pointed down)` icon next to the
+   :guilabel:`Search...` bar to open the drop-down menu. Under the :guilabel:`Favorites` heading,
+   click :guilabel:`Save current search`.
+
+   In the drop-down menu, rename the report from the default `Pipeline` label to `Quality Leads`,
+   and click :guilabel:`Save`.
+
+
+==================================================
+SECTION: resellers.rst
+PATH: applications/sales/crm/track_leads/resellers.rst
+==================================================
+
+=========
+Resellers
+=========
+
+Within Odoo's **CRM** app, leads can be forwarded to resellers (or partners). Leads can be manually
+assigned, or automatically assigned, based on the resellers' designated *level* and location.
+
+Configuration
+=============
+
+To utilize the reseller features, the *Resellers* module first needs to be installed. Navigate to
+the :menuselection:`Apps application`, and remove the :guilabel:`Apps` filter from the
+:guilabel:`Search...` bar. Then, search for `Resellers`.
+
+.. image:: resellers/resellers-module.png
+   :alt: The resellers module in Odoo.
+
+Click :guilabel:`Install` on the :guilabel:`Resellers` module card that appears. Doing so installs
+the module, and returns to the main Odoo dashboard.
+
+After the module is installed, navigate to the :menuselection:`CRM app`. Under the
+:menuselection:`Configuration` menu is a new section, titled :guilabel:`Members`, with three options
+beneath it: :guilabel:`Levels`, :guilabel:`Partner Activations`, and :guilabel:`Commission Plans`.
+
+.. _crm/partner-levels:
+
+Levels
+======
+
+Partner *levels* are used to differentiate between various resellers. To view the levels, navigate
+to :menuselection:`CRM app --> Configuration --> Levels`.
+
+On the :guilabel:`Levels` page that appears, there are three default levels:
+
+- :guilabel:`Gold`
+- :guilabel:`Silver`
+- :guilabel:`Bronze`
+
+New levels can be added, as needed, by clicking :guilabel:`New`, and filling out the resulting level
+form.
+
+Existing levels can also be edited and renamed, if desired, as well. To modify a level, select it
+from the list, and proceed to make any desired changes from the level form page that appears.
+
+:guilabel:`Level Weight` is used to decide the probability a partner to be assigned a lead or
+opportunity. On the level form, assign a numerical value (greater than zero) to the :guilabel:`Level
+Weight` field. If the weight is zero, no leads are assigned.
+
+.. tip::
+   *Level Weight* can be assigned on an individual contact record. The weight assigned on the
+   individual record overwrites the default weight assigned on the level configuration form.
+
+.. _crm/partner-activations:
+
+Partner activations
+===================
+
+Partner *activations* are used to identify the status of a partner. Activations are assigned on an
+individual contact record, and can be used to group or filter the *Partnership Analysis* report
+(:menuselection:`CRM app --> Reporting --> Partnerships`).
+
+To view the partner levels, navigate to :menuselection:`CRM app --> Configuration --> Partner
+Activations`.
+
+Three activation types are created by default in the **CRM** app:
+
+- :guilabel:`Fully Operational`
+- :guilabel:`Ramp-up`
+- :guilabel:`First Contact`
+
+New partner activations can be added, as needed, by clicking :guilabel:`New`, and entering a
+:guilabel:`Name` on the new line that appears. Then, select the desired status in the
+:guilabel:`Active` column.
+
+Existing partner activations can also be edited and renamed, if desired. To rename a status, click
+the :guilabel:`Name` field of a desired level, and enter a new name.
+
+To change the active status of an activation, slide the toggle in the :guilabel:`Active` column of
+the desired activation to the *inactive* position.
+
+.. figure:: resellers/activations-toggle.png
+   :alt: The list of default partner activations in the CRM app.
+
+Partner assignments
+===================
+
+After :ref:`levels <crm/partner-levels>` and :ref:`partner activations <crm/partner-activations>`
+configured.
+
+To update an individual partner record, navigate to :menuselection:`CRM app --> Sales -->
+Customers`, and click the Kanban card for the desired partner to open the customer record.
+
+On the customer record, click the :guilabel:`Partner Assignment` tab.
+
+Click the :guilabel:`Partner Level` field, and select an option from the drop-down menu to assign a
+level. Click the :guilabel:`Activation` field, and select a partner activation type from the
+drop-down list, if desired. Then, click the :guilabel:`Level Weight` field to assign a different
+level weight, if necessary.
+
+Publish partners
+================
+
+With the Odoo **Website** and **Resellers** apps installed, a new webpage (`/partners`) is created
+to display a list of all active partners from the **CRM** app.
+
+Next, return to :menuselection:`CRM app --> Sales --> Customers`, and click the Kanban card for a
+partner. From that partner's contact form, click the :guilabel:`Go to Website` smart button at the
+top of the page to open that partner's webpage.
+
+Next, click :guilabel:`Edit` at the top-right of the partner's webpage, and use the :doc:`building
+blocks <../../../websites/website/web_design/building_blocks>` to add any additional design
+elements, or information about the partner.
+
+.. tip::
+   A company summary is a useful addition to this page.
+
+After making any necessary changes to the page, click :guilabel:`Save`. At the top of the page,
+slide the :guilabel:`Unpublished` toggle to the active, :guilabel:`Published` position, if needed.
+
+Repeat these steps for all partners.
+
+.. image:: resellers/partners-webpage.png
+   :alt: An example of the partners webpage, displaying available partners by level and location.
+
+
+==================================================
+SECTION: send_quotes.rst
+PATH: applications/sales/crm/acquire_leads/send_quotes.rst
+==================================================
+
+==========================
+Create and send quotations
+==========================
+
+Once a qualified lead has been converted into an opportunity, the next step is to create and deliver
+a quotation. This process can be easily handled through Odoo's *CRM* application.
+
+Create a new quotation
+======================
+
+To create a new quotation, open the :menuselection:`CRM app`, revealing the :guilabel:`Pipeline`
+page on the main *CRM* dashboard.
+
+From here, click on any opportunity to open it. Review the existing information and update any
+fields, if necessary.
+
+.. note::
+   If a quotation has already been created for this opportunity, it can be found by clicking on the
+   :guilabel:`Quotations` smart button at the top of the top of the form. The number of existing
+   quotations is listed on the smart button, as well.
+
+At the top-left of the form, click the :guilabel:`New Quotation` button.
+
+.. image:: send_quotes/send-quotes-new-button.png
+   :align: center
+   :alt: Qualified lead form with New Quotation button emphasized.
+
+.. important::
+   The **Sales** application **must** be installed for the :guilabel:`New Quotation` button to
+   appear.
+
+.. important::
+   The :guilabel:`Customer` field is **not** required on the opportunity form.
+
+   However, customer information must be added or linked before a quotation can be sent. If the
+   :guilabel:`Customer` field is left blank on the opportunity, clicking the :guilabel:`New
+   Quotation` button opens a pop-up window with the following options:
+
+   - :guilabel:`Create a new customer`: creates a new customer record, using any available
+     information provided on the opportunity form.
+   - :guilabel:`Link to an existing customer`: opens a drop-down field with existing customer names.
+     Select a name to link this new quotation to an existing customer record.
+   - :guilabel:`Do not link to a customer`: the quotation will **not** be linked to a customer, and
+     no changes are made to the customer information.
+
+Once this button is clicked, a new quotation form appears. Confirm the information in the top half
+of the form, and update any missing or incorrect fields:
+
+- :guilabel:`Customer`: the company or contact for whom this quotation was created.
+- :guilabel:`Referrer`: if this customer was referred by another customer or contact, select it from
+  the drop-down menu in this field.
+- :guilabel:`Invoice Address`: physical address where the invoice should be sent.
+- :guilabel:`Delivery Address`: physical address where any products should be delivered.
+- :guilabel:`Quotation Template`: if applicable, select a pre-configured :doc:`quotation template
+  <../../sales/sales_quotations/quote_template>` from this field.
+- :guilabel:`Expiration`: date when this quotation is no longer valid.
+- :guilabel:`Quotation Date`: creation date of draft/sent orders, confirmation date of confirmed
+  orders. Note that this field is only visible if :doc:`Developer mode (debug mode)
+  </applications/general/developer_mode>` is active.
+- :guilabel:`Recurring Plan`: if this quotation is for a recurring product or subscription, select
+  the recurring plan configuration to be used.
+- :guilabel:`Pricelist`: select a pricelist to be applied to this order.
+- :guilabel:`Payment Terms`: select any applicable payment terms for this quotation.
+
+.. image:: send_quotes/send-quotes-new-quotation.png
+   :align: center
+   :alt: Qualified lead form with New Quotation button emphasized.
+
+.. tip::
+   The :guilabel:`Expiration` field automatically populates based on the creation date of the
+   quotation, and the default validity time frame.
+
+   To update the default validity time frame, navigate to :menuselection:`Sales app -->
+   Configuration --> Settings --> Quotations & Orders` and update the :guilabel:`Default Quotation
+   Validity` field. To disable automatic expiration, enter `0` in this field.
+
+   When the desired changes are complete, click :guilabel:`Save`.
+
+   When using a quotation template, the expiration date is based off of the :guilabel:`Quotation
+   Validity` field on the template. To alter the validity date computation on a template, go to
+   :menuselection:`Sales app --> Configuration --> Sales Orders --> Quotation Templates`.
+
+   Then, click on a template to open it, and update the number in the :guilabel:`Quotation Validity`
+   field.
+
+Order lines
+-----------
+
+After updating the customer, payment, and deadline information on the new quotation, the
+:guilabel:`Order Lines` tab can be updated with the appropriate product information.
+
+To do that, click :guilabel:`Add a product` in the :guilabel:`Order Lines` tab.
+
+Next, type the name of an item into the :guilabel:`Product` field to search through the product
+catalog. Then, select a product from the drop-down menu, or create a new one by selecting
+:guilabel:`Create` or :guilabel:`Create and Edit`.
+
+After selecting a product, update the :guilabel:`Quantity`, if necessary. Confirm the information in
+the remaining fields.
+
+To remove a line from the quotation, click the :icon:`fa-trash-o` :guilabel:`(trash can)` icon.
+
+To organize products into sections click :guilabel:`Add a section` and type a name for the section.
+Then, click the :icon:`oi-draggable` :guilabel:`(drag)` icon to the left of the name and drag to
+move the section to the appropriate location. Move each product using the same method to finish
+organizing the quotation order lines.
+
+.. image:: send_quotes/product-sections.png
+   :align: center
+   :alt: Categories are used to create separate sections on the order lines of a quote.
+
+Product catalog
+~~~~~~~~~~~~~~~
+
+To quickly add numerous products to the quotation, click the :guilabel:`Catalog` button to open the
+product catalog.
+
+All products in the database are listed as cards and can be sorted in the left panel by
+:guilabel:`Product Category` and :guilabel:`Attributes`.
+
+.. image:: send_quotes/product-catalog.png
+   :align: center
+   :alt: The product catalog displays all products as cards.
+
+To add a product, click the :icon:`fa-shopping-cart` :guilabel:`Add` button on the product card.
+Set the quantity of the item using the :icon:`fa-plus` :guilabel:`(add)` or :icon:`fa-minus`
+:guilabel:`(subtract)` buttons, or type the quantity in the number field between the two buttons.
+To remove an item, click the :icon:`fa-trash` :guilabel:`Remove` button on the product card.
+
+.. image:: send_quotes/set-quantity.png
+   :align: center
+   :alt: The purple add and subtract buttons are used to set the quantity of an item.
+
+Once all product quantities are set, click the :guilabel:`Back to Quotation` button to return to the
+quotation. The items selected in the product catalog now appear in the :guilabel:`Order Lines` tab.
+
+Preview and send quotation
+==========================
+
+To see a preview of the quotation as the customer will see it, click the :guilabel:`Preview` button.
+Doing so opens a preview in the :guilabel:`Customer Portal`.
+
+After reviewing the customer preview, click :guilabel:`Return to edit mode` to return to the
+quotation form in the backend.
+
+When the quotation is ready to deliver to the customer, click the :guilabel:`Send by Email` button.
+
+Doing so opens a pop-up window with a pre-configured email message. Information from the quotation,
+including the contact information, total cost, and quotation title are be imported from the
+quotation.
+
+A PDF of the quotation is added as an attachment to the email.
+
+.. note::
+   A pre-loaded template is used to create the email message. To alter the template, click the
+   internal link to the right of the :guilabel:`Load template` field, located at the bottom of the
+   email pop-up window.
+
+   To select a new template, select an option from the :guilabel:`Load template` drop-down menu.
+
+Proceed to make any necessary changes to the email, then click :guilabel:`Send`. A copy of the
+message is added to the *Chatter* of the of the record.
+
+After a quotation is sent, the originating opportunity's :guilabel:`Quotations` smart button updates
+with a new count. This quotation, and all other quotations can be accessed through this smart
+button at the top of the opportunity in the *CRM* app.
+
+Any quotations attached to the opportunity that are confirmed, and have therefore been converted to
+sales orders, will be deducted from the number listed on the :guilabel:`Quotations` smart button.
+Instead, the value of the sales order will appear in the :guilabel:`Orders` smart button located in
+the same control panel.
+
+Mark an opportunity won or lost
+===============================
+
+In order to keep the pipeline up to date and accurate, opportunities need to be identified as *won*
+or *lost* once a customer has responded to a quotation.
+
+To mark an opportunity as *won* or *lost*, return to the opportunity using the breadcrumbs at the
+top-left of the quotation form. Or navigate to :menuselection:`CRM app --> Sales --> My Pipeline`
+and click on the correct opportunity to open it.
+
+At the top-left of the form, click on either the :guilabel:`Won` or :guilabel:`Lost` button.
+
+If the opportunity is marked *won*, a green :guilabel:`Won` banner is added to the record, and it is
+moved to the :guilabel:`Won` stage.
+
+Marking an opportunity as *lost*, via the :guilabel:`Lost` button opens a :guilabel:`Mark Lost`
+pop-up window, where a :guilabel:`Lost Reason` can be entered.
+
+From the :guilabel:`Lost Reason` drop-down field, choose an existing lost reason. If no applicable
+reason is available, create a new one by entering it into the :guilabel:`Lost Reason` field, and
+clicking :guilabel:`Create`.
+
+.. tip::
+   It's best practice to try and use pre-configured :guilabel:`Lost Reason` values as much as
+   possible or to limit the creation of new values only to sales team leads. Using consistent values
+   for this parameter will make pipeline analysis easier and more accurate when filtering for the
+   :guilabel:`Lost Reason` parameter.
+
+   To set up new values for this field, navigate to :menuselection:`CRM --> Configuration --> Lost
+   Reasons`, and click both :guilabel:`New` and :guilabel:`Save` for each new entry added to the
+   list.
+
+Additional notes and comments can be added in the :guilabel:`Closing Note` field.
+
+When all the desired information has been entered in the :guilabel:`Mark Lost` pop-up window, click
+:guilabel:`Mark as Lost`.
+
+Upon clicking :guilabel:`Mark as Lost`, the pop-up window disappears, and Odoo returns to the
+opportunity form, where a new red :guilabel:`Lost` banner is now present in the upper-right corner
+of the opportunity.
+
+Once an opportunity is marked as *lost*, it is no longer considered active, and it is removed from
+the pipeline.
+
+In order to view a *lost* opportunity from the pipeline, click the :guilabel:`down arrow icon` to
+the right of the search bar, and select either :guilabel:`Lost` or :guilabel:`Archived` from the
+drop-down menu that appears.
+
+.. important::
+   While opportunities that have been marked as *lost* are considered *Archived*, be advised that,
+   in order for an opportunity to be included as *lost* in reporting, it **must** be specifically
+   marked as *lost*, not *Archived*.
+
+
+==================================================
+SECTION: track_leads.rst
+PATH: applications/sales/crm/track_leads.rst
+==================================================
+
+:nosearch:
+
+======================
+Assign and track leads
+======================
+
+.. toctree::
+   :titlesonly:
+
+   track_leads/lead_scoring
+   track_leads/unattended_leads_report
+   track_leads/quality_leads_report
+   track_leads/resellers
+   track_leads/marketing_attribution
+   track_leads/lead_distribution_report
+
+
+==================================================
+SECTION: unattended_leads_report.rst
+PATH: applications/sales/crm/track_leads/unattended_leads_report.rst
+==================================================
+
+=======================
+Unattended leads report
+=======================
+
+*Unattended leads* are leads that have scheduled activities that are either due or past due.
+Whenever an activity is scheduled, Odoo tracks the due date, and sends email reminders to the users
+the activity is assigned to.
+
+An *unattended leads report* compiles all active leads in the pipeline with due or past due
+activities, allowing a sales manager to identify which opportunities require immediate attention.
+
+By pulling a daily unattended leads report, sales managers can remind their teams to address
+outstanding activities before they become past due, helping avoid neglected leads and reinforcing
+proactive behaviors in their salespeople.
+
+.. example::
+
+   A sales manager starts their day by pulling an unattended leads report, and upon switching to
+   list view, they see the following:
+
+   .. image:: unattended_leads_report/unattended-leads-example.png
+      :align: center
+      :alt: List view of a sample Unattended Leads report with the activities emphasized.
+
+  Their team member, Mitchell, has two leads in the *Proposition* stage with activities that are
+  due.
+
+  The yellow :guilabel:`📞 (phone)` icon indicates that the `Modern Open Space` lead has a phone
+  call activity scheduled for today. The red :guilabel:`✉️ (envelope)` icon indicates that the `5 VP
+  Chairs` lead has an email activity scheduled that is past due.
+
+  Clicking on the `5 VP Chairs` lead, the sales manager opens the record of the lead and reviews the
+  chatter. They see that the email was scheduled to be sent two days ago, but Mitchell never marked
+  this activity as done.
+
+  .. image:: unattended_leads_report/overdue-activities-email.png
+     :align: center
+     :alt: Example of overdue activities notification in the chatter of a lead.
+
+.. important::
+   In order to pull a unattended leads report, sales teams **must** be regularly utilizing activity
+   in the *CRM* pipeline, on individual lead and opportunity cards.
+
+   It is **not** possible to compile a complete report if the sales people are not using the
+   *Activities* feature in the *chatter*
+
+   For more information, refer to :doc:`Activities <../../../essentials/activities>`
+
+Create an unattended leads report
+=================================
+
+To create an unattended leads report, first navigate to :menuselection:`CRM app --> Reporting -->
+Pipeline` to open the :guilabel:`Pipeline Analysis` dashboard. Click into the :guilabel:`Search...`
+bar at the top of the page, and remove all of the default filters.
+
+.. note::
+   The :guilabel:`Created on` filter can remain active, as this variable may be useful to include in
+   the report.
+
+Next, add custom filters by clicking the :guilabel:`🔻(triangle pointed down)` icon to the right of
+the :guilabel:`Search...` bar to open the drop-down menu that contains :guilabel:`Filters`,
+:guilabel:`Group By`, and :guilabel:`Favorites` columns. Under the :guilabel:`Filters` column,
+click :guilabel:`Add Custom Filter`, which opens an :guilabel:`Add Custom Filter` pop-up window.
+
+The :guilabel:`Add Custom Filter` pop-up window allows for the creation of more specific filters.
+
+Add custom filters
+------------------
+
+In order to generate an unattended leads report, filters need to be created for the following
+conditions:
+
+ - :ref:`Past due activities <unattended_leads_report/past-due>`: limits the results to only include
+   leads with an assigned activity where the due date has past. This can be altered to include
+   activities due to occur on the date the report is generated as well.
+ - :ref:`Unassigned leads <unattended_leads_report/exclude-unassigned>`: excludes leads without an
+   assigned salesperson.
+ - :ref:`Specific sales teams <unattended_leads_report/sales-team>`: limits results to only include
+   leads assigned to one or more sales teams. This filter is optional and should not be included if
+   the report is intended for the entire company.
+
+.. _unattended_leads_report/past-due:
+
+Add filter for past due activities
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Click the first field for the new rule, and type `Activities` in the :guilabel:`Search...` bar, or
+scroll to search through the list to locate it. Then, next to :guilabel:`Activities`, click the
+:guilabel:`> (greater than sign)` to open a new drop-down menu with secondary conditions.
+
+Type `Due Date` in the :guilabel:`Search...` bar, or scroll to search through the list. Click
+:guilabel:`Due Date` to add it to the rule.
+
+  .. image:: unattended_leads_report/activities-due.png
+     :align: center
+     :alt: Custom filter pop-up with emphasis on the options for activities and due date.
+
+Then, click into then next field and select :guilabel:`<=` from the drop-down menu. Selecting this
+operator includes all activities with a due date up to, and including, the date selected in the next
+field.
+
+The third field can be left as today's date, or adjusted as needed.
+
+.. _unattended_leads_report/exclude-unassigned:
+
+Exclude unassigned leads
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+After filtering for activities, add a :guilabel:`New Rule`. Then, click into the first field for the
+new rule, and type `Salesperson` in the :guilabel:`Search...` bar, or scroll to search through the
+list to locate it.
+
+In the rule's second field, select :guilabel:`is set` from the drop-down menu. Selecting this
+operator excludes any leads not assigned to a specific salesperson.
+
+.. _unattended_leads_report/sales-team:
+
+Add a Sales team
+~~~~~~~~~~~~~~~~
+
+.. note::
+   This filter is optional. To view results for the entire company, do **not** add this filter, and
+   continue to :ref:`View results <unattended_leads_report/view-results>`
+
+To limit the results of the report to one or more sales teams, click :guilabel:`New Rule`. Next,
+click the first field for the new rule, and type `Sales Team` in the :guilabel:`Search...` bar, or
+scroll to search through the list to locate it.
+
+In the rule's second field, select :guilabel:`is in` from the drop-down menu. Selecting this
+operator limits results to the sales teams selected in the next field.
+
+Lastly, in the third field, select the desired sales team from the drop-down menu. Multiple teams
+can be added in this field, where each parameter is treated with an "or" (e.g. "any") operator in
+the search logic.
+
+.. figure:: unattended_leads_report/configured-custom-rules.png
+   :align: center
+   :alt: An example of the Custom Filter pop-up window with all of the rules configured.
+
+   An example of the **Add Custom Filter** pop-up window with all of the rules configured.
+
+.. _unattended_leads_report/view-results:
+
+View results
+============
+
+At the top of the :guilabel:`Add Custom Filter` form, there is an option to match :guilabel:`any` or
+:guilabel:`all` of the rules. In order to properly run the report, only records that match **all**
+of the following filters should be included. Before adding the filters, make sure :guilabel:`all` is
+selected in this field.
+
+.. image:: unattended_leads_report/all-custom-filter.png
+   :align: center
+   :alt: Example of overdue activities notification in the chatter of a lead.
+
+After the filters are configured, click :guilabel:`Add`. The resulting report displays all leads
+assigned to a salesperson where an activity is past due, or is due on the current date. The default
+display is a bar graph, where the leads are grouped by *stage*.
+
+To group the results by salesperson, click the :guilabel:`🔻(triangle pointed down)` icon to the
+right of the :guilabel:`Search...` bar to open the drop-down menu that contains :guilabel:`Filters`,
+:guilabel:`Group By`, and :guilabel:`Favorites` columns. Under the :guilabel:`Group By` heading,
+select :guilabel:`Salesperson`.
+
+.. note::
+   The option to group by :guilabel:`Sales Team` is also available under the :guilabel:`Group By`
+   heading.
+
+To change to a *list* view, click the :guilabel:`≣ (list)` icon in the top-right corner of the
+screen.
+
+.. tip::
+   Clicking the :guilabel:`(toggle) icon` opens a drop-down menu of additional columns that can be
+   added to the report.
+
+   Some options that are beneficial for this report include:
+
+   - :guilabel:`Activities`: the summary of the latest activity for this lead.
+   - :guilabel:`Expected Closing`: the estimated date on which the lead will be won.
+   - :guilabel:`Probability`: estimated success rate based on the stage.
+
+  .. image:: unattended_leads_report/additional-options.png
+     :align: center
+     :alt: Custom filter pop-up with emphasis on the options for activities and due date.
+
+.. seealso::
+   :doc:`Activities <../../../essentials/activities>`
+
+
+==================================================
+SECTION: utilize_activities.rst
+PATH: applications/sales/crm/optimize/utilize_activities.rst
+==================================================
+
+==================================
+Utilize activities for sales teams
+==================================
+
+*Activities* are follow-up tasks tied to a record in an *Odoo* database. Activities can be scheduled
+on any page of the database that contains a chatter thread, Kanban view, list view, or activities
+view of an application.
+
+.. figure:: utilize_activities/activities-view.png
+   :align: center
+   :alt: The summary view of activities for leads and opportunities in an Odoo database.
+
+   Planned Activities for Leads and Opportunities.
+
+Activity types
+==============
+
+A set of preconfigured activity types is available in the *CRM* app. To view the list of available
+activity types, navigate to the :menuselection:`CRM app --> Configuration --> Activity Types`.
+
+.. note::
+   Additional activity types are available within the database, and can be utilized through
+   different applications. To access the complete list of activity types, go to the
+   :menuselection:`Settings app`, then scroll to the :guilabel:`Discuss` section, and click
+   :guilabel:`Activity Types`.
+
+The preconfigured activity types for the *CRM* app are as follows:
+
+ - :guilabel:`Email`: adds a reminder to the chatter that prompts the salesperson to send an email.
+ - :guilabel:`Call`: opens a calendar link where the salesperson can schedule time to call the
+   contact.
+ - :guilabel:`Meeting`: opens a calendar link where the salesperson can schedule time to have a
+   meeting with the contact.
+ - :guilabel:`To Do`: adds a general reminder task to the chatter.
+ - :guilabel:`Upload Document`: adds a link on the activity where an external document can be
+   uploaded. Note that the *Documents* app is **not** required to utilize this activity type.
+
+.. note::
+   If other applications are installed, such as *Sales* or *Accounting*, other activity types are
+   made available in the *CRM* app.
+
+.. _crm/create-new-activity-type:
+
+Create a new activity type
+--------------------------
+
+To create a new activity type, click :guilabel:`New` at the top-left of the page to open a blank
+form.
+
+At the top of the form, start by choosing a :guilabel:`Name` for the new activity type.
+
+Activity settings
+~~~~~~~~~~~~~~~~~
+
+Action
+******
+
+The *Action* field specifies the intent of the activity. Some actions trigger specific behaviors
+after an activity is scheduled.
+
+- If :guilabel:`Upload Document` is selected, a link to upload a document is added directly to the
+  planned activity in the chatter.
+- If either :guilabel:`Phonecall` or :guilabel:`Meeting` are selected, users have the option to open
+  their calendar to schedule a time for this activity.
+- If :guilabel:`Request Signature` is selected, a link is added to the planned activity in the
+  chatter that opens a signature request pop-up window.
+
+.. image:: utilize_activities/action-field.png
+   :align: center
+   :alt: The Activity settings on a new activity type with emphasis on the Action field.
+
+.. note::
+   The actions available to select on an activity type vary, depending on the applications currently
+   installed in the database.
+
+Default user
+************
+
+To automatically assign this activity to a specific user when this activity type is scheduled,
+choose a name from the :guilabel:`Default User` drop-down menu. If this field is left blank, the
+activity is assigned to the user who creates the activity.
+
+Default summary
+***************
+
+To include notes whenever this activity type is created, enter them into the :guilabel:`Default
+Summary` field.
+
+.. note::
+   The information in the :guilabel:`Default User` and :guilabel:`Default Summary` fields are
+   included when an activity is created. However, they can be altered before the activity is
+   scheduled or saved.
+
+Next activity
+~~~~~~~~~~~~~
+
+To automatically suggest, or trigger, a new activity after an activity has been marked complete, the
+:guilabel:`Chaining Type` must be set.
+
+Suggest next activity
+*********************
+
+In the :guilabel:`Chaining Type` field, select :guilabel:`Suggest Next Activity`. Upon doing so, the
+field underneath changes to: :guilabel:`Suggest`. Click the :guilabel:`Suggest` field drop-down menu
+to select any activities to recommend as follow-up tasks to this activity type.
+
+.. image:: utilize_activities/next-activity.png
+   :align: center
+   :alt: The Next Activity section on a new activity type form.
+
+In the :guilabel:`Schedule` field, choose a default deadline for these activities. To do so,
+configure a desired number of :guilabel:`Days`, :guilabel:`Weeks`, or :guilabel:`Months`. Then,
+decide if it should occur :guilabel:`after completion date` or :guilabel:`after previous activity
+deadline`.
+
+This :guilabel:`Schedule` field information can be altered before the activity is scheduled.
+
+When all configurations are complete, click :guilabel:`Save`.
+
+.. note::
+   If an activity has the :guilabel:`Chaining Type` set to :guilabel:`Suggest Next Activity`, and
+   has activities listed in the :guilabel:`Suggest` field, users are presented with recommendations
+   for activities as next steps.
+
+   .. image:: utilize_activities/suggest-next-activity.png
+      :align: center
+      :alt: A schedule activity pop-up with emphasis on the recommended activities.
+
+Trigger next activity
+*********************
+
+Setting the :guilabel:`Chaining Type` to :guilabel:`Trigger Next Activity` immediately launches the
+next activity once the previous one is completed.
+
+If :guilabel:`Trigger Next Activity` is selected in the :guilabel:`Chaining Type` field, the field
+beneath changes to: :guilabel:`Trigger`. From the :guilabel:`Trigger` field drop-down menu, select
+the activity that should be launched once this activity is completed.
+
+In the :guilabel:`Schedule` field, choose a default deadline for these activities. To do so,
+configure a desired number of :guilabel:`Days`, :guilabel:`Weeks`, or :guilabel:`Months`. Then,
+decide if it should occur :guilabel:`after completion date` or :guilabel:`after previous activity
+deadline`.
+
+This :guilabel:`Schedule` field information can be altered before the activity is scheduled.
+
+When all configurations are complete, click :guilabel:`Save`.
+
+.. note::
+   When an activity has the :guilabel:`Chaining Type` set to :guilabel:`Trigger Next Activity`,
+   marking the activity as *Done* immediately launches the next activity listed in the
+   :guilabel:`Trigger` field.
+
+Activity tracking
+=================
+
+To keep the pipeline up to date with the most accurate view of the status of activities, as soon as
+a lead is interacted with, the associated activity should be marked as *Done*. This ensures the next
+activity can be scheduled as needed. It also prevents the pipeline from becoming cluttered with
+past due activities.
+
+The pipeline is most effective when it is kept up-to-date and accurate to the interactions it is
+tracking.
+
+.. _crm/activity-plans:
+
+Activity plans
+==============
+
+*Activity plans* are preconfigured sequences of activities. When an activity plan is launched, every
+activity in the sequence is scheduled automatically.
+
+To create a new plan, navigate to :menuselection:`CRM app --> Configuration --> Activity Plan`.
+Click :guilabel:`New` at the top-left of the page to open a blank :guilabel:`Lead Plans` form.
+
+Enter a name for the new plan in the :guilabel:`Plan Name` field. On the :guilabel:`Activities to
+Create` tab, click :guilabel:`Add a line` to add a new activity.
+
+Select an :guilabel:`Activity Type` from the drop-down menu. Click :guilabel:`Search More` to see a
+complete list of available activity types, or to create a :ref:`new one
+<crm/create-new-activity-type>`.
+
+Next, in the :guilabel:`Summary` field, enter any details to describe the specifics of the activity,
+including instructions for the salesperson or information due upon the completion of the activity.
+The contents of this field are included with the scheduled activity, and can be edited later.
+
+In the :guilabel:`Assignment` field, select one of the following options:
+
+ - :guilabel:`Ask at launch`: activities are assigned to a user when the plan is scheduled.
+ - :guilabel:`Default user`: activities are always assigned to a specific user.
+
+If :guilabel:`Default user` is selected in the :guilabel:`Assignment` field, choose a user in the
+:guilabel:`Assigned to` field.
+
+.. tip::
+   Activity plans can feature activities that are assigned to default users and users assigned at
+   the plan launch.
+
+  .. image:: utilize_activities/create-activity-plan.png
+     :align: center
+     :alt: A Lead Plan form with scheduled activities.
+
+Next, configure the timeline for the activity. Activities can be scheduled to occur either before
+the plan date or after. Use the :guilabel:`Interval` and :guilabel:`Units` fields to set the
+deadline for this activity. Lastly, in the :guilabel:`Trigger` field, select whether the activity
+should occur before or after the plan date.
+
+.. example::
+   An activity plan is created to handle high priority leads. Specifically, these leads should be
+   contacted quickly, with a meeting scheduled within two days of the initial contact. The plan is
+   configured with the following activities:
+
+   - Email two days **before** plan date
+   - Meeting zero days **before** plan date
+   - Make quote three days **after** plan date
+   - Upload document three days **after** plan date
+   - Follow-up five days **after** plan date
+
+   This sets the *plan date* as the meeting deadline, which is the objective of the plan. Before
+   that date, there is lead time to contact the customer and prepare for the meeting. After that
+   date, the salesperson has time to create a quote, upload the document, and follow-up.
+
+Repeat these steps for each activity included in the plan.
+
+Launch an activity plan
+-----------------------
+
+To launch an activity plan on a *CRM* opportunity, navigate to :menuselection:`CRM app` and click on
+the Kanban card of an opportunity to open it.
+
+At the top-right of the chatter, click :guilabel:`Activities` to open the :guilabel:`Schedule
+Activity` pop-up window.
+
+In the :guilabel:`Plan` field, select the desired activity plan to launch. This generates a
+:guilabel:`Plan summary`, listing out the activities included in the plan. Select a :guilabel:`Plan
+Date` using the calendar popover. This updates the :guilabel:`Plan summary` with deadlines based on
+the intervals configured on the :ref:`activity plan <crm/activity-plans>`.
+
+Select a user in the :guilabel:`Assigned To` field. This user is assigned to any of the activities
+on the plan were configured with :guilabel:`Ask at launch` in the :guilabel:`Assignment` field.
+
+.. image:: utilize_activities/schedule-activity-plan.png
+   :align: center
+   :alt: The schedule activity pop-up window with an Activity plan selected.
+
+Click :guilabel:`Schedule`.
+
+The details of the plan are added to the chatter, in addition to each of the activities.
+
+.. image:: utilize_activities/activity-plan-chatter.png
+   :align: center
+   :alt: The chatter thread of a CRM opportunity with a launched activity plan.
+
+.. seealso::
+ - :doc:`Activities </applications/essentials/activities>`
+
+
+==================================================
+SECTION: win_loss.rst
+PATH: applications/sales/crm/performance/win_loss.rst
+==================================================
+
+=================
+Pipeline Analysis
+=================
+
+The *CRM* app manages the sales pipeline as leads/opportunities move from stage to stage,
+origination to sale (**Won**) or archival (**Lost**).
+
+After organizing the pipeline, use the search options and reports available on the *Pipeline
+Analysis* page to gain insight into the effectiveness of the pipeline and its users.
+
+To access the *Pipeline Analysis* page, go to :menuselection:`CRM app --> Reporting --> Pipeline`.
+
+.. image:: win_loss/reporting-tab-and-pipeline-view.png
+   :align: center
+   :alt: Open the CRM app and click on the Reporting tab along the top, then click Pipeline.
+
+.. _win_loss/pipeline:
+
+Navigate the pipeline analysis page
+===================================
+
+Upon accessing the :guilabel:`Pipeline Analysis` page, a bar graph showcasing the leads from the
+past year automatically populates. The bars represent the number of leads in each stage of the sales
+pipeline, color-coded to show the month the lead reached that stage.
+
+.. image:: win_loss/pipeline-analysis-page.png
+   :align: center
+   :alt: The default state of the Pipeline Analysis page is a graph, with many options to change it.
+
+The interactive elements of the :guilabel:`Pipeline Analysis` page manipulate the graph to report
+different metrics in several views. From left-to-right, top-to-bottom, the elements include:
+
+- :guilabel:`Actions`: represented by the :guilabel:`⚙️ (gear)` icon, located next to the
+  :guilabel:`Pipeline Analysis` page title. When clicked, a drop-down menu appears with three
+  options, each with their own sub-menu: :guilabel:`Knowledge`, :guilabel:`Dashboard`,
+  :guilabel:`Spreadsheet`. (See :ref:`Save and share reports <win_loss/save_reports>` for more
+  information)
+
+  - The :guilabel:`Knowledge` option is for linking to or inserting the graph in a *Knowledge* app
+    article.
+  - The :guilabel:`Dashboard` option is for adding the graph to a dashboard in the *Dashboards* app.
+  - The :guilabel:`Spreadsheet` option is for linking the graph in a spreadsheet in the *Documents*
+    app.
+- :guilabel:`Search...` bar: shows the filters and groupings currently being applied to the graph.
+  To add new filters/groups, type them into the search bar, or click the :guilabel:`⬇️ (down arrow)`
+  icon, at the end of the bar, to open a drop-down menu of options. (See :ref:`Search Options
+  <win_loss/search>` for more information)
+
+In the upper-right corner, there are view options represented by different icons. (See :ref:`View
+Options <win_loss/view>` for more information)
+
+- :guilabel:`Graph` view: displays the data in a bar graph. This is the default view.
+- :guilabel:`Pivot` view: displays the data in a customizable, categorized metrics table.
+- :guilabel:`Cohort` view: displays and organizes the data, based on their :guilabel:`Created on`
+  and :guilabel:`Closed Date` week (default), day, month, or year.
+- :guilabel:`List` view: displays the data in a list.
+
+Located on the far-left side of the page, beneath the :guilabel:`Pipeline Analysis` page title,
+there are more configurable filter and view options.
+
+- :guilabel:`Measures`: opens a drop-down menu of different measurement options that can be seen in
+  the graph, pivot, or cohort view. The :guilabel:`Measure` drop-down menu is not available in the
+  list view. (See :ref:`Measurement Options <win_loss/measure>` for more information)
+- :guilabel:`Insert in Spreadsheet`: opens a pop-up window with options for adding a graph or pivot
+  table to a spreadsheet in the *Documents* app or a dashboard in the *Dashboards* app. This option
+  is not available in the cohort or list view.
+
+With the graph view selected, the following options are available:
+
+- :guilabel:`Bar Chart`: switches the graph to a bar chart.
+- :guilabel:`Line Chart`: switches the graph to a line chart.
+- :guilabel:`Pie Chart`: switches the graph to a pie chart.
+- :guilabel:`Stacked`: when selected, the results of each stage of the graph are stacked on top of
+  each other. When not selected, the results in each stage are shown as individual bars.
+- :guilabel:`Descending`: re-orders the stages in the graph in descending order from left-to-right.
+  Click the icon a second time to deselect it. Depending on the search criteria, this option may not
+  be available.
+- :guilabel:`Ascending`: re-orders the stages in the graph in ascending order from left-to-right.
+  Click the icon a second time to deselect it. Depending on the search criteria, this option may not
+  be available.
+
+With the pivot view selected, the following options are available:
+
+- :guilabel:`Flip Axis`: flips the X and Y axis for the entire table.
+- :guilabel:`Expand All`: when additional groupings are selected using the :guilabel:`➕ (plus
+  sign)` icons, this button opens those groupings under every row.
+- :guilabel:`Download xlsx`: downloads the table as an Excel file.
+
+.. _win_loss/search:
+
+Search options
+--------------
+
+The :guilabel:`Pipeline Analysis` page can be customized with various filters and grouping options.
+
+To add new search criteria, type the desired criteria into the search bar, or click the
+:guilabel:`⬇️ (down arrow)` icon, next to the search bar, to open a drop-down menu of all options.
+See the sections below for more information on what each option does.
+
+.. image:: win_loss/search-panel-filters-and-group-by-options.png
+   :align: center
+   :alt: Clicking on the down arrow next to the search bar opens a menu of filters for the analysis.
+
+.. tabs::
+
+   .. tab:: Filters
+
+      The :guilabel:`Filters` section allows users to add pre-made and custom filters to the search
+      criteria. Multiple filters can be added to a single search.
+
+      - :guilabel:`My Pipeline`: show leads assigned to the current user.
+      - :guilabel:`Opportunities`: show leads that have been qualified as opportunities.
+      - :guilabel:`Leads`: show leads that have yet to be qualified as opportunities.
+      - :guilabel:`Active`: show active leads.
+      - :guilabel:`Inactive`: show inactive leads.
+      - :guilabel:`Won`: show leads that have been marked **Won**.
+      - :guilabel:`Lost`: show leads that have been marked **Lost**.
+      - :guilabel:`Created On`: show leads that were created during a specific period of time. By
+        default, this is the past year, but it can be adjusted as needed, or removed entirely.
+      - :guilabel:`Expected Closing`: show leads that are expected to close (marked **Won**) during
+        a specific period of time.
+      - :guilabel:`Date Closed`: show leads that were closed (marked **Won**) during a specific
+        period of time.
+      - :guilabel:`Archived`: show leads that have been archived (marked **Lost**).
+      - :guilabel:`Add Custom Filter`: allows the user to create a custom filter with numerous
+        options. (See :ref:`Add Custom Filters and Groups <win_loss/custom_filters>` for more
+        information)
+
+   .. tab:: Group By
+
+      The :guilabel:`Group By` section allows users to add pre-made and custom groupings to the
+      search results. Multiple groupings can be added to split results into more manageable chunks.
+
+      .. important::
+         The order that groupings are added affects how the final results are displayed. Try
+         selecting the same combinations in a different order to see what works best for each use
+         case.
+
+      - :guilabel:`Salesperson`: groups the results by the Salesperson to whom a lead is assigned.
+      - :guilabel:`Sales Team`: groups the results by the Sales Team to whom a lead is assigned.
+      - :guilabel:`City`: groups the results by the city from which a lead originated.
+      - :guilabel:`Country`: groups the results by the country from which a lead originated.
+      - :guilabel:`Company`: groups the results by the company to which a lead belongs (if multiple
+        companies are activated in the database).
+      - :guilabel:`Stage`: groups the results by the stages of the sales pipeline.
+      - :guilabel:`Campaign`: groups the results by the marketing campaign from which a lead
+        originated.
+      - :guilabel:`Medium`: groups the results by the medium (Email, Google Adwords, Website, etc.)
+        from which a lead originated.
+      - :guilabel:`Source`: groups the results by the source (Search engine, Lead Recall,
+        Newsletter, etc.) from which a lead originated.
+      - :guilabel:`Creation Date`: groups the results by the date a lead was added to the database.
+      - :guilabel:`Conversion Date`: groups the results by the date a lead was converted to an
+        opportunity.
+      - :guilabel:`Expected Closing`: groups the results by the date a lead is expected to close
+        (marked "Won").
+      - :guilabel:`Closed Date`: groups the results by the date a lead was closed(marked "Won").
+      - :guilabel:`Lost Reason`: groups the results by the reason selected when a lead was marked
+        "Lost."
+      - :guilabel:`Add Custom Group`: allows the user to create a custom group with numerous
+        options. (See :ref:`Adding Custom Filters and Groups <win_loss/custom_filters>` for more
+        information)
+
+   .. tab:: Comparison
+
+      The :guilabel:`Comparison` section allows users to add comparisons to the same search criteria
+      over another period of time.
+
+      This option is only available if the search includes time-based filters, such as
+      :guilabel:`Created On`, :guilabel:`Expected Closing`, or :guilabel:`Date Closed`. While
+      multiple time-based filters can be added at once, only one comparison can be selected at a
+      time.
+
+      - :guilabel:`Previous Period`: adds a comparison to the same search criteria from the previous
+        period.
+      - :guilabel:`Previous Year`: adds a comparison to the same search criteria from the previous
+        year.
+
+   .. tab:: Favorites
+
+      The :guilabel:`Favorites` section allows users to save a search for later, so it does not need
+      to be recreated every time.
+
+      Multiple searches can be saved, shared with others, or even set as the default for whenever
+      the :guilabel:`Pipeline Analysis` page is opened.
+
+      - :guilabel:`Save current search`: save the current search criteria for later.
+
+        - :guilabel:`Default filter`: when saving a search, check this box to make it the default
+          search filter when the :guilabel:`Pipeline Analysis` page is opened.
+        - :guilabel:`Shared`: when saving a search, check this box to make it available to other
+          users.
+
+.. _win_loss/custom_filters:
+
+Add custom filters and groups
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In addition to the pre-made options in the search bar, the :guilabel:`Pipeline Analysis` page can
+also utilize custom filters and groups.
+
+Custom filters are complex rules that further customize the search results, while custom groups
+display the information in a more organized fashion.
+
+**To add a custom filter:**
+
+1. On the :guilabel:`Pipeline Analysis` page, click the :guilabel:`down arrow` icon next to the
+   :guilabel:`Search...` bar.
+2. In the drop-down menu, click :guilabel:`Add Custom Filter`.
+3. The :guilabel:`Add Custom Filter` pop-up window appears with a default rule (:guilabel:`Country
+   is in _____`) comprised of three unique fields. These fields can be edited to make a custom rule,
+   and multiple rules can be added to a single custom filter.
+4. To edit a rule, start by clicking the first field (:guilabel:`Country`), and select an option
+   from the drop-down menu. The first field determines the primary subject of the rule.
+5. Next, click the second field, and select an option from the drop-down menu. The second field
+   determines the relationship of the first and third fields, and is usually an **is** or **is not**
+   statement, but can also be **greater than or less than** statements, and more.
+6. Finally, click the third field, and select an option from the drop-down menu. The third field
+   determines the secondary subject of the rule.
+7. With all three fields selected, the rule is complete.
+
+   - **To add more rules:** click :guilabel:`New Rule` and repeat steps 4-7, as needed.
+   - **To delete a rule:** click the :guilabel:`🗑️ (trash)` icon to the right of the rule.
+   - **To duplicate an existing rule:** click the :guilabel:`➕ (plus sign)` icon to the right of
+     the rule.
+   - **To create more complex rules:** click the :guilabel:`Add branch` icon to the right of the
+     rule. This adds another modifier below the rule for adding an "all of" or "any of" statement.
+
+.. image:: win_loss/custom-filter-add-branch.png
+   :align: center
+   :alt: The add branch feature allows the creation of more complex all or any statements for rules.
+
+8. Once all rules have been added, click :guilabel:`Add` to add the custom filter to the search
+   criteria.
+
+   - **To remove a custom filter:** click the :guilabel:`✖️ (x)` icon beside the filter in the
+     search bar.
+
+**To add a custom group:**
+
+1. On the :guilabel:`Pipeline Analysis` page, click the :guilabel:`down arrow` icon next to the
+   search bar.
+2. In the drop-down menu that appears, click :guilabel:`Add Custom Group`.
+3. Scroll through the options in the drop-down menu, and select one or more groups.
+
+   - **To remove a custom group:** click the :guilabel:`✖️ (x)` icon beside the custom group in the
+     search bar.
+
+.. _win_loss/measure:
+
+Measurement options
+-------------------
+
+By default, the :guilabel:`Pipeline Analysis` page measures the total :guilabel:`Count` of leads
+that match the search criteria, but can be changed to measure other items of interest.
+
+To change the selected measurement, click the :guilabel:`Measures` button on the top-left of the
+page, and select one of the following options from the drop-down menu:
+
+- :guilabel:`Days to Assign`: measures the number of days it took a lead to be assigned after
+  creation.
+- :guilabel:`Days to Close`: measures the number of days it took a lead to be closed (marked
+  **Won**).
+- :guilabel:`Days to Convert`: measures the number of days it took a lead to be converted to an
+  opportunity.
+- :guilabel:`Exceeded Closing Days`: measures the number of days by which a lead exceeded its
+  Expected Closing date.
+- :guilabel:`Expected MRR`: measures the Expected Recurring Revenue of a lead.
+- :guilabel:`Expected Revenue`: measures the Expected Revenue of a lead.
+- :guilabel:`Prorated MRR`: measures the Prorated Monthly Recurring Revenue of a lead.
+- :guilabel:`Prorated Recurring Revenues`: measures the Prorated Recurring Revenues of a lead.
+- :guilabel:`Prorated Revenue`: measures the Prorated Revenue of a lead.
+- :guilabel:`Recurring Revenues`: measures the Recurring Revenue of a lead.
+- :guilabel:`Count`: measures the total amount of leads that match the search criteria.
+
+.. _win_loss/view:
+
+View options
+------------
+
+After configuring filters, groupings, and measurements, the :guilabel:`Pipeline Analysis` page can
+display the data in a variety of ways. By default, the page uses the graph view, but can be changed
+to a pivot view, cohort view, or list view.
+
+To change the pipeline to a different view, click one of the four view icons, located in the
+top-right of the :guilabel:`Pipeline Analysis` page.
+
+.. tabs::
+
+   .. tab:: Graph View
+
+      The graph view is the default selection for the :guilabel:`Pipeline Analysis` page. It
+      displays the analysis as either a: bar chart, line chart, or pie chart.
+
+      This view option is useful for quickly visualizing and comparing simple relationships, like
+      the :guilabel:`Count` of leads in each stage, or the leads assigned to each
+      :guilabel:`Salesperson`.
+
+      By default, the graph measures the :guilabel:`Count` of leads in each group, but this can be
+      changed by clicking the :guilabel:`Measures` button, and :ref:`selecting another option
+      <win_loss/measure>` from the resulting drop-down menu.
+
+      .. image:: win_loss/graph-view.png
+         :align: center
+         :alt: The Graph View displays the analysis as a Bar Chart, Line Chart, or Pie Chart.
+
+      .. tip::
+         When using a bar chart in this view, consider deselecting the :guilabel:`Stacked` option,
+         in order to make the breakdown of results more legible.
+
+   .. tab:: Pivot View
+
+      The pivot view displays the results of the analysis as a table. By default, the table groups
+      the results by the stages of the sales pipeline, and measures :guilabel:`Expected Revenue`.
+
+      The pivot view is useful for analyzing more detailed numbers than the graph view can handle,
+      or for adding the data to a spreadsheet, where custom formulas can be set up, like in an Excel
+      file.
+
+      .. image:: win_loss/pivot-view.png
+         :align: center
+         :alt: The Pivot View displays the analysis as a table.
+
+      The three icons at the top-left of the page perform the following functions:
+
+      - :guilabel:`Flip Axis`: flips the X and Y axis for the entire table.
+      - :guilabel:`Expand All`: when additional groupings are selected using the :guilabel:`➕ (plus
+        sign)` icons, this button opens those groupings under every row.
+      - :guilabel:`Download xlsx`: downloads the table as an Excel file.
+
+      .. note::
+         The :guilabel:`Stage` grouping cannot be removed, but the measurement can be changed by
+         clicking the :guilabel:`Measures` button, and selecting another option.
+
+   .. tab:: Cohort View
+
+      The cohort view displays the analysis as periods of time (cohorts) that can be set to days,
+      weeks, months, or years. By default, :guilabel:`Week` is selected.
+
+      This view option is useful specifically for comparing how long it has taken to close leads.
+
+      .. image:: win_loss/cohort-view.png
+         :align: center
+         :alt: The Cohort View displays the analysis as individual weeks of the year.
+
+      From left-to-right, top-to-bottom, the columns in the chart represent the following:
+
+      - :guilabel:`Created On`: rows in this column represent the weeks of the year, in which
+        records matching the search criteria exist.
+
+        - When set to :guilabel:`Week`, a row with the label :guilabel:`W52 2023` means the results
+          occurred in: Week 52 of the Year 2023.
+      - :guilabel:`Measures`: the second column in the chart is the measurement of the results. By
+        default, it is set to :guilabel:`Count`, but can be changed by clicking the
+        :guilabel:`Measures` button, and selecting an option from the drop-down menu.
+      - :guilabel:`Closed Date - By Day/Week/Month/Year`: this column looks at what percentage of
+        the measured results were closed in subsequent days/weeks/months/years.
+      - :guilabel:`Average`: this row provides the average of all other rows in the column.
+
+      The cohort view can also be downloaded as an Excel file, by clicking the :guilabel:`Download`
+      icon in the top-left of the page.
+
+   .. tab:: List View
+
+      The list view displays a single list of all leads matching the search criteria. Clicking a
+      lead opens the record for closer review. Additional details such as :guilabel:`Country`,
+      :guilabel:`Medium`, and more can be added to the list, by clicking the :guilabel:`Filters`
+      icon in the top-right of the list.
+
+      This view option is useful for reviewing many records at once.
+
+      .. image:: win_loss/list-view.png
+         :align: center
+         :alt: The List View displays a single list of all records matching the search criteria.
+
+      Clicking the :guilabel:`⚙️ (gear)` icon opens the Actions drop-down menu, with options for the
+      following:
+
+      - :guilabel:`Import records`: opens a page for uploading a spreadsheet of data, as well as a
+        template spreadsheet to easily format that data.
+      - :guilabel:`Export All`: downloads the list as an xlsx file for Excel.
+      - :guilabel:`Knowledge`: inserts a view of, or link to, the list in an article in the
+        *Knowledge* app.
+      - :guilabel:`Dashboard`: adds the list to *My Dashboard* in the *Dashboards* app.
+      - :guilabel:`Spreadsheet`: links to, or inserts, the list in a spreadsheet in the *Documents*
+        app.
+
+      .. note::
+         On the list view, clicking :guilabel:`New` closes the list, and opens the *New Quotation*
+         page. Clicking :guilabel:`Generate Leads` opens a pop-up window for lead generation.
+         Neither feature is intended to manipulate the list view.
+
+.. _win_loss/reports:
+
+Create reports
+==============
+
+After understanding how to :ref:`navigate the pipeline analysis page <win_loss/pipeline>`, the
+:guilabel:`Pipeline Analysis` page can be used to create and share different reports. Between the
+pre-made options and custom filter and groupings, almost any combination is possible.
+
+Once created, reports can be :ref:`saved to favorites, shared with other users, and/or added to
+dashboards and spreadsheets <win_loss/save_reports>`.
+
+A few common reports that can be created using the :guilabel:`Pipeline Analysis` page are detailed
+below.
+
+.. _win_loss/win_loss:
+
+Win/Loss reports
+----------------
+
+Win/Loss is a calculation of active or previously active leads in a pipeline that were either marked
+as **Won** or **Lost** over a specific period of time. By calculating opportunities won over
+opportunities lost, teams can clarify key performance indicators (KPIs) that are converting leads
+into sales, such as specific teams or team members, certain marketing mediums or campaigns, and so
+on.
+
+.. math::
+   \begin{equation}
+   Win/Loss Ratio = \frac{Opportunities Won}{Opportunities Lost}
+   \end{equation}
+
+A win/loss report filters the leads from the past year, whether won or lost, and groups the results
+by their stage in the pipeline. Creating this report requires a custom filter, and grouping the
+results by :guilabel:`Stage`.
+
+.. image:: win_loss/search-criteria-for-basic-win-loss.png
+   :align: center
+   :alt: The search criteria for win/loss reports is Created On, Stage, and Active is in true false.
+
+Follow the steps below to create a win/loss report:
+
+1. Navigate to :menuselection:`CRM app --> Reporting --> Pipeline`.
+2. On the :guilabel:`Pipeline Analysis` page, click the :guilabel:`⬇️ (down arrow)` icon, next to
+   the search bar, to open a drop-down menu of filters and groupings.
+
+   .. image:: win_loss/filters-for-basic-win-loss-report.png
+      :align: center
+      :alt: The Search menu containing the filters for a basic win/loss report.
+
+3. In drop-down menu that appears, under the :guilabel:`Group By` heading, click :guilabel:`Stage`.
+4. Under the :guilabel:`Filters` heading, click :guilabel:`Add Custom Filter` to open another pop-up
+   menu.
+5. In the :guilabel:`Add Custom Filter` pop-up menu, click on the first field in the
+   :guilabel:`Match any of the following rules:` section. By default, this field displays
+   :guilabel:`Country`.
+6. Clicking that first field reveals a sub-menu with numerous options to choose from. From this
+   sub-menu, locate and select the :guilabel:`Active` option. Doing so automatically populates the
+   remaining fields.
+
+   The first field reads: :guilabel:`Active`. The second field reads: :guilabel:`is`. And lastly,
+   the third field reads: :guilabel:`set`.
+
+   In total, the rule reads: :guilabel:`Active is set`.
+7. Click :guilabel:`New Rule`, change the first field to :guilabel:`Active`, and the last field to
+   :guilabel:`not set`. In total, the rule reads :guilabel:`Active is not set`.
+8. Click :guilabel:`Add`.
+
+.. image:: win_loss/add-custom-active-filter.png
+   :align: center
+   :alt: The Add Custom Filter menu showing two rules: (1) Active is set, and (2) Active is not set.
+
+The report now displays the total :guilabel:`Count` of leads, whether "Won" or "Lost," grouped by
+their stage in the CRM pipeline. Hover over a section of the report to see the number of leads in
+that stage.
+
+.. image:: win_loss/basic-win-loss-report.png
+   :align: center
+   :alt: A basic win/loss report showing all leads whether won or lost grouped by stage.
+
+Customize win/loss reports
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After :ref:`creating a win/loss report <win_loss/win_loss>`, consider using the options below to
+customize the report for different needs.
+
+.. example::
+   A sales manager might group wins and losses by salesperson, or sales team, to see who has the
+   best conversion rate. Or, a marketing team might group by sources, or medium, to determine where
+   their advertising has been most successful.
+
+.. tabs::
+
+   .. tab:: Filters and groups
+
+      To add more filters and groups, click the :guilabel:`⬇️ (down arrow)` icon, next to the search
+      bar, and select one or more options from the drop-down menu.
+
+      Some useful options include:
+
+      - :guilabel:`Created on`: adjusting this filter to a different period of time, such as the
+        last 30 days, or the last quarter, can provide more timely results.
+      - :guilabel:`Add Custom Filter`: clicking this option, and scrolling through the numerous
+        options in the drop-down menu, opens up additional search criteria, like :guilabel:`Last
+        Stage Update` or :guilabel:`Lost Reason`.
+      - :guilabel:`Add Custom Group > Active`: Clicking :menuselection:`Add Custom Group --> Active`
+        separates the results into **Won** (:guilabel:`true`) or **Lost** (:guilabel:`false`). This
+        shows at what stage leads are being marked **Won** or **Lost**.
+      - :guilabel:`Multiple Groupings`: add multiple :guilabel:`Group By` selections to split
+        results into more relevant and manageable chunks.
+
+        - Adding :guilabel:`Salesperson` or :guilabel:`Sales Team` breaks up the total count of
+          leads in each :guilabel:`Stage`.
+        - Adding :guilabel:`Medium` or :guilabel:`Source` can reveal what marketing avenues generate
+          more sales.
+
+      .. image:: win_loss/search-panel-filters-and-group-by-options.png
+         :align: center
+         :alt: The Search menu open and the Won and Lost filters highlighted.
+
+   .. tab:: Pivot View
+
+      By default, pivot view groups win/loss reports by :guilabel:`Stage` and measures
+      :guilabel:`Expected Revenue`.
+
+      To flesh out the table:
+
+      1. Click the :guilabel:`⬇️ (down arrow)` next to the search bar.
+      2. In the pop-up menu, replace the :guilabel:`Stage` grouping with something like
+         :guilabel:`Salesperson` or :guilabel:`Medium`.
+      3. Click the :guilabel:`Measures` button and click :guilabel:`Count` to add the number of
+         leads back into the report.
+
+         - Other useful measures for pivot view include :guilabel:`Days to Assign` and
+           :guilabel:`Days to Close`.
+
+      .. image:: win_loss/win-loss-pivot-view.png
+         :align: center
+         :alt: A win/loss report in Pivot View displays the data in table form.
+
+      .. important::
+         In pivot view, the :guilabel:`Insert In Spreadsheet` button may be greyed out due to the
+         report containing :guilabel:`duplicate group bys`. To fix this, replace the
+         :guilabel:`Stage` grouping in the search bar with another option.
+
+   .. tab:: List View
+
+      In list view, a win/loss report displays all leads on a single page.
+
+      To better organize the list, click the :guilabel:`⬇️ (down arrow)` next to the search bar, and
+      add more relevant groupings or re-organize the existing ones. To re-order the nesting, remove
+      all :guilabel:`Group By` options and re-add them in the desired order.
+
+      To add more columns to the list:
+
+      1. Click the :guilabel:`Filters` icon in the top-right of the page.
+      2. Select options from the resulting drop-down menu. Some useful filters include:
+
+         - **Campaign**: Shows the marketing campaign that originated each lead.
+         - **Medium**: Shows the marketing medium (Banner, Direct, Email, Google Adwords, Phone,
+           Website, etc.) that originated each lead.
+         - **Source**: Shows the source of each lead (Newsletter, Lead Recall, Search Engine, etc.).
+
+      .. image:: win_loss/win-loss-list-view.png
+         :align: center
+         :alt: A win/loss report in List View displays all leads in an easy-to-read list.
+
+.. _win_loss/save_reports:
+
+Save and share reports
+======================
+
+After :ref:`creating a report <win_loss/reports>`, the search criteria can be saved, so the report
+does not need to be created again in the future. Saved searches automatically update their results
+every time the report is opened.
+
+Additionally, reports can be shared with others, or added to spreadsheets/dashboards for greater
+customization and easier access.
+
+.. tabs::
+
+   .. tab:: Save to Favorites
+
+      To save a report for later:
+
+      1. On the :guilabel:`Pipeline Analysis` page, click the :guilabel:`⬇️ (down arrow)` icon, next
+         to the search bar.
+      2. In the drop-down menu that appears, under the :guilabel:`Favorites` heading, click
+         :guilabel:`Save current search`.
+      3. In the next drop-down menu that appears, enter a name for the report.
+
+         - Checking the :guilabel:`Default filter` box sets this report as the default analysis when
+           the :guilabel:`Pipeline Analysis` page is accessed.
+         - Checking the :guilabel:`Shared` box makes this report available to other users.
+
+      4. Finally, click :guilabel:`Save`. The report is now saved under the :guilabel:`Favorites`
+         heading.
+
+      .. image:: win_loss/save-to-favorites.png
+         :align: center
+         :alt: Under the Favorites heading, click Save current search and save the report for later.
+
+   .. tab:: Add to a Spreadsheet
+
+      Inserting a report into a spreadsheet not only saves a copy of the report, it allows users to
+      add charts and formulas like in an Excel file.
+
+      To save a report as a spreadsheet:
+
+      - **In Graph or Pivot View**:
+
+        1. Click the :guilabel:`Insert in spreadsheet` button.
+        2. In the pop-up menu that appears, click :guilabel:`Confirm`.
+
+      - **In Cohort or List View**:
+
+        1. Click the :guilabel:`⚙️ (gear)` icon.
+        2. In the drop-down menu that appears, hover over :guilabel:`Spreadsheet`.
+        3. In the next drop-down menu, click either :guilabel:`Insert in spreadsheet` or
+           :guilabel:`Link in spreadsheet`.
+
+      Saved reports are viewable in the *Documents* app.
+
+        .. image:: win_loss/pivot-view-in-spreadsheet.png
+           :align: center
+           :alt: Pivot View reports especially benefit from being inserted in spreadsheets.
+
+      .. tip::
+         After modifying a spreadsheet and adding additional formulas, consider then adding the
+         entire spreadsheet to a dashboard. Using this method, the spreadsheet can be added to a
+         public dashboard instead of only :guilabel:`My Dashboard`.
+
+         1. Click :menuselection:`File --> Add to dashboard`.
+         2. In the pop-up menu that appears, name the spreadsheet and select a :guilabel:`Dashboard
+            Section` to house the report.
+         3. Click :guilabel:`Create`.
+
+   .. tab:: Add to a Dashboard
+
+      Adding a report to a dashboard saves it for later and makes it easy to view alongside the rest
+      of :guilabel:`My Dashboard`.
+
+      To add a report to :guilabel:`My dashboard`:
+
+      1. On the :guilabel:`Pipeline Analysis` page, click the :guilabel:`⚙️ (gear)` icon.
+      2. In the drop-down menu that appears, hover over :guilabel:`Dashboard`.
+      3. In the :guilabel:`Add to my dashboard` drop-down menu, enter a name for the report (by
+         default, it is named :guilabel:`Pipeline`).
+      4. Click :guilabel:`Add`.
+
+      To view a saved report:
+
+      1. Return to the main apps page, and navigate to :menuselection:`Dashboards app --> My
+         Dashboard`.
+
+      .. image:: win_loss/add-to-dashboard.png
+         :align: center
+         :alt: To access the saved report, open the Dashboard app and click My Dashboard.
+
+.. seealso::
+   - :doc:`../acquire_leads/convert`
+   - :doc:`../acquire_leads/send_quotes`
+   - :doc:`../pipeline/lost_opportunities`

@@ -1,0 +1,1288 @@
+
+
+==================================================
+SECTION: quality.rst
+PATH: applications/inventory_and_mrp/quality.rst
+==================================================
+
+:show-content:
+:hide-page-toc:
+:show-toc:
+
+=======
+Quality
+=======
+
+**Odoo Quality** helps ensure product quality throughout manufacturing processes and inventory
+movements. Conduct quality checks, automate quality inspection frequency, and create quality alerts
+when issues arise.
+
+.. seealso::
+   - `Odoo Tutorials: Quality Overview
+     <https://www.odoo.com/slides/slide/quality-overview-5590>`_
+
+.. toctree::
+   :titlesonly:
+
+   quality/quality_management
+   quality/quality_check_types
+
+
+==================================================
+SECTION: failure_locations.rst
+PATH: applications/inventory_and_mrp/quality/quality_management/failure_locations.rst
+==================================================
+
+=================
+Failure locations
+=================
+
+.. |QCP| replace:: :abbr:`QCP (Quality Control Point)`
+.. |QCPs| replace:: :abbr:`QCP (Quality Control Points)`
+
+In Odoo, *quality control points* (QCPs) are used to create *quality checks*, which prompt employees
+to confirm the quality of products, when they are included in certain operations. By setting one or
+more *failure locations* on a |QCP|, products that fail the quality checks it creates can be sent to
+one of the specified locations.
+
+.. important::
+   The *Failure Location* feature was added in version 17.0 of Odoo, and does **not** appear in any
+   previous version. To upgrade an Odoo database to a more recent version, see the documentation on
+   :doc:`database upgrades <../../../../administration/upgrade>`.
+
+Configuration
+=============
+
+To use failure locations, the *Storage Locations* setting **must** be enabled in the settings of the
+*Inventory* app. This setting allows for the creation of sub-locations within a warehouse, including
+failure locations.
+
+To enable the *Storage Locations* setting, navigate to :menuselection:`Inventory app -->
+Configuration --> Settings`, and tick the checkbox next to :guilabel:`Storage Locations`, under the
+:guilabel:`Warehouses` heading. Then, click :guilabel:`Save`.
+
+.. image:: failure_locations/storage-locations-setting.png
+   :align: center
+   :alt: The Storage Locations setting on the Inventory app settings page.
+
+.. important::
+   Failure locations are most effective when used for products configured as *storable products*.
+   This is because inventory counts are only tracked for storable products, versus *consumable*
+   products, for which exact counts are not tracked.
+
+   Quality checks can still be created for consumable products, and those products can be sent to a
+   failure location if they fail a check. However, Odoo does not track the exact quantity of a
+   consumable product stored at a failure location.
+
+   To configure a product as storable, navigate to :menuselection:`Inventory app --> Products -->
+   Products`, and select a product. In the :guilabel:`Product Type` field on the :guilabel:`General
+   Information` tab, make sure that :guilabel:`Storable Product` is selected from the drop-down
+   menu.
+
+Add failure location to QCP
+===========================
+
+To add a failure location to a |QCP|, navigate to :menuselection:`Quality app --> Quality Control
+--> Control Points`. Select an existing |QCP| from the list, or create a new one by clicking
+:guilabel:`New`.
+
+.. note::
+   The following instructions only detail the configuration settings necessary for adding a failure
+   location to a |QCP|. For a full overview of |QCPs| and all of the options available when
+   configuring them, see the documentation on :doc:`quality control points
+   <quality_control_points>`.
+
+In the :guilabel:`Control Per` field on the |QCP| form, select the :guilabel:`Quantity` option.
+Doing so causes a :guilabel:`Failure Locations` field to appear on the form. This field is only
+available when the :guilabel:`Quantity` option is selected.
+
+In the :guilabel:`Failure Locations` field, select one or more locations from the drop-down menu. To
+create a new location, type the desired location name into the field, and then select
+:guilabel:`Create "[name]"` from the drop-down menu.
+
+.. image:: failure_locations/qcp-form.png
+   :align: center
+   :alt: A QCP form in the Quality app, configured with a failure location.
+
+Send products to failure location
+=================================
+
+Once a |QCP| has been configured with one or more failure locations, products that fail a check
+created by the |QCP| can be routed to one of the locations.
+
+To do so, open an order that requires a quality check created by a |QCP| configured with a failure
+location. For example, navigate to :menuselection:`Inventory app --> Operations --> Receipts`, and
+select a receipt.
+
+At the top of the selected order, click the :guilabel:`Quality Checks` button to open a pop-up
+window, from which the quality check can be processed. At the bottom of the pop-up window, click the
+:guilabel:`Fail` button to fail the quality check, which opens a second pop-up window, titled
+:guilabel:`Quality Check Failed for [Product]`.
+
+In the :guilabel:`Quantity Failed` field, enter the quantity of the product that failed to pass the
+quality check. In the :guilabel:`Failure Location` field, select a location to which the failed
+quantity should be sent. Then, click :guilabel:`Confirm` at the bottom of the pop-up window to close
+it.
+
+.. image:: failure_locations/failed-pop-up.png
+   :align: center
+   :alt: The pop-up window that appears after a quality check fails.
+
+Finally, on the order, click the :guilabel:`Validate` button at the top of the page. Doing so
+confirms the products that failed the quality check were sent to the failure location, while
+products that passed it were sent to their normal storage locations.
+
+View failure location inventory
+===============================
+
+To view the product quantities stored in a failure location, navigate to :menuselection:`Inventory
+app --> Configuration --> Locations`. Select a failure location from the list. Then, click the
+:guilabel:`Current Stock` smart button on the location's page.
+
+A failure location's page lists all of the products stored within the location, along with the
+quantity of each.
+
+
+==================================================
+SECTION: instructions_check.rst
+PATH: applications/inventory_and_mrp/quality/quality_check_types/instructions_check.rst
+==================================================
+
+==========================
+Instructions quality check
+==========================
+
+.. |MO| replace:: :abbr:`MO (Manufacturing Order)`
+.. |QCP| replace:: :abbr:`QCP (Quality Control Point)`
+
+In Odoo *Quality*, an *Instructions* check is one of the quality check types that can be selected
+when creating a new quality check or quality control point (QCP). *Instructions* checks consist of a
+text entry field that allows the creator to provide instructions for how to complete the check.
+
+For a full overview of how to configure a quality check or a |QCP|, see the documentation on
+:ref:`quality checks <quality/quality_management/quality-checks>` and :ref:`quality control points
+<quality/quality_management/quality-control-points>`.
+
+Process an Instructions quality check
+=====================================
+
+There are multiple ways that *Instructions* quality checks can be processed. If a quality check is
+assigned to a specific manufacturing, inventory, or work order, the check can be processed on the
+order itself. Alternatively, a check can be processed from the check's page.
+
+Process from the quality check's page
+-------------------------------------
+
+To process an *Instructions* quality check from the check's page, begin by navigating to
+:menuselection:`Quality --> Quality Control --> Quality Checks`, and select a quality check. Follow
+the :guilabel:`Instructions` for how to complete the check.
+
+If the product passes the check, click the :guilabel:`Pass` button above the quality check form. If
+the product does not pass the check, click the :guilabel:`Fail` button, instead.
+
+Process quality check on an order
+---------------------------------
+
+To process an *Instructions* quality check on an order, select a manufacturing order or inventory
+order (receipt, delivery, return, etc.) for which a check is required. Manufacturing orders can be
+selected by navigating to :menuselection:`Manufacturing --> Operations --> Manufacturing Orders`,
+and clicking on an order. Inventory orders can be selected by navigating to
+:menuselection:`Inventory`, clicking the :guilabel:`# To Process` button on an operation card, and
+selecting an order.
+
+On the selected manufacturing or inventory order, a purple :guilabel:`Quality Checks` button appears
+above the order. Click the button to open the :guilabel:`Quality Check` pop-up window, from which
+any quality checks created for the order can be processed.
+
+.. image:: instructions_check/quality-check-pop-up.png
+   :align: center
+   :alt: The Quality Check pop-up window on a manufacturing or inventory order.
+
+To complete an *Instructions* quality check, follow the instructions detailed in the
+:guilabel:`Quality Check` pop-up window. Finally, click :guilabel:`Validate` to confirm that the
+check has been completed.
+
+If an issue or defect is found during the quality check, a quality alert may need to be created to
+notify a quality team. To do so, click the :guilabel:`Quality Alert` button that appears at the top
+of the manufacturing or inventory order after the check is validated.
+
+Clicking :guilabel:`Quality Alert` opens a quality alert form on a new page. For a complete guide on
+how to fill out quality alert forms, view the documentation on :ref:`quality alerts
+<quality/quality_management/quality-alerts>`.
+
+Process work order quality check
+--------------------------------
+
+When configuring a |QCP| that is triggered by a manufacturing order, a specific work order can also
+be specified in the :guilabel:`Work Order Operation` field on the |QCP| form. If a work order is
+specified, an *Instructions* quality check is created for that specific work order, rather than the
+|MO| as a whole.
+
+Quality checks configured for work orders **must** be completed from the *Shop Floor* module. To do
+so, begin by navigating to :menuselection:`Manufacturing --> Operations --> Manufacturing Orders`.
+Select an |MO| that includes a work order for which an *Instructions* quality check is required.
+
+On the |MO|, select the :guilabel:`Work Orders` tab, and click the :guilabel:`Open Work Order
+(square with arrow coming out of it)` button on the line of the work order to be processed. On the
+resulting :guilabel:`Work Orders` pop-up window, click the :guilabel:`Open Shop Floor` button to
+open the *Shop Floor* module.
+
+When accessed from a specific work order, the *Shop Floor* module opens to the page for the work
+center where the order is configured to be processed, and isolates the work order's card so that no
+other cards are shown.
+
+Begin processing the work order's steps until the *Instructions* quality check step is reached.
+Click on the step to open a pop-up window that details how to complete the quality check. Once
+completed, click the :guilabel:`Next` button to complete the check, and move on to the next step.
+
+.. image:: instructions_check/instructions-check-shop-floor.png
+   :align: center
+   :alt: An Instruction check as it appears in the Shop Floor module.
+
+Alternatively, an *Instructions* quality check can be completed by clicking the checkbox that
+appears on the right side of the step's line on the work order card. When using this method, the
+quality check automatically passes, without a pop-up window appearing.
+
+.. note::
+   For a full guide to the *Shop Floor* module, see the :ref:`Shop Floor overview
+   <manufacturing/shop_floor/shop_floor_overview>` documentation.
+
+
+==================================================
+SECTION: measure_check.rst
+PATH: applications/inventory_and_mrp/quality/quality_check_types/measure_check.rst
+==================================================
+
+=====================
+Measure quality check
+=====================
+
+.. |MO| replace:: :abbr:`MO (Manufacturing Order)`
+.. |QCP| replace:: :abbr:`QCP (Quality Control Point)`
+.. |QCPs| replace:: :abbr:`QCPs (Quality Control Points)`
+
+In Odoo *Quality*, a *Measure* check is one of the quality check types that can be selected when
+creating a new quality check or quality control point (QCP). *Measure* checks prompt users to
+measure a certain aspect of a product and record the measurement in Odoo. For the quality check to
+pass, the recorded measurement must be within a certain *tolerance* of a *norm* value.
+
+Create a Measure quality check
+==============================
+
+There are two distinct ways that *Measure* quality checks can be created. A single check can be
+manually created. Alternatively, a |QCP| can be configured that automatically creates checks at a
+predetermined interval.
+
+This documentation only details the configuration options that are unique to *Measure* quality
+checks and |QCPs|. For a full overview of all the configuration options available when creating a
+single check or a |QCP|, see the documentation on :ref:`quality checks
+<quality/quality_management/quality-checks>` and :ref:`quality control points
+<quality/quality_management/quality-control-points>`.
+
+Quality check
+-------------
+
+To create a single *Measure* quality check, navigate to :menuselection:`Quality --> Quality Control
+--> Quality Checks`, and click :guilabel:`New`. Fill out the new quality check form as follows:
+
+- In the :guilabel:`Type` drop-down field, select the :guilabel:`Measure` quality check type.
+- In the :guilabel:`Team` drop-down field, select the quality team responsible for managing the
+  check.
+- In the :guilabel:`Instructions` text field of the :guilabel:`Notes` tab, enter instructions for
+  how the picture should be taken.
+
+.. image:: measure_check/measure-check-form-1.png
+   :align: center
+   :alt: A quality check form configured for a Measure quality check.
+
+Quality control point (QCP)
+---------------------------
+
+To create a |QCP| that generates *Measure* quality checks automatically, navigate to
+:menuselection:`Quality --> Quality Control --> Control Points`, and click :guilabel:`New`. Fill out
+the new |QCP| form as follows:
+
+- In the :guilabel:`Type` drop-down field, select the :guilabel:`Measure` quality check type. Doing
+  so causes two new fields to appear: :guilabel:`Norm` and :guilabel:`Tolerance`.
+
+  - Use the first text-entry field of the :guilabel:`Norm` field to record the ideal measurement
+    that the product should conform to. Use the second text-entry field to specify the unit of
+    measurement that should be used.
+  - The :guilabel:`Tolerance` field features two sub-fields: :guilabel:`from` and :guilabel:`to`.
+    Use the :guilabel:`from` field to specify the minimum acceptable measurement, and the
+    :guilabel:`to` field to specify the maximum acceptable measurement.
+
+- In the :guilabel:`Team` drop-down field, select the quality team responsible for managing the
+  checks created by the |QCP|.
+- In the :guilabel:`Instructions` text field, enter instructions for how the measurement should be
+  taken.
+
+.. image:: measure_check/measure-check-qcp-form.png
+   :align: center
+   :alt: A QCP form configured to create Measure quality checks.
+
+Process a Measure quality check
+===============================
+
+Once created, there are multiple ways that *Measure* quality checks can be processed. If a quality
+check is assigned to a specific inventory, manufacturing, or work order, the check can be processed
+on the order itself. Alternatively, a check can be processed from the check's page.
+
+From the check's page
+---------------------
+
+To process a *Measure* quality check from the check's page, begin by navigating to
+:menuselection:`Quality --> Quality Control --> Quality Checks`, and select a quality check. Follow
+the :guilabel:`Instructions` for how to take the measurement.
+
+After taking the measurement, record the value in the :guilabel:`Measure` field on the quality check
+form. To manually pass or fail the check, click :guilabel:`Pass` or :guilabel:`Fail` at the top-left
+corner of the check.
+
+Alternatively, if the quality check is assigned to a |QCP| for which *norm* and *tolerance* values
+have been specified, click :guilabel:`Measure` at the top-left corner of the check instead. Doing so
+automatically marks the check as *Passed* if the recorded value is within the specified *tolerance*,
+or *Failed* if the value is outside of it.
+
+On an order
+-----------
+
+To process a *Measure* quality check on an order, select a manufacturing order or inventory order
+(receipt, delivery, return, etc.), for which a check is required. Manufacturing orders can be
+selected by navigating to :menuselection:`Manufacturing --> Operations --> Manufacturing Orders`,
+and clicking on an order. Inventory orders can be selected by navigating to
+:menuselection:`Inventory`, clicking the :guilabel:`# To Process` button on an operation card, and
+selecting an order.
+
+On the selected manufacturing or inventory order, a purple :guilabel:`Quality Checks` button appears
+at the top of the page. Click the button to open the :guilabel:`Quality Check` pop-up window, which
+shows all of the quality checks required for that order.
+
+To process a *Measure* quality check, measure the product as instructed, then enter the value in the
+:guilabel:`Measure` field on the pop-up window. Finally, click :guilabel:`Validate` to register the
+recorded value.
+
+.. image:: measure_check/measure-check-pop-up.png
+   :align: center
+   :alt: A Measure quality check pop-up window on a manufacturing or inventory order.
+
+If the value entered is within the range specified in the :guilabel:`Tolerance` section of the
+|QCP|, the quality check passes and the pop-up window closes. The rest of the manufacturing or
+inventory order can then be processed as usual.
+
+However, if the value entered is outside of the specified range, a new pop-up window appears, titled
+:guilabel:`Quality Check Failed`. The body of the pop-up shows a warning message that states,
+:guilabel:`You measured # units and it should be between # units and # units.`, as well as the
+instructions entered in the :guilabel:`Message If Failure` tab of the |QCP|. At the bottom of the
+pop-up, two buttons appear: :guilabel:`Correct Measure` and :guilabel:`Confirm Measure`.
+
+.. image:: measure_check/measure-check-failed.png
+   :align: center
+   :alt: The "Quality Check Failed" pop-up window.
+
+If the measurement was not entered correctly and should be changed, select :guilabel:`Correct
+Measure`. Doing so re-opens the :guilabel:`Quality Check` pop-up window. Enter the corrected
+measurement in the :guilabel:`Measure` field, and then click :guilabel:`Validate` to complete the
+check.
+
+If the measurement was entered correctly, click :guilabel:`Confirm Measure` instead, and the quality
+check fails. Follow any instructions that were listed on the :guilabel:`Quality Check Failed` pop-up
+window.
+
+If a quality alert must be created, click the :guilabel:`Quality Alert` button that appears at the
+top of the manufacturing or inventory order after the check fails. Clicking :guilabel:`Quality
+Alert` opens a quality alert form on a new page.
+
+.. seealso::
+   For a complete guide on how to fill out the quality alert form, view the documentation on
+   :doc:`quality alerts <../quality_management/quality_alerts>`.
+
+On a work order
+---------------
+
+When configuring a |QCP| that is triggered during manufacturing, a specific work order can also be
+specified in the :guilabel:`Work Order Operation` field on the |QCP| form. If a work order is
+specified, a *Measure* quality check is created for that specific work order, rather than the
+manufacturing order as a whole.
+
+*Measure* quality checks configured for work orders **must** be completed from the *Shop Floor*
+module. To do so, begin by navigating to :menuselection:`Manufacturing --> Operations -->
+Manufacturing Orders`. Select an |MO| that includes a work order for which a *Measure* quality check
+is required.
+
+On the |MO|, select the :guilabel:`Work Orders` tab, and click the :guilabel:`Open Work Order
+(external link icon)` button on the line of the work order to be processed. On the resulting
+:guilabel:`Work Orders` pop-up window, click the :guilabel:`Open Shop Floor` button to open the
+*Shop Floor* module.
+
+When accessed from a specific work order, the *Shop Floor* module opens to the page for the work
+center where the order is configured to be processed, and isolates the work order's card, so no
+other cards are shown.
+
+Process the work order's steps until the *Measure* quality check step is reached. Click on the step
+to open a pop-up window that includes instructions for how the measurement should be taken. After
+taking the measurement, enter it in the :guilabel:`Measure` field of the pop-up window, and then
+click :guilabel:`Validate`.
+
+.. image:: measure_check/measure-check-shop-floor.png
+   :align: center
+   :alt: A Measure check in the Shop Floor module.
+
+If the measurement entered is within the range specified in the :guilabel:`Tolerance` section of the
+|QCP|, the quality check passes, and the pop-up window moves on to the next step of the work order.
+However, if the measurement entered is outside of the specified range, a new pop-up window appears,
+titled :guilabel:`Quality Check Failed`.
+
+The body of the :guilabel:`Quality Check Failed` pop-up window shows a message that states,
+:guilabel:`You measured # units and it should be between # units and # units`, as well as the
+instructions entered in the :guilabel:`Message If Failure` tab of the |QCP|. At the bottom of the
+pop-up window, two buttons appear: :guilabel:`Correct Measure` and :guilabel:`Confirm Measure`.
+
+.. image:: measure_check/shop-floor-measure-check-failed.png
+   :align: center
+   :alt: The Quality Check Failed pop-up window for a Measure check in the Shop Floor module.
+
+If the measurement was not entered correctly, and should be changed, select :guilabel:`Correct
+Measure`. Doing so opens a new pop-up window, titled :guilabel:`Quality Check`. Enter the corrected
+measure in the :guilabel:`Measure` field, and then click :guilabel:`Validate` to complete the check
+and close the pop-up window.
+
+If the measurement was entered correctly, click :guilabel:`Confirm Measure` instead, and the quality
+check fails. Follow any instructions that were listed on the :guilabel:`Quality Check Failed` pop-up
+window.
+
+If a quality alert must be created, exit the pop-up window by clicking the :guilabel:`X (close)`
+button in the top-right corner.
+
+Then, click the :guilabel:`⋮ (three vertical dots)` button on the bottom-right corner of the work
+order card to open the :guilabel:`What do you want to do?` pop-up window.
+
+On the :guilabel:`What do you want to do?` pop-up window, select the :guilabel:`Create a Quality
+Alert` button. Doing so opens a blank quality alert form in a new :guilabel:`Quality Alerts` pop-up
+window.
+
+.. seealso::
+   For a complete guide on how to fill out quality alert forms, view the documentation on
+   :doc:`quality alerts <../quality_management/quality_alerts>`.
+
+
+==================================================
+SECTION: pass_fail_check.rst
+PATH: applications/inventory_and_mrp/quality/quality_check_types/pass_fail_check.rst
+==================================================
+
+=========================
+Pass - Fail quality check
+=========================
+
+.. |MO| replace:: :abbr:`MO (Manufacturing Order)`
+.. |QCP| replace:: :abbr:`QCP (Quality Control Point)`
+.. |QCPs| replace:: :abbr:`QCP (Quality Control Points)`
+
+In Odoo *Quality*, a *Pass - Fail* check is one of the quality check types that can be selected when
+creating a new quality check or quality control point (QCP). *Pass - Fail* checks consist of a text
+field that allows the creator to specify a certain criteria that a product must meet to pass the
+check.
+
+Create a Pass - Fail quality check
+==================================
+
+There are two distinct ways that *Pass - Fail* quality checks can be created. A single check can be
+manually created. Alternatively, a |QCP| can be configured that automatically creates checks at a
+predetermined interval.
+
+This documentation only details the configuration options that are unique to *Pass - Fail* quality
+checks and |QCPs|. For a full overview of all the configuration options available when creating a
+single check or a |QCP|, see the documentation on :ref:`quality checks
+<quality/quality_management/quality-checks>` and :ref:`quality control points
+<quality/quality_management/quality-control-points>`.
+
+Quality check
+-------------
+
+To create a single *Pass - Fail* quality check, navigate to :menuselection:`Quality --> Quality
+Control --> Quality Checks`, and click :guilabel:`New`. Fill out the new quality check form as
+follows:
+
+- In the :guilabel:`Type` drop-down field, select the :guilabel:`Pass - Fail` quality check type.
+- In the :guilabel:`Team` drop-down field, select the quality team responsible for managing the
+  check.
+- In the :guilabel:`Instructions` text field of the :guilabel:`Notes` tab, enter instructions for
+  how to complete the quality check and the criteria that must be met for the check to pass.
+
+.. image:: pass_fail_check/quality-check-form.png
+   :align: center
+   :alt: A quality check form configured for a Pass - Fail quality check.
+
+Quality Control Point (QCP)
+---------------------------
+
+To create a |QCP| that generates *Pass - Fail* quality checks automatically, begin by navigating to
+:menuselection:`Quality --> Quality Control --> Control Points`, and click :guilabel:`New`. Fill out
+the new |QCP| form as follows:
+
+- In the :guilabel:`Type` drop-down field, select the :guilabel:`Pass - Fail` quality check type.
+- In the :guilabel:`Team` drop-down field, select the quality team responsible for managing the
+  checks created by the |QCP|.
+- In the :guilabel:`Instructions` text field, enter instructions for how to complete the quality
+  check and the criteria that must be met for the check to pass.
+
+.. image:: pass_fail_check/qcp-form.png
+   :align: center
+   :alt: A Quality Control Point (QCP) form configured to create a Pass - Fail quality check.
+
+Process a Pass - Fail quality check
+===================================
+
+Once created, there are multiple ways that *Measure* quality checks can be processed. If a quality
+check is assigned to a specific inventory, manufacturing, or work order, the check can be processed
+on the order itself. Alternatively, a check can be processed from the check's page.
+
+From the check's page
+---------------------
+
+To process a *Measure* quality check from the check's page, begin by navigating to
+:menuselection:`Quality --> Quality Control --> Quality Checks`, and select a quality check. Follow
+the :guilabel:`Instructions` for how to complete the check.
+
+If the criteria for the check is met, click the :guilabel:`Pass` button at the top-left corner of
+the page. If the criteria is not met, click the :guilabel:`Fail` button.
+
+On an order
+-----------
+
+To process a *Pass - Fail* quality check on an order, select a manufacturing order or inventory
+order (receipt, delivery, return, etc.), for which a check is required. Manufacturing orders can be
+selected by navigating to :menuselection:`Manufacturing --> Operations --> Manufacturing Orders`,
+and clicking on an order. Inventory orders can be selected by navigating to
+:menuselection:`Inventory`, clicking the :guilabel:`# To Process` button on an operation card, and
+selecting an order.
+
+On the selected manufacturing or inventory order, a purple :guilabel:`Quality Checks` button appears
+at the top of the order. Click the button to open the :guilabel:`Quality Check` pop-up window, which
+shows all of the quality checks required for that order.
+
+To process a *Pass - Fail* quality check, follow the instructions shown on the :guilabel:`Quality
+Check` pop-up window. If the criteria for the check is met, click the :guilabel:`Pass` button at the
+bottom of the window. If the criteria is not met, click the :guilabel:`Fail` button.
+
+.. image:: pass_fail_check/pass-fail-check-pop-up.png
+   :align: center
+   :alt: A Pass - Fail quality check pop-up window on a manufacturing or inventory order.
+
+If a quality alert must be created, click the :guilabel:`Quality Alert` button that appears at the
+top of the manufacturing or inventory order after the check fails. Clicking :guilabel:`Quality
+Alert` opens a quality alert form on a new page.
+
+.. seealso::
+   For a complete guide on how to fill out quality alert forms, view the documentation on
+   :ref:`quality alerts <quality/quality_management/quality-alerts>`.
+
+On a work order
+---------------
+
+When configuring a |QCP| that is triggered during manufacturing, a specific work order can also be
+specified in the :guilabel:`Work Order Operation` field on the |QCP| form. If a work order is
+specified, a *Pass - Fail* quality check is created for that specific work order, rather than the
+manufacturing order as a whole.
+
+*Pass - Fail* quality checks configured for work orders **must** be completed from the *Shop Floor*
+module. To do so, begin by navigating to :menuselection:`Manufacturing --> Operations -->
+Manufacturing Orders`. Select an |MO| that includes a work order for which a *Pass - Fail* quality
+check is required.
+
+On the |MO|, select the :guilabel:`Work Orders` tab, and then click the :guilabel:`Open Work Order
+(external link icon)` button on the line of the work order to be processed. On the resulting
+:guilabel:`Work Orders` pop-up window, click the :guilabel:`Open Shop Floor` button to open the
+*Shop Floor* module.
+
+When accessed from a specific work order, the *Shop Floor* module opens to the page for the work
+center where the order is configured to be processed, and isolates the work order's card so that no
+other cards are shown.
+
+Begin processing the work order's steps until the *Pass - Fail* quality check step is reached. Click
+on the step to open a pop-up window that details the criteria for whether the check passes or fails.
+Click the :guilabel:`Pass` button at the bottom of the pop-up window if the check passes, or the
+:guilabel:`Fail` button if it fails.
+
+If the :guilabel:`Pass` button is clicked, the pop-up window moves to the next step for the work
+order. If the :guilabel:`Fail` button is clicked, a :guilabel:`Quality Check Failed` pop-up window
+appears, detailing what should be done next.
+
+.. image:: pass_fail_check/pass-fail-check-shop-floor.png
+   :align: center
+   :alt: A Pass - Fail check as it appears in the Shop Floor module.
+
+.. tip::
+   Alternatively, instead of clicking on the step to open the pop-up window, a *Pass - Fail* quality
+   check can be completed by clicking the checkbox that appears on the right side of the step's line
+   on the work order card. When using this method, the quality check passes automatically, without a
+   pop-up window appearing.
+
+
+==================================================
+SECTION: picture_check.rst
+PATH: applications/inventory_and_mrp/quality/quality_check_types/picture_check.rst
+==================================================
+
+============================
+Take a Picture quality check
+============================
+
+.. |MO| replace:: :abbr:`MO (Manufacturing Order)`
+.. |QCP| replace:: :abbr:`QCP (Quality Control Point)`
+.. |QCPs| replace:: :abbr:`QCP (Quality Control Points)`
+
+In Odoo *Quality*, a *Take a Picture* check is one of the quality check types that can be selected
+when creating a new quality check or quality control point (QCP). *Take a Picture* checks require a
+picture to be attached to the check, which can then be reviewed by a quality team.
+
+Create a Take a Picture quality check
+=====================================
+
+There are two distinct ways that *Take a Picture* quality checks can be created. A single check can
+be manually created. Alternatively, a |QCP| can be configured that automatically creates checks at a
+predetermined interval.
+
+This documentation only details the configuration options that are unique to *Take a Picture*
+quality checks and |QCPs|. For a full overview of all the configuration options available when
+creating a single check or a |QCP|, see the documentation on :ref:`quality checks
+<quality/quality_management/quality-checks>` and :ref:`quality control points
+<quality/quality_management/quality-control-points>`.
+
+Quality check
+-------------
+
+To create a single *Take a Picture* quality check, navigate to :menuselection:`Quality --> Quality
+Control --> Quality Checks`, and click :guilabel:`New`. Fill out the new quality check form as
+follows:
+
+- In the :guilabel:`Type` drop-down field, select the :guilabel:`Take a Picture` quality check type.
+- In the :guilabel:`Team` drop-down field, select the quality team responsible for managing the
+  check.
+- In the :guilabel:`Instructions` text field of the :guilabel:`Notes` tab, enter instructions for
+  how the picture should be taken.
+
+.. image:: picture_check/picture-check-form.png
+   :align: center
+   :alt: A quality check form configured for a Take a Picture quality check.
+
+Quality control point
+---------------------
+
+To create a |QCP| that generates *Take a Picture* quality checks automatically, navigate to
+:menuselection:`Quality --> Quality Control --> Control Points`, and click :guilabel:`New`. Fill out
+the new |QCP| form as follows:
+
+- In the :guilabel:`Type` drop-down field, select the :guilabel:`Take a Picture` quality check type.
+- If the *Maintenance* app is installed, a :guilabel:`Device` field appears after selecting the
+  *Take a Picture* check type. Use this field to specify a device that should be used to take
+  quality check pictures. For information about managing devices in the *Maintenance* app, see the
+  documentation on :ref:`adding new equipment <maintenance/equipment_management/add_new_equipment>`.
+- In the :guilabel:`Team` drop-down field, select the quality team responsible for managing the
+  checks created by the |QCP|.
+- In the :guilabel:`Instructions` text field, enter instructions for how the picture should be
+  taken.
+
+.. image:: picture_check/picture-qcp-form.png
+   :align: center
+   :alt: A Quality Control Point (QCP) form configured to create a Take a Picture quality check.
+
+Process a Take a Picture quality check
+======================================
+
+Once created, there are multiple ways that *Take a Picture* quality checks can be processed. If a
+quality check is assigned to a specific inventory, manufacturing, or work order, the check can be
+processed on the order itself. Alternatively, a check can be processed from the check's page.
+
+From the check's page
+---------------------
+
+To process a *Take a Picture* quality check from the check's page, begin by navigating to
+:menuselection:`Quality --> Quality Control --> Quality Checks`, and then select a quality check.
+Follow the :guilabel:`Instructions` for how to take the picture.
+
+After taking the picture, make sure it is stored on the device being used to process the quality
+check (computer, tablet, etc.). Then, click the :guilabel:`✏️ (pencil)` button in the
+:guilabel:`Picture` section to open the device's file manager. In the file manager, navigate to the
+picture, select it, and click :guilabel:`Open` to attach it.
+
+.. image:: picture_check/picture-edit-button.png
+   :align: center
+   :alt: The edit button (pencil) on a Take a Picture quality check.
+
+On an order
+-----------
+
+To process a *Take a Picture* quality check on an order, select a manufacturing order or inventory
+order (receipt, delivery, return, etc.), for which a check is required. Manufacturing orders can be
+selected by navigating to :menuselection:`Manufacturing --> Operations --> Manufacturing Orders`,
+and clicking on an order. Inventory orders can be selected by navigating to
+:menuselection:`Inventory`, clicking the :guilabel:`# To Process` button on an operation card, and
+selecting an order.
+
+On the selected manufacturing or inventory order, a purple :guilabel:`Quality Checks` button appears
+at the top of the page. Click the button to open the :guilabel:`Quality Check` pop-up window, which
+shows all of the quality checks required for that order.
+
+Follow the instructions detailing how to take the picture, which are shown on the :guilabel:`Quality
+Check` pop-up window. After taking the picture, make sure it is stored on the device being used to
+process the quality check (computer, tablet, etc.).
+
+Then, click the :guilabel:`Take a Picture` button in the :guilabel:`Picture` section to open the
+device's file manager. In the file manager, navigate to the picture, select it, and click
+:guilabel:`Open` to attach it. Finally, click :guilabel:`Validate` on the :guilabel:`Quality Check`
+pop-up window to complete the quality check.
+
+.. image:: picture_check/picture-check-pop-up.png
+   :align: center
+   :alt: A Take a Picture quality check pop-up window on a manufacturing or inventory order.
+
+If a quality alert must be created, click the :guilabel:`Quality Alert` button that appears at the
+top of the manufacturing or inventory order after the check is validated. Clicking
+:guilabel:`Quality Alert` opens a quality alert form on a new page. For a complete guide on how to
+fill out quality alert forms, view the documentation on :ref:`quality alerts
+<quality/quality_management/quality-alerts>`.
+
+On a work order
+---------------
+
+When configuring a |QCP| that is triggered during manufacturing, a specific work order can also be
+specified in the :guilabel:`Work Order Operation` field on the |QCP| form. If a work order is
+specified, a *Take a Picture* quality check is created for that specific work order, rather than the
+manufacturing order as a whole.
+
+*Take a Picture* quality checks configured for work orders **must** be completed from the *Shop
+Floor* module. To do so, begin by navigating to :menuselection:`Manufacturing --> Operations -->
+Manufacturing Orders`. Then, select an |MO| that includes a work order for which a *Take a Picture*
+quality check is required.
+
+On the |MO|, select the :guilabel:`Work Orders` tab, and then click the :guilabel:`Open Work Order
+(external link icon)` button on the line of the work order to be processed. On the resulting
+:guilabel:`Work Orders` pop-up window, click the :guilabel:`Open Shop Floor` button to open the
+*Shop Floor* module.
+
+When accessed from a specific work order, the *Shop Floor* module opens to the page for the work
+center where the order is configured to be processed, and isolates the work order's card, so no
+other cards are shown.
+
+Process the work order's steps until the *Take a Picture* quality check step is reached. Click on
+the step to open a pop-up window that includes instructions for how the picture should be taken.
+After taking the picture, make sure it is stored on the device being used to process the quality
+check (computer, tablet, etc.).
+
+Then, click the :guilabel:`Take a Picture` button on the pop-up window to open the device's file
+manager. In the file manager, navigate to the picture, select it, and click :guilabel:`Open` to
+attach it.
+
+Finally, click :guilabel:`Validate` at the bottom of the pop-up window to complete the quality
+check. The pop-up window then moves on to the next step of the work order.
+
+.. image:: picture_check/picture-check-shop-floor.png
+   :align: center
+   :alt: A Take a Picture check in the Shop Floor module.
+
+If a quality alert must be created, exit the pop-up window by clicking the :guilabel:`X (close)`
+button in the top-right corner.
+
+Then, click the :guilabel:`⋮ (three vertical dots)` button on the bottom-right corner of the work
+order card to open the :guilabel:`What do you want to do?` pop-up window.
+
+On the :guilabel:`What do you want to do?` pop-up window, select the :guilabel:`Create a Quality
+Alert` button. Doing so opens a blank quality alert form in a new :guilabel:`Quality Alerts` pop-up
+window.
+
+.. seealso::
+   For a complete guide on how to fill out quality alert forms, view the documentation on
+   :doc:`quality alerts <../quality_management/quality_alerts>`.
+
+Review picture attached to quality check
+========================================
+
+After a picture has been attached to a check, it can then be reviewed by quality team members or
+other users. To do so, navigate to :menuselection:`Quality --> Quality Control --> Quality Checks`,
+and select a quality check to review.
+
+The attached picture appears in the :guilabel:`Picture` section of the quality check form. After
+reviewing the picture, click the :guilabel:`Pass` button if the check passes, or the
+:guilabel:`Fail` button if the check fails.
+
+.. image:: picture_check/review-picture-check.png
+   :align: center
+   :alt: A Take a Picture check with a picture attached.
+
+
+==================================================
+SECTION: quality_alerts.rst
+PATH: applications/inventory_and_mrp/quality/quality_management/quality_alerts.rst
+==================================================
+
+==============
+Quality alerts
+==============
+
+.. _quality/quality_management/quality-alerts:
+.. |MO| replace:: :abbr:`MO (Manufacturing Order)`
+
+In the Odoo *Quality* app, *quality alerts* are used to notify quality teams of product defects or
+other issues. Quality alerts can be created from a manufacturing or inventory order, from a work
+order in the *Shop Floor* module, or directly within the *Quality* app.
+
+Create quality alerts
+=====================
+
+There are multiple ways to create a new quality alert:
+
+- **From the Quality app itself**, by to :menuselection:`Quality -->  Quality Control --> Quality
+  Alerts`, and then click :guilabel:`New` to open a quality alert form.
+- Navigate to :menuselection:`Manufacturing --> Operations --> Manufacturing Orders`, and then
+  select an |MO|. Click the :guilabel:`Quality Alert` button at the top of the |MO| to open a
+  quality alert form in a new page.
+
+  .. important::
+     This method can only be used if a quality check has been requested for the |MO|. The
+     :guilabel:`Quality Alert` button will not appear otherwise.
+
+- Open the :menuselection:`Inventory` app, click the :guilabel:`# To Process` button on an inventory
+  order type card (Receipts, Delivery Orders, etc.), and then select an order. Click the
+  :guilabel:`Quality Alert` button at the top of the order to open a quality alert form in a new
+  page.
+
+  .. important::
+     This method can only be used if a quality check has been requested for the inventory order. The
+     :guilabel:`Quality Alert` button will not appear otherwise. If the button does not appear, a
+     quality alert can also be created by clicking the :guilabel:`⚙️ (gear)` icon at the top of the
+     page and selecting the :guilabel:`Quality Alert` option from the resulting menu.
+
+- Open the :menuselection:`Shop Floor` module, and then select a work center from the navigation bar
+  at the top of the page. Then, click the :guilabel:`⋮ (three vertical dots)` button at the
+  bottom-right of a work order card to open the :guilabel:`What do you want to do?` menu. Select the
+  :guilabel:`Create a Quality Alert` option from this menu to open a quality alert in a pop-up
+  window.
+
+.. note::
+   Depending on how a new quality alert form is opened, certain fields on the form may already be
+   filled in. For example, if a quality alert is created from a work order card in the *Shop Floor*
+   module, the :guilabel:`Product` and :guilabel:`Work Center` are pre-filled.
+
+Quality alerts form
+-------------------
+
+After opening a new quality alert form, begin by giving it a short :guilabel:`Title` that summarizes
+the issue with the product.
+
+Then, if the quality alert is referencing:
+
+- **A specific product or product variant**, select it from the :guilabel:`Product` or
+  :guilabel:`Product Variant` drop-down menus.
+- **A specific work center**, select it from the :guilabel:`Work Center` drop-down menu.
+- **A specific picking order**, select it from the :guilabel:`Picking` drop-down menu.
+
+Next in the :guilabel:`Team` field, select the quality team that is responsible for managing the
+quality alert. If a specific employee should be responsible for the quality alert, select them from
+the :guilabel:`Responsible` drop-down menu.
+
+In the :guilabel:`Tags` field, select any tags relevant to the quality alert from the drop-down
+menu.
+
+Use the :guilabel:`Root Cause` field to select the cause of the quality issue, if known.
+
+Lastly, choose a :guilabel:`Priority` level by selecting a :guilabel:`⭐ (star)` number between one
+and three. Quality alerts with higher priorities appear at the top of the :guilabel:`Quality Alerts`
+Kanban board in the *Quality* app.
+
+At the bottom of the quality alert form are four tabs which aid in adding supplemental information
+or actions to be taken for the quality alert. They can be filled out as follows:
+
+- In the :guilabel:`Description` tab, enter a description of the quality issue.
+- Use the :guilabel:`Corrective Actions` tab to detail the steps that should be taken to fix the
+  issue.
+- Use the :guilabel:`Preventive Actions` tab to detail what should be done to prevent the issue from
+  occurring in the future.
+- In the :guilabel:`Miscellaneous` tab, select the :guilabel:`Vendor` of the product. If using an
+  Odoo database which manages multiple companies, select the relevant company in the
+  :guilabel:`Company` field. Finally, specify when the alert was assigned to a quality team in the
+  :guilabel:`Date Assigned` field.
+
+.. image:: quality_alerts/alert-form.png
+   :align: center
+   :alt: A quality alert form that has been filled out.
+
+Manage quality alerts
+=====================
+
+To view all existing quality alerts, navigate to :menuselection:`Quality --> Quality Control -->
+Quality Alerts`. By default, alerts are displayed in a Kanban board view, which organizes them into
+different stages based on where they are in the review process.
+
+To move an alert to a different stage, simply drag and drop it on the desired stage. Alternatively,
+select a quality alert to open it, and then click the desired stage above the top-right corner of
+the quality alert form.
+
+To create a new alert within a specific stage, click the :guilabel:`+ (plus)` button to the right of
+the stage name. In the new alert card that appears below the stage title, enter the
+:guilabel:`Title` of the alert, and then click :guilabel:`Add`. To configure the rest of the alert,
+select the alert card to open its form.
+
+.. image:: quality_alerts/alert-kanban.png
+   :align: center
+   :alt: The Quality Alerts page, displaying alerts in a Kanban view.
+
+
+==================================================
+SECTION: quality_check_types.rst
+PATH: applications/inventory_and_mrp/quality/quality_check_types.rst
+==================================================
+
+:nosearch:
+
+===================
+Quality check types
+===================
+
+.. toctree::
+   :titlesonly:
+
+   quality_check_types/instructions_check
+   quality_check_types/pass_fail_check
+   quality_check_types/measure_check
+   quality_check_types/picture_check
+
+
+==================================================
+SECTION: quality_checks.rst
+PATH: applications/inventory_and_mrp/quality/quality_management/quality_checks.rst
+==================================================
+
+==============
+Quality checks
+==============
+
+.. _quality/quality_management/quality-checks:
+.. |MO| replace:: :abbr:`MO (Manufacturing Order)`
+.. |QCP| replace:: :abbr:`QCP (Quality Control Point)`
+
+Quality checks are manual inspections conducted by employees, and are used to ensure the quality of
+products. In Odoo, a quality check can be conducted for a single product, or multiple products
+within the same inventory operation or manufacturing order.
+
+Using a Quality Control Point (QCP), it is possible to create quality checks automatically at
+regular intervals. When quality checks are created by a |QCP|, they appear on a manufacturing or
+inventory order, where the employee processing the order will be prompted to complete them. For a
+full explanation of how to create and configure a |QCP|, see the documentation on :ref:`quality
+control points <quality/quality_management/quality-control-points>`.
+
+While quality checks are most commonly created automatically by a |QCP|, it is also possible to
+manually create a single quality check. Creating a check manually is useful when an employee wants
+to schedule a quality check that will only occur once, or register a quality check that they conduct
+unprompted.
+
+Manual quality check
+====================
+
+To manually create a single quality check, navigate to :menuselection:`Quality --> Quality Control
+--> Quality Checks`, and click :guilabel:`New`. On the quality check form, begin by selecting an
+option from the :guilabel:`Control per` drop-down menu:
+
+- :guilabel:`Operation` requests a check for an entire operation (ex. delivery order) and all
+  products within it.
+- :guilabel:`Product` requests a check for every unit of a product that is part of an operation (ex.
+  every unit of a product within a delivery order).
+- :guilabel:`Quantity` requests a check for every quantity of a product that is part of an operation
+  (ex. one check for five units of a product within a delivery order). Selecting
+  :guilabel:`Quantity` also causes a :guilabel:`Lot/Serial` drop-down field to appear, from which
+  can be selected a specific lot or serial number that the quality check should be conducted for.
+
+Next, select an inventory operation from the :guilabel:`Picking` drop-down menu or a manufacturing
+order from the :guilabel:`Production Order` drop-down menu. This is necessary because Odoo needs to
+know for which operation the quality check is being conducted.
+
+If the quality check should be assigned to a specific |QCP|, select it from the :guilabel:`Control
+Point` drop-down menu. This is useful if the quality check is being created manually, but should
+still be recognized as belonging to a specific |QCP|.
+
+Select a quality check type from the :guilabel:`Type` drop-down field:
+
+- :guilabel:`Instructions` provides specific instructions for how to conduct the quality check.
+- :guilabel:`Take a Picture` requires a picture to be attached to the check before the check can be
+  completed.
+- :guilabel:`Print label` opens a pop-up from which labels can be printed. This step can be
+  customized to provide instructions about where to add the labels on a product.
+- :guilabel:`Pass - Fail` is used when the product being checked must meet a certain criteria to
+  pass the check.
+- Selecting :guilabel:`Measure` causes a :guilabel:`Measure` input field to appear, in which a
+  measurement must be entered before the check can be completed.
+- Selecting :guilabel:`Worksheet` causes a :guilabel:`Quality Template` drop-down field to appear.
+  Use it to select a quality worksheet that must be filled out to complete the check.
+
+In the :guilabel:`Team` field, select the quality team that is responsible for the quality check. In
+the :guilabel:`Company` field, select the company that owns the product being inspected.
+
+On the :guilabel:`Notes` tab at the bottom of the form, enter any relevant instructions in the
+:guilabel:`Instructions` text entry box (ex. 'Attach a picture of the product'). In the
+:guilabel:`Notes` text entry box, enter any relevant information about the quality check (who
+created it, why it was created, etc.).
+
+Finally, if the check is being processed immediately, click the :guilabel:`Pass` button at the top
+left of the screen if the check passes, or the :guilabel:`Fail` button if the check fails.
+
+.. image:: quality_checks/quality-check-form.png
+   :align: center
+   :alt: A quality check form filled out for a Pass - Fail check.
+
+Process quality check
+=====================
+
+Quality checks can be processed directly on the quality check's page, or from a manufacturing or
+inventory order for which a check is required. Alternatively, if a quality check is created for a
+specific work order operation, the check is processed in the *Shop Floor* module.
+
+.. note::
+   It is not possible to manually create a single quality check that is assigned to a specific work
+   order operation. Quality checks for work order operations can only be created by a |QCP|. See the
+   documentation on :ref:`Quality Control Points
+   <quality/quality_management/quality-control-points>` for information about how to configure a
+   |QCP| that will create quality checks for a specific work order operation.
+
+Quality check page
+------------------
+
+To process a quality check from the check's page, begin by navigating to :menuselection:`Quality -->
+Quality Control --> Quality Checks`, then select the check to process. Follow the instructions for
+how to complete the check, listed in the :guilabel:`Instructions` field of the :guilabel:`Notes` tab
+at the bottom of the page.
+
+If the quality check passes, click the :guilabel:`Pass` button at the top of the page. If the check
+fails, click the :guilabel:`Fail` button, instead.
+
+Quality check on order
+----------------------
+
+To process a quality check on an order, select a manufacturing or inventory order (receipt,
+delivery, return, etc.), for which a check is required. Manufacturing orders can be selected by
+navigating to :menuselection:`Manufacturing --> Operations --> Manufacturing Orders`, and clicking
+on an order. Inventory orders can be selected by navigating to :menuselection:`Inventory`, clicking
+the :guilabel:`# To Process` button on an operation card, and selecting an order.
+
+On the selected inventory or manufacturing order, a purple :guilabel:`Quality Checks` button appears
+at the top of the order. Click the button to open the :guilabel:`Quality Check` pop-up window, which
+shows all of the quality checks required for that order.
+
+Follow the instructions that appear on the :guilabel:`Quality Check` pop-up window. If a Pass - Fail
+check is being processed, complete the check by clicking :guilabel:`Pass` or :guilabel:`Fail` at the
+bottom of the pop-up window. For all other quality check types, a :guilabel:`Validate` button
+appears instead. Click it to complete the check.
+
+.. image:: quality_checks/quality-check-pop-up.png
+   :align: center
+   :alt: The "Quality Check" pop-up window on a manufacturing order.
+
+Quality check on work order
+---------------------------
+
+To process a quality check for a work order, begin by navigating to :menuselection:`Manufacturing
+--> Operations --> Manufacturing Orders`. Select an |MO| that includes a work order for which a
+quality check is required.
+
+On the |MO|, select the :guilabel:`Work Orders` tab, and then click the :guilabel:`Open Work Order
+(external link icon)` button on the line of the work order to be processed. On the resulting
+:guilabel:`Work Orders` pop-up window, click the :guilabel:`Open Shop Floor` button to open the
+*Shop Floor* module.
+
+.. seealso::
+   For a full guide to the Shop Floor module, see the :doc:`Shop Floor overview
+   <../../manufacturing/shop_floor/shop_floor_overview>` documentation.
+
+When accessed from a specific work order, the *Shop Floor* module opens to the page for the work
+center where the order is configured to be processed, and isolates the work order's card so that no
+other cards are shown.
+
+Process the work order's steps until the quality check step is reached. Click on the step to open a
+pop-up window that details how the check should be completed. After following the instructions,
+click :guilabel:`Validate` to complete the check. Alternatively, if a *Pass - Fail* check is being
+processed, click either the :guilabel:`Pass` or :guilabel:`Fail` button.
+
+It is also possible to complete a quality check by clicking the checkbox on the right side of the
+step. Doing so automatically marks the check as *Passed*.
+
+.. note::
+   The specific steps for processing a quality check depend upon the type of check being conducted.
+   For information about processing each type of quality check, see the associated documentation:
+
+   - :doc:`../quality_check_types/instructions_check`
+   - :doc:`../quality_check_types/pass_fail_check`
+   - :doc:`../quality_check_types/measure_check`
+   - :doc:`../quality_check_types/picture_check`
+
+
+==================================================
+SECTION: quality_control_points.rst
+PATH: applications/inventory_and_mrp/quality/quality_management/quality_control_points.rst
+==================================================
+
+======================
+Quality control points
+======================
+
+.. _quality/quality_management/quality-control-points:
+.. |MO| replace:: :abbr:`MO (Manufacturing Order)`
+.. |MOs| replace:: :abbr:`MOs (Manufacturing Orders)`
+.. |QCP| replace:: :abbr:`QCP (Quality Control Point)`
+.. |QCPs| replace:: :abbr:`QCPs (Quality Control Points)`
+
+In Odoo, *quality control points* (QCPs), are used to automatically create :doc:`quality checks
+<quality_checks>` at predetermined intervals. |QCPs| can be configured to create quality checks for
+specific operations (manufacturing, delivery, etc.), as well as specific products within those
+operations.
+
+Using |QCPs| allows quality teams to ensure products are being regularly inspected for defects and
+other issues.
+
+Configure quality control points
+================================
+
+To create a new |QCP|, navigate to :menuselection:`Quality --> Quality Control --> Control Points`,
+and then click :guilabel:`New`.
+
+Begin filling out the new |QCP| by entering a unique :guilabel:`Title` that makes the |QCP| easily
+identifiable.
+
+In the :guilabel:`Products` field, select one or more products the |QCP| should apply to. If the
+|QCP| should apply to an entire product category, select it in the :guilabel:`Product Categories`
+field.
+
+In the :guilabel:`Operations` field, select the operation(s) that should trigger the |QCP|. For
+example, selecting the :guilabel:`Manufacturing` option in the :guilabel:`Operations` field causes a
+quality check to be created for new manufacturing orders (MOs).
+
+.. note::
+   When creating a new |QCP|, at least one operation must be listed in the :guilabel:`Operations`
+   field. However, the :guilabel:`Products` and :guilabel:`Product Categories` fields can be left
+   blank. If they are left blank, the |QCP| generates quality checks for every instance of the
+   specified operation(s).
+
+If the :guilabel:`Manufacturing` operation is selected in the :guilabel:`Operations` field, a new
+field appears below it, titled :guilabel:`Work Order Operation`. From this field, select a specific
+work order to generate quality checks for that operation, rather than the manufacturing operation,
+in general.
+
+.. example::
+   A |QCP| could be configured to create quality checks for the `Assembly` work order of the `Coffee
+   Table` product. Then, if a new |MO| is confirmed for a `Coffee Table`, the |QCP| creates a
+   quality check specifically for the `Assembly` operation.
+
+The :guilabel:`Control Per` field is set to one of three options that determine *when* a new quality
+check is created:
+
+- :guilabel:`Operation`: One check is requested for the specified operation, as a whole.
+- :guilabel:`Product`: One check is requested for each *unique* product included in the specified
+  operation. For example, a delivery operation for one table and four chairs would generate two
+  checks, since two *unique* products are included in the operation.
+- :guilabel:`Quantity`: A check is requested for a certain percentage of items within the specified
+  operation. This percentage is set by enabling the :guilabel:`Partial Transfer Test` checkbox, and
+  then entering a numerical value in the :guilabel:`Percentage` field that appears below. If the
+  checkbox is not enabled, one quality check is created for the full quantity.
+
+The :guilabel:`Control Frequency` field is set to one of three options that determine *how often* a
+new quality check is created:
+
+- :guilabel:`All`: A quality check is requested every time the conditions of the |QCP| are met.
+- :guilabel:`Randomly`: A quality check is randomly requested for a certain percentage of
+  operations, which can be specified in the :guilabel:`Every #% of Operations` field that appears
+  below.
+- :guilabel:`Periodically`: A quality check is requested once every set period of time, which is
+  specified by entering a numerical value in the field below, and choosing either :guilabel:`Days`,
+  :guilabel:`Weeks`, or :guilabel:`Months` as the desired time interval.
+
+In the :guilabel:`Type` field, specify the type of quality check that should be performed. The
+method for processing quality checks created by the |QCP| depends upon the type of quality check
+selected:
+
+- :guilabel:`Instructions` checks provide specific instructions for how to complete the quality
+  check.
+- :guilabel:`Take a Picture` checks require a picture of the product be uploaded for later review by
+  the assigned quality team.
+- :guilabel:`Register Production` checks prompt manufacturing employees to confirm the quantity of
+  the product that was produced during the manufacturing operation.
+- :guilabel:`Pass - Fail` checks specify a criterion that products must meet for the check to pass.
+- :guilabel:`Measure` checks prompt employees to record a measurement of the product that must be
+  within a tolerance of a norm value for the check to pass.
+- :guilabel:`Worksheet` checks require the employee processing the check to fill out an interactive
+  worksheet.
+- :guilabel:`Spreadsheet` checks require the employee processing the check to fill out an
+  interactive spreadsheet.
+
+.. important::
+   An *Instructions* check is the same as a step on a work order for an MO.
+
+   When a step is added to a work order, Odoo stores it in the Quality app as a |QCP|. It is
+   possible to manually create a |QCP| with the *Instructions* check type, and even assign it to an
+   operation other than manufacturing, like receipts.
+
+   However, when creating a control point specifically for quality control purposes, using a
+   different check type is probably more effective.
+
+.. note::
+   When creating a |QCP| with the :guilabel:`Worksheet` or :guilabel:`Spreadsheet` check types, it
+   is necessary to specify a *Quality Worksheet Template* or *Quality Spreadsheet Template* in the
+   :guilabel:`Template` field that appears below the :guilabel:`Type` field.
+
+   The selected template is duplicated for each quality check created by the |QCP|, and **must** be
+   filled out to complete the quality check.
+
+   To create a new template, navigate to :menuselection:`Quality app --> Configuration --> Quality
+   Worksheet/Spreadsheet Templates`, and click :guilabel:`New`.
+
+In the :guilabel:`Team` field, specify the quality team that is responsible for managing the |QCP|,
+and the quality checks it creates. If a specific quality team member is responsible for the |QCP|,
+select them in the :guilabel:`Responsible` field.
+
+The :guilabel:`Step Document` field has two options that specify the location of an instructional
+document detailing how to complete the quality checks created by the |QCP|.
+
+Select :guilabel:`Specific Page of Operation Worksheet` if the document is included with the
+instructional worksheet for the work order, then enter the page number in the :guilabel:`Worksheet
+Page` field that appears below.
+
+Select :guilabel:`Custom` if the document should be included in the :guilabel:`Instructions` tab at
+the bottom of the |QCP|.
+
+In the :guilabel:`Instructions` tab at the bottom of the form, enter instructions for how to
+complete the quality checks created by the |QCP|.
+
+If the :guilabel:`Custom` option was selected in the :guilabel:`Step Document` field above, a
+document can be attached in this tab. To do so, either select the :guilabel:`Upload your file`
+button to open the device's file manager, and then select a file, or add a link to a Google Slides
+document in the :guilabel:`Google Slide Link` field.
+
+In the :guilabel:`Message If Failure` tab, include instructions for what to do if the quality check
+fails. For example, instruct the employee processing the quality check to create a :doc:`quality
+alert <quality_alerts>`.
+
+The :guilabel:`Notes` tab is used to provide additional information about the |QCP|, like the reason
+it was created. The information entered in this tab is **not** shown to employees processing the
+quality checks created by the |QCP|.
+
+.. image:: quality_control_points/qcp-form.png
+   :align: center
+   :alt: A QCP configured to create Pass - Fail checks for a work order operation.
+
+
+==================================================
+SECTION: quality_management.rst
+PATH: applications/inventory_and_mrp/quality/quality_management.rst
+==================================================
+
+:nosearch:
+
+======================
+Quality control basics
+======================
+
+.. toctree::
+   :titlesonly:
+
+   quality_management/quality_control_points
+   quality_management/quality_alerts
+   quality_management/quality_checks
+   quality_management/failure_locations

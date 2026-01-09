@@ -1,0 +1,908 @@
+
+
+==================================================
+SECTION: lunch.rst
+PATH: applications/hr/lunch.rst
+==================================================
+
+:show-content:
+
+=====
+Lunch
+=====
+
+The **Lunch** application in Odoo allows users to conveniently order food and pay for their meal
+directly from the database.
+
+Before employees can use the **Lunch** application, there are a number of configurations that need
+to be made: :ref:`settings <lunch/settings>`, :doc:`vendors <lunch/vendors>`, :ref:`locations
+<lunch/locations>`, :doc:`products <lunch/products>`, and :ref:`product categories
+<lunch/product-categories>`. Once these are created and configured, employees can view offerings and
+order food.
+
+.. _lunch/settings:
+
+Settings
+========
+
+In the :guilabel:`Settings` menu, only two items need to be configured: overdraft settings and
+notifications. To access the settings, navigate to :menuselection:`Lunch app --> Configuration -->
+Settings`.
+
+Configure the following:
+
+- :guilabel:`Lunch Overdraft`: enter the maximum overdraft amount for employees. The currency format
+  is determined by the localization setting of the company.
+- :guilabel:`Reception notification`: set the message users receive via the **Discuss** app when
+  their food has been delivered. The default message `Your lunch has been delivered. Enjoy your
+  meal!` populates this field, but can be modified, if desired.
+
+.. tip::
+   If a database has multiple languages installed, many forms in the **Lunch** application have the
+   option of entering translations for various fields.
+
+   If translations are available to be configured, a language code appears next to a translatable
+   field on a form. To add translations for that field, click the two letter language code (for
+   example, :guilabel:`EN` for English) and a translation pop-up window appears.
+
+   The following is an example for the :guilabel:`Reception notification` field in the settings
+   menu:
+
+   Navigate to :menuselection:`Lunch app --> Configuration --> Settings`. Click the :guilabel:`EN`
+   In the top-right of the text box beneath the :guilabel:`Reception notification` section. A
+   :guilabel:`Translate: company_lunch_notify_message` pop-up window loads with the option to enter
+   a translation for the other languages used by the database.
+
+   The first column lists the different languages in alphabetical order, with the currently selected
+   language in bold. The second column has the currently configured message in each column. The last
+   column in the far-right provides a text box to type in a translation for each language.
+
+   Enter the text that should appear for each language, then click :guilabel:`Save`.
+
+  .. image:: lunch/translation.png
+     :alt: The translation text box, with the current language highlighted, and the Arabic
+           translation field highlighted.
+
+.. _lunch/locations:
+
+Locations
+=========
+
+By default, Odoo creates an `HQ Office` location when the **Lunch** application is installed. If a
+company has more than one location, they must be configured.
+
+To add a location, navigate to :menuselection:`Lunch app --> Configuration --> Locations`. The
+currently configured locations appear in a list view. Click the :guilabel:`New` button in the
+top-left corner and a blank line appears beneath the last location in the list.
+
+Enter the name of the location in the field. Next, click into the :guilabel:`Address` field to the
+right of the name, and enter the location's address. It is possible to enter multiple lines in the
+address field.
+
+Repeat this for all locations that need to be added.
+
+.. image:: lunch/locations.png
+   :alt: A list view of the locations with the new button highlighted.
+
+Alerts
+======
+
+It is possible to set up alerts that can either be displayed in the **Lunch** app, or be sent to
+specific employees via the **Discuss** app.
+
+No alerts are preconfigured by default. To set up an alert, navigate to :menuselection:`Lunch app
+--> Configuration --> Alerts`. Click the :guilabel:`New` button in the top-left corner and a blank
+lunch alert form loads. Enter the following information on the form:
+
+- :guilabel:`Alert Name`: enter a name for the alert. This should be short and descriptive, such as
+  `New Lunch Vendor` or `Order by 11:00 AM`. This field is **required**.
+- :guilabel:`Display`: select whether the alert is visible in the **Lunch** app (:guilabel:`Alert in
+  app)` or sent to employees via the **Discuss** app in a chat window (:guilabel:`Chat
+  notification`).
+
+  - :guilabel:`Recipients`: this field only appears if :guilabel:`Chat notification` is selected for
+    the :guilabel:`Display` option. Select who receives the chat alert. The options are:
+    :guilabel:`Everyone`, :guilabel:`Employee who ordered last week`, :guilabel:`Employee who
+    ordered last month`, or :guilabel:`Employee who ordered last year`.
+
+- :guilabel:`Location`: select the locations the alert should appear for from the drop-down menu.
+  Multiple locations can be selected. This field is **required**, therefore, if the alert applies to
+  all locations, select all the locations from the drop-down menu.
+- :guilabel:`Show Until`: if the alert should expire on a specific date, select the date from the
+  calendar picker.
+- :guilabel:`Active`: this option is on (appears green) by default. To turn off the alert, click the
+  toggle so that it no longer appears green.
+- :guilabel:`Message`: Enter the alert message in this field. This field is **required**.
+- :guilabel:`Notification Time`: select the days of the week the alert should be sent. By default,
+  all seven days are active. Click on a checkbox to change the setting from active to inactive.
+
+  If :guilabel:`Chat notification` was selected for the :guilabel:`Display` option, a
+  :guilabel:`Time` field also appears. Enter the time the chat message should be sent. Next, select
+  if the time is either :guilabel:`AM` or :guilabel:`PM` using the drop-down menu to the right of
+  the :guilabel:`Time` field.
+
+.. image:: lunch/alert.png
+   :alt: An alert form with all of the information filled out for a chat alert sent at 10:30 AM,
+         asking employees to submit orders by 11:30 AM.
+
+.. seealso::
+   - :doc:`lunch/vendors`
+   - :doc:`lunch/products`
+   - :doc:`lunch/orders`
+   - :doc:`lunch/user-accounts`
+   - :doc:`lunch/management`
+
+.. toctree::
+   :titlesonly:
+
+   lunch/vendors
+   lunch/products
+   lunch/orders
+   lunch/user-accounts
+   lunch/management
+
+
+==================================================
+SECTION: management.rst
+PATH: applications/hr/lunch/management.rst
+==================================================
+
+================
+Lunch management
+================
+
+In Odoo's **Lunch** application, it is required to have someone manage the orders, vendors, and
+products. In addition, someone must be responsible for the orders, and notifying employees when
+their orders have arrived. This can be the same person.
+
+Orders can be :ref:`cancelled <lunch/cancel>`, :ref:`sent to the vendor <lunch/send-orders>`,
+:ref:`confirmed <lunch/confirm-orders>` upon arrival, and :ref:`employees can be notified
+<lunch/notify>`, either from the :ref:`Today's Orders <lunch/todays-orders>` dashboard, or the
+:ref:`Control Vendors <lunch/control_vendors>` dashboard.
+
+To manage the **Lunch** app, users need the appropriate :guilabel:`Administrator` rights. These can
+be set by navigating to the :menuselection:`Settings app` and selecting :guilabel:`Manage Users`.
+Then, click on the desired user to view their access rights.
+
+For more information on access rights, refer to the :doc:`Access rights
+<../../general/users/access_rights/>` documentation.
+
+.. note::
+   Only users with administration rights are able to view the :guilabel:`Manager` and
+   :guilabel:`Configuration` menus in the **Lunch** application.
+
+.. _lunch/todays-orders:
+
+Today's Orders
+==============
+
+To view and manage the orders for the day, navigate to :menuselection:`Lunch app --> Manager -->
+Today's Orders`. All orders for the day are presented in a list view on the :guilabel:`Today's
+Orders` dashboard, with a filter for :guilabel:`Today`, and grouped by :guilabel:`Vendor`, by
+default.
+
+The following information appears in the list:
+
+- :guilabel:`Order Date`: the date the order was placed.
+- :guilabel:`Vendor`: the vendor the product is being ordered from.
+- :guilabel:`Product`: the specific product ordered.
+- :guilabel:`Extras`: any extras selected for the product.
+- :guilabel:`Notes`: any information needed to be sent to the vendor.
+- :guilabel:`User`: the user who ordered the product.
+- :guilabel:`Lunch Location`: where the product is set to be delivered.
+- :guilabel:`Price`: the total price for the product, including all extras.
+- :guilabel:`Status`: the current status of the product.
+- :guilabel:`Company`: the company under which the order was placed. This only appears in a
+  multi-company database.
+
+.. image:: management/today.png
+   :alt: The list that appears in the Today's Orders dashboard, with the filters and top column
+         names highlighted.
+
+.. _lunch/cancel:
+
+Cancel orders
+-------------
+
+All users can cancel an order, not only managers of the **Lunch** app.
+
+To cancel an order from a vendor, individual products **must** be cancelled one at a time.
+
+On the :guilabel:`Today's Orders` dashboard, a :icon:`fa-times` :guilabel:`Cancel` button is shown
+at the far-right of each product line that can be cancelled. Click the :icon:`fa-times`
+:guilabel:`Cancel` button to cancel the order for that individual product.
+
+.. note::
+   Only products with a red :guilabel:`Status` tag of :guilabel:`Ordered` can be cancelled.
+
+.. image:: management/cancel.png
+   :alt: Order lines with the cancel button highlighted.
+
+.. _lunch/send-orders:
+
+Send orders
+-----------
+
+The first step in managing the **Lunch** app is to send the orders to the vendors.
+
+When orders are ready to be sent, the manager responsible for sending orders **must** send the
+orders to the vendor, outside of the database (call, online order, etc.).
+
+Once orders have been placed with the vendors, click the :guilabel:`Send Orders` button that appears
+next to each vendor's name and phone number.
+
+Once sent, the :guilabel:`Send Orders` button changes to a :guilabel:`Confirm Orders` button, and
+the :guilabel:`Status` column is updated from red :guilabel:`Ordered` tags to blue :guilabel:`Sent`
+tags, indicating the order has been sent to the vendor. Users who have placed orders in the
+**Lunch** app rely on the :guilabel:`Status` tags to track their orders.
+
+.. image:: management/send.png
+   :alt: A vendor's order with the X Cancel and Send Orders buttons highlighted.
+
+.. _lunch/confirm-orders:
+
+Confirm orders
+--------------
+
+After orders have been sent to the vendor, the next step is to confirm the orders after they have
+been delivered.
+
+On the :guilabel:`Today's Orders` dashboard, click the :guilabel:`Confirm Orders` button that
+appears next to the vendor's name and phone number.
+
+Once confirmed, the :guilabel:`Confirm Orders` button disappears, and the :guilabel:`Status` column
+is updated from blue :guilabel:`Sent` tags to green :guilabel:`Received` tags, indicating the vendor
+has delivered the orders.
+
+In addition, the :icon:`fa-times` :guilabel:`Cancel` button at the end of each product line changes
+to a :icon:`fa-envelope` :guilabel:`Send Notification` button.
+
+If needed, instead of confirming all of the individual products from a vendor, individual products
+can be confirmed one at a time. To confirm an individual product, click the :icon:`fa-check`
+:guilabel:`Confirm` button at the end of the individual product line. When confirming individual
+products with this method, the :guilabel:`Confirm Orders` button remains on the vendor line.
+
+.. image:: management/confirm.png
+   :alt: The Today's Orders dashboard, with the two different ways to confirm an order highlighted.
+
+.. example::
+   A vendor receives an order for three pizzas, and an order of garlic knots. When the delivery is
+   made to the company, the **Lunch** manager notices the garlic knots are missing.
+
+   The manager first marks the three pizzas as received, by individually confirming the products
+   with the :icon:`fa-check` :guilabel:`Confirm`  button at the end of each product line.
+
+   Later, when the vendor delivers the garlic knots, the manager can either click the
+   :icon:`fa-check` :guilabel:`Confirm`  button at the end of the line for the garlic knots, or
+   click the :guilabel:`Confirm Orders` button that appears next to the vendor's name and phone
+   number.
+
+.. _lunch/notify:
+
+Notify employees
+----------------
+
+After products are received, and the orders are confirmed, the employees **must** be informed that
+their orders have been delivered, and are ready to be picked up.
+
+Unlike sending and confirming orders, notifications must be sent individually, and cannot be sent in
+a batch.
+
+To notify the user their product has arrived, click the :icon:`fa-envelope` :guilabel:`Send
+Notification` button at the end of each product line. An email is sent to the user informing them
+their products have been delivered.
+
+.. _lunch/control_vendors:
+
+Control Vendors
+===============
+
+All orders for all vendors, both past and present, can be found in the *Control Vendors* dashboard.
+To access these records, navigate to :menuselection:`Lunch app --> Manager --> Control Vendors`.
+
+All orders appear in a list view, grouped alphabetically by :guilabel:`Vendor`. The list loads with
+all vendors expanded to show all order lines for every vendor, by default.
+
+The following information appears in the list:
+
+- :guilabel:`Order Date`: the date the order was placed.
+- :guilabel:`Vendor`: the vendor the product is being ordered from.
+- :guilabel:`Product`: the specific product ordered.
+- :guilabel:`Extras`: any extras selected for the product.
+- :guilabel:`Notes`: any information needed to be sent to the vendor.
+- :guilabel:`User`: the user who ordered the product.
+- :guilabel:`Lunch Location`: where the product is set to be delivered.
+- :guilabel:`Price`: the total price for the product, including all extras.
+- :guilabel:`Status`: the current status of the product.
+- :guilabel:`Company`: the company under which the order was placed. This only appears in a
+  multi-company database.
+
+Orders can be :ref:`cancelled <lunch/cancel>`, :ref:`sent to the vendor <lunch/send-orders>`,
+:ref:`confirmed <lunch/confirm-orders>` upon arrival, and :ref:`employees can be notified
+<lunch/notify>` using the same method as on the :ref:`Today's Orders <lunch/todays-orders>`
+dashboard.
+
+.. image:: management/control.png
+   :alt: A list view of all the orders as seen in the Control Vendors dashboard.
+
+.. note::
+   The difference between the :ref:`Today's Orders <lunch/todays-orders>` dashboard and the
+   :ref:`Control Vendors <lunch/control_vendors>` dashboard is that the *Today's Orders* dashboard
+   **only** displays orders for the current day, while the :guilabel:`Control Vendors` dashboard
+   displays **all** orders made in the **Lunch** app.
+
+.. seealso::
+   - :doc:`../lunch`
+   - :doc:`user-accounts`
+
+
+==================================================
+SECTION: orders.rst
+PATH: applications/hr/lunch/orders.rst
+==================================================
+
+:show-content:
+
+======
+Orders
+======
+
+The **Lunch** app lets employees place lunch orders, see what's available each day, and check their
+account balance, all from one place.
+
+When the **Lunch** application is opened, the :guilabel:`Order Your Lunch` dashboard loads. This
+view is also accessible by navigating to :menuselection:`Lunch app --> My Lunch --> New Order`.
+
+The :guilabel:`Order Your Lunch` dashboard provides a summary of lunch offerings, the user's account
+information, and the current day's orders, along with their statuses.
+
+Order Your Lunch
+================
+
+On the main :guilabel:`Order Your Lunch` dashboard, all the necessary information needed to place an
+order is visible. Enable the :guilabel:`Available Today` filter in the search bar by clicking into
+the search bar and selecting :guilabel:`Available Today`. This filter shows only products that can
+be purchased that day, based on the :ref:`vendor's availability <lunch/availability>`.
+
+The left-side of the dashboard displays the various :guilabel:`Categories` of products available,
+along with the :guilabel:`Vendors` supplying the products. To the right of each line is a number,
+which indicates how many products are associated with that respective category or vendor.
+
+To filter the products by categories or vendors, tick the checkbox next to the desired category or
+vendor to only view items related to those selections. Multiple selections can be made in each
+section.
+
+.. note::
+   If multiple selections are made, **only** products that fall under **all** the selected options
+   are shown.
+
+The top portion of the dashboard, which serves as an order summary, displays the user's account
+information, and the order details for today, if any orders have been placed.
+
+The main section, beneath the user's information, displays all the products in a default Kanban
+view. Each product card displays the name, cost, vendor, photo, and description of the product. If
+the product is configured as new, it also displays a :guilabel:`New` tag.
+
+.. image:: orders/dashboard.png
+   :alt: The Lunch app dashboard.
+
+.. note::
+   Anywhere a vendor's name is listed in the **Lunch** app, such as on Kanban product cards, their
+   phone number is listed, as well.
+
+The products can also be displayed in a list view, by clicking the :icon:`oi-view-list`
+:guilabel:`(List)` icon in the top-right corner of the dashboard.
+
+Placing orders
+==============
+
+To place a lunch order, navigate to the main :guilabel:`Order Your Lunch` dashboard, by either
+opening the **Lunch** app, or by navigating to :menuselection:`Lunch app --> My Lunch --> New
+Order`.
+
+Add products to an order
+------------------------
+
+From the :guilabel:`Order Your Lunch` dashboard, click on a desired product to add to an order, and
+the product appears in a :guilabel:`Configure Your Order` pop-up window.
+
+At the top of the pop-up window is the product image, name, and price. Beneath that, there are
+potential :guilabel:`Extras` fields, showcasing any :ref:`extra items or options <lunch/extras>`,
+such as toppings or drinks. Tick the checkbox next to any desired extras present in the
+:guilabel:`Extras` fields to add them to the order.
+
+Each extra option is organized by a category, complete with its name and price. As extras are
+selected, the displayed price at the top of the pop-up window updates to reflect all current
+selections.
+
+Beneath the :guilabel:`Extras` field is the :guilabel:`Description` of the product, followed by a
+:guilabel:`Notes` field. The :guilabel:`Notes` field is used to enter any vital information, which
+is then sent to the vendor regarding the order, such as any special requests or food allergies.
+
+When all selections for the product have been made, click the :guilabel:`Add To Cart` button in the
+lower-left of the pop-up window. To cancel the order, click the :guilabel:`Discard` button.
+
+.. image:: orders/pizza.png
+   :alt: The pop-up window for a personal pizza, with all the extras selected.
+
+Errors
+~~~~~~
+
+Depending on how the various :ref:`extras <lunch/configure-extras>` are configured for a vendor, it
+is possible to receive an error when attempting to add products to the cart.
+
+An error can occur when a configured product **requires** the user to select an option in the
+:guilabel:`Extras` field, but the user neglects to make one.
+
+When this occurs, a :guilabel:`Validation Error` pop-up window appears. The error is briefly
+explained in the pop-up window. Click :guilabel:`Close` to close the window, and make any necessary
+changes to the :guilabel:`Configure Your Order` pop-up window.
+
+.. example::
+   The vendor, The Pizza Palace, provides a free beverage with any purchase. Their products are
+   configured so that a beverage selection is **required** in the :guilabel:`Extras` field *before*
+   adding one of their products to the cart.
+
+   If a selection is **not** made, an error occurs. The message that appears is `You have to order
+   one and only one Free Beverage with Purchase`.
+
+   .. image:: orders/error.png
+      :alt: The :guilabel:`Validation Error` pop-up window with the specific error for the free
+            beverage displayed.
+
+Your Order summary
+------------------
+
+When at least one item is added to an order, the items appear at the top of the dashboard in the
+:guilabel:`Your Order` summary. In addition to the products, users can view the account information,
+in addition to all the information related to orders placed during the current calendar day.
+
+As products are added to an order, they appear at the top center of the summary box. Each product is
+listed beneath the words :guilabel:`Your Order`, with the product name, quantity, and a status tag.
+
+The available tags that can be displayed for each item are:
+
+- :guilabel:`To Order`: the product has been added to the cart, but has not been purchased yet by
+  the user.
+- :guilabel:`Ordered`: the product has been purchased by the user, and is waiting to be sent to the
+  vendor by a **Lunch** app manager.
+- :guilabel:`Sent`: the order for the product has been sent to the vendor by a **Lunch** app
+  manager.
+- :guilabel:`Received`: the product has been delivered by the vendor to the user's location, and has
+  been verified as received by a **Lunch** app manager.
+
+Product quantities can be adjusted by clicking the :icon:`fa-plus` :guilabel:`(plus)` or
+:icon:`fa-minus` :guilabel:`(minus)` icons to the left of the listed product. The product price
+adjusts in real-time to display the cost for the currently selected quantity of the product.
+
+The right side of the :guilabel:`Your Order` summary displays the purchasing information. The
+:guilabel:`Total` amount for the entire day's lunch order is displayed. The :guilabel:`Already Paid`
+field indicates how much has been paid that day towards the :guilabel:`Total` amount. The
+:guilabel:`To Pay` field displays how much of the remaining :guilabel:`Total` amount must be paid,
+in order to place the currently configured order.
+
+.. image:: orders/your-order.png
+   :alt: The 'Your Orders' section of the dashboard, with purchasing information.
+
+.. tip::
+   Users can place multiple orders throughout the day, and are not restricted to only placing one
+   lunch order each day. Multiple orders might need to be placed, due to users forgetting to add
+   items to an order, or if there are multiple meals that are available to be purchased for the
+   office (not only lunch), and so on.
+
+   Depending on the various vendors, and how the vendors and products are configured, it is possible
+   to order breakfast, lunch, dinner, coffee, and/or snacks.
+
+Submit an order
+---------------
+
+To place the order, click the :guilabel:`Order Now` button on the right-side of the :guilabel:`Your
+Order` summary. The user is charged the amount that is displayed in the :guilabel:`To Pay` field,
+and the cost is deducted from their **Lunch** account balance.
+
+Once the order is placed, the tags for the purchased items in the :guilabel:`Your Order` field
+change from orange :guilabel:`To Order` tags to red :guilabel:`Ordered` tags.
+
+Track an order
+--------------
+
+When orders have been sent to the vendors, the tags for the items in the :guilabel:`Your Order`
+summary change from red :guilabel:`Ordered` tags to blue :guilabel:`Sent` tags.
+
+Once orders have been received and verified, the tags change from blue :guilabel:`Sent` tags to
+green :guilabel:`Received` tags.
+
+Receive an order
+----------------
+
+When orders are received at the delivery location, they are confirmed by a **Lunch** app manager,
+and a notification is sent to the employee who ordered the food.
+
+My Orders
+=========
+
+To view a full list of all orders placed in the **Lunch** app for the currently signed-in user,
+navigate to :menuselection:`Lunch app --> My Lunch --> My Order History`. This navigates to the
+:guilabel:`My Orders` dashboard. The data is filtered by :guilabel:`My Orders` and grouped by
+:guilabel:`Order Date: Day`, by default, both of which are located in the search bar.
+
+All products appear in a list view, organized by date. The list displays the :guilabel:`Order Date`,
+:guilabel:`Vendor`, :guilabel:`Product`, :guilabel:`Extras`, :guilabel:`Notes`, :guilabel:`User`,
+:guilabel:`Lunch Location`, :guilabel:`Price`, and :guilabel:`Status` information. If in a
+multi-company database, a :guilabel:`Company` column also appears.
+
+The total cost for each order is displayed on the line containing the order date. At the bottom of
+the list, beneath all the lines, the overall total amount paid for all the orders appears, under the
+:guilabel:`Price` column.
+
+At the end of each product line with a status of :guilabel:`Ordered` or :guilabel:`Sent`, an
+:guilabel:`X Cancel` button appears. Click :guilabel:`X Cancel` to cancel that product order. Once a
+product order has been cancelled, the money paid for that product is refunded, and appears in the
+user's account.
+
+At the end of each product line with a status of :guilabel:`Received`, a :guilabel:`Re-order` button
+appears. Click :guilabel:`Re-order` to instantly reorder that same product, with the same extras, if
+applicable. The new order appears in the list, under the current date, and the product is paid for,
+with money deducted from the user's account.
+
+.. image:: orders/my-orders.png
+   :alt: The list view that appears when navigating to the My Orders dashboard.
+
+My Account
+==========
+
+To view a summary of all transactions in the user's account, navigate to :menuselection:`Lunch app
+--> My Lunch --> My Account History`. Doing so reveals the :guilabel:`My Account` dashboard.
+
+The default presentation of the :guilabel:`My Account` dashboard displays all entries, from newest
+to oldest. The :guilabel:`Date`, :guilabel:`Description`, and :guilabel:`Amount` are the only fields
+displayed in the list.
+
+Entries with a negative figure listed in the :guilabel:`Amount` column represent products purchased
+in the **Lunch** app. These appear in a `$-XX.XX` format.
+
+Entries with a positive balance either represent funds added to the user's lunch account, or
+cancelled orders that were eventually refunded to the user. These appear in a `$XX.XX` format.
+
+.. image:: orders/my-account.png
+   :alt: The 'My Account' dashboard with the entry for adding funds to the user's lunch account.
+
+
+==================================================
+SECTION: products.rst
+PATH: applications/hr/lunch/products.rst
+==================================================
+
+========
+Products
+========
+
+Odoo's **Lunch** app does *not* come with any products preconfigured. The individual products being
+offered must first be configured before orders can be placed.
+
+To add and configure products for the **Lunch** app, navigate to :menuselection:`Lunch app -->
+Configuration --> Products`. Next, click the :guilabel:`New` button in the top-left corner, and a
+blank product form loads.
+
+Enter the following information on the form:
+
+- :guilabel:`Product Name`: Enter the name for the product. This field is **required**.
+- :guilabel:`Product Category`: Using the drop-down menu, select the :ref:`category
+  <lunch/product-categories>` this product falls under. This field is **required**.
+- :guilabel:`Vendor`: Using the drop-down menu, select the vendor that supplies this product. This
+  field is **required**.
+- :guilabel:`Price`: Enter the price for the product. The currency is determined by the company's
+  localization.
+- :guilabel:`Description`: Enter a description of the product in this field. This description
+  appears beneath the product photo when users are viewing the day's options.
+- :guilabel:`New Until`: Using the calendar popover, select the date on which the product is no
+  longer labeled as new. Until this date, a green `New` tag appears on the product.
+- :guilabel:`Company`: Using the drop-down menu, select the companies this product is available for.
+  If this field is left blank, this product does **not** appear for **any** company.
+- **Image**: Hover over the image box in the top-right corner of the form, and click the
+  :icon:`fa-pencil` :guilabel:`(pencil)` icon that appears. A file explorer pop-up window appears.
+  Navigate to the image, then click :guilabel:`Open`.
+
+.. image:: products/product.png
+   :alt: A product form filled out for a nine inch pizza.
+
+.. _lunch/product-categories:
+
+Product categories
+==================
+
+Product categories organize the offerings in the **Lunch** app, and allows users to filter offerings
+when reviewing the menu for the day.
+
+To add or modify categories, navigate to :menuselection:`Lunch app --> Configuration: Product
+Categories`. The available categories appear in a list view.
+
+In the **Lunch** app, there are four default categories: :guilabel:`Sandwich`, :guilabel:`Pizza`,
+:guilabel:`Burger`, and :guilabel:`Drinks`.
+
+To add a new category, click the :guilabel:`New` button in the top-left corner, and a blank category
+form loads.
+
+Enter a name in the :guilabel:`Product Category` field. If the category is company-specific and
+should only appear for a certain company, select the :guilabel:`Company` from the drop-down menu.
+
+If desired, add a photo for the category. Hover over the image box in the top-right, and click the
+:icon:`fa-pencil` :guilabel:`(pencil)` icon that appears. This opens a file explorer pop-up window.
+Navigate to the image, then click :guilabel:`Open`.
+
+.. image:: products/category.png
+   :alt: The category form, with the fields filled out for a Soup category.
+
+
+==================================================
+SECTION: user-accounts.rst
+PATH: applications/hr/lunch/user-accounts.rst
+==================================================
+
+====================
+Manage user accounts
+====================
+
+In Odoo's **Lunch** application, users pay for products directly from their **Lunch** app account.
+For funds to appear in their account, a **Lunch** app manager **must** transfer funds into each
+user's account.
+
+.. important::
+   To add funds and manage user accounts, the user must have :guilabel:`Administrator` access rights
+   set for the **Lunch** application. This is verified by navigating to :menuselection:`Settings app
+   -->` :icon:`oi-arrow-right` :guilabel:`Manage Users`. Then, click on a user to view their various
+   settings and access rights.
+
+   For more information, refer to the :doc:`Access rights <../../general/users/access_rights/>`
+   documentation.
+
+The **Lunch** application does **not** directly interface in any way with software or products
+linked to any monetary accounts or billing. Money **cannot** be transferred from users' bank
+accounts, nor can users' credit cards be charged.
+
+Odoo's **Lunch** application **only** allows for manual entries of cash exchanges that are handled
+by the **Lunch** app manager. It is up to each individual company to create the method with which
+lunch accounts are replenished.
+
+.. example::
+   Some examples of how money can be organized and transferred within a company:
+
+   - Cash is handed to the **Lunch** app manager, who then updates the user's account.
+   - Money is automatically deducted from the user's paychecks, then the **Lunch** app manager
+     updates the account when paychecks are issued. This requires :ref:`adding a salary attachment
+     <payroll/worked-days-inputs>` for the user's payslip in the *Payroll* app.
+   - Companies can sell "lunch tickets" at a set price (for example, one ticket costs $5.00). Users
+     can purchase tickets from a **Lunch** app manager, who then updates the user's account.
+
+.. _lunch/cash-moves:
+
+Cash Moves
+==========
+
+To add funds to user accounts, each cash move must be individually logged. To view all cash move
+records, or create a new cash move, navigate to :menuselection:`Lunch app --> Manager --> Cash
+Moves`. Doing so reveals the :guilabel:`Cash Moves` dashboard.
+
+On the :guilabel:`Cash Moves` dashboard, all cash moves are presented in a default list view,
+displaying each record's :guilabel:`Date`, :guilabel:`User`, :guilabel:`Description`, and
+:guilabel:`Amount`. The total of all the cash moves is displayed at the bottom of the
+:guilabel:`Amount` column.
+
+.. image:: user-accounts/cash.png
+   :alt: The list view of all cash moves.
+
+Add funds
+---------
+
+To add funds to a lunch account, click the :guilabel:`New` button, located in the top-left corner of
+the :guilabel:`Cash Moves` dashboard.
+
+A blank :guilabel:`Cash Moves` form loads. Enter the following information on the form:
+
+- :guilabel:`User`: select the user depositing cash into their account from the drop-down menu. If
+  the user is not in the database, they can be created by typing their name in the :guilabel:`User`
+  field, and clicking either :guilabel:`Create "user"` or :guilabel:`Create and edit...` to create
+  the user and edit the :guilabel:`Create User` form.
+- :guilabel:`Date`: using the calendar popover, select the date the transaction occurred.
+- :guilabel:`Amount`: enter the amount being added to the lunch account.
+- :guilabel:`Description`: enter a brief description of the transaction.
+
+.. image:: user-accounts/cash-move-form.png
+   :alt: The cash move form filled out for a transaction of $40.00.
+
+Control Accounts
+================
+
+An overview of every transaction in the **Lunch** app, including all cash deposits and purchases,
+can be viewed on the main *Control Accounts* dashboard. To access this dashboard, navigate to
+:menuselection:`Lunch app --> Manager --> Control Accounts.`
+
+All transactions are grouped :guilabel:`By Employee`, and listed alphabetically by the user's first
+name. At the end of the user's name, a number appears. This indicates the number of individual
+records logged for that user.
+
+The default view is to have all individual transactions hidden. To view all transactions for a user,
+click the :icon:`fa-caret-right` :guilabel:`(triangle)` icon to the left of the desired name to
+expand that specific group.
+
+Each record includes the :guilabel:`Date`, :guilabel:`User`, :guilabel:`Description`, and
+:guilabel:`Amount`.
+
+.. image:: user-accounts/control-accounts.png
+   :alt: The Control Accounts dashboard with two employee's transactions expanded.
+
+.. important::
+   This list only displays the various transactions within the **Lunch** app, and does **not** allow
+   modifications to be made to any records listed.
+
+   Cash moves can be modified, but **only** from the :ref:`Cash Moves <lunch/cash-moves>` dashboard,
+   not from the :guilabel:`Control Accounts` dashboard.
+
+   It is **not** possible to modify any product-related records.
+
+
+==================================================
+SECTION: vendors.rst
+PATH: applications/hr/lunch/vendors.rst
+==================================================
+
+=======
+Vendors
+=======
+
+Before :doc:`products can be added <products>` to the **Lunch** app, the restaurants that provide
+the food needs to be configured.
+
+To add a new vendor, first navigate to :menuselection:`Lunch app --> Configuration --> Vendors`.
+Here, all currently configured vendors for the **Lunch** app appear in a default Kanban view. To
+change to a list view, click the :icon:`oi-view-list` :guilabel:`(List)` icon in the top-right
+corner.
+
+.. note::
+   No vendors are preconfigured in the **Lunch** app, so all vendors **must** be added to the
+   database.
+
+A placeholder :guilabel:`Lunch Supplier` card appears on the :guilabel:`Vendors` dashboard, by
+default. Click on this card, and configure the following fields on the vendor form:
+
+- :ref:`Vendor information <lunch/vendor-info>`
+- :ref:`Availability <lunch/availability>`
+- :ref:`Orders <lunch/orders>`
+- :ref:`Extras <lunch/extras>`
+
+After the first vendor is configured, add more vendors by clicking the :guilabel:`New` button in the
+top-left corner, and configure the new lunch supplier form. Repeat for all needed vendors.
+
+.. _lunch/vendor-info:
+
+Vendor information
+==================
+
+- :guilabel:`Vendor`: Enter a name for the vendor in this field.
+- :guilabel:`Vendor` (beneath the line for vendor name): Using the drop-down menu, select the
+  corresponding vendor in the **Contacts** app. If the vendor has not already been created, type in
+  the vendor name, and click :guilabel:`Create "new vendor name"` to add them. Alternatively, click
+  :guilabel:`Create and edit...` to create the vendor and edit the vendor contact form. The vendor
+  contact form allows for more details to be entered, such as contact information.
+
+  .. note::
+     If a selection is made to the drop-down :guilabel:`Vendor` field, the :guilabel:`Vendor` text
+     field (above, for the vendor's name) updates with the name of the vendor chosen from the
+     drop-down menu.
+
+     The list of vendors that is presented in the drop-down menu is pulled from the **Contacts**
+     application.
+
+- :guilabel:`Address`: Enter the vendor's address in the various fields.
+- :guilabel:`Email`: Enter the vendor's email in this field.
+- :guilabel:`Phone`: Enter the vendor's phone number in this field.
+- :guilabel:`Company`: If this vendor is only available to a specific company, select the company
+  from the drop-down menu. If this field is left blank, the vendor's items are available to **all**
+  companies. This field **only** appears in a multi-company database.
+
+.. image:: vendors/vendor-info.png
+   :alt: The top portion of the vendor form filled out.
+
+.. _lunch/availability:
+
+Availability
+============
+
+The :guilabel:`AVAILABILITY` section presents a table with two rows. The days of the week populate
+the top row, and the bottom row has checkboxes. Tick the corresponding checkbox for each day of the
+week the vendor is available.
+
+By default, Monday through Friday are ticked.
+
+.. image:: vendors/availability.png
+   :alt: The default view of the availability section, with Mon-Fri enabled.
+
+.. _lunch/orders:
+
+Orders
+======
+
+The :guilabel:`ORDERS` section of the vendor form details which locations the vendor is available
+for, in addition to how and when orders are placed and received.
+
+- :guilabel:`Delivery`: Using the drop-down menu, select :guilabel:`Delivery` if the vendor delivers
+  to the office, or select :guilabel:`No Delivery` if orders must be picked up.
+- :guilabel:`Location`: Select which locations are able to order from this vendor. Multiple
+  locations can be selected. If this field is left blank, **all** locations can order from the
+  vendor.
+
+  .. note::
+     An `HQ Office` location is created by default when creating a database, and is available to
+     select from the list.
+
+- :guilabel:`Send Order By`: Click the radio button to select how orders are sent to the vendor. The
+  available options are :guilabel:`Phone` or :guilabel:`Email`.
+- :guilabel:`Order Time`: This field **only** appears if :guilabel:`Email` is selected in the
+  :guilabel:`Send Order By` field. Enter the time that an order must be emailed for it to be
+  accepted. Enter the time in the following format: `HH:MM`. Then select either :guilabel:`AM` or
+  :guilabel:`PM` from the drop-down menu, next to the time field.
+
+.. image:: vendors/orders.png
+   :alt: The orders section of a vendor form, with all fields filled out.
+
+.. _lunch/extras:
+
+Extras
+======
+
+When ordering an item in the **Lunch** app, optional extra items, sometimes referred to as
+*add-ons*, can be shown. These can be configured in any manner that suits the products being
+offered.
+
+By default, Odoo allows for three types of extra items, which can be thought of as *categories*. By
+default, the first type (or *category*) of add-ons is labeled `Extras`, the second is labeled
+`Beverages`, and the third is labeled `Extra Label 3`.
+
+.. important::
+   When configuring the extras, it is important to keep in mind that all the extras configured
+   appear for **every item** offered by the vendor. That means that only items which apply to
+   **all** products from the vendor should be added.
+
+.. _lunch/configure-extras:
+
+Configure extras
+----------------
+
+Enter the following information for each of the three available extra sections:
+
+- :guilabel:`Extra (#) Label`: Enter a name for the type of extra, such as `Toppings`. This can be
+  thought of as a *category*.
+- :guilabel:`Extra (#) Quantity`: Select how the extras are selected. The options are:
+
+  - :guilabel:`None or More`: Select this option if the user is not required to make a selection.
+  - :guilabel:`One or More`: Select this option to **require** the user to make **at least one**
+    selection.
+  - :guilabel:`Only One`: Select this option to **require** the user to make **only one** selection.
+
+Add extras
+----------
+
+After the labels and quantities have been configured for an extra category, the individual extra
+items must be added for each category.
+
+Click :guilabel:`Add a line` at the bottom of the list that appears on the right-hand side of the
+extra category. Enter the :guilabel:`Name` and :guilabel:`Price` for each item being added. The
+price can remain at `$0.00` if there is no cost. This is common for items like disposable silverware
+or condiments.
+
+.. example::
+   For a pizzeria that only offers personal pizzas, see their extras configured as follows:
+
+   The first extra is configured for the various toppings they offer. The :guilabel:`Extra 1 Label`
+   is set to `Toppings`, and the :guilabel:`Extra 1 Quantity` is set to :guilabel:`None or More`.
+   The various toppings are then added, with their corresponding costs.
+
+   .. image:: vendors/extras.png
+      :alt: The first of the extras configured for pizza toppings.
+
+   The pizzeria also offers a free beverage with any purchase. To set this up, the :guilabel:`Extra
+   2 Label` is set to `Beverages`, and the :guilabel:`Extra 2 Quantity` is set to :guilabel:`Only
+   One`. The various beverage choices are added, and the cost for each remains zero.
+
+   .. image:: vendors/beverages.png
+      :alt: The second of the extras configured for a free beverage with purchase.

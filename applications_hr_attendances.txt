@@ -1,0 +1,952 @@
+
+
+==================================================
+SECTION: attendances.rst
+PATH: applications/hr/attendances.rst
+==================================================
+
+:show-content:
+
+===========
+Attendances
+===========
+
+Odoo's **Attendances** application functions as a time clock. Employees are able to check in and out
+of work using a :ref:`dedicated device in kiosk mode <attendances/kiosk-mode-entry>`, while users
+are also able to check in and out of work :ref:`directly from the database <attendances/check-in>`.
+Managers can see who is available at any given time, create reports to see everyone's hours, and
+gain insights on which employees are working overtime or checking out of work earlier than expected.
+
+.. _attendances/access-rights:
+
+Access rights
+=============
+
+Understanding access rights is essential to navigating the **Attendances** application.
+
+Every user in the database is able to check in and out directly from the database, without needing
+access to the **Attendances** app. Additionally, all users can access their own attendance records
+from their employee form in the **Employees** app.
+
+Access to both the **Attendances** application and the various features within the application is
+determined by access rights.
+
+To see what access rights a user has, navigate to the :menuselection:`Settings app --> Users &
+Companies --> Users`, and click on an individual user. The :guilabel:`Access Rights` tab is visible
+by default. Scroll down to the :guilabel:`HUMAN RESOURCES` section to view the settings. For the
+:guilabel:`Attendances` field, the options are either to leave the field blank or select
+:guilabel:`Administrator`.
+
+If the :guilabel:`Administrator` option is selected, the user has full access to the entire
+**Attendances** application, with no restrictions. They can view all employee attendance records,
+enter *Kiosk Mode* from the application, access all reporting metrics, and make modifications to the
+settings. If left blank, the user does **not** have access to the **Attendances** application.
+
+.. note::
+   If a user does **not** have :guilabel:`Administrator` rights for the **Attendances** app, they
+   are **not** able to open the app, even though it appears on the main database dashboard. An
+   :guilabel:`Access Error` pop-up message appears, stating:
+
+   `You do not have enough rights to access the fields "attendance_manager_id" on Employee
+   (hr.employee). Please contact your system administrator.`
+
+   Users who cannot access the **Attendances** app can still :doc:`check in and check out
+   <../hr/attendances/check_in_check_out>` of work within the database, using the :icon:`fa-circle`
+   :guilabel:`(red circle)` or :icon:`fa-circle` :guilabel:`(green circle)` that are always
+   available at the top of the database.
+
+.. _attendances/approvers:
+
+Approvers
+---------
+
+An approver is a user assigned to review and manage an employee's attendance records. An approver is
+typically a manager, though that is not required. Approvers without administrative rights can access
+and modify attendance records **only** for the employees they are assigned to. This is the only
+exception where non-admin users can view records in the **Attendances** app.
+
+To view who the attendance approver for an employee is, navigate to the :menuselection:`Employees
+application` and click on the specific employee. Click on the :guilabel:`Work Information` tab,
+scroll to the :guilabel:`APPROVERS` section, and check the :guilabel:`Attendance` field. The person
+selected is able to view that employee's attendance records, both on the **Attendances** application
+dashboard as well as in the attendance reports, and make modifications to their records.
+
+Configuration
+=============
+
+Few configurations are needed in the **Attendances** app. Determining how employees check in and
+out, defining how the kiosks function, and determining how extra hours are computed are all set in
+the Configuration menu. Navigate to the :menuselection:`Attendances application --> Configuration`
+to access the configuration menu.
+
+.. note::
+   Any configuration item with a :icon:`fa-building-o` :guilabel:`(building)` icon is a
+   company-specific configuration. Items without an :icon:`fa-building-o` :guilabel:`(building)`
+   icon apply to all companies within the database.
+
+.. _attendances/modes:
+
+Modes
+-----
+
+- :guilabel:`Attendances from Backend` :icon:`fa-building-o`: Activate this feature to allow users
+  to check in and out directly from the Odoo database. If this is not activated, users must use a
+  kiosk to check in and out of work.
+- :guilabel:`Automatic Check-Out` :icon:`fa-building-o`: Activate this feature to automatically
+  check out employees according to their working schedule, after a buffer of time has passed.
+- :guilabel:`Tolerance`: This field appears only when the :guilabel:`Automatic Check-Out`
+  :icon:`fa-building-o` feature is enabled. Enter the amount of time, in hours, that must elapse
+  after an employee's working hours have ended, before they are automatically checked out.
+
+.. example::
+   With the :guilabel:`Automatic Check-Out` option enabled, and the :guilabel:`Tolerance` set to
+   `2.00` hours, an employee checks in to work at 9:00 AM and forgets to check out at 5:00 PM. At
+   7:00 PM, they are automatically checked out.
+
+- :guilabel:`Absence Management` :icon:`fa-building-o`: Activate this feature to log any absences
+  that are not associated with a time off request, such as vacation time or sick time, on the
+  :doc:`attendance report <attendances/attendance_reporting>`.
+
+Extra Hours
+-----------
+
+This section specifies how extra time (sometimes referred to as *overtime*) is calculated, including
+when extra time is counted and what time is not logged.
+
+- :guilabel:`Tolerance Time In Favor Of Company`: Enter the amount of time, in minutes, that is
+  **not** counted towards an employee's overtime. When an employee checks out, and the extra time
+  logged is below the specified minutes, the extra time is **not** counted as overtime for the
+  employee. When an employee checks out, and the extra time logged is more than the specified
+  minutes, the extra time **is** counted as overtime for the employee.
+
+  .. example::
+     A company sets the :guilabel:`Tolerance Time In Favor Of Company` to `15` minutes, and the
+     working hours for the entire company are set from 9:00 AM to 5:00 PM.
+
+     An employee checks in at 9:00 AM. If the employee checks out at 5:14 PM, the extra 14 minutes
+     are **not** counted towards their overtime. If the employee checks out at 5:17 PM, they earn 17
+     minutes of overtime.
+
+- :guilabel:`Tolerance Time In Favor Of Employee`: Enter the amount of time, in minutes, that an
+  employee is given, which does **not** adversely affect their attendance if they log less time than
+  their working hours. When an employee checks out, and the total time logged for the day is less
+  than their specified working hours and less than this specified grace period, they are **not**
+  penalized for their reduced hours. When an employee checks out, and the total time logged for the
+  day is less than their specified working hours and more than this specified grace period, they
+  **are** penalized for their reduced hours.
+
+  .. example::
+     A company sets the :guilabel:`Tolerance Time In Favor Of Employee` fields to `15` minutes, and
+     the working hours for the entire company are set from 9:00 AM to 5:00 PM.
+
+     An employee checks in at 9:05 AM. If the employee checks out at 4:55 PM, even though they
+     logged a total of 10 minutes less than their full working hours, they are **not** penalized for
+     this discrepancy, and they are logged as working a full eight-hour day. If the employee checks
+     out at 4:40 PM, they **are** penalized, and they are logged as only working 7 hours and 35
+     minutes.
+
+- :guilabel:`Extra Hours Validation` :icon:`fa-building-o`: Click on either the radio button next to
+  :guilabel:`Automatically Approved` to have all extra time automatically approved, or
+  :guilabel:`Approved by Manager` if all extra time should be reviewed and approved by a manager.
+
+- :guilabel:`Display Extra Hours`: Activate this box to display the extra hours logged by an
+  employee when they check out with a kiosk, or when a user checks out in the database.
+
+.. note::
+   Approved extra hours can be :ref:`deducted from an approved time off request
+   <time_off/deduct-extra-hours>`.
+
+Overview
+========
+
+When entering the **Attendances** application, the :guilabel:`Overview` dashboard is presented,
+containing all the user's check in and check out information. If the user has the required
+:ref:`access rights <attendances/access-rights>` or is an :ref:`approver <attendances/approvers>`
+for specific employees, those employees' check-in and check-out information also appears on the
+:guilabel:`Overview` dashboard.
+
+The **Attendance** dashboard allows switching between :icon:`fa-tasks` :guilabel:`(Gantt)` and
+:icon:`oi-view-list` :guilabel:`(List)` views, and selecting a period to analyze. The current period
+is automatically highlighted in yellow for real-time attendance records, while the
+:icon:`fa-crosshairs` :guilabel:`(Focus Today)` button instantly returns the dashboard to the
+present date.
+
+.. image:: attendances/overview.png
+   :alt: The overview dashboard presenting the information for the week, with the current day
+         highlighted.
+
+.. note::
+   Any entries that have errors appear in red, indicating they need to be resolved by a user with
+   the proper :ref:`access rights <attendances/access-rights>` and/or are :ref:`approvers
+   <attendances/approvers>` for the employees with the errors.
+
+.. _attendances/filters-groups:
+
+Filters and groups
+==================
+
+Sometimes, attendance officers and managers need to view specific records, such as all automatic
+checkouts, to determine which employees chronically forget to check out, or by department, to
+determine which team is working the most overtime.
+
+For these cases, use the search bar to select a :icon:`fa-filter` :guilabel:`Filters` or
+:icon:`oi-group` :guilabel:`Group By`, or combine both to present the desired information.
+
+.. seealso::
+   :doc:`../essentials/search`
+
+High-value filters
+------------------
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+   :widths: 40 60
+
+   * - Filter
+     - Common use case
+   * - At Work
+     - Verify employees still on-site before shutting down the building for the night, or to perform
+       a head count.
+   * - Errors
+     - View all errors to correct them prior to payroll processing.
+   * - Automatically Checked-Out
+     - Perform an audit to determine employees who chronically forget to check-out of work.
+   * - Date
+     - Limit results to a specific pay-period or audit window.
+   * - Active/Archived Employees
+     - Switch between current staff and former employees when auditing historical data.
+
+Insightful groupings
+--------------------
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+   :widths: 40 60
+
+   * - Group by
+     - When it helps
+   * - Employee
+     - Review individual attendance records during a 1:1 meeting.
+   * - Department
+     - Compare staffing levels and working hours to determine over-working and under-working teams.
+   * - Manager
+     - Determine where attendance follow-up questions can be directed to for an employee.
+   * - Method
+     - Spot trends in attendance methods to potentially resolve hardware issues.
+   * - Date (Day/Week/Month)
+     - Identify absenteeism spikes or seasonal patterns.
+
+.. _attendances/errors:
+
+Attendance log details
+======================
+
+Odoo records both the time and location for every check-in and check-out, with fields varying by the
+method used. These detailed attendance logs can confirm where an employee was on any given workday.
+This can be useful for companies with hybrid working schedules, who may need to perform audits to
+ensure proper compliance.
+
+The detailed attendance log contains the following information:
+
+Main details
+------------
+
+- :guilabel:`Employee`: The name of the employee.
+- :guilabel:`Check In`: The date and time the employee checked in.
+- :guilabel:`Check Out`: The date and time the employee checked out. This **only** appears if the
+  employee has checked out.
+- :guilabel:`Worked Time`: The total amount of time the employee logged for the day, across multiple
+  check-ins and outs, in an hour and minute format (HH:MM).
+- :guilabel:`Worked Extra Hours`: Unpaid overtime hours worked beyond the expected working schedule
+  (shows **only** when present for the employee).
+- :guilabel:`Extra Hours`: Approved overtime (the :guilabel:`Worked Time` minus the approved
+  :guilabel:`Worked Extra Hours`.
+
+Check in/check out details
+--------------------------
+
+The following information appears for both the :guilabel:`Check In` and :guilabel:`Check Out`
+sections.
+
+- :guilabel:`Mode`: Attendance submission method. Can be :ref:`Systray <attendances/check-in>`,
+  :ref:`Kiosk <attendances/kiosk-mode-entry>`, or :guilabel:`Manual` entry.
+- :guilabel:`IP Address`: The device's IP address used to log in or out.
+- :guilabel:`Browser`: The web browser the employee used to log in or out.
+- :guilabel:`Localisation`: The city and country associated with the computer's IP address.
+- :guilabel:`GPS Coordinates`: The specific coordinates when the user logged in or out. To view the
+  specific coordinates on a map, click the :icon:`oi-arrow-right` :guilabel:`View on Maps` button
+  beneath the :guilabel:`GPS Coordinates`. This opens a map in a new browser tab, with the specific
+  location pointed out.
+
+.. image:: attendances/details.png
+   :alt: The detailed information for an attendance entry.
+
+Attendance errors
+=================
+
+Entries that contain an error appear on the overview dashboard in red. In the :icon:`fa-tasks`
+:guilabel:`(Gantt)` view, the entry appears with a red background; in the :icon:`oi-view-list`
+:guilabel:`(List)` view, the entry text appears in red.
+
+An error occurs when an employee has checked in but not checked out within 24 hours, or when a
+single check-in period exceeds 16 hours.
+
+To fix the error, the attendance entry must be modified or deleted. Click on the entry to reveal a
+pop-up containing the details for that particular entry. To modify the :guilabel:`Check In` and/or
+:guilabel:`Check Out` information, click on the :guilabel:`Check In` or :guilabel:`Check Out` field,
+and a calendar selector appears. Click on the desired date, then use the time selector beneath the
+calendar to select the specific time for the entry. When the information is correct, click
+:guilabel:`Apply.`
+
+When all the information on the pop-up is correct, click :guilabel:`Save & Close`. When the entry no
+longer has an error, the entry appears in gray instead of red.
+
+To delete an entry, click the red :guilabel:`Delete` button on the pop-up window instead of making
+modifications to the entry.
+
+.. seealso::
+   - :doc:`attendances/check_in_check_out`
+   - :doc:`attendances/kiosks`
+   - :doc:`attendances/management`
+   - :doc:`attendances/hardware`
+   - :doc:`attendances/attendance_reporting`
+
+.. toctree::
+   :titlesonly:
+
+   attendances/check_in_check_out
+   attendances/kiosks
+   attendances/management
+   attendances/hardware
+   attendances/attendance_reporting
+
+
+==================================================
+SECTION: attendance_reporting.rst
+PATH: applications/hr/attendances/attendance_reporting.rst
+==================================================
+
+====================
+Attendance reporting
+====================
+
+The **Attendances** app report helps managers find attendance issues with employees before they
+become a problem. The report can give insights on trends by determining :ref:`which employees are
+working more overtime <attendances/overtime>`, and who is :ref:`not working their full shifts
+<attendances/absent>`.
+
+View report
+===========
+
+To view the attendance report, click :guilabel:`Reporting` in the top menu. The default report
+displays attendance information for current employees over the past three months, in a default
+:icon:`oi-view-pivot` :guilabel:`Pivot table`. The rows are populated by employee, while the columns
+are populated by the various attendance records. All entries are grouped by month.
+
+The columns presented are:
+
+- :guilabel:`Worked Hours`: The total logged time the employee worked for the month.
+- :guilabel:`Expected Hours`: The number of hours the employee should have worked for the month,
+  calculated from their :ref:`working schedule <employees/schedule>`, configured on their employee
+  form.
+- :guilabel:`Difference`: The difference from the :guilabel:`Expected Hours` and the
+  :guilabel:`Worked Hours` for the employee that month.
+- :guilabel:`Balance`: The difference between the *approved* overtime, and the *total* overtime
+  worked.
+
+To present different information, adjust the :ref:`filters and groups <attendances/filters-groups>`
+in the same way as in the :guilabel:`Overview` dashboard.
+
+.. image:: attendance_ reporting/reporting.png
+   :alt: The default report view, with all the optional view buttons highlighted.
+
+.. _attendances/overtime:
+
+Use case: monthly overtime
+==========================
+
+Overtime affects a company's bottom line, as most companies budget for employee salaries. When
+salaries exceed the expected amount, companies may see a rise in overhead costs when salary budgets
+are exceeded. This is why the attendance report is needed, to ensure no excessive overtime is
+logged.
+
+To view a specific month's overtime, by employee, click :guilabel:`Reporting` in the top menu of the
+**Attendances** app. Remove the default :icon:`oi-group` :guilabel:`Date: Month > Employee` grouping
+in the search bar. Click the :icon:`fa-caret-down` :guilabel:`(Toggle Search Panel)` icon at the end
+of the search bar, then click :icon:`fa-caret-down` :guilabel:`Date`, and click the desired month.
+
+Next, click the :guilabel:`Measures` :icon:`fa-caret-down` button in the upper-left corner, and
+deselect :guilabel:`Expected Hours` and :guilabel:`Worked Hours`. This presents the
+:guilabel:`Difference` and :guilabel:`Balance` attendance data for the selected month, grouped by
+employee.
+
+The :guilabel:`Difference` shows the month's total overtime logged, and the :guilabel:`Balance`
+shows the portion still unapproved. Click the :guilabel:`Difference` column to sort by the amount of
+overtime. The highest positive number is the most overtime logged for that month.
+
+.. example::
+   In the below example, a total of 38 hours and 53 minutes of overtime was approved for the month
+   of April. :guilabel:`Michael Williams` has the most overtime, with 10 hours and 25 minutes
+   logged. Of that overtime, only 25 minutes was unapproved, for a total of ten paid overtime hours.
+
+   .. image:: attendance_ reporting/overtime.png
+      :alt: The attendances report, showing only overtime for the month of April.
+
+.. _attendances/absent:
+
+Use case: absenteeism
+=====================
+
+Employees with a negative :guilabel:`Difference` indicate that they have not worked their expected
+shifts. This can be from forgetting to log in and out of work, or for working less hours than
+expected, without any approved time off.
+
+To view the attendance data for the last three months, to identify any trends, first open the
+**Attendances** app report. Next, click the :guilabel:`Measures` :icon:`fa-caret-down` button in the
+upper-left corner, and ensure  **only** :guilabel:`Difference` is selected.
+
+Next, reset the row data by clicking :icon:`fa-minus-square-o` :guilabel:`Total` at the top of the
+rows. Then click :icon:`fa-plus-square` :guilabel:`Total` and select :guilabel:`Employee`. Click the
+:guilabel:`Difference` column name to sort by the total difference in logged hours from the expected
+hours.
+
+The employee who worked the least has the highest negative balance. Click on any of the numbers for
+the employee to view the detailed individual attendance records.
+
+.. example::
+   In the below example, the company has only been opened for two months, so data is only available
+   for the last two months, even though the filter :guilabel:`Last 3 Months` is active.
+
+   From this report, it is determined that :guilabel:`Abigail Peterson` worked the least amount of
+   hours over the past two months, working 25 hours less than was expected.
+
+   .. image:: attendance_ reporting/absentee.png
+      :alt: The attendance report showing the highest absences for the last two months.
+
+
+==================================================
+SECTION: check_in_check_out.rst
+PATH: applications/hr/attendances/check_in_check_out.rst
+==================================================
+
+================
+Check in and out
+================
+
+Odoo's **Attendances** application allows users, who are logged into the database, to check in and
+out without needing to go into the **Attendances** application, or use a kiosk. For smaller
+companies, where every employee is also a user, this feature may be useful.
+
+A user can check in and/or out on the main database Odoo dashboard, or while inside any application.
+To do so, in the upper-right corner of the top main header menu, which is always visible regardless
+of what application the user is in, a :icon:`fa-circle` :guilabel:`(red circle)` or
+:icon:`fa-circle` :guilabel:`(green circle)` is visible. Click on the colored circle to reveal the
+attendance widget, enabling the user to check in or out.
+
+.. _attendances/check-in:
+
+Check in
+========
+
+If the attendance widget circle is red, this indicates the user is not currently checked in. Click
+the :icon:`fa-circle` :guilabel:`(red circle)`, and the attendance widget appears, displaying a
+green :guilabel:`Check in` :icon:`fa-sign-in` button.
+
+.. image:: check_in_check_out/check-in.png
+   :alt: Top right main menu with check in button highlighted.
+
+When the user checks in from the database, the **Attendances** app logs the location details for the
+user, including the IP Address and GPS coordinates.
+
+.. important::
+   For the **Attendances** app to log the location details, the user must allow their computer to
+   access their location information.
+
+If the user has not already checked in and out during the current work day, this button is the only
+visible item in the widget. If the user has previously checked in and out, a :guilabel:`Total today`
+field appears above the button, and the total amount of time that has been logged for the day
+appears in that field, in an :guilabel:`HH:MM` (hours:minutes) format.
+
+Click the :guilabel:`Check in` :icon:`fa-sign-in` button to check in. The :icon:`fa-circle`
+:guilabel:`(red circle)` in the top menu changes to green, and the widget changes appearance, as
+well. The widget updates to reflect that the user has checked in, by changing the green
+:guilabel:`Check in` :icon:`fa-sign-in` button to a yellow :guilabel:`Check out` :icon:`fa-sign-out`
+button.
+
+Click anywhere on the screen to close the attendance widget.
+
+Check out
+=========
+
+If the user is checking out for the first time, :guilabel:`Since HH:MM (AM/PM)` appears at the top
+of the widget, with the time the user checked in populating the time field. Beneath that line, the
+hours and minutes that have elapsed since checking in are displayed in a :guilabel:`HH:MM` format.
+As time passes, this value is updated to reflect the hours and minutes that have passed since the
+user checked in.
+
+If the user has previously checked in and out, additional fields are presented. A :guilabel:`Before
+HH:MM (AM/PM)` field appears, in addition to the :guilabel:`Since HH:MM (AM/PM)` field. The times
+displayed in both of these fields match, and are populated with the most recent check in time.
+Beneath the :guilabel:`Before HH:MM (AM/PM)` field, the previously logged time is displayed, in an
+:guilabel:`HH:MM` (hours:minutes) format.
+
+In addition, beneath both of these fields, a :guilabel:`Total today` field appears. This field is
+the sum of both the :guilabel:`Before HH:MM (AM/PM)` and :guilabel:`Since HH:MM (AM/PM)` fields, and
+is the total time that is logged for the user, if they were to log out at that moment.
+
+As time passes, both the :guilabel:`Since HH:MM (AM/PM)` and :guilabel:`Total today` fields are
+updated live. To check out, click the yellow :guilabel:`Check out` :icon:`fa-sign-out` button. The
+attendance widget updates again, displaying the :guilabel:`Total today` field with the logged time,
+while the yellow :guilabel:`Check out` :icon:`fa-sign-out` button changes to a green
+:guilabel:`Check in` :icon:`fa-sign-in` button.
+
+When the user checks out from the database, the **Attendances** app logs the location details for
+the user. This information is logged **only** if the user grants permission.
+
+.. image:: check_in_check_out/check-in-database-message.png
+   :alt: The pop-up that appears when an employee checks in inside the database.
+
+.. tip::
+   The number of times a user can check in and check out is unlimited. Users can check in and out
+   without any time elapsing (a value of 00:00). Each time an employee logs in and out, the
+   information is stored and appears on the main **Attendances** dashboard, including check-ins and
+   check-outs with no time value.
+
+
+==================================================
+SECTION: hardware.rst
+PATH: applications/hr/attendances/hardware.rst
+==================================================
+
+========
+Hardware
+========
+
+Employees who are **not** database users, and therefore, do **not** have access to the
+**Attendances** app, must sign in and out of work using a kiosk. The following are the physical
+requirements for setting up a kiosk.
+
+Kiosk devices
+=============
+
+A kiosk is a self-service station, where employees can :ref:`check in and out of work
+<attendances/kiosk-mode-entry>` with either a :ref:`badge <attendances/hardware/badges>` or an
+:ref:`RFID key fob <attendances/hardware/rfid>`. Typically, these devices are dedicated as kiosks
+only, but any device with an internet browser is able to be set up as a kiosk.
+
+A kiosk is used by navigating to the webpage specified in the :ref:`configuration
+<attendances/kiosk-settings>` section of the **Attendances** app.
+
+Kiosks are set up using one of the following types of devices:
+
+- Laptop or Desktop computer
+- Tablet
+- Mobile phone (Android or iOS)
+
+.. tip::
+   Touchscreens are easy to use, and tablets and mobile phones take up less space. That is why most
+   consider using a smaller device with a touchscreen as a kiosk.
+
+   It is recommended to place kiosks on a secure stand, or mount them securely on a wall.
+
+.. _attendances/hardware/badges:
+
+Badges
+======
+
+Badges are a way for employees to quickly sign in and out from a kiosk, as badges are scanned by the
+kiosk's camera to identify the employee.
+
+To generate a badge, first navigate to the :menuselection:`Employees app`. Next, click on the
+desired employee card to open the employee's form, then click the :guilabel:`Settings` tab.
+
+Under the :guilabel:`ATTENDANCE/POINT OF SALE/MANUFACTURING` section, there is a :guilabel:`Badge
+ID` field. If this field is blank, click :guilabel:`Generate` at the end of the :guilabel:`Badge ID`
+line, and the field is automatically populated with a new badge ID number. Then, click
+:guilabel:`Print Badge` at the end of the badge ID number to create a PDF file of the badge.
+
+If a badge ID number is already present on the employee form, there is no :guilabel:`Generate`
+button, only a :guilabel:`Print Badge` button.
+
+The employee's badge contains the employee's photo, name, job position, company logo, and a barcode
+that can be scanned at a kiosk to check in and out.
+
+Badges can be printed for employees using any thermal or inkjet printer.
+
+.. image:: hardware/badge.png
+   :alt: A badge for an employee that is created from the Employees app.
+
+.. note::
+   Badges are **not** required, as employees can manually identify themselves on the kiosk.
+
+Barcode scanners
+----------------
+
+When using badges to check in and out, the barcode **must** be scanned to identify the employee.
+This can be done with the kiosk's camera, if one is available on the device.
+
+If a camera is **not** available on the kiosk device, an external barcode scanner must be used to
+scan badges.
+
+Kiosks work with most USB barcode scanners. Bluetooth barcode scanners are also supported for
+devices without USB ports, or if a wireless connection is desired.
+
+Follow the manufacturer's instructions on the barcode scanner to properly connect the barcode
+scanner to the kiosk device.
+
+.. tip::
+   If the barcode scanner is connected directly to a computer, it :doc:`must be configured
+   <../../inventory_and_mrp/barcode/setup/hardware>` to use the computer's keyboard layout.
+
+.. note::
+   An IoT box is **not** required to use a barcode scanner.
+
+.. _attendances/hardware/rfid:
+
+RFID key fob readers
+====================
+
+Instead of using a :ref:`badge <attendances/hardware/badges>`, employees can scan a personal RFID
+key fob with an RFID reader to check in and out of work.
+
+It is **required** to purchase *both* RFID key fobs and an RFID reader to use this method to check
+in and out. Follow the manufacturer's directions to install the RFID reader, and set up the RFID key
+fob.
+
+.. note::
+   An IoT box is **not** required to use RFID key fobs.
+
+
+==================================================
+SECTION: kiosks.rst
+PATH: applications/hr/attendances/kiosks.rst
+==================================================
+
+======
+Kiosks
+======
+
+Odoo's **Attendances** app allows employees to check in and out of work directly from the database
+or a kiosk.
+
+A kiosk is a :doc:`dedicated device <hardware>` (a PC, tablet, or mobile phone) for employees to use
+when they check in and out.
+
+Kiosks are needed for employees who do **not** have access to the database.
+
+Only employees with access to the Odoo database can check in and out from the **Attendances** app,
+and they are referred to as *users*.
+
+.. important::
+   If employees :ref:`check in and out <attendances/kiosk-mode-entry>` using a badge or an RFID,
+   then an :doc:`accessible device <hardware>` in :ref:`Kiosk Mode <attendances/kiosk-mode>`
+   **must** be available in order to use these two methods.
+
+Configuration
+=============
+
+To use kiosks in the **Attendances** application, navigate to :menuselection:`Attendances app -->
+Configuration`. On the :guilabel:`Settings` page, configure the :ref:`Modes section
+<attendances/kiosk-mode>` and the :ref:`attendances/kiosk-settings`.
+
+Once all desired settings have been configured, click the :guilabel:`Save` button on the
+:guilabel:`Settings` page, to activate and enable them.
+
+.. _attendances/kiosk-mode:
+
+Modes section
+-------------
+
+Determine how an employee checks in when using a kiosk, either by searching for their name on the
+kiosk (:guilabel:`Manual Selection`), scanning an employee ID or key fob (:guilabel:`Barcode/RFID`).
+or both.
+
+On the settings page, using the drop-down menu for the :guilabel:`Kiosk Mode` :icon:`fa-building-o`
+field in the :guilabel:`Modes` section, make the desired selection. Options are
+:guilabel:`Barcode/RFID`, :guilabel:`Barcode/RFID and Manual Selection`, or :guilabel:`Manual
+Selection`.
+
+.. note::
+   The **Barcode** application **does not** need to be installed to use one of the Barcode/RFID
+   settings.
+
+.. _attendances/kiosk-settings:
+
+Kiosk Settings section
+----------------------
+
+The various settings in the :guilabel:`Kiosk Settings` section determine how employees check in and
+out with kiosks.
+
+- :guilabel:`Barcode Source` :icon:`fa-building-o`: this setting **only** appears if one of the two
+  *Barcode/RFID* selections were configured for the :ref:`Kiosk Mode <attendances/kiosk-mode>`
+  setting.
+
+  If available, select how barcodes are scanned at the kiosk, via one of the drop-down menu options.
+  Barcodes can be scanned with a dedicated :guilabel:`Scanner`, or with a device's camera
+  (:guilabel:`Front Camera` or :guilabel:`Back Camera`).
+- :guilabel:`Display Time` :icon:`fa-building-o`: determine how many seconds a check-in/check-out
+  confirmation message remains on the kiosk screen before returning to the main check in screen.
+- :guilabel:`Employee PIN Identification`: tick this checkbox if employees should use a unique PIN
+  to check in. PINs are configured on each individual employee record. Refer to the :ref:`new
+  employee documentation <employees/hr-settings>` documentation for more information on setting up
+  PINs.
+- :guilabel:`Attendance Kiosk Url`: Odoo generates a unique web address (URL) to use a device as a
+  kiosk, without having to sign in to the Odoo database. When setting up a kiosk device, navigate to
+  this unique web address in a web browser to present the **Attendances** app kiosk.
+
+  .. important::
+     These kiosk URLs are **not** secured with any type of access code. Anyone who has the URL can
+     access the **Attendances** app kiosk. If the URL is compromised for any reason, such as in the
+     event of a security breach, click :icon:`fa-refresh` :guilabel:`Generate new URL`, located
+     beneath the link, to generate a new URL, and update the kiosk, accordingly.
+
+Kiosk mode
+==========
+
+Entering *Kiosk Mode* is **only** available for users with specific :ref:`access rights
+<attendances/access-rights>`.
+
+*Kiosk Mode* can be activated in two different ways:
+
+#. Navigate to the :menuselection:`Attendances app`, and click :guilabel:`Kiosk Mode` in the top
+   menu. The device then signs out of Odoo and enters *Kiosk Mode*.
+#. Navigate to the :menuselection:`Attendances app --> Configuration`. In the :guilabel:`Kiosk
+   Settings` section, use the link in the :guilabel:`Attendance Kiosk Url` field to open *Kiosk
+   Mode* on any device.
+
+.. image:: kiosks/kiosk-url.png
+   :alt: The Attendances Kiosk URL field in the settings section of the Attendances application.
+
+.. important::
+   As a security measure, once a device is in *Kiosk Mode*, it is not possible to go back into the
+   database without signing back in.
+
+.. note::
+   At any time, a new kiosk URL can be generated, if needed. Click the :icon:`fa-refresh`
+   :guilabel:`Generate a new Kiosk Mode URL`
+
+To exit *Kiosk Mode*, either close the tab in the web browser or return to the main log-in screen of
+Odoo.
+
+.. _attendances/kiosk-mode-entry:
+
+Check in and out with a kiosk
+=============================
+
+Badge
+-----
+
+To check in or out using a badge, tap the :icon:`fa-barcode` :guilabel:`Scan your badge` image in
+the center of the kiosk.
+
+.. image:: kiosks/scan-badge.png
+   :alt: The Attendances Kiosk view displaying the scan badge image.
+
+Then, scan the barcode on the badge using the method configured in the :ref:`Kiosk Settings
+<attendances/kiosk-settings>` section of the configuration menu.
+
+Once the barcode is scanned, the employee is checked in or out, and a :ref:`confirmation message
+<attendances/confirmation>` appears with all the information.
+
+RFID
+----
+
+To check in or out using an RFID key fob, scan the fob with an RFID reader.
+
+Once scanned, the employee is either checked in or checked out, and a :ref:`confirmation message
+<attendances/confirmation>` appears with all the information.
+
+Manually
+--------
+
+Users who do not have a scannable badge, or an RFID fob, can manually check in and out at a kiosk.
+
+Tap the :icon:`fa-user-o` :guilabel:`Identify Manually` button on the kiosk, and a screen appears
+with all the employees that can be checked in or out. The **Employees** app dashboard has the same
+display.
+
+Tap on a person to check them in or out, and a :ref:`confirmation message
+<attendances/confirmation>` appears.
+
+To find a specific person, either:
+
+- Search: tap into the search bar and enter the desired person's name. As the name is typed in, the
+  matching results are displayed on the screen.
+- By department: tap on any desired selection in the department section, located on the left side of
+  the screen, to **only** view employees from that specific department. The number at the end of
+  each listed department represents how many employees that department has.
+
+PIN
+~~~
+
+If the :guilabel:`Employee PIN Identification` checkbox was ticked in the :ref:`Kiosk Settings
+<attendances/kiosk-settings>` section of the configuration menu, the employee is prompted to enter a
+PIN when manually checking in or out.
+
+After the employee is selected, a number pad appears with a message. When checking in,
+:guilabel:`(Employee) Please enter your PIN to check in` appears above the numbers. When checking
+out, :guilabel:`(Employee) Please enter your PIN to check out` appears above the numbers.
+
+Tap in the PIN using the number pad, then tap :guilabel:`OK` when done. The employee is then checked
+in or out, and a :ref:`confirmation message <attendances/confirmation>` appears.
+
+.. image:: kiosks/enter-pin.png
+   :alt: The pop-up that appears when prompted to enter a pin.
+
+.. _attendances/confirmation:
+
+Confirmation message
+--------------------
+
+When an employee checks in or out, a confirmation message appears, with all the check in or check
+out information.
+
+When checking in, the :guilabel:`Welcome (Employee)` message appears, along with the current date
+and time. If the employee has already checked in and out that day, an :guilabel:`Hours Previously
+Today: HH:MM` message also appears, showing the total hours logged earlier.
+
+When checking out, :guilabel:`Goodbye (Employee)` appears, as well as the date and time of check
+out. Beneath the message is an :guilabel:`Hours Today: HH:MM` field, with the total hours and
+minutes logged for the day.
+
+Beneath both the "welcome" and "goodbye" messages is an :guilabel:`OK` button. To exit the screen
+before the preset time in the kiosk, tap the :guilabel:`OK` button.
+
+.. image:: kiosks/goodbye-message.png
+   :alt: The goodbye message with all the employee's check out information.
+
+
+==================================================
+SECTION: management.rst
+PATH: applications/hr/attendances/management.rst
+==================================================
+
+===========================
+Work approvals and overtime
+===========================
+
+Odoo's **Attendances** app requires management oversight in order to ensure all logged attendances
+are correct, especially overtime hours and incomplete shifts.
+
+.. _attendances/dashboard:
+
+Management dashboard
+====================
+
+All attendance records that require approval, typically due to overlapping work entries or
+unapproved time off, are managed from a centralized management dashboard. To access this, navigate
+to :menuselection:`Attendances app --> Management`.
+
+The :guilabel:`Management` dashboard only displays attendance records for current employees that
+need to be approved, in a default list view. This is due to the two default filters in the search
+bar, the :guilabel:`To Approve` and :guilabel:`Active Employees`.
+
+Each attendance record displays the following information:
+
+- :guilabel:`Employee`: the name of the employee
+- :guilabel:`Check In`: the date and time the employee checked in
+- :guilabel:`Check Out`: the date and time the employee checked out
+- :guilabel:`Worked Time`: the number of worked hours the employee logged
+- :guilabel:`Worked Extra Hours`: the amount of overtime worked
+- :guilabel:`Extra Hours`: the total extra hours logged
+- :guilabel:`Overtime Status`: the status of the attendance record. All attendance records that
+  appear on this dashboard have a status of :guilabel:`To Approve`.
+
+.. image:: management/management-dashboard.png
+   :alt: The Attendances app Management dashboard, displaying entries needing approval.
+
+.. _attendances/approve-refuse:
+
+Approvals and refusals
+======================
+
+Attendance records can be approved and refused directly from the :ref:`Management dashboard
+<attendances/dashboard>`. At the far-right of each record, :icon:`fa-check` :guilabel:`Approve` and
+:icon:`fa-times` :guilabel:`Refuse` buttons appear. Click the corresponding button to either approve
+or refuse the logged attendance record.
+
+.. note::
+   When approving or refusing attendance records from the :guilabel:`Management` dashboard, it is
+   **not** possible to view the details of the attendance record.
+
+Partial approvals
+-----------------
+
+It is possible to approve a portion of the logged :guilabel:`Extra Hours` and not the full amount.
+To approve only a portion of overtime, click into an attendance record to view the details.
+
+Click into the :guilabel:`Extra Hours` field and enter the amount of hours being approved. After
+editing the :guilabel:`Extra Hours field`, the :guilabel:`Worked Extra Hours` field becomes visible
+to display the difference between the :guilabel:`Worked Time` and :guilabel:`Extra Hours` fields.
+
+.. note::
+   The :guilabel:`Worked Time` field is the total hours the employee logged (the :guilabel:`Worked
+   Time` and :guilabel:`Extra Hours` combined). For example, if an employee is scheduled to work
+   eight hours, and worked five extra hours, the :guilabel:`Worked Time` is thirteen hours, and the
+   :guilabel:`Extra Hours` is five hours. The :guilabel:`worked Time` field **cannot** be modified.
+
+Click :icon:`fa-check` :guilabel:`Approve` to approve the updated :guilabel:`Extra Hours`. Once
+partially approved, the :guilabel:`Worked Extra Hours` field disappears, along with the
+:icon:`fa-check` :guilabel:`Approve` button. The difference in hours appears in the :guilabel:`Extra
+Hours` field.
+
+Once overtime hours are partially approved, the status changes to :guilabel:`Approved`.
+
+.. image:: management/record.png
+   :alt: A detailed attendance record.
+
+.. important::
+   Once partial overtime is approved, it is still possible to deny overtime by clicking
+   :icon:`fa-times` :guilabel:`Refuse`. The record can be modified as many times as needed.
+
+.. note::
+   Occasionally, verifying an employee's location when checking-in may be needed. The method the
+   employee checked-in to work is found on the individual record, in the :guilabel:`Mode` field.
+
+   The :guilabel:`Mode` field is not modifiable, as it only log the method the attendance record was
+   created.
+
+   The possible options are:
+
+   - :guilabel:`Kiosk`: the employee physically checked in or out using a :doc:`kiosk <kiosks>`
+     device. The employee was present at the kiosk to check-in.
+   - :guilabel:`Systray`: the employee checked in or out :doc:`directly from the database
+     <check_in_check_out>`. Depending on the :guilabel:`IP Address` displayed on the detailed
+     attendance record, the employee's location at the time of check-in can be determined.
+   - :guilabel:`Manual`: the record was created manually in the **Attendances** app. This is
+     typically done by management, to add a missing record.
+
+Create attendance records
+=========================
+
+When necessary, users with the required :ref:`access rights <employees/work-info-tab>` are able to
+create attendance records manually in the **Attendances** app. Some situations requiring this is
+when employees forget to check in and out for shifts, as employees cannot retroactively create
+attendance records.
+
+To add a missing attendance record, navigate to :menuselection:`Attendances app --> Overview`. Click
+the :guilabel:`New` button in the upper-left corner. In the :guilabel:`Create` pop-up window, enter
+the following information on the form:
+
+- :guilabel:`Employee`: select the employee the record is being created for. The signed-in user
+  populates this field, by default.
+- :guilabel:`Check In`: using the calendar modal, select the check in date and time, then click
+  :icon:`fa-check` :guilabel:`Apply`. By default, the current date is selected, and the time is set
+  to `00:00:00`.
+- :guilabel:`Check Out`: using the calendar modal, select the check out date and time, then click
+  :icon:`fa-check` :guilabel:`Apply`. By default, the following date is selected, and the time is
+  set to `00:00:00`.
+- :guilabel:`Worked Time`: this field is automatically populated with the difference from the
+  selected :guilabel:`Check In` and :guilabel:`Check Out` times. This field **cannot** be modified.
+- :guilabel:`Extra Hours`: enter the number of overtime hours, if any, to be approved.
+
+.. important::
+   Once :guilabel:`Extra Hours` are added, they are automatically approved by the system. However,
+   it is possible to manually refuse them, as explained in the :ref:`Approvals and Refusals
+   <attendances/approve-refuse>` section.
+
+.. image:: management/new-record.png
+   :alt: An Attendances app record form, filled out for Doris Cole for April 23, 2025.

@@ -1,0 +1,379 @@
+
+
+==================================================
+SECTION: account.rst
+PATH: developer/reference/standard_modules/account.rst
+==================================================
+
+:nosearch:
+
+==========
+Accounting
+==========
+
+.. toctree::
+    :titlesonly:
+
+    account/account_account_tag
+    account/account_account
+    account/account_fiscal_position
+    account/account_group
+    account/account_report
+    account/account_report_line
+    account/account_tax
+    account/account_tax_repartition
+
+
+==================================================
+SECTION: account_account.rst
+PATH: developer/reference/standard_modules/account/account_account.rst
+==================================================
+
+.. _reference/account_account:
+
+=======
+Account
+=======
+
+.. automodel:: odoo.addons.account.models.account_account.AccountAccount
+    :main:
+
+    .. autofield:: name
+    .. autofield:: currency_id
+    .. autofield:: code
+    .. autofield:: account_type
+    .. autofield:: reconcile
+    .. autofield:: note
+    .. autofield:: tax_ids
+    .. autofield:: tag_ids
+
+
+==================================================
+SECTION: account_account_tag.rst
+PATH: developer/reference/standard_modules/account/account_account_tag.rst
+==================================================
+
+.. _reference/account_account_tag:
+
+===========
+Account Tag
+===========
+
+.. automodel:: odoo.addons.account.models.account_account_tag.AccountAccountTag
+    :main:
+
+    .. autofield:: name
+    .. autofield:: applicability
+    .. autofield:: color
+    .. autofield:: active
+    .. autofield:: country_id
+
+
+==================================================
+SECTION: account_fiscal_position.rst
+PATH: developer/reference/standard_modules/account/account_fiscal_position.rst
+==================================================
+
+.. _reference/account_fiscal_position:
+
+===============
+Fiscal Position
+===============
+
+.. automodel:: odoo.addons.account.models.partner.AccountFiscalPosition
+    :main:
+
+    .. autofield:: sequence
+    .. autofield:: name
+    .. autofield:: account_ids
+    .. autofield:: tax_ids
+    .. autofield:: note
+    .. autofield:: auto_apply
+    .. autofield:: vat_required
+    .. autofield:: country_id
+    .. autofield:: country_group_id
+    .. autofield:: state_ids
+    .. autofield:: zip_from
+    .. autofield:: zip_to
+
+
+==================================================
+SECTION: account_group.rst
+PATH: developer/reference/standard_modules/account/account_group.rst
+==================================================
+
+.. _reference/account_group:
+
+=============
+Account Group
+=============
+
+.. automodel:: odoo.addons.account.models.account_account.AccountGroup
+    :main:
+
+    .. autofield:: parent_id
+    .. autofield:: name
+    .. autofield:: code_prefix_start
+    .. autofield:: code_prefix_end
+
+
+==================================================
+SECTION: account_report.rst
+PATH: developer/reference/standard_modules/account/account_report.rst
+==================================================
+
+======
+Report
+======
+
+.. automodel:: odoo.addons.account.models.account_report.AccountReport
+    :main:
+
+    .. autofield:: name
+    .. autofield:: line_ids
+    .. autofield:: column_ids
+    .. autofield:: root_report_id
+    .. autofield:: country_id
+    .. autofield:: only_tax_exigible
+    .. autofield:: availability_condition
+    .. autofield:: load_more_limit
+    .. autofield:: search_bar
+    .. autofield:: default_opening_date_filter
+    .. autofield:: filter_multi_company
+    .. autofield:: filter_date_range
+    .. autofield:: filter_show_draft
+    .. autofield:: filter_unreconciled
+    .. autofield:: filter_unfold_all
+    .. autofield:: filter_period_comparison
+    .. autofield:: filter_growth_comparison
+    .. autofield:: filter_journals
+    .. autofield:: filter_analytic
+    .. autofield:: filter_hierarchy
+    .. autofield:: filter_account_type
+    .. autofield:: filter_partner
+    .. autofield:: allow_foreign_vat
+
+
+==================================================
+SECTION: account_report_line.rst
+PATH: developer/reference/standard_modules/account/account_report_line.rst
+==================================================
+
+===========
+Report Line
+===========
+
+.. automodel:: odoo.addons.account.models.account_report.AccountReportLine
+    :main:
+
+    .. autofield:: name
+    .. autofield:: expression_ids
+    .. autofield:: report_id
+    .. autofield:: hierarchy_level
+    .. autofield:: parent_id
+    .. autofield:: children_ids
+    .. autofield:: foldable
+    .. autofield:: print_on_new_page
+    .. autofield:: action_id
+    .. autofield:: hide_if_zero
+
+
+==================================================
+SECTION: account_tax.rst
+PATH: developer/reference/standard_modules/account/account_tax.rst
+==================================================
+
+.. _reference/account_tax:
+
+=====
+Taxes
+=====
+
+.. automodel:: odoo.addons.account.models.account_tax.AccountTax
+    :main:
+
+    .. autofield:: name
+    .. autofield:: type_tax_use
+    .. autofield:: tax_scope
+    .. autofield:: amount_type
+    .. autofield:: active
+    .. autofield:: children_tax_ids
+    .. autofield:: sequence
+    .. autofield:: amount
+    .. autofield:: description
+    .. autofield:: price_include
+    .. autofield:: include_base_amount
+    .. autofield:: is_base_affected
+    .. autofield:: analytic
+    .. autofield:: invoice_repartition_line_ids
+    .. autofield:: refund_repartition_line_ids
+    .. autofield:: tax_group_id
+    .. autofield:: tax_exigibility
+    .. autofield:: cash_basis_transition_account_id
+
+
+==================================================
+SECTION: account_tax_repartition.rst
+PATH: developer/reference/standard_modules/account/account_tax_repartition.rst
+==================================================
+
+.. _reference/account_tax_repartition:
+
+================
+Tax Repartitions
+================
+
+.. automodel:: odoo.addons.account.models.account_tax.AccountTaxRepartitionLine
+    :main:
+
+    .. autofield:: factor_percent
+    .. autofield:: repartition_type
+    .. autofield:: document_type
+    .. autofield:: account_id
+    .. autofield:: tax_id
+    .. autofield:: tag_ids
+    .. autofield:: use_in_tax_closing
+
+
+==================================================
+SECTION: payment.rst
+PATH: developer/reference/standard_modules/payment.rst
+==================================================
+
+:hide-page-toc:
+
+=======
+Payment
+=======
+
+.. toctree::
+   :titlesonly:
+
+   payment/payment_method
+   payment/payment_provider
+   payment/payment_token
+   payment/payment_transaction
+
+
+==================================================
+SECTION: payment_method.rst
+PATH: developer/reference/standard_modules/payment/payment_method.rst
+==================================================
+
+:hide-page-toc:
+
+==============
+Payment Method
+==============
+
+.. autoclass:: odoo.addons.payment.models.payment_method.PaymentMethod()
+
+   .. automethod:: _get_compatible_payment_methods
+   .. automethod:: _get_from_code
+
+
+==================================================
+SECTION: payment_provider.rst
+PATH: developer/reference/standard_modules/payment/payment_provider.rst
+==================================================
+
+:hide-page-toc:
+
+================
+Payment Provider
+================
+
+.. autoclass:: odoo.addons.payment.models.payment_provider.PaymentProvider()
+
+   .. automethod:: _build_request_auth
+   .. automethod:: _build_request_headers
+   .. automethod:: _build_request_url
+   .. automethod:: _compute_feature_support_fields
+   .. automethod:: _get_code
+   .. automethod:: _get_compatible_providers
+   .. automethod:: _get_default_payment_method_codes
+   .. automethod:: _get_redirect_form_view
+   .. automethod:: _get_provider_domain
+   .. automethod:: _get_removal_values
+   .. automethod:: _get_supported_currencies
+   .. automethod:: _get_validation_amount
+   .. automethod:: _get_validation_currency
+   .. automethod:: _is_tokenization_required
+   .. automethod:: _parse_response_content
+   .. automethod:: _parse_response_error
+   .. automethod:: _send_api_request
+   .. automethod:: _should_build_inline_form
+
+
+==================================================
+SECTION: payment_token.rst
+PATH: developer/reference/standard_modules/payment/payment_token.rst
+==================================================
+
+:hide-page-toc:
+
+=============
+Payment Token
+=============
+
+.. autoclass:: odoo.addons.payment.models.payment_token::PaymentToken()
+
+   .. automethod:: _get_available_tokens
+   .. automethod:: _build_display_name
+   .. automethod:: _get_specific_create_values
+   .. automethod:: _handle_archiving
+   .. automethod:: get_linked_records_info
+
+
+==================================================
+SECTION: payment_transaction.rst
+PATH: developer/reference/standard_modules/payment/payment_transaction.rst
+==================================================
+
+:hide-page-toc:
+
+===================
+Payment Transaction
+===================
+
+.. autoclass:: odoo.addons.payment.models.payment_transaction::PaymentTransaction()
+
+   .. automethod:: _apply_updates
+   .. automethod:: _compute_reference
+   .. automethod:: _compute_reference_prefix
+   .. automethod:: _extract_amount_data
+   .. automethod:: _extract_reference
+   .. automethod:: _extract_token_values
+   .. automethod:: _get_specific_create_values
+   .. automethod:: _get_specific_processing_values
+   .. automethod:: _get_specific_rendering_values
+   .. automethod:: _process
+   .. automethod:: _search_by_reference
+   .. automethod:: _send_api_request
+   .. automethod:: _send_capture_request
+   .. automethod:: _send_payment_request
+   .. automethod:: _send_refund_request
+   .. automethod:: _send_void_request
+   .. automethod:: _set_authorized
+   .. automethod:: _set_canceled
+   .. automethod:: _set_done
+   .. automethod:: _set_error
+   .. automethod:: _set_pending
+
+
+==================================================
+SECTION: standard_modules.rst
+PATH: developer/reference/standard_modules.rst
+==================================================
+
+:nosearch:
+
+================
+Standard modules
+================
+
+.. toctree::
+    :titlesonly:
+
+    standard_modules/account
+    standard_modules/payment

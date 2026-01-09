@@ -1,0 +1,840 @@
+
+
+==================================================
+SECTION: create_sms.rst
+PATH: applications/marketing/sms_marketing/create_sms.rst
+==================================================
+
+===================
+Create SMS messages
+===================
+
+To start, click :guilabel:`Create` on the main :guilabel:`SMS Marketing` dashboard, and Odoo reveals
+a blank SMS template form, which can be configured in a number of different ways.
+
+.. image:: create_sms/sms-create.png
+   :align: center
+   :alt: Creating an SMS marketing template.
+
+First, give the mailing a :guilabel:`Subject`, which describes what the mailing is about.
+
+Next, in the :guilabel:`Recipients` field, choose to whom this :abbr:`SMS (Short Message Service)`
+will be sent. By default, Odoo has :guilabel:`Mailing List` selected. If this is the desired
+:guilabel:`Recipients` field option, specify which mailing list Odoo should send this :abbr:`SMS
+(Short Message Service)` to in the :guilabel:`Select Mailing List` field.
+
+.. note::
+   To create (or edit) a mailing list, go to :menuselection:`Mailing Lists --> Mailing List`. There,
+   Odoo displays all previously created mailing lists, along with various types of data related to
+   that specific list (e.g. number of contacts, mailings, recipients, etc.).
+
+   To learn more about mailing lists and contacts, check out :doc:`mailing_lists_blacklists`.
+
+.. image:: create_sms/sms-mailing-list.png
+   :align: center
+   :alt: View of the mailing list page in the SMS marketing application.
+
+To reveal all the possible options in the :guilabel:`Recipients` field, click the field to see all
+the choices Odoo makes available.
+
+When another field (other than :guilabel:`Mailing List`) is selected, the option to specify that
+chosen field even further becomes available — either with a default recipient filter equation that
+appears automatically (which can be customized to fit any business need), or, if no default
+recipient filter equation is present, an :guilabel:`Add Filter` button will appear.
+
+Clicking the :guilabel:`Add Filter` button, reveals fully customizable domain rule fields, which can
+be configured similar to an equation. You can create multiple recipient rules, if necessary.
+
+Then, Odoo will only send the :abbr:`SMS (Short Message Service)` to recipients who fit into
+whatever criteria is configured in those fields. Multiple rules can be added.
+
+.. example::
+   If :guilabel:`Contact` is chosen, all of the *Contacts* records in the Odoo database (vendors,
+   customers, etc.) will receive the :abbr:`SMS (Short Message Service)`, by default — unless more
+   specific recipient rules are entered.
+
+   For instance, the message below will only be sent to contacts in the database that are located in
+   the United States (e.g. `Country` > `Country Name` equals `United States`), and they haven't
+   blacklisted themselves from any mailings (e.g. `Blacklist` > `is` > `not set`).
+
+   .. image:: create_sms/contact-recipient.png
+      :align: center
+      :alt: Contact recipients on SMS marketing.
+
+Writing SMS messages
+--------------------
+
+Enter the content of the :abbr:`SMS (Short Message Service)` in the text field, found in the
+:guilabel:`SMS Content` tab. Links and emojis can also be included. Beneath the text field, Odoo
+displays how many characters are used in the message, along with how many :abbr:`SMS (Short Message
+Service)` mailings it will take to deliver the complete message.
+
+.. tip::
+   To check the price of sending an :abbr:`SMS (Short Message Service)` for a country, click on the
+   :guilabel:`Information` icon.
+
+.. image:: create_sms/sms-price-check.png
+   :align: center
+   :alt: SMS price check icon.
+
+.. note::
+   Credits must be purchased from Odoo in order to take advantage of the *SMS Marketing* app;
+   :abbr:`SMS (Short Message Service)` messages will not be sent without credits.
+
+.. seealso::
+   `Odoo SMS - FAQ <https://iap-services.odoo.com/iap/sms/pricing>`_
+
+Track links used in SMS messages
+--------------------------------
+
+When links are used in :abbr:`SMS (Short Message Service)` messages, Odoo automatically generates
+link trackers to gather analytical data and metrics related to those specific links, which can be
+found by going to :menuselection:`Configuration --> Link Tracker`.
+
+.. image:: create_sms/sms-link-tracker.png
+   :align: center
+   :alt: SMS Link Tracker page.
+
+Adjust SMS settings
+===================
+
+Under the :guilabel:`Settings` tab of the SMS template, there is an option to :guilabel:`Include
+opt-out link`. If activated, the recipient is able to unsubscribe from the mailing list, thus
+avoiding all future mailings.
+
+An employee can be designated as the :guilabel:`Responsible` in the :guilabel:`Tracking` section of
+the :guilabel:`Settings` tab, as well.
+
+.. image:: create_sms/sms-settings-tab.png
+   :align: center
+   :alt: SMS Settings tab.
+
+Send SMS messages
+=================
+
+Once a mailing is created, choose when Odoo should deliver the message from the following options:
+
+- :guilabel:`Send`: sends the message immediately. Consider using this option if the recipient list
+  is highly refined, or in cases that involve fast approaching deadlines, such as a "flash sale."
+- :guilabel:`Schedule`: choose a day (and time) for Odoo to send the mailing. This is typically the
+  best option for mailings related to a specific event. Such a method can also be used to promote a
+  limited-time offer, or to help plan a company's content strategy in advance.
+- :guilabel:`Test`: allows for an :abbr:`SMS (Short Message Service)` to be sent to one or multiple
+  numbers for test purposes. Remember to use a comma between phone numbers if multiple numbers are
+  used as recipients.
+
+
+==================================================
+SECTION: mailing_lists_blacklists.rst
+PATH: applications/marketing/sms_marketing/mailing_lists_blacklists.rst
+==================================================
+
+============================
+Mailing lists and blacklists
+============================
+
+Creating or importing mailing lists in Odoo is very useful when curating content to specific groups
+of people that already share similar demographics or interests. Mailing lists are also a great way
+to get started if a company is migrating from another system, and already has a established
+audience.
+
+Moreover, providing an audience with the option to 'unsubscribe' from mailings, helps businesses
+maintain good customer relations, by giving recipients the power to control what they are (and
+aren't) sent.
+
+Mailing lists
+=============
+
+In the :guilabel:`SMS Marketing` app, there's an option on the header menu called :guilabel:`Mailing
+Lists`. When clicked, a sub-menu is revealed with options for :guilabel:`Mailing Lists` and
+:guilabel:`Mailing List Contacts`.
+
+Click :menuselection:`Mailing Lists --> Mailing Lists` to see an overview of all mailing lists in
+the database.
+
+.. image:: mailing_lists_blacklists/mailing-list-main-page.png
+   :align: center
+   :alt: View of the main SMS mailing list page on the Odoo SMS Marketing application.
+
+To edit any existing list, select the desired list from the :guilabel:`Mailing Lists` page, and
+proceed to modify it in a number of ways.
+
+To create a new mailing list, click :guilabel:`Create` in the upper left corner of the
+:guilabel:`Mailing Lists` page. Doing so, will reveal a blank mailing list template form.
+
+.. image:: mailing_lists_blacklists/sms-mailing-list-popup.png
+   :align: center
+   :alt: View of the mailing list pop-up window in Odoo SMS Marketing.
+
+First, choose a name for the :guilabel:`Mailing List`, and activate the option :guilabel:`Is
+Public`, to make the mailing list accessible to recipients on the :guilabel:`Subscription Management
+page`. Doing so allows users to update their subscription preferences at any time.
+
+.. note::
+   Checking the :guilabel:`Is Public` box is not required, but is recommended to maintain good
+   customer relations.
+
+When those fields are filled in, click :guilabel:`Create` to finalize the form. Then on the main
+:guilabel:`Mailing Lists` dashboard, the new mailing list that was just created will be accessible.
+
+To edit or customize the mailing list further, select the mailing list from the main
+:guilabel:`Mailing Lists` page to reveal the mailing list detail form.
+
+Along the top of the mailing list detail form, there are various analytical smart buttons displaying
+statistics for different metrics related to the mailing list (e.g. :guilabel:`Recipients`,
+:guilabel:`Mailings`, etc.).
+
+To review or edit any of those elements, click the desired smart button to reveal a separate page
+with in-depth data associated with the mailing list.
+
+To make changes to the mailing list itself, click the :guilabel:`Edit` button in the upper-left
+corner of the mailing list detail form.
+
+.. image:: mailing_lists_blacklists/sms-mailing-list.png
+   :align: center
+   :alt: View of the mailing list template form in Odoo SMS Marketing.
+
+.. note::
+   Don't forget to hit the :guilabel:`Save` button once changes have been made.
+
+Mailing lists contacts
+======================
+
+Access contacts information from one or more mailing lists navigate to :menuselection:`Mailing Lists
+--> Mailing List Contacts` to reveal a dashboard with with all the contacts associated with one or
+more of the configured mailing lists in the database.
+
+.. image:: mailing_lists_blacklists/mailing-list-contacts-page.png
+   :align: center
+   :alt: View of the mailing lists contact page in the Odoo SMS Marketing application.
+
+.. note::
+   By default, Odoo reveals the :guilabel:`Mailing List Contacts` page with the :guilabel:`Exclude
+   Blacklisted Phone` filter in the search bar. Therefore only showing contact information for
+   recipients who still want to receive communications and mailings.
+
+Communication history in the Chatter
+------------------------------------
+
+An accessible record of every sent mailing(s) is kept on each recipient's *chatter* section, located
+beneath a recipient's contact form (in the *Contacts* application).
+
+Database users can reference the chatter to easily keep track of communications, and see a history
+of interactions with contacts and prospects.
+
+For example, sales representatives can use the chatter to quickly find out which :abbr:`SMS (Short
+Message Service)` mailing promotions a certain customer has received (or not received).
+
+.. image:: mailing_lists_blacklists/sms-marketing-chatter.png
+   :align: center
+   :alt: View of what the chatter looks like in the Odoo Contacts app.
+
+Blacklist
+=========
+
+Odoo *SMS Marketing* has a :guilabel:`Blacklist` feature that provides recipients with the power to
+add their phone number to a list of people who no longer want to receieve communications or
+mailings.
+
+This is also known as the unsubscribe process: customers will automatically be added onto a
+*blacklist*, if they click :guilabel:`Unsubscribe`, via their :guilabel:`Subscription Management`
+page. Customers can also be added manually to the blacklist, if necessary.
+
+To see a complete collection of blacklisted numbers, navigate to the :menuselection:`SMS Marketing
+app --> Configuration --> Blacklisted Phone Numbers` to reveal a dashboard containing every
+blacklisted phone number in the database.
+
+.. image:: mailing_lists_blacklists/sms-blacklist-menu.png
+   :align: center
+   :alt: SMS Blacklist menu in the application.
+
+To manually add a number to a blacklist, click the :guilabel:`Create` button in the upper-left
+corner of the dashboard and enter the phone number on the next page's form. There's also a
+checkbox to indicate whether that particular phone numnber is :guilabel:`Active` (or not).
+
+.. image:: mailing_lists_blacklists/sms-blacklist-create.png
+   :align: center
+   :alt: SMS Blacklist menu in the application.
+
+Once the form is completed, click :guilabel:`Save` to add it to the :guilabel:`Blacklisted Phone
+Numbers` list. To remove any number from the blacklist, select the desired number on the dashboard,
+and then, on the phone number's form, click :guilabel:`Unblacklist`.
+
+Importing blacklists
+--------------------
+
+During a software/platform migration, it is possible to import an already existing blacklist of
+contacts. This would include customers, who have already asked to be blacklisted` on :abbr:`SMS
+(Short Message Service)` mailings.
+
+To do that, navigate to :menuselection:`SMS Marketing app --> Configuration --> Blacklisted Phone
+Numbers`, and then select the :guilabel:`Favorites` drop-down menu (beneath the search bar), and
+click :guilabel:`Import records`.
+
+.. image:: mailing_lists_blacklists/import-blacklist.png
+   :align: center
+   :alt: View of how to import a blacklist in Odoo SMS Marketing.
+
+
+==================================================
+SECTION: marketing_campaigns.rst
+PATH: applications/marketing/sms_marketing/marketing_campaigns.rst
+==================================================
+
+=====================
+SMS campaign settings
+=====================
+
+Utilizing :abbr:`SMS (Short Message Service)` campaigns with Odoo *SMS Marketing* isn't just an
+effective advertisement strategy, it's also a great way to remind people about upcoming events,
+issued invoices, and so much more.
+
+But, before :abbr:`SMS (Short Message Service)` campaigns can be created (and sent), a few specific
+settings and features must be enabled first.
+
+SMS campaign setting
+====================
+
+To enable :abbr:`SMS (Short Message Service)` campaigns in Odoo, make sure the *Mailing Campaigns*
+feature is activated by going to :menuselection:`Email Marketing --> Configuration --> Settings`,
+and then enable :guilabel:`Mailing Campaigns` and :guilabel:`Save` the changes.
+
+.. image:: marketing_campaigns/sms-mailing-campaigns.png
+   :align: center
+   :alt: View of the mailing campaigns setting in Odoo.
+
+.. note::
+   Activating the *Mailing Campaigns* feature in the *General Settings* also enables the *A/B Test*
+   feature.
+
+Once the setting is enabled, navigate back to the :menuselection:`SMS Marketing` app, and notice the
+:guilabel:`Campaigns` header menu is now available for use. Similarly, the :guilabel:`A/B Test` tab
+is now also available on every :abbr:`SMS (Short Message Service)` template form.
+
+A/B tests
+=========
+
+:guilabel:`A/B Tests` allows any :abbr:`SMS (Short Message Service)` mailings to be tested against
+other versions within the same campaign, in order to compare which version is the most successful in
+producing engagement and/or conversion outcomes.
+
+On an :abbr:`SMS (Short Message Service)` template form, under the :guilabel:`A/B Tests` tab,
+initially, there's only a single checkbox labeled: :guilabel:`Allow A/B Testing.`
+
+When clicked, a series of other options appear.
+
+.. image:: marketing_campaigns/ab-tests-sms.png
+   :align: center
+   :alt: The A/B Test tab is located on an Odoo SMS Marketing app campaign form.
+
+In the first field, enter a desired percentage of recipients to conduct the A/B Test on.
+
+Beneath the percentage field is the :guilabel:`Winner Selection` field. This is what Odoo will use
+to determine the successful result of an A/B Test. In other words, this tells Odoo how to pick a
+winning A/B test.
+
+The following sections are available: :guilabel:`Manual`, :guilabel:`Highest Click Rate`,
+:guilabel:`Leads`, :guilabel:`Quotations`, or :guilabel:`Revenues`.
+
+Finally, the :guilabel:`Send Final On` field is listed. This represents the date-time that Odoo uses
+as a deadline to determine the winning mailing variation. Then, Odoo sends that winning mailing
+variation to the remaining recipients, who weren't involved in the test, at that prior date and
+time.
+
+.. tip::
+   Quickly create different versions of the mailing to add to the A/B Test by clicking the
+   :guilabel:`Create an Alternate Version` button.
+
+.. note::
+   Remember, the winning mailing variation is based on the criteria selected in the
+   :guilabel:`Winner Selection` field.
+
+Campaigns page
+==============
+
+To create, edit, or analyze any campaign, click :menuselection:`Campaigns` in the header menu of the
+:guilabel:`SMS Marketing` app. On the :guilabel:`Campaigns` page, each campaign displays various
+information related to the mailings associated with that campaign (e.g. number of emails, social
+posts, SMSs, and push notifications).
+
+.. image:: marketing_campaigns/campaigns-page.png
+   :align: center
+   :alt: Dasbhoard view of different Campaigns in the Odoo SMS Marketing app, separated by stage.
+
+Campaign templates
+==================
+
+Click :guilabel:`Create` to create a new campaign, and Odoo reveals a blank campaign template form
+to fill out. Alternatively, select any previously-made campaign in order to duplicate, review, or
+edit its campaign template form.
+
+.. image:: marketing_campaigns/sms-campaign-template.png
+   :align: center
+   :alt: View of an SMS campaign template in Odoo SMS marketing.
+
+With each campaign, the options to :guilabel:`Send New Mailing`, :guilabel:`Send SMS`,
+:guilabel:`Send Social Post`, and :guilabel:`Push Notifications` are available above the template
+form.
+
+Whenever one of those communication options is added to the campaign, Odoo will create a new
+corresponding tab on the template form, where those types of messages can be reviewed or edited,
+along with various data sets related to each specific mailing.
+
+At the top of the template, there are various analytical smart buttons. When clicked, Odoo reveals
+in-depth metrics related to that specific topic (e.g. :guilabel:`Engagement`,
+:guilabel:`Opportunities`, etc.) on a separate page.
+
+Beneath the smart buttons, are fields for :guilabel:`Campaign Name` and :guilabel:`Responsible`.
+Odoo also allows for various :guilabel:`Tags` to be added, as well (if necessary).
+
+Sending SMSs through the Contacts app
+=====================================
+
+Sending :abbr:`SMS (Short Message Service)` mailings directly through a contact's form is available
+by default.
+
+In order to send an :abbr:`SMS (Short Message Service)` in this fashion, navigate to the
+:menuselection:`Contacts` app, select the desired contact in the database, and click on the
+:guilabel:`SMS` icon on the contact form (next to the :guilabel:`Phone Number` field).
+
+.. image:: marketing_campaigns/sms-contact-form.png
+   :align: center
+   :alt: The SMS icon is located on an individual's contact form in Odoo Contacts.
+
+To send a message to multiple contacts at once, navigate to the main :menuselection:`Contacts` app
+main dashboard, choose the :guilabel:`List View`, and select all the desired contacts to whom the
+message should be sent. Then, under :guilabel:`Action`, select :guilabel:`Send SMS`.
+
+.. image:: marketing_campaigns/sms-contacts-action-send-message.png
+   :align: center
+   :alt: Select a number of contacts, click action, and select send multiple SMSs.
+
+Set up SMS templates for future use
+===================================
+
+In order to set up :guilabel:`SMS Templates` for future use, activate :ref:`developer mode
+<developer-mode>`, by navigating to the main Odoo dashboard that is full of apps, and select the
+:menuselection:`Settings app`. Then, scroll down to the :guilabel:`Developer Tools` section, and
+click :guilabel:`Activate the Developer Mode`.
+
+Once *developer mode* is activated, the main Odoo dashboard appears once more, with a now-visible
+bug icon, which is located at the top-right corner of the dashboard; this bug icon indicates that
+developer mode is currently active.
+
+Next return to the :menuselection:`Settings app` and, in the now-visible header menus at the top,
+choose :menuselection:`Technical --> SMS Templates` to begin setting up :abbr:`SMS (Short Message
+Service)` templates for future marketing campaigns.
+
+.. image:: marketing_campaigns/sms-template-setting.png
+   :align: center
+   :alt: Select the SMS Template option in the Technical dropdown on the Settings app.
+
+Inside of the :guilabel:`SMS Templates` dashboard, Odoo reveals an entire page of :abbr:`SMS (Short
+Message Service)` templates. The default :guilabel:`List` view showcases each template's name, and
+to which recipients it applies.
+
+On this page, :abbr:`SMS (Short Message Service)` templates can be edited or created from scratch.
+
+.. image:: marketing_campaigns/sms-template.png
+   :align: center
+   :alt: The SMS Templates page in Odoo is available after enabling developer mode in the General
+         Settings
+
+
+==================================================
+SECTION: pricing_and_faq.rst
+PATH: applications/marketing/sms_marketing/pricing_and_faq.rst
+==================================================
+
+.. _pricing/pricing_and_faq:
+
+===================
+SMS Pricing and FAQ
+===================
+
+What do I need to send SMSs?
+============================
+
+SMS Text Messaging is an In-App Purchase (IAP) service that *requires prepaid credits* to work.
+
+How many types of SMSs are there?
+=================================
+
+There are 2 types: GSM7 and UNICODE.
+
+**GSM7** is the standard format, with a limit of 160 characters per message, that includes the
+following characters:
+
+.. image:: pricing_and_faq/faq1.png
+   :align: center
+   :alt: GSM7 characters available in Odoo SMS Marketing.
+
+**UNICODE** is the format applied if a special character, that *is not* in the GSM7 list, is used.
+Limit per SMS: 70 characters.
+
+.. note::
+   For GSM7 SMS the size limit is 160 characters, and for Unicode is 70. *Above these limits, the
+   content is divided into a multi-part message* and the limit of characters is lowered to 153 for
+   GSM7 and to 67 for Unicode. Then, in real-time, the system displays the number of SMS mailings
+   the message represents.
+
+How much does it cost to send an SMS?
+=====================================
+
+The price of an SMS depends on the destination and the length (number of characters) of the
+message. To see the **price per country, please consult**: `Odoo SMS - FAQ
+<https://iap-services.odoo.com/iap/sms/pricing#sms_faq_01>`_.
+
+The number of SMSs a message represents will always be available in the database.
+
+.. image:: pricing_and_faq/faq2.png
+   :align: center
+   :alt: Number of GSM7 characters that fit in an SMS message in Odoo SMS Marketing.
+
+How to buy credits
+==================
+
+Go to :menuselection:`Settings --> Buy Credits`.
+
+.. image:: pricing_and_faq/faq3.png
+   :align: center
+   :alt: Buying credits for SMS Marketing in Odoo settings.
+
+Or go to :menuselection:`Settings --> View my Services`.
+
+.. image:: pricing_and_faq/faq4.png
+   :align: center
+   :alt: Using Odoo IAP to recharge credits for SMS Marketing in Odoo settings.
+
+.. tip::
+   If Odoo Online (Saas) is being used, along with the Enterprise version, free trial credits are
+   available to test the feature.
+
+More common questions
+=====================
+
+#. | **Is there an expiration time for my credits?**
+   | No, credits do not expire.
+
+#. | **Can I send an SMS to a phone number (which is not a mobile phone) because I see the icon in
+     front of the field “phone”?**
+   | Only if that phone number supports SMS (e.g. SIP phones).
+
+#. | **Do I receive an invoice to buy my credits?**
+   | Yes.
+
+#. | **Can the recipient answer me?**
+   | No, it is not possible to reply to the SMS.
+
+#. | **What happens if I send multiple SMSs at once, but I don't have enough credits to send them
+     all?**
+   | Multiple SMS communications at once at are counted as a single transaction, so no SMSs will be
+     sent until there are enough credits to send them all.
+
+#. | **Do I have a history of the sent SMSs?**
+   | A history of sent SMSs, along with all pertinent information related to its sent contacts (and
+     the message itself), can be found in the :guilabel:`Sent` column of the main :guilabel:`SMS
+     Marketing` dashboard (while in :guilabel:`Kanban` view).
+
+     For more detailed information, select a desired SMS from the main dashboard (in
+     :guilabel:`Kanban` view), and click on either link in the blue banner above the SMS detail form
+     to learn more.
+
+#. | **Can I send as many SMSs I want at once?**
+   | Yes, if you have enough credits.
+
+#. | **If an SMS is sent to a number that doesn't exist in the list of recipients, will credits be
+     lost?**
+   | No, not if the phone number is incorrectly formatted (e.g. too many digits). However, if the
+     SMS is sent to the wrong person (or to a fake number), the credit for that SMS will be lost.
+
+#. | **What happens if I send my SMS to a paying number (e.g.: a contest to win a ticket for a
+     festival)?**
+   | The SMS will not be delivered to that kind of number, so no charges will be made.
+
+#. | **Can I identify the numbers that do not exist when I send several SMSs?**
+   | Only the ones that have an invalid format.
+
+#. | **How does the GDPR regulation affect this service?**
+   | Please find our `Privacy Policy here <https://iap.odoo.com/privacy#sms>`__.
+
+#. | **Can I use my own SMS provider?**
+   | Yes, but it is not possible out-of-the-box. Odoo experts can help customize a database to allow
+     for the use of a personal SMS provider. Please check our success packs `here
+     <https://www.odoo.com/pricing-packs>`_.
+
+
+==================================================
+SECTION: sms_analysis.rst
+PATH: applications/marketing/sms_marketing/sms_analysis.rst
+==================================================
+
+============
+SMS analysis
+============
+
+On the :guilabel:`Reporting` page (accessible via the :menuselection:`Reporting` option in the
+header menu), there are options to apply different combinations of :guilabel:`Filters` and
+:guilabel:`Measures` to view metrics in a number of different layouts (e.g. :guilabel:`Graph`,
+:guilabel:`List`, and :guilabel:`Cohort` views.)
+
+Each :guilabel:`Reporting` metric view option allows for more extensive performance analysis of
+:abbr:`SMS (Short Message Service)` mailings.
+
+For example, while in the default :guilabel:`Graph` view, :abbr:`SMS (Short Message Service)` data
+is visualized as different graphs and charts, which can be sorted and grouped in various ways (e.g.
+:guilabel:`Measures` drop down menu).
+
+.. image:: sms_analysis/sms-reporting-page.png
+   :align: center
+   :alt: Reporting page in SMS Marketing.
+
+.. tip::
+   SMS messages can be sent using automation rules in Odoo. Odoo *Studio* is required to use
+   automation rules.
+
+   To install Odoo *Studio*, go to the :menuselection:`Apps application`. Then, using the
+   :guilabel:`Search...` bar, search for `studio`.
+
+   If it is not already installed, click :guilabel:`Install`.
+
+   Adding the *Studio* application upgrades the subscription status to *Custom*, which increases the
+   cost. Consult `support <https://www.odoo.com/contactus>`_, or reach out to the database's
+   customer success manager, with any questions on making the change.
+
+   To use automation rules, navigate in :ref:`developer mode <developer-mode>`, to
+   :menuselection:`Settings app --> Technical menu --> Automation section --> Automation Rules`.
+   Then, click :guilabel:`New` to create a new rule.
+
+   Enter a name for the automation rule, and select a :guilabel:`Model` to implement this rule on.
+
+   Based on the selection for the :guilabel:`Trigger`, additional fields will populate below. Set
+   the :guilabel:`Trigger` to one of the following options:
+
+   :guilabel:`Values Updated`
+
+   - :guilabel:`User is set`
+   - :guilabel:`State is set to`
+   - :guilabel:`On archived`
+   - :guilabel:`On unarchived`
+
+   :guilabel:`Timing Conditions`
+
+   - :guilabel:`Based on date field`
+   - :guilabel:`After creation`
+   - :guilabel:`After last update`
+
+   :guilabel:`Custom`
+
+   - :guilabel:`On save`
+   - :guilabel:`On deletion`
+   - :guilabel:`On UI change`
+
+   :guilabel:`External`
+
+   - :guilabel:`On webhook`
+
+   Other options may appear based on the :guilabel:`Model` selected. For example if the
+   :guilabel:`Calendar Event` model is selected, then the following options appear in addition to
+   those above:
+
+   :guilabel:`Email Events`
+
+   - :guilabel:`On incoming message`
+   - :guilabel:`On outgoing message`
+
+   Under the :guilabel:`Before Update Domain` field, set a condition to be met before updating the
+   record. Click :guilabel:`Edit Domain` to set record parameters.
+
+   Under the :guilabel:`Actions To Do` tab, select :guilabel:`Add an action`. Next, in the resulting
+   :guilabel:`Create Actions` pop-up window, select :guilabel:`Send SMS`, and set the
+   :guilabel:`Allowed Groups`. :guilabel:`Allowed Groups` are the access rights groups that are
+   allowed to execute this rule. Leave the field empty to allow all groups. See this documentation:
+   :ref:`access-rights/groups`.
+
+   Next, set the :guilabel:`SMS Template` and choose whether the SMS message should be logged as a
+   note, by making a selection in the drop-down menu: :guilabel:`Send SMS as`. Click
+   :guilabel:`Save and Close` to save the changes to this new action.
+
+   .. image:: sms_analysis/automation-rule-sms.png
+      :align: center
+      :alt: Automation rule template with rule to do, SMS template and log as note highlighted.
+
+   Add any necessary notes under the :guilabel:`Notes` tab. Finally, navigate away from the
+   completed automation rule, or manually save (by clicking the :guilabel:`☁️ (cloud)` icon), to
+   implement the change.
+
+
+==================================================
+SECTION: sms_marketing.rst
+PATH: applications/marketing/sms_marketing.rst
+==================================================
+
+:show-content:
+
+=============
+SMS Marketing
+=============
+
+Utilizing :abbr:`SMS (Short Message Service)` outreach in communication strategies can help
+companies expand their market reach, especially in some countries, where emails might not be very
+common, or even used at all.
+
+Odoo's *SMS Marketing* application can also help boost conversion rates around valuable actions,
+such as event registrations, free trials, purchases, etc., since text and mobile-based marketing
+channels typically yield higher :abbr:`CTOR (click-to-open rate)` and :abbr:`CTR (click-through
+rate)` outcomes.
+
+.. seealso::
+   `Odoo Tutorials: Marketing <https://www.odoo.com/slides/marketing-27>`_
+
+.. cards::
+
+   .. card:: Create SMS messages
+      :target: sms_marketing/create_sms
+
+      Explore how to create, configure, send, and schedule SMS messages.
+
+   .. card:: SMS analysis
+      :target: sms_marketing/sms_analysis
+
+      Examine detailed reporting metrics related to every aspect of sent SMS messages.
+
+   .. card:: SMS marketing campaigns
+      :target: sms_marketing/marketing_campaigns
+
+      Discover how to create and customize SMS marketing campaigns for any occasion with Odoo.
+
+   .. card:: Mailing lists and blacklists
+      :target: sms_marketing/mailing_lists_blacklists
+
+      Set up custom mailing lists and blacklists to ensure all SMS messages reach the right
+      recipients.
+
+   .. card:: Pricing and FAQ
+      :target: sms_marketing/pricing_and_faq
+
+      Find out more about Odoo's SMS pricing, and check out some of the most frequently asked
+      questions.
+
+   .. card:: Twilio
+      :target: sms_marketing/twilio
+
+      In some countries with stricter regulations, the out-of-the-box solution proposed by Odoo may
+      not work. In this case, you can use our Twilio integration to send SMS worldwide.
+
+SMS marketing dashboard
+=======================
+
+When the application is opened, Odoo displays the main :guilabel:`SMS Marketing` dashboard, which
+showcases the various SMS mailings that have been created, along with pertinent information and data
+related to that specific message.
+
+The :icon:`oi-view-kanban` :guilabel:`Kanban` view is the default Odoo uses when the application is
+opened, which provides an organized display of the SMS mailings that have been created, and what
+their current status is at the moment.
+
+.. note::
+   An :abbr:`SMS (Short Message Service)` mailing can have one of the following statuses:
+   :guilabel:`Draft`, :guilabel:`In Queue`, :guilabel:`Sending`, or :guilabel:`Sent`.
+
+In the upper right corner of the main :guilabel:`SMS Marketing` dashboard, there are a few different
+view options to choose from. Each one provides a unique take on the same SMS information.
+
+The :icon:`oi-view-list` :guilabel:`List` view provides the same useful data related to SMS
+mailings, but in a more traditional list layout.
+
+The :icon:`fa-calendar` :guilabel:`Calendar` view shows when SMS mailings are scheduled or have been
+sent. Clicking a future date opens a blank SMS template to be scheduled for that date.
+
+Lastly, the :icon:`fa-area-chart` :guilabel:`Graph` view visualizes that same SMS-related data in
+series of graphs and charts. Odoo also provides various ways to sort and group the data for more
+detailed analysis.
+
+.. toctree::
+   :titlesonly:
+
+   sms_marketing/create_sms
+   sms_marketing/sms_analysis
+   sms_marketing/marketing_campaigns
+   sms_marketing/mailing_lists_blacklists
+   sms_marketing/pricing_and_faq
+   sms_marketing/twilio
+
+
+==================================================
+SECTION: twilio.rst
+PATH: applications/marketing/sms_marketing/twilio.rst
+==================================================
+
+
+==============
+SMS via Twilio
+==============
+
+What is Twilio
+==============
+
+Twilio is a third-party provider that enables you to send SMS messages to your clients. Odoo
+provides an easy way to use this service within your Odoo apps.
+
+Why would I need it?
+--------------------
+
+Although Odoo already comes with an out-of-the-box (IAP) solution for SMS messages, it might not
+work in some countries with stricter legal requirements. Currently, Odoo registers itself when
+possible to avoid extra setup for its customers, however in some countries that is not enough and
+the client itself must do it. This can be done through Twilio.
+
+Setup your Twilio account
+=========================
+
+By creating a Twilio account, you will be able to create a virtual phone number from which you will
+be able to send SMS messages. These cost credits that are to be bought on Twilio, not Odoo.
+
+#. Go to `Twilio <https://www.twilio.com>`_
+#. Sign up and create a Twilio account
+#. Within your Twilio account, you can create multiple accounts (e.g. one for testing, one for each
+   sub-company, etc.)
+#. Create a new account
+
+   #. Enter the name, and select :guilabel:`Twilio` for the type
+   #. Select your :guilabel:`Billing Country` and click :guilabel:`Create new account`
+   #. Select the different options that match your needs
+
+      - For the :guilabel:`Twilio product`, select :guilabel:`SMS`
+      - For :guilabel:`How to build with Twilio`, select :guilabel:`With no code at all`
+      - For your :guilabel:`goal`, select :guilabel:`3rd party integrations`
+   #. Click on :guilabel:`Get Started with Twilio`
+#. You account is now created, and you should arrive on your :guilabel:`Dashboard`
+#. Go to :menuselection:`Phone Numbers --> Manage --> Buy a number`
+#. Buy a number (it is a paying service, but you should have received some credits to start with)
+#. Go back to bottom of the :guilabel:`Dashboard` page
+#. Copy the :guilabel:`Account SID` and :guilabel:`Auth Token`
+
+.. important::
+   In case of a testing account, you will only be able to send SMS to phones that you have verified
+   within `Twilio's console <https://console.twilio.com>`_.
+
+.. note::
+   Sending SMS to some countries (such as the US or Canada) might require a registration. This can
+   only be done by you, and not by Odoo. Please check out `Twilio's Help Center
+   <https://help.twilio.com>`_.
+
+
+Setup Odoo to use Twilio
+========================
+
+#. :ref:`Install <general/install>` the :guilabel:`Twilio SMS` module (`sms_twilio`)
+#. In Odoo, go to :menuselection:`Settings --> General Settings --> Contacts --> Send SMS`, select
+   :guilabel:`Send via Twilio` option, and save your change.
+#. Go back to that option, and click :guilabel:`Configure Twilio Account`
+#. Paste the copied credentials accordingly
+#. Click on :guilabel:`Reload numbers`
+#. Your newly bought phone number should appear in the list
+#. You can use the :guilabel:`Test Number` field to send an SMS
+
+You can have multiple numbers (for instance once per country, or one per campaign), in that case,
+you can reorder the numbers. By default, when sending an SMS to a client, Odoo will select the
+number whose country is the same as the client. If none matches, Odoo will use the first number
+available from the list respecting the order you have chosen.

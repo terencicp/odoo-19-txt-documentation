@@ -1,0 +1,1035 @@
+
+
+==================================================
+SECTION: project.rst
+PATH: applications/services/project.rst
+==================================================
+
+:show-content:
+:nosearch:
+:hide-page-toc:
+:show-toc:
+
+=======
+Project
+=======
+
+Odoo Project is a tool to manage your ongoing projects. Schedule tasks, assign activities to
+coworkers, and keep track of each project's profitability.
+
+.. seealso::
+   `Odoo Tutorials: Project and Timesheets <https://www.odoo.com/slides/project-and-timesheets-21>`_
+
+.. toctree::
+   :titlesonly:
+
+   project/project_management
+   project/tasks
+
+
+==================================================
+SECTION: project_dashboard.rst
+PATH: applications/services/project/project_management/project_dashboard.rst
+==================================================
+
+=================
+Project dashboard
+=================
+
+The project dashboard allows you to get a comprehensive overview of your project's status. It
+displays information such as the total number of tasks, timesheets, and planned hours linked to the
+project, as well as detailed information about project milestones and its costs and revenues. Within
+the project dashboard, you can create :guilabel:`Project updates`, which allow you to take a
+snapshot of the project's status at a certain point in time. As such, it is a crucial tool for
+effective project management and ensuring that your project stays on track.
+
+Using the project dashboard
+===========================
+
+To access the project dashboard, open the **Project** app and navigate to the applicable project.
+Click the :icon:`fa-sliders` (:guilabel:`sliders`) icon to add :guilabel:`Dashboard` to the
+project's :ref:`top bar <project/project-management/top-bar>`.
+
+.. tip::
+   You can also access the project dashboard by hovering over the desired project’s card, clicking
+   the :icon:`fa-ellipsis-v` (:guilabel:`vertical ellipsis`), and selecting :guilabel:`Dashboard`.
+
+The left side of the dashboard displays a list of existing :ref:`project updates <project/project-dashboard/updates>`,
+and the right side provides :ref:`detailed information about records linked to the project
+<project/project-dashboard/smart-buttons>`, as well as :ref:`milestones <project/project-dashboard/milestones>`,
+:ref:`profitability <project/project-dashboard/profitability>`, and :ref:`budgets
+<project/project-dashboard/budgets>`.
+
+.. note::
+   The information displayed on the project dashboard varies depending on the applications installed
+   on your database. For example, you will not see information about **Timesheets**, **Planning**,
+   or **Purchase Orders** if the corresponding applications are not installed.
+
+.. _project/project-dashboard/smart-buttons:
+
+Totals smart buttons
+--------------------
+
+The following smart buttons are displayed on the top right of the project dashboard:
+
+ - :guilabel:`Tasks`: the number of completed (i.e., :guilabel:`Done` or :guilabel:`Canceled`
+   :ref:`tasks <project/tasks/task_stages_statuses/statuses>`) and all tasks, in format
+   completed/all, as well as the entire project's completion percentage estimation.
+ - :guilabel:`Timesheets`: the number of hours or days (depending on the **Timesheets** app
+   configuration) allocated in the project’s **settings**. This includes all
+   :doc:`timesheets </applications/services/timesheets>`, whether or not they have been validated.
+ - :guilabel:`Planned`: the number of hours that have been planned for shifts in the **Planning**
+   app. This includes all :doc:`planned shifts </applications/services/planning>`, including past
+   shifts and shifts that have not yet been published.
+ - :guilabel:`Documents`: number of :doc:`documents </applications/productivity/documents>` in the
+   project’s workspace.
+ - :guilabel:`Burndown Chart`: click the smart button to access a :doc:`report </applications/essentials/reporting>`
+   on the status of the project’s tasks over time.
+ - :guilabel:`Timesheets and Planning`: click the smart button to access a :doc:`report </applications/essentials/reporting>`
+   on the project’s timesheets and shifts. This allows you to easily compare planned and effective
+   hours of work on the project.
+ - **Additional fields**, such as :guilabel:`Sales Orders`, :guilabel:`Sales Order Items`,
+   :guilabel:`Purchase Orders`, and more, represent the number of records linked to the project.
+
+.. tip::
+   Use the project dashboard smart buttons to update the project records easily. Click
+   :guilabel:`Timesheets` to validate timesheets, :guilabel:`Planned` to create project planning,
+   :guilabel:`Documents` to view and validate documents, etc.
+
+.. _project/project-dashboard/milestones:
+
+Milestones
+----------
+
+This section is only visible if :doc:`milestones <../project_management/project_milestones>` have
+been enabled in the project you're browsing: go to :guilabel:`Project`, click the
+:icon:`fa-ellipsis-v` (:guilabel:`vertical ellipsis`) icon on one of your projects, and click on
+:guilabel:`Settings`. Click on the :guilabel:`Settings` tab, look for :guilabel:`Tasks Management`
+and make sure :guilabel:`Milestones` is enabled.
+
+In a project's Dashboard, click :guilabel:`Add Milestone` to create a new milestone. Click a
+milestone in the checklist to edit it, enable its checkbox to mark it as completed, or click the
+:icon:`fa-trash` (:guilabel:`trash`) icon to remove it.
+
+The milestones are displayed in red if they’re past their deadline, or in green if they are ready to
+be marked as reached (i.e. tasks linked to the milestone that have been marked with :guilabel:`done`
+or :guilabel:`canceled` :ref:`status <project/tasks/task_stages_statuses/statuses>`).
+
+.. _project/project-dashboard/profitability:
+
+Profitability
+-------------
+
+The :doc:`profitability dashboard </applications/services/project/project_management/project_profitability>`
+provides a breakdown of project costs and revenues, which are impacted by all records linked to the
+project and its :doc:`Analytic account </applications/finance/accounting/reporting/analytic_accounting>`.
+
+.. note::
+   The profitability report is only displayed for billable projects.
+
+.. _project/project-dashboard/budgets:
+
+Budgets
+-------
+
+If a budget has been set for the project, its status and related details are displayed in this
+section. Click :guilabel:`Add Budget` to create a new budget for the project.
+
+.. note::
+   :doc:`Budgets </applications/finance/accounting/reporting/budget>` must be enabled in your
+   database’s **Accounting** application in order for this section to be displayed.
+
+.. _project/project-dashboard/updates:
+
+Project updates
+===============
+
+Project updates allow you to take a snapshot of the project’s overall status at a given point in
+time, for example, during a periodic (weekly, bi-weekly, or monthly) review. This allows you to
+compare specific data points, note any aspects of the project that need improvement, and estimate
+if the project is on or off track.
+
+To create a new project update, go to the project dashboard, click :guilabel:`New`, and fill in the
+following fields:
+
+  - :guilabel:`Status`: Choose between :guilabel:`On Track`, :guilabel:`At Risk`, :guilabel:`Off
+    Track`, :guilabel:`On Hold`, and :guilabel:`Done`. Once the status is set, a color-coded dot is
+    displayed on the project’s Kanban card, allowing the project manager to easily identify which
+    projects need attention.
+  - :guilabel:`Progress`: Manually input the completion percentage based on the project's progress.
+  - :guilabel:`Date` and :guilabel:`Author`: These fields are automatically filled in with
+    appropriate information based on the user who created the update and the current date.
+  - :guilabel:`Description`: Use this rich-text field to gather notes. Depending on the project
+    configuration (e.g., if the project is billable), this field may be pre-filled with current
+    information on aspects such as profitability, budget, milestones, etc.
+
+
+==================================================
+SECTION: project_management.rst
+PATH: applications/services/project/project_management.rst
+==================================================
+
+:show-content:
+
+==================
+Project management
+==================
+
+Odoo Project uses the **Kanban** project management system. This means all projects are broken down
+into tasks, which are categorized on a whiteboard according to what production phase they are in.
+
+.. admonition:: Did you know?
+
+   The word **Kanban** comes from Japanese and refers to the "visual board" management method.
+
+.. _project_management/configuration:
+
+Configuration
+=============
+
+Open the **Project** app and click :guilabel:`Create` to start a new project. Enter a
+:guilabel:`Name` for your project and click :guilabel:`Create Project`.
+
+You can customize your existing **projects** from the dashboard by clicking the drop-down toggle
+button (:guilabel:`⋮`) on your project's **card**.
+
+.. image:: project_management/project-settings.png
+   :align: center
+   :alt: Project card
+
+This enables a new menu divided into four parts:
+
+- :guilabel:`View`: see an overview of your project's components, such as its :guilabel:`Tasks`,
+  :guilabel:`Milestones` and :guilabel:`Project Updates`. Depending on which apps you have
+  activated, more options may be available, such as :guilabel:`Documents`. All uploaded files can be
+  found under this menu, as well as in the **Documents** app, under :guilabel:`Projects`;
+- :guilabel:`Reporting`: analyze your project's progress and profitability through graphics and
+  statistics;
+- **Color**: make a line of color appear on the left side of the card so that your project is more
+  recognizable;
+- :guilabel:`Settings`: you can change the following:
+
+  - the :guilabel:`Name` of the project;
+  - the :guilabel:`Name of the tasks` found under that project;
+  - the :guilabel:`Customer` for whom the project is intended;
+  - the :guilabel:`Tags` used for filtering;
+  - the :guilabel:`Company` responsible for the project;
+  - the employee designated as :guilabel:`Project Manager`;
+  - the :guilabel:`Planned Date` of the project;
+  - the total :guilabel:`Allocated Hours` for that project.
+
+Additionally, you can mark the project as :guilabel:`Favorite`, allowing you to find it using the
+:guilabel:`My Favorites` filter on the Kanban view;
+
+.. image:: project_management/project-settings-opened.png
+   :align: center
+   :alt: Project settings
+
+.. seealso::
+   `Odoo Tutorials: Customize projects
+   <https://www.odoo.com/slides/slide/customize-projects-3615?fullscreen=1>`_
+
+Further settings are available under the :guilabel:`Settings` tab. Most of them are *only* available
+depending on the activated apps.
+
+Visibility and collaboration
+----------------------------
+
+Odoo allows you to set visibility settings for each project, enabling you to make your project
+available to everyone in your organization or restrict access to certain internal or external users.
+
+To do so, go to the project's :guilabel:`Settings` tab and choose the desired :guilabel:`Visibility`
+option:
+
+- :guilabel:`Invited internal users (private)`: Only users following the project and users with the
+  Project Administrator :doc:`access right </applications/general/users/access_rights>` can
+  access the project and its tasks.
+- :guilabel:`All internal users`: All internal users can access the project and all of its tasks.
+- :guilabel:`Invited portal users and all internal users (public)`: All internal users can access
+  the project and all of its tasks. When following a project, :doc:`portal users
+  </applications/general/users/user_portals>` only have access to the specific tasks they are following.
+  This option is selected by default.
+
+Inviting external users
+-----------------------
+
+To invite external users, make sure that :guilabel:`Invited portal users and all internal users
+(public)` is selected, then click :guilabel:`Share Project` at the top of the project’s settings.
+The following options are available:
+
+- Copy and share the :guilabel:`Public Link` displayed at the top of the pop-up window. Anyone with
+  this link can access the project in read mode.
+- Or click :guilabel:`Add a line`, select a :guilabel:`Collaborator`, choose the
+  :guilabel:`Access Mode`, and check the box to send an invitation to their email address.
+
+  There are three types of :guilabel:`Access Mode` for collaborators:
+
+  - :guilabel:`Read`: Collaborators can view tasks but cannot edit them.
+  - :guilabel:`Edit with limited access`: Collaborators can view and edit the tasks they follow.
+  - :guilabel:`Edit`: Collaborators can view and edit all tasks.
+
+To revoke an invited collaborator's access, click :guilabel:`Share Project` at the top of the
+project’s settings, then click the :icon:`fa-trash-o` :guilabel:`(trash)` icon.
+
+.. note::
+   Internal users without access to the project can still access a task if the URL has been shared
+   with them. For projects set as :guilabel:`Invited internal users (private)`, they must also
+   be a follower of the task.
+
+Scheduling activities
+=====================
+
+You can schedule **activities** (ex. :guilabel:`Call`, :guilabel:`Meeting`, etc.) per project by
+clicking on the **clock** icon on a project. Doing so opens a list with already scheduled activities
+and allows planning **new** activities by clicking :guilabel:`+ Schedule an activity`. On the pop-up
+window, select the :guilabel:`Activity Type`, enter a :guilabel:`Summary` for that activity, a
+:guilabel:`Due Date`, and assign it to an employee. According to the :guilabel:`Activity Type`, you
+may have **additional options** available.
+
+.. note::
+   If an activity is **already** scheduled, the icon may change to a **phone**, **group of people**,
+   or other.
+
+.. _project/project-management/top-bar:
+
+Top bar
+=======
+
+In project management, reviewing the various records and documents related to a project is often
+necessary. Odoo Project’s **top bar** provides quick access to these essential resources. You can
+customize each project's top bar to match its specific needs.
+
+To set up the top bar for a project, go to the :guilabel:`Project` app, click the project's card,
+then click the top bar :icon:`fa-sliders` :guilabel:`(sliders)` button. In the bar that appears
+above the search bar, click the :icon:`fa-sliders` :guilabel:`(sliders)` button to select the records
+you want to display, such as timesheets, sales orders, invoices, documents, dashboards, etc.
+
+You can then click the buttons to access the related records without leaving the Project app. To
+return to your project tasks' Kanban view, click the :guilabel:`Tasks` button in the top bar.
+
+.. image:: project_management/top-bar.png
+   :alt: Top bar selection menu
+
+Custom top bar buttons
+----------------------
+
+You can also create your own buttons to access more specific views:
+
+#. Click an existing top bar button to access the view.
+#. Customize the view with keywords, filters, and grouping options using the search bar.
+#. Click the :icon:`fa-sliders` :guilabel:`(sliders)` button in the top bar and select
+   :guilabel:`Save View`.
+#. Edit the default button name if necessary, then enable :guilabel:`Shared` if you want to share
+   the button with other users.
+
+.. toctree::
+   :titlesonly:
+
+   project_management/project_dashboard
+   project_management/project_profitability
+   project_management/project_milestones
+   project_management/project_templates
+
+
+
+==================================================
+SECTION: project_milestones.rst
+PATH: applications/services/project/project_management/project_milestones.rst
+==================================================
+
+==================
+Project milestones
+==================
+
+**Milestones** enable you to track ongoing project work by designating a sequence of key steps that
+must be reached before the project’s completion. Milestones are particularly useful in expensive,
+long, or large-scale projects. They can be used purely for indicative purposes, as a way to ensure
+that the project is completed in a timely manner.
+
+Milestones can also be used as a basis for :doc:`invoicing the client </applications/sales/sales/invoicing/milestone>`.
+This benefits both parties, as it ensures consistent cash flow for project funding and allows the
+client to pay for the project in several installments.
+
+Configuration
+=============
+
+Enable milestones for the desired project by opening the :guilabel:`Project` app, clicking the
+:icon:`fa-ellipsis-v` (:guilabel:`vertical ellipsis`) on the project’s card, and clicking
+:guilabel:`Settings`. Under :guilabel:`Tasks Management`, enable :guilabel:`Milestones`.
+
+.. note::
+   Milestones are automatically enabled for projects created from a sales order for a service
+   :doc:`invoiced by milestone </applications/sales/sales/invoicing/milestone>`.
+
+Configure project milestones by clicking the :icon:`fa-ellipsis-v` (:guilabel:`vertical ellipsis`)
+on the project’s card and selecting :guilabel:`Milestones`. Create a milestone by clicking
+:guilabel:`New`, entering the milestone's :guilabel:`Name`, selecting a :guilabel:`Deadline` if
+desired, and clicking :guilabel:`Save`.
+
+Add or remove options by clicking the :icon:`oi-settings-adjust` :guilabel:`sliders`. The following
+options are relevant when using
+:doc:`invoicing based on milestones </applications/sales/sales/invoicing/milestone>`:
+
+ - :guilabel:`Sales Order Item`: this field is filled in automatically with the Sales Order number.
+ - :guilabel:`Quantity (%)`: percentage of the ordered quantity that will automatically be delivered
+   on the sales order once the milestone is marked as reached.
+
+Once milestones are configured, **you can link project tasks to milestones**. To do so, navigate to
+the project you created the milestones in, then click one of the tasks to open it. Then, click the
+:guilabel:`Milestone` field to open a drop-down menu. Select the desired milestone from the list.
+
+Once all the tasks linked to the milestone are completed (marked as
+:doc:`Done or Cancelled <../tasks/task_stages_statuses>`), the milestone will be automatically
+marked as :guilabel:`Reached` in the :menuselection:`Project --> Settings --> Milestones`. You can
+also check the :guilabel:`Reached` box manually whenever the milestone is reached. Manual checking
+of the box will not impact the tasks linked to the milestone.
+
+.. _project/using-milestones:
+
+Using milestones
+================
+
+Odoo offers several ways to oversee the project’s milestones and their relationship to ongoing
+tasks.
+
+In the **Gantt view**, a milestone is shown as a vertical line marked with a diamond shape,
+displayed on the day of the milestone’s deadline. The line is color-coded in blue to indicate that
+the milestone has not yet reached its deadline, or it has been marked as reached (in which case, a
+check mark is displayed on the milestone). A milestone is color-coded in red if it has not been
+reached by its deadline.
+
+If a milestone’s deadline falls on the same day as the project’s deadline, it is displayed with a
+vertical line marked with a circle, and the same color coding principles as above apply.
+
+Aside from the Gantt view, you can also create, edit, and mark milestones as reached from
+:ref:`the project dashboard <project/project-dashboard/milestones>`.
+
+.. image:: project_milestones/gantt-milestones.png
+   :alt: Project milestones in Gantt view.
+
+
+==================================================
+SECTION: project_profitability.rst
+PATH: applications/services/project/project_management/project_profitability.rst
+==================================================
+
+=====================
+Project profitability
+=====================
+
+When handling billable projects, it is essential to determine whether your projects are turning a
+profit. Measuring **project profitability** involves keeping track of the costs of resources used to
+carry out the project, such as employee costs, materials used, purchases, expenses, or after-sales
+services, and comparing them with the project revenues.
+
+Project profitability is tracked in the :doc:`project dashboard <project_dashboard>` on all billable
+projects.
+
+To access the :doc:`project dashboard <project_dashboard>`, open the **Project** app and navigate to
+the applicable project. Click the :icon:`fa-sliders` (:guilabel:`sliders`) icon to add
+:guilabel:`Dashboard` to the project's :ref:`top bar <project/project-management/top-bar>`.
+
+.. tip::
+   You can also access the :doc:`project dashboard <project_dashboard>` by hovering over the desired
+   project’s card, clicking the :icon:`fa-ellipsis-v` (:guilabel:`vertical ellipsis`), and selecting
+   :guilabel:`Dashboard`.
+
+The **profitability dashboard** is on the right side of the project dashboard and displays data for
+all records linked to the project and its
+:doc:`analytic account </applications/finance/accounting/reporting/analytic_accounting>`. It’s
+divided into two major sections: :ref:`revenues <project/project-profitability/revenues>`, which
+displays a breakdown of income generated by the project, and
+:ref:`costs <project/project-profitability/costs>` accrued by your company. The same record can be
+displayed in both sections, e.g., the same timesheet is listed under :guilabel:`Revenues` with the
+amount the customer paid for the work and under :guilabel:`Costs` with the amount of wages paid to
+the employees.
+
+.. image:: project_profitability/profitability-dashboard.png
+   :alt: Project dashboard.
+
+The amounts displayed in the profitability report are divided into three columns:
+
+ - :guilabel:`Expected`: the amounts expected based on existing sales or purchase orders.
+ - :guilabel:`To invoice` (revenues) or :guilabel:`To bill` (costs): the amounts are moved to this
+   column when the work or goods have been delivered, e.g., a
+   :doc:`timesheet </applications/services/timesheets>` has been created and/or validated, a
+   delivery order has been marked as done, or the delivered quantity has been manually updated on
+   the sales order.
+ - :guilabel:`Invoiced` or :guilabel:`Billed`: the amounts are moved to this column once an invoice
+   or bill has been confirmed.
+
+Based on the same principle, the revenues section is further divided into :guilabel:`Sold`,
+:guilabel:`Delivered`, and :guilabel:`Invoiced` columns. Use the :icon:`fa-caret-right`
+(:guilabel:`arrow`) icon to see a detailed breakdown for each line.
+
+.. tip::
+   Use the project’s :ref:`top bar <project/project-management/top-bar>` to easily access and edit
+   records linked to the project’s profitability from the project’s Kanban view.
+
+.. important::
+   In order for a record to be displayed on the profitability dashboard, it must be linked to the
+   project and its :doc:`analytic account </applications/finance/accounting/reporting/analytic_accounting>`.
+
+The following records can be displayed in the profitability dashboard.
+
+.. _project/project-profitability/revenues:
+
+Revenues
+--------
+
+ - :guilabel:`Timesheets`: revenues from :doc:`timesheets </applications/services/timesheets>`,
+   broken down according to the :guilabel:`Invoicing Policy` selected on the product form (e.g.,
+   :doc:`Prepaid/Fixed Price </applications/sales/sales/invoicing/invoicing_policy>`,
+   :doc:`Based on Timesheets </applications/sales/sales/invoicing/time_materials>`,
+   :doc:`Based on Milestones </applications/sales/sales/invoicing/milestone>`).
+ - :guilabel:`Materials`: total of sales prices of products sold via sales orders linked to the
+   project.
+ - :guilabel:`Customer invoices`: a total of invoices linked to the project.
+ - :guilabel:`Subscriptions`: a total of sales prices of
+   :doc:`subscriptions </applications/sales/subscriptions>` linked to the project.
+ - :guilabel:`Down payments`: a total of
+   :doc:`down payments </applications/sales/sales/invoicing/down_payment>` linked to the project.
+ - :guilabel:`Expenses`: any :doc:`expenses </applications/finance/expenses>` that have been
+   :doc:`reinvoiced to the customer </applications/sales/sales/invoicing/expense>`.
+
+.. _project/project-profitability/costs:
+
+Costs
+-----
+
+ - :guilabel:`Timesheets`: total cost of time tracked by employees via :doc:`timesheets
+   </applications/services/timesheets>`, based on the employee's
+   :ref:`HR settings <employees/hr-settings>`.
+ - :guilabel:`Purchase Orders`: total cost of
+   :doc:`purchase orders </applications/inventory_and_mrp/purchase/manage_deals>` linked to the
+   project. Those could cover goods, materials, or even subcontracted services. This entry only
+   appears once the vendor bill is posted.
+ - :guilabel:`Materials`: total cost of products included in
+   :doc:`stock moves </applications/inventory_and_mrp/inventory/shipping_receiving>` (deliveries and
+   receipts) that have been validated for the project. This section is only displayed if
+   :guilabel:`Analytic Costs` have been enabled in
+   :menuselection:`Inventory --> Configuration --> Operations Types` for applicable operations. This
+   ensures that the product's cost is tracked during the stock move.
+ - :guilabel:`Expenses`: total costs of :doc:`expenses </applications/finance/expenses>` linked to
+   the project that have been submitted and approved.
+ - :guilabel:`Vendor bills`: total costs of
+   :doc:`vendor bills </applications/inventory_and_mrp/purchase/manage_deals/manage>` linked to the
+   project's analytic account.
+ - :guilabel:`Manufacturing orders`: total costs of manufacturing orders linked to the project's
+   analytic account.
+ - :guilabel:`Other costs`: any other costs linked to the project's analytic account.
+
+
+==================================================
+SECTION: project_templates.rst
+PATH: applications/services/project/project_management/project_templates.rst
+==================================================
+
+=================
+Project templates
+=================
+
+Templates allow you to create new projects with predefined settings, reducing the need to manually
+set up similar projects repeatedly.
+
+Creating templates
+==================
+
+To create a project template, an existing project is required and used as a base to be converted
+into a template. Converting a project into a template transfers the entire project's properties to
+the template. This includes the project’s stages, tasks, sub-tasks, and their respective
+configurations, such as planned dates, statuses, assignees, and more.
+
+First, access the settings of the project that you want to convert into a template by going to
+:guilabel:`Projects`, hovering your mouse over the project's card, clicking the :icon:`fa-ellipsis-v`
+(:guilabel:`vertical ellipsis`) icon, and selecting :guilabel:`Settings`. Review
+and adjust the project’s properties to ensure it reflects your desired template setup.
+
+Once your project is ready, click the :icon:`fa-cog` (:guilabel:`cog`) icon and select
+:guilabel:`Convert to Template`. The :guilabel:`Template` banner indicates that the project has been
+successfully converted into a template.
+
+.. warning::
+   Converting a project into a template will also archive the original project used to create the
+   template. To keep using a project that you want to convert into a template, duplicate
+   it first by hovering your mouse over the project's card, clicking the
+   :icon:`fa-ellipsis-v` (:guilabel:`vertical ellipsis`) icon, and selecting :guilabel:`Duplicate`.
+
+.. tip::
+   To edit or delete a template, go to :menuselection:`Projects --> New`.
+   Next to the name of the template, click the :icon:`fa-pencil` (:guilabel:`pencil`) icon to edit
+   it or the :icon:`fa-trash` (:guilabel:`trash`) icon to delete it.
+   Editing or deleting a template does not affect the projects that were previously created from it.
+
+Project roles in templates
+--------------------------
+
+Templates enable you to pre-select specific roles for tasks within your template, making the
+selection of assignees faster during the creation of a new project using a template.
+
+Go to :menuselection:`Projects --> New`, and click the :icon:`fa-pencil` (:guilabel:`pencil`)
+icon next to the name of the template you want to edit. Then click on the :guilabel:`Tasks` smart
+button, and on one of the tasks. In the :guilabel:`Project Roles` field, type or select the roles
+that you want to perform this task, then click :guilabel:`Save`.
+
+Create a project based on this template: go to :menuselection:`Projects --> New`, and click on
+the name of the template. The :guilabel:`Create a project from template` form then includes
+:guilabel:`Project Roles`. For each of them, you can select assignees by clicking on the
+:guilabel:`Assignees` field. This automatically dispatches the right tasks to the right employees.
+
+Task scheduling in templates
+----------------------------
+
+In a project template, task scheduling can be automated according to the planned dates specified
+within the template.
+
+.. important::
+   Project and task planned dates are not saved when converting a project into a template. These
+   require to be added to the template after it is created.
+
+On the project template, define the :guilabel:`Planned dates` for both the project and each task.
+When tasks have planned start dates in the template, Odoo calculates the number of days
+between the project’s start date and the first scheduled task. This time window is referred to as
+the *delta*.
+
+When a new project is generated from this template:
+
+ - The system uses the project’s start date as a reference.
+ - Each task’s start date is automatically planned according to its delta.
+ - If no start date is set on the new project, the current date is used as the default start date.
+ - Task end dates are then determined automatically by Odoo’s scheduling algorithm.
+
+.. note::
+   To ensure that all project roles and tasks are planned without conflict according to the team’s
+   availability and workload, the scheduling algorithm calculates the end date of each task based on
+   the allocated time, while also considering task dependencies and assignee’s availability, working
+   schedule, time off, and public holidays.
+
+Using templates
+===============
+
+To create a new project from a template, go to :menuselection:`Projects --> New`, and click on a
+template in the :guilabel:`Project Templates` section. Enter a name for your project. Optionally,
+add a :guilabel:`Customer`, a :guilabel:`Planned Date`, and set up the task creation email. Then,
+click :guilabel:`Create Project`.
+
+Templates can also be linked to specific products. To do so, the project template must be set as
+:guilabel:`Billable`:
+
+- Go to :menuselection:`Projects --> New` and click the :icon:`fa-pencil` (:guilabel:`pencil`) icon
+  next to the name of the template you want to edit.
+- Click the :guilabel:`Settings` tab, tick the :guilabel:`Billable` checkbox, and click
+  :guilabel:`Save`.
+
+Once this is done, configure the product by:
+
+- Selecting :guilabel:`Service` as the :guilabel:`Product Type`.
+- Selecting :guilabel:`Project` or :guilabel:`Project & Task` in the :guilabel:`Create on Order` field.
+- Selecting a :guilabel:`Project Template` and clicking :guilabel:`Save`.
+
+
+==================================================
+SECTION: recurring_tasks.rst
+PATH: applications/services/project/tasks/recurring_tasks.rst
+==================================================
+
+===============
+Recurring tasks
+===============
+
+When handling a project, the same task often needs to be performed several times: for example,
+weekly meetings or status reports. The **recurring tasks** feature allows you to automate the
+creation of those tasks.
+
+.. seealso::
+   `Odoo Tutorials: Recurring tasks <https://www.odoo.com/slides/slide/recurring-tasks-6958>`_
+
+Configuration
+=============
+
+To use task dependencies in a project, go to :guilabel:`Project`, click the :icon:`fa-ellipsis-v`
+(:guilabel:`vertical ellipsis`) icon on one of your projects, and click on :guilabel:`Settings`.
+Click on the :guilabel:`Settings` tab, look for :guilabel:`Tasks Management` and make sure
+:guilabel:`Recurring Tasks` is enabled.
+
+Set up task recurrence
+----------------------
+
+In an existing task, click the :icon:`fa-repeat` (:guilabel:`Recurrent`) button next to the
+:guilabel:`Deadline` field. Then, configure the :guilabel:`Repeat Every` field according to your
+needs.
+
+A new task in recurrence will be created once the status of the previous task is set to
+:guilabel:`Done` or :guilabel:`Canceled`.
+
+The new task is created on the project dashboard with the following configuration:
+
+- :guilabel:`Stage`: is set to the first stage of the project dashboard (:guilabel:`New` or
+  equivalent);
+- :guilabel:`Name`, :guilabel:`Description`, :guilabel:`Project`, :guilabel:`Assignees`,
+  :guilabel:`Customer`, :guilabel:`Tags`: are copied from the original task;
+- :guilabel:`Deadline`: is updated based on the :guilabel:`Repeat Every` field (e.g., if the task is
+  set to repeat once a week, 7 days will be added to the deadline);
+- :guilabel:`Milestones`, :guilabel:`Timesheets`, :guilabel:`Chatter`,
+  :guilabel:`Activities`, :guilabel:`Subtasks`: are **not** copied from the original task.
+
+Once a recurrence is configured, a **smart button** on the task displays the total number of
+existing recurrences.
+
+Edit or stop task recurrence
+----------------------------
+
+**To edit** the recurrence, open the last task in recurrence. Any changes made on the task will be
+applied to the tasks that will be created in the future.
+
+**To stop** the recurrence, open the last task in recurrence and press the :guilabel:`Recurrent`
+button next to the :guilabel:`Planned date`.
+
+
+==================================================
+SECTION: sub-tasks.rst
+PATH: applications/services/project/tasks/sub-tasks.rst
+==================================================
+
+=========
+Sub-tasks
+=========
+
+When handling project tasks, you can often benefit from splitting the workload into smaller
+**sub-tasks**, making it easier to track progress and manage the work.
+
+Odoo’s sub-task feature is particularly useful in some of the following cases:
+
+- The task workload is too big to handle in one record.
+- There’s a clear sequence of steps to follow.
+- Some parts of the workload fall under the scope of different projects and/or assignees.
+
+The original task to which sub-tasks are linked is referred to as the **parent task**. The sub-tasks
+of the parent task are known as **child tasks**.
+
+Creating sub-tasks
+==================
+
+To create a sub-task:
+
+#. Open the Project app, then go into your desired project.
+#. Click the task where you want to add the sub-task, then click the :guilabel:`Sub-tasks` tab.
+#. Click :guilabel:`Add a line`, then fill in the :guilabel:`Title`.
+#. Click the :icon:`fa-cloud-upload` (:guilabel:`save`) icon to save the task manually.
+
+.. tip::
+   You can edit several fields of a sub-task directly from the parent task’s sub-task tab without
+   opening the individual sub-task. By default, those are: :guilabel:`Title`, :guilabel:`Priority`,
+   :guilabel:`Status`, and :guilabel:`Assignees`. Use the :icon:`fa-sliders` (:guilabel:`sliders`)
+   icon to add or remove fields.
+
+Once the new sub-task is created, the following changes occur in the parent task:
+
+- A **smart button** displays the total number of sub-tasks, as well as the number of closed
+  (**done** or **canceled**) sub-tasks. Click the smart button to access the list of the sub-tasks.
+- The :guilabel:`Allocated time` displays the amount of time allocated to the parent task, as well
+  as time allocated to the sub-tasks. This can be used to ensure that the time allocated to
+  sub-tasks does not exceed time allocated to the parent task.
+- The :guilabel:`Timesheets` tab includes a breakdown of time spent on the parent task as well as
+  sub-tasks.
+
+Click :guilabel:`View` to open the sub-task you created. The sub-task form is identical to the
+:ref:`task form <task_creation/task-configuration>`.
+
+.. tip::
+
+ - A **smart button** allows to navigate back to the :guilabel:`Parent task`.
+ - The :guilabel:`Sub-tasks` tab allows for further creation of sub-tasks.
+ - Selecting a :guilabel:`Project` will trigger this sub-task to be displayed in the Kanban view of
+   the selected project.
+
+
+==================================================
+SECTION: task_creation.rst
+PATH: applications/services/project/tasks/task_creation.rst
+==================================================
+
+=============
+Task creation
+=============
+
+Tasks in Odoo Project can be created manually or automatically, including from emails or website
+forms.
+
+Manual task creation
+====================
+
+Open the Project app and choose the desired project. Create a new task by doing one of the
+following:
+
+ - Clicking the :icon:`fa-plus` (:guilabel:`plus`) button in the upper left corner. This creates
+   a new task in the first stage of your Kanban view.
+ - Pressing the :icon:`fa-plus` (:guilabel:`plus`) button next to the Kanban stage name. This
+   creates a new task in this Kanban stage.
+
+Fill in the :guilabel:`Task Title` and add one or more :guilabel:`Assignees`, then click
+:guilabel:`Add`.
+
+.. _task_creation/task-configuration:
+
+Task configuration
+------------------
+
+Click the task to open it. The task form includes the following fields that you can fill in:
+
+ - :guilabel:`Task Title`: title of the task.
+ - :icon:`fa-star-o` (:guilabel:`Star`): click the :icon:`fa-star-o` (:guilabel:`star`) icon to mark
+   the task as high priority. The icon will turn yellow. Click it again to remove the high priority.
+ - :guilabel:`Project`: the project that this task belongs to.
+ - :guilabel:`Assignees`: the person(s) in charge of handling the work on this task.
+ - :guilabel:`Tags`: custom labels allowing to categorize and filter your tasks.
+ - :guilabel:`Customer`: the person or company that will be billed for this task. This field only
+   appears in tasks that belong to billable projects.
+ - :guilabel:`Sales Order Item`: this can be either the sales order that was used to create this
+   task, or a sales order that was linked to this task manually. This field only appears in tasks
+   linked to billable projects.
+ - :guilabel:`Allocated Time`: the amount of time that the work on this task is expected to last,
+   tracked by timesheets.
+ - :guilabel:`Deadline`: the expected end date of the task. Click the :guilabel:`Deadline` field to
+   select the task's end date in the dropdown calendar. To define the task's duration, including its
+   start and end dates (and optionally specific times), click the :icon:`fa-calendar-plus-o`
+   (:guilabel:`fa-calendar-plus-o`) icon in the dropdown calendar, select the dates and times, then
+   click  :guilabel:`Apply` to save.
+
+.. tip::
+
+   - You can also create new tasks by switching to the list or Gantt view and clicking
+     :guilabel:`New`.
+   - The following fields can also be edited directly from the Kanban view without opening the
+     individual task: :icon:`fa-star-o` (**priority**), :guilabel:`Allocated hours`,
+     :guilabel:`Assignees`, and **task status**. You can also **color code** or :guilabel:`Set a
+     Cover image` to your task by clicking the :icon:`fa-ellipsis-v` (**vertical ellipsis**).
+   - You can use the following keyboard shortcuts in the task title to configure new tasks (modify
+     the values in the examples below according to your needs):
+
+     - **30h**: to allocate 30 hours to the task.
+     - **#tags**: to add tags to the task.
+     - **@user**: to assign the task to a user.
+     - **!**: to star the task as high priority.
+
+     Along with using the correct format, follow this order: the task's name, followed by the
+     allocated time, the tags, the assignee, and then the priority.
+
+     For example, if you want to create a task named "Prepare workshop", allocate 5h hours to it,
+     add the "School" tag, assign it to Audrey and set its priority to :guilabel:`High`, enter the
+     following task title: Prepare workshop 5h #school @Audrey !
+
+     .. image:: task_creation/task-shortcuts.png
+        :alt: Using keyboard shortcuts to create a task in Project.
+
+.. _task_creation/email_alias:
+
+Creating tasks from an email alias
+==================================
+
+This feature allows for project tasks to be automatically created once an email is delivered to a
+designated email address.
+
+To configure it, open the Project app, then click the :icon:`fa-ellipsis-v` (:guilabel:`vertical
+ellipsis`) icon next to the desired project's name. Select :guilabel:`Settings`, then open the
+:guilabel:`Settings` tab.
+
+Fill in the :guilabel:`Create tasks by sending an email to` field as follows:
+
+ - **Section of the alias before the @ symbol**: type the name of the email alias, e.g. `contact`,
+   `help`, `jobs`.
+ - **Domain**: in most cases, this is filled in by default with your :doc:`domain
+   <../../../general/email_communication>`.
+ - **Accept Emails From**: refine the senders whose emails will create tasks in the project.
+
+.. image:: task_creation/email-configuration.png
+   :alt: View of the email alias chosen on the dashboard view in Odoo Project
+
+Once configured, the email alias can be seen under the name of your project on the Kanban dashboard.
+
+When an email is sent to the alias, the email is automatically converted into a project task. The
+following rules apply:
+
+- The email sender is displayed in the :guilabel:`Customer` field.
+- The email subject is displayed in the :guilabel:`Task Title` field.
+- The email body is displayed in the :guilabel:`Description` field.
+- The whole content of the email is additionally displayed in the **chatter**.
+- All the recipients of the email (To/Cc/Bcc) that are Odoo users are automatically added as
+  **followers** of the task.
+
+Creating tasks from a website form
+==================================
+
+If you have the Website app installed in your database, you can configure any form on your
+website to trigger the creation of tasks in a project.
+
+#. Go to the website page where you wish to add the form and :doc:`add the Form building block
+   </applications/websites/website/web_design/building_blocks>`.
+#. In the website editor, edit the following fields:
+
+   - :guilabel:`Action`: select :guilabel:`Create a Task`.
+   - :guilabel:`Project`: choose the project that you want the new tasks to be created in.
+
+#. :ref:`Customize the form <website/building_blocks/form>`.
+
+When the form is submitted, it automatically creates a project task. The task's content is defined
+by the form's corresponding fields.
+
+.. seealso::
+   :ref:`Website forms <website/building_blocks/form>`
+
+
+==================================================
+SECTION: task_dependencies.rst
+PATH: applications/services/project/tasks/task_dependencies.rst
+==================================================
+
+=================
+Task dependencies
+=================
+
+Odoo Project allows you to break down projects into tasks and establish relationships between those
+tasks to determine the order in which they are executed. Task dependencies ensure that certain tasks
+begin only after the preceding tasks are completed.
+
+To use task dependencies in a project, go to :guilabel:`Project`, click the :icon:`fa-ellipsis-v`
+(:guilabel:`vertical ellipsis`) icon on one of your projects, and click on :guilabel:`Settings`.
+Click on the :guilabel:`Settings`. Click on the :guilabel:`Settings` tab, look for :guilabel:`Tasks
+Management` and make sure :guilabel:`Task Dependencies` is enabled.
+
+Set task dependencies
+=====================
+
+Task dependencies can be created from the task form or the project's Gantt view by linking the
+successor task (i.e., the task blocked by other tasks) to its predecessor task(s) (i.e., the tasks
+blocking the successor task).
+
+To create task dependencies from the task form, access the desired task and, in the
+:guilabel:`Blocked by` tab, click :guilabel:`Add a line`. Click :guilabel:`View` to access the
+predecessor task. To access the successor tasks from the predecessor task, click the
+:guilabel:`Blocked Tasks` smart button.
+
+To create a task dependency from the Gantt view, hover your mouse over the predecessor task, then
+click one of the dots that appear around it. Drag and drop the dot onto the successor task. An arrow
+appears, indicating the dependency from the predecessor task to the successor.
+
+.. image:: task_dependencies/task-dependency.png
+   :scale: 80%
+   :alt: Task dependency
+
+Odoo automatically manages task progress based on their dependency. Successor tasks are assigned the
+:guilabel:`Waiting` status and cannot be moved to :guilabel:`In Progress` until their predecessor
+task(s) are marked as :guilabel:`Approved`, :guilabel:`Cancelled`, or :guilabel:`Done`.
+
+Remove dependencies
+===================
+
+To remove a task dependency, proceed as follows:
+
+- From the task form, go to the **Blocked by** tab and click the :icon:`fa-times`
+  (:guilabel:`times`) button.
+- From the Gantt view, click the red :icon:`fa-times` (:guilabel:`times`) button that appears at the
+  center of the arrow when you hover your mouse over it.
+
+
+==================================================
+SECTION: task_stages_statuses.rst
+PATH: applications/services/project/tasks/task_stages_statuses.rst
+==================================================
+
+========================
+Task stages and statuses
+========================
+
+Task stages
+===========
+
+Task stages are displayed as columns in the project's Kanban view, and allow you to update the
+progress of its tasks with a drag-and-drop. In most projects, the stages will be akin to **New**,
+**In progress**, **Backlog**, etc.
+
+By default, task stages are project-specific but can be shared across multiple projects that follow
+the same workflow.
+
+Creating task stages
+--------------------
+
+Odoo Project doesn’t provide default stages but instead allows you to create custom stages tailored
+to your specific business needs. You are prompted to do so immediately after :ref:`creating a new
+project <project_management/configuration>`.
+
+To create a stage, type its name into the :guilabel:`Stage...` field, then click :guilabel:`Add`.
+
+.. tip::
+   Click :guilabel:`See examples` to find ideas for stage names applicable to your line of business.
+
+Editing task stages
+-------------------
+
+To edit the task stage, click the :icon:`fa-cog` (:guilabel:`cog`) icon next to its name. From
+there, click one of the following:
+
+ - :guilabel:`Fold`: to hide the task stage and all of the tasks in this stage from the Kanban view.
+ - :guilabel:`Edit`:
+
+   - :guilabel:`Name`: to change the name of the stage.
+   - :guilabel:`SMS/Email Template`: to automatically send an email or SMS notification to the
+     customer when a task reaches this stage.
+   - :guilabel:`Folded in Kanban`: to hide the task stage and all of the tasks in this stage from
+     the Kanban view.
+   - :guilabel:`Projects`: to share this task stage between several projects.
+   - :guilabel:`Automations`: to create :doc:`custom rules that trigger automatic actions
+     <../../../studio/automated_actions>` (e.g., creating activities, adding followers, or sending
+     webhook notifications). Note that this will activate Studio in your database, which may impact
+     your pricing plan.
+
+ - :guilabel:`Delete`: to delete this stage.
+ - :guilabel:`Archive/Unarchive all`: to archive or unarchive all of the tasks in this stage.
+
+.. _project/tasks/task_stages_statuses/statuses:
+
+Task statuses
+=============
+
+Task statuses are used to track the status of tasks within the Kanban stage, as well as to close the
+task when it’s done or canceled. Unlike Kanban stages, they cannot be customized; five task statuses
+exist in Odoo and are used as follows:
+
+ - :guilabel:`In Progress`: this is the default state of all tasks, meaning that work required for
+   the task to move to the next Kanban stage is ongoing.
+ - :guilabel:`Changes Requested`: to highlight that changes, either requested by the customer or
+   internally, are needed before the task is moved to the next Kanban stage.
+ - :guilabel:`Approved`: to highlight that the task is ready to be moved to the next stage.
+ - :guilabel:`Canceled`: to cancel the task.
+ - :guilabel:`Done`: to close the task once it's been completed.
+
+.. note::
+
+   - The :guilabel:`Changes Requested` and :guilabel:`Approved` task statuses are cleared as soon as
+     the task is moved to another Kanban stage. The task status reverts to the default :guilabel:`In
+     Progress` status so that :guilabel:`Changes Requested` or :guilabel:`Approved` status can be
+     applied again once the necessary work has been completed in this Kanban stage.
+   - The :guilabel:`Done` and :guilabel:`Canceled` statuses are independent from the Kanban stage.
+     Once a task is marked as :guilabel:`Done` or :guilabel:`Canceled`, it is closed. If needed, it
+     can be reopened by changing its status.
+
+
+==================================================
+SECTION: tasks.rst
+PATH: applications/services/project/tasks.rst
+==================================================
+
+:nosearch:
+
+===============
+Task management
+===============
+
+.. toctree::
+   :titlesonly:
+
+   tasks/task_stages_statuses
+   tasks/task_creation
+   tasks/recurring_tasks
+   tasks/sub-tasks
+   tasks/task_dependencies

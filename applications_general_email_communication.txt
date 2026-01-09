@@ -1,0 +1,2206 @@
+
+
+==================================================
+SECTION: azure_oauth.rst
+PATH: applications/general/email_communication/azure_oauth.rst
+==================================================
+
+=======================================================
+Connect Microsoft Outlook 365 to Odoo using Azure OAuth
+=======================================================
+
+Odoo is compatible with Microsoft's Azure OAuth for Microsoft 365. In order to send and receive
+secure emails from a custom domain, all that is required is to configure a few settings on the
+Azure platform and on the back end of the Odoo database. This configuration works with either a
+personal email address or an address created by a custom domain.
+
+.. seealso::
+   `Microsoft Learn: Register an application with the Microsoft identity platform
+   <https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app>`_
+
+.. seealso::
+   - :doc:`/applications/general/users/azure`
+   - :doc:`/applications/productivity/calendar/outlook`
+
+Setup in Microsoft Azure Portal
+===============================
+
+Create a new application
+------------------------
+
+To get started, go to `Microsoft's Azure Portal <https://portal.azure.com/>`_. Log in with the
+:guilabel:`Microsoft Outlook Office 365` account if there is one, otherwise log in with the
+personal :guilabel:`Microsoft account`. A user with administrative access to the Azure Settings
+will need to connect and perform the following configuration. Next, navigate to the section
+labeled :guilabel:`Manage Microsoft Entra ID` (formally *Azure Active Directory*).
+
+Now, click on :guilabel:`Add (+)`, located in the top menu, and then select :guilabel:`App
+registration`. On the :guilabel:`Register an application` screen, rename the :guilabel:`Name` to
+`Odoo` or something recognizable. Under the :guilabel:`Supported account types` section select
+:guilabel:`Accounts in any organizational directory (Any Microsoft Entra ID directory - Multitenant)
+and personal Microsoft accounts (e.g. Skype, Xbox)`.
+
+Under the :guilabel:`Redirect URL` section, select :guilabel:`Web` as the platform, and then input
+`https://<web base url>/microsoft_outlook/confirm` in the :guilabel:`URL` field. The `web.base.url`
+is subject to change depending on the URL used to log in to the database.
+
+.. note::
+   The documentation about the :ref:`web.base.url <domain-name/web-base-url>` explains how to freeze
+   a unique URL. It is also possible to add different redirect URLs on the Microsoft app.
+
+After the URL has been added to the field, :guilabel:`Register` the application, so it is created.
+
+API permissions
+---------------
+
+The :guilabel:`API permissions` should be set next. Odoo will need specific API permissions to be
+able to read (IMAP) and send (SMTP) emails in the Microsoft 365 setup. First, click the
+:guilabel:`API permissions` link, located in the left menu bar. Next, click on the :guilabel:`(+)
+Add a Permission` button and select :guilabel:`Microsoft Graph` under :guilabel:`Commonly Used
+Microsoft APIs`. After, select the :guilabel:`Delegated Permissions` option.
+
+In the search bar, search for the following :guilabel:`Delegated permissions` and click
+:guilabel:`Add permissions` for each one:
+
+- :guilabel:`SMTP.Send`
+- :guilabel:`IMAP.AccessAsUser.All`
+
+.. note::
+   The :guilabel:`User.Read` permission will be added by default.
+
+.. image:: azure_oauth/permissions.png
+   :align: center
+   :alt: API permissions needed for Odoo integration are listed under the Microsoft Graph.
+
+Assign users and groups
+=======================
+
+After adding the API permissions, navigate back to the :guilabel:`Overview` of the
+:guilabel:`Application` in the top of the left sidebar menu.
+
+Now, add users to this application. Under the :guilabel:`Essentials` overview table, click on the
+link labeled :guilabel:`Managed Application in Local Directory`, or the last option on the bottom
+right-hand side of the table.
+
+.. image:: azure_oauth/managed-application.png
+   :align: center
+   :alt: Add users/groups by clicking the Managed application in local directory link for the
+         created application.
+
+In the left sidebar menu, select :guilabel:`Users and Groups`. Next, click on :guilabel:`(+) Add
+User/Group`. Depending on the account, either a :guilabel:`Group` and a :guilabel:`User` can be
+added, or only :guilabel:`Users`. Personal accounts will only allow for :guilabel:`Users` to be
+added.
+
+Under :guilabel:`Users` or :guilabel:`Groups`, click on :guilabel:`None Selected` and add the users
+or group of users that will be sending emails from the :guilabel:`Microsoft account` in Odoo.
+:guilabel:`Add` the users/groups, click :guilabel:`Select`, and then :guilabel:`Assign` them to the
+application.
+
+Create credentials
+------------------
+
+Now that the Microsoft Azure app is set up, credentials need to be created for the Odoo setup.
+These include the :guilabel:`Client ID` and :guilabel:`Client Secret`. To start, the
+:guilabel:`Client ID` can be copied from the :guilabel:`Overview` page of the app. The
+:guilabel:`Client ID` or :guilabel:`Application ID` is located under the :guilabel:`Display Name`
+in the :guilabel:`Essentials` overview of the app.
+
+.. image:: azure_oauth/application-id.png
+   :align: center
+   :alt: Application/Client ID located in the Overview of the app.
+
+Next, the :guilabel:`Client Secret Value` needs to be retrieved. To get this value, click on
+:guilabel:`Certificates & Secrets` in the left sidebar menu. Then, a :guilabel:`Client Secret`
+needs to be produced. In order to do this, click on the :guilabel:`(+) New Client Secret` button.
+
+A window on the right will populate with a button labeled :guilabel:`Add a client secret`. Under
+:guilabel:`Description`, type in `Odoo Fetchmail` or something recognizable, and then set the
+:guilabel:`expiration date`.
+
+.. important::
+   A new :guilabel:`Client Secret` will need to be produced and configured if the first one
+   expires. In this event, there could be an interruption of service, so the expiration date should
+   be noted and set to the furthest possible date.
+
+Next, click on :guilabel:`Add` when these two values are entered. A :guilabel:`Client Secret Value`
+and :guilabel:`Secret ID` will be created. It is important to copy the :guilabel:`Value` or
+:guilabel:`Client Secret Value` into a notepad as it will become encrypted after leaving this page.
+The :guilabel:`Secret ID` is not needed.
+
+.. image:: azure_oauth/secretvalue.png
+   :align: center
+   :alt: Client Secret Value or Value in the app's credentials.
+
+After these steps, the following items should be ready to be set up in Odoo:
+
+- A client ID (:guilabel:`Client ID` or :guilabel:`Application ID`)
+- A client secret (:guilabel:`Value` or :guilabel:`Client Secret Value`)
+
+This completes the setup on the :guilabel:`Microsoft Azure Portal` side.
+
+Setup in Odoo
+=============
+
+Enter Microsoft Outlook credentials
+-----------------------------------
+
+First, open the Odoo database and navigate to the :guilabel:`Apps` module. Then, remove the
+:guilabel:`Apps` filter from the search bar and type in `Outlook`. After that, install the module
+called :guilabel:`Microsoft Outlook`.
+
+Next, navigate to :menuselection:`Settings --> General Settings`, and under the :guilabel:`Discuss`
+section, ensure that the checkbox for :guilabel:`Custom Email Servers` is checked. This populates
+a new option for :guilabel:`Outlook Credentials`.
+
+:guilabel:`Save` the progress.
+
+Then, copy and paste the :guilabel:`Client ID` (Application ID) and :guilabel:`Client Secret
+(Client Secret Value)` into the respective fields and :guilabel:`Save` the settings.
+
+.. image:: azure_oauth/outlookcreds.png
+   :align: center
+   :alt: Outlook Credentials in Odoo General Settings.
+
+Configure outgoing email server
+-------------------------------
+
+On the :guilabel:`General Settings` page, under the :guilabel:`Custom Email Servers` setting,
+click the :guilabel:`Outgoing Email Servers` link to configure the Microsoft account.
+
+Then, create a new email server and check the box for :guilabel:`Outlook`. Next, fill in the
+:guilabel:`Name` (it can be anything) and the Microsoft Outlook email :guilabel:`Username`.
+
+If the :guilabel:`From Filter` field is empty, enter either a :ref:`domain or email address
+<email-outbound-unique-address>`.
+
+Then, click on :guilabel:`Connect your Outlook account`.
+
+A new window from Microsoft opens to complete the :guilabel:`authorization process`. Select the
+appropriate email address that is being configured in Odoo.
+
+.. image:: azure_oauth/verify-outlook.png
+   :align: center
+   :alt: Permission page to grant access between newly created app and Odoo.
+
+Then, allow Odoo to access the Microsoft account by clicking on :guilabel:`Yes`. After this, the
+page will navigate back to the newly configured :guilabel:`Outgoing Mail Server` in Odoo. The
+configuration automatically loads the :guilabel:`token` in Odoo, and a tag stating
+:guilabel:`Outlook Token Valid` appears in green.
+
+.. image:: azure_oauth/outlook-token.png
+   :align: center
+   :alt: Valid Outlook Token indicator.
+
+Finally, click :guilabel:`Test Connection`. A confirmation message should appear. The Odoo database
+can now send safe, secure emails through Microsoft Outlook using OAuth authentication.
+
+.. _azure_oauth/notifications:
+
+Configuration with a single outgoing mail server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Configuring a single outgoing server is the simplest configuration available for Microsoft Azure
+and it doesn't require extensive access rights for the users in the database.
+
+A generic email address would be used to send emails for all users within the database. For example
+it could be structured with a `notifications` alias (`notifications@example.com`) or `contact` alias
+(`contact@example.com`). This address must be set as the :guilabel:`FROM Filtering` on the server.
+This address must also match the `{mail.default.from}@{mail.catchall.domain}` key combination in the
+system parameters.
+
+.. seealso::
+   Visit the :ref:`From Filtering documentation <email-outbound-different-servers-personalized-from-filtering>` for more
+   information.
+
+.. note::
+   The :guilabel:`System Parameters` can be accessed by activating :ref:`developer-mode` in the
+   :menuselection:`Settings --> Technical --> Parameters --> System Parameters` menu.
+
+When using this configuration, every email that is sent from the database will use the address of
+the configured `notification` mailbox. However it should be noted that the name of the sender will
+appear but their email address will change:
+
+.. image:: azure_oauth/from-name-remain.png
+   :align: center
+   :alt: Name from real sender with static email.
+
+.. example::
+   Single outgoing mail server configuration:
+
+   - Outgoing mail server **username** (login) = `notifications@example.com`
+   - Outgoing mail server :guilabel:`FROM Filtering` = `notifications@example.com`
+   - `mail.catchall.domain` in system parameters = `example.com`
+   - `mail.default.from` in system parameters = `notifications`
+
+User-specific (multiple user) configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In addition to a generic email server, individual email servers can be set up for users in a
+database. These email addresses must be set as the :guilabel:`FROM Filtering` on each individual
+server for this configuration to work.
+
+This configuration is the more difficult of the two Microsoft Azure configurations, in that it
+requires all users configured with email servers to have access rights to settings in order to
+establish a connection to the email server.
+
+Setup
+*****
+
+Each user should have a separate email server set up. The :guilabel:`FROM Filtering` should be set
+so that only the user's email is sent from that server. In other words, only a user with an email
+address that matches the set :guilabel:`FROM Filtering` is able to use this server.
+
+.. seealso::
+   Visit the :ref:`From Filtering documentation <email-outbound-different-servers-personalized-from-filtering>` for more
+   information.
+
+A :ref:`fallback server <azure_oauth/notifications>` must be setup to allow for the sending of
+:guilabel:`notifications`. The :guilabel:`FROM Filtering` for this server should have the value of
+the `{mail.default.from}@{mail.catchall.domain}`.
+
+.. note::
+   The :guilabel:`System Parameters` can be accessed by activating :ref:`developer-mode` in the
+   :menuselection:`Settings --> Technical --> Parameters --> System Parameters` menu.
+
+.. important::
+   The configuration for this transactional email server can work alongside an outgoing mass-mailing
+   email server. The :guilabel:`FROM Filtering` for the mass-mailing email server can remain empty,
+   but it's require to be added in the settings of the *Email Marketing* application.
+
+   .. seealso::
+      For more information on setting the mass-mailing email server visit
+      :ref:`email-outbound-custom-domain-smtp-server`.
+
+.. example::
+   Multiple user outgoing mail server configuration:
+
+   - User #1 mailbox
+      - Outgoing mail server #1 **username** (login) = `john@example.com`
+      - Outgoing mail server #1 :guilabel:`FROM Filtering` = `john@example.com`
+   - User #2 mailbox
+      - Outgoing mail server #2 **username** (login) = `jane@example.com`
+      - Outgoing mail server #2 :guilabel:`FROM Filtering` = `jane@example.com`
+   - Notifications mailbox
+      - Outgoing mail server #3 **username** (login) = `notifications@example.com`
+      - Outgoing mail server #3 :guilabel:`FROM Filtering` = `notifications@example.com`
+   - System Parameters
+      - `mail.catchall.domain` in system parameters = `example.com`
+      - `mail.default.from` in system parameters = `notifications`
+
+Configure incoming email server
+-------------------------------
+
+The incoming account should be configured in a similar way to the outgoing email account. Navigate
+to the :guilabel:`Incoming Mail Servers` in the :guilabel:`Technical Menu` and :guilabel:`Create` a
+new configuration. Check or Select the button next to :guilabel:`Outlook Oauth Authentication` and
+enter the :guilabel:`Microsoft Outlook username`.  Click on :guilabel:`Connect your Outlook
+account`. Odoo will state: :guilabel:`Outlook Token Valid` Now :guilabel:`Test and Confirm` the
+account. The account should be ready to receive email to the Odoo database.
+
+
+==================================================
+SECTION: email_communication.rst
+PATH: applications/general/email_communication.rst
+==================================================
+
+:show-content:
+
+==============================
+Communication in Odoo by email
+==============================
+
+Communication in Odoo related to records such as CRM opportunities, sales orders, invoices, ...
+have a discussion thread called **chatter**, often displayed on the right side of the record.
+
+On the chatter, you can send direct emails or Odoo notifications to the followers of a document
+(depending on their notification preferences), log internal notes, send WhatsApp messages or SMSes,
+and schedule activities.
+
+If a follower replies to a message, the reply updates the chatter, and Odoo relays it to the
+followers as a notification. All emails - outgoing and incoming - appear in the same chatter.
+
+.. _email-online-sh:
+
+Odoo Online and Odoo.sh users
+=============================
+
+On Odoo Online and Odoo.sh, outgoing and incoming emails work out of the box, **nothing needs to be
+done**. Everything is already configured on your subdomain.
+
+By default, outgoing emails use the following :ref:`notification email address
+<email-outbound-notifications>` `notifications@company-name.odoo.com`.
+
+.. _email-online-sh-domain:
+
+Using another domain
+--------------------
+
+If you prefer not to have outgoing emails sent from Odoo's subdomain `@company-name.odoo.com` but
+instead :ref:`from your own domain <email-outbound-custom-domain>`, **additional configuration will
+be necessary** on the domain and within Odoo. This introduces an extra layer of complexity and
+necessitates technical knowledge (mainly regarding DNS and mail protocols).
+
+By adding a domain and configuring the administration access rights, you can also access the
+:ref:`new domain alias <email-outbound-alias-domain>` page to configure the alias of your companies.
+If only one domain is configured, this domain will be shared by all companies on the database.
+
+If you want to keep using Odoo's mail server, you will have to :ref:`configure the SPF and DKIM
+<email-domain-spf>`.
+
+If :ref:`you want to use your own mail server <email-outbound-custom-domain-smtp-server>`, you will
+have to follow the mail server provider's specific documentation.
+
+For incoming emails, after adding your own domain, :ref:`replies from customers will come back to
+your domain <email-inbound-custom-domain>`, and you will need to use one of the three possible ways
+to get the emails back into Odoo (using either :ref:`incoming mail server
+<email-inbound-custom-domain-incoming-server>`, :ref:`redirection/forwarding
+<email-inbound-custom-domain-redirections>` or :ref:`DNS MX record
+<email-inbound-custom-domain-mx>`). Everything is covered in the :doc:`Manage inbound messages
+documentation <email_communication/email_servers_inbound>`.
+
+.. _email-on-premise:
+
+On-premise users
+================
+
+If you are on-premise, you will have to completely configure your outgoing and incoming emails:
+
+- For outgoing emails, you will need :ref:`to use an SMTP server and a custom domain
+  <email-outbound-custom-domain-odoo-server>`.
+- For incoming emails, set the frequency at which you fetch new emails low enough for responsiveness
+  but high enough in order not to stress your system or provider. Due to this reason and the
+  simplicity of this configuration, we usually advise on using incoming mail servers. To use an SMTP
+  server, check out the :ref:`"Use a custom domain for inbound messages" documentation
+  <email-inbound-custom-domain>`.
+
+.. _email-third-party-server:
+
+Using a third-party provider's mail server
+==========================================
+
+Odoo's documentation also covers several popular mail servers. As they require specific
+authorizations and configuration, they add a layer of complexity. For this reason, using Odoo's
+outgoing mail server is recommended.
+
+- :doc:`Outlook documentation <email_communication/azure_oauth>`
+- :doc:`Gmail documentation <email_communication/google_oauth>`
+- :doc:`Mailjet documentation <email_communication/mailjet_api>`
+
+.. note::
+   Every provider has its own limitations. Research the desired provider *before* configuring it.
+   For example, Outlook and Gmail might not be suitable for large marketing campaigns.
+
+.. seealso::
+   - :doc:`Activities <../essentials/activities>`
+   - :doc:`Discuss app <../productivity/discuss>`
+   - :doc:`Digest emails <companies/digest_emails>`
+   - :doc:`Email Marketing app <../marketing/email_marketing>`
+   - :doc:`Email templates <companies/email_template>`
+   - :ref:`Expense creation using an email alias <expenses/email_expense>`
+   - :ref:`Helpdesk ticket creation using an email alias <helpdesk/receiving_tickets/email-alias>`
+   - :ref:`Lead creation using an email alias <crm/configure_email_alias>`
+   - :ref:`Project task creation using an email alias <task_creation/email_alias>`
+   - :doc:`Technical mail gateway for on-premise users
+     <../../administration/on_premise/email_gateway>`
+   - :ref:`Technical start of Odoo database with an outgoing mail server configured from the
+     command-line interface <reference/cmdline/server/emails>`
+
+.. toctree::
+   :titlesonly:
+
+   email_communication/email_servers_inbound
+   email_communication/email_servers_outbound
+   email_communication/email_domain
+   email_communication/azure_oauth
+   email_communication/google_oauth
+   email_communication/mailjet_api
+   email_communication/faq
+
+
+==================================================
+SECTION: email_domain.rst
+PATH: applications/general/email_communication/email_domain.rst
+==================================================
+
+.. |nbsp| unicode:: 0xA0
+   :trim:
+
+============================================
+Configure DNS records to send emails in Odoo
+============================================
+
+This documentation presents three complementary authentication protocols (SPF, DKIM, and DMARC) used
+to prove the legitimacy of an email sender. Not complying with these protocols will greatly reduce
+chances of your emails to reach their destination.
+
+**Odoo Online** and **Odoo.sh** databases using the **default Odoo subdomain address** (e.g.,
+`\@company-name.odoo.com`) are pre-configured to **send authenticated emails** compliant with the
+SPF, DKIM, and DMARC protocols.
+
+If choosing to use a **custom domain** instead, **configuring SPF and DKIM records correctly is
+essential** to prevent emails from being quarantined as spam or not being delivered to recipients.
+
+If using :ref:`the default Odoo email server to send emails from a custom domain
+<email-outbound-custom-domain-odoo-server>`, the SPF and DKIM records must be configured as
+presented below. If using an outgoing email server, it is required to use the SPF and DKIM records
+specific to that email service and a custom domain.
+
+.. note::
+   Email service providers apply different rules to incoming emails. An email may be classified as
+   spam even if it passes the SPF and DKIM checks.
+
+.. _email-domain-spf:
+
+SPF (Sender Policy Framework)
+=============================
+
+The Sender Policy Framework (SPF) protocol allows the owner of a domain name to specify which
+servers are allowed to send emails from that domain. When a server receives an incoming email, it
+checks whether the IP address of the sending server is on the list of allowed IPs according to the
+sender's :abbr:`SPF (Sender Policy Framework)` record.
+
+In Odoo, the **SPF test is performed on the bounce address** defined under the :guilabel:`Alias
+Domain` field found under the database's :guilabel:`General Settings`. If using a custom domain as
+:guilabel:`Alias Domain`, it is necessary to configure it to be SPF-compliant.
+
+The SPF policy of a domain is set using a TXT record. The way to create or modify this record
+depends on the provider hosting the :abbr:`DNS (Domain Name System)` zone of the domain name.
+
+If the domain name does not yet have an SPF record, create one using the following input:
+
+.. code-block:: bash
+
+   v=spf1 include:_spf.odoo.com ~all
+
+If the domain name **already has an SPF record, the record must be updated**. Do not create a new
+one, as a domain must have only one SPF record.
+
+.. example::
+   If the TXT record is `v=spf1 include:_spf.google.com ~all`, edit it to add
+   `include:_spf.odoo.com`: `v=spf1 include:_spf.odoo.com include:_spf.google.com ~all`
+
+Check the SPF record using a tool like `MXToolbox SPF Record Check
+<https://mxtoolbox.com/spf.aspx>`_. The process to create or modify an SPF record depends on the
+provider hosting the DNS zone of the domain name. The :ref:`most common providers
+<email-domain-providers-documentation>` and their documentation are listed below.
+
+.. _email-domain-dkim:
+
+DKIM (DomainKeys Identified Mail)
+=================================
+
+The DomainKeys Identified Mail (DKIM) allows a user to authenticate emails with a digital signature.
+
+When sending an email, the Odoo email server includes a unique DKIM signature in the headers. The
+recipient's server decrypts this signature using the DKIM record in the database's domain name. If
+the signature and the key contained in the record match, it proves the message is authentic and has
+not been altered during transport.
+
+Enabling DKIM is **required** when sending emails **from a custom domain** using the Odoo email
+server.
+
+Add a CNAME record for domain
+-----------------------------
+
+To enable DKIM, add a canonical name (CNAME) record to the domain name system (DNS) zone of the
+domain name:
+
+.. code-block:: bash
+
+   odoo._domainkey IN CNAME odoo._domainkey.odoo.com.
+
+
+If the domain name is *company-name.com*, make sure to create a CNAME record where the CNAME record
+(key/name) is `odoo._domainkey.company-name.com`, and the canonical name (value/content) is
+`odoo._domainkey.odoo.com.`. For example, note the differences between each key/value in italics\:
+
+.. list-table:: Example CNAME record
+   :widths: 6 5 20 20
+   :header-rows: 0
+   :stub-columns: 1
+
+   * - Key
+     -
+     - odoo.\_domainkey
+     -
+   * - Value
+     -
+     - odoo.\_domainkey.\ *odoo.com.* |nbsp|
+     -
+   * -
+     - OR
+     - odoo.\_domainkey.\ *dbname*\ .odoo.com.
+     - ... where *dbname* is the name of the Odoo database.
+
+On most DNS platforms, the DNS provider adds the custom domain (e.g., *company-name.com*) by
+default. In this case, the key looks different while the value remains the same:
+
+.. list-table:: Example CNAME record with custom domain
+   :widths: 6 5 20 20
+   :header-rows: 0
+   :stub-columns: 1
+
+   * - Key
+     -
+     - odoo.\_domainkey.\ *company-name.com* |nbsp|
+     - ... where *company-name.com* is the custom domain.
+   * - Value
+     -
+     - odoo.\_domainkey.\ *odoo.com.* |nbsp|
+     -
+   * -
+     - OR
+     - odoo.\_domainkey.\ *dbname*\ .odoo.com.
+     - ... where *dbname* is the name of the Odoo database.
+
+.. note::
+   If the DNS provider does not add the custom domain by default, make sure to include it.
+
+Add a CNAME record for subdomain
+--------------------------------
+
+If there's a \ *subdomain* (e.g., *marketing* in *marketing*\ .company-name.com), add a CNAME record to include it
+for compliance as well:
+
+.. list-table:: Example CNAME record with subdomain
+   :widths: 6 5 20 20
+   :header-rows: 0
+   :stub-columns: 1
+
+   * - Key
+     -
+     - odoo.\_domainkey.\ *marketing* |nbsp|
+     - ... where *marketing* is the subdomain.
+   * -
+     - OR
+     - odoo.\_domainkey.marketing.\ *company-name.com*\ |nbsp|
+     - ... where *company-name.com* is the custom domain.
+   * - Value
+     -
+     - odoo.\_domainkey.\ *odoo.com.* |nbsp|
+     -
+   * -
+     - OR
+     - odoo.\_domainkey.\ *dbname*\ .odoo.com.
+     - ... where *dbname* is the name of the Odoo database.
+
+See DNS provider documentation
+------------------------------
+
+The way to create or modify a CNAME record depends on the provider hosting the DNS zone of the
+domain name. The :ref:`most common providers <email-domain-providers-documentation>` and their
+documentation are listed below.
+
+Check if the DKIM record is valid using a tool like `MXToolbox DKIM Record Lookup
+<https://mxtoolbox.com/dkim.aspx>`_. Enter `example.com:odoo` in the DKIM lookup tool, specifying
+that the selector being tested is *odoo* for the custom domain *example.com*.
+
+.. _email-domain-dmarc:
+
+DMARC (Domain-based Message Authentication, Reporting and Conformance)
+======================================================================
+
+The :abbr:`DMARC (Domain-based Message Authentication, Reporting, & Conformance)` record is a
+protocol that unifies :abbr:`SPF (Sender Policy Framework)` and :abbr:`DKIM (DomainKeys Identified
+Mail)`. The instructions contained in the DMARC record of a domain name tell the destination server
+what to do with an incoming email that fails the SPF and/or DKIM check.
+
+.. note::
+   The aim of this documentation is to help **understand the impact DMARC has on the deliverability
+   of emails**, rather than give precise instructions for creating a DMARC record. Refer to a
+   resource like `DMARC.org <https://dmarc.org/>`_ to set the DMARC record.
+
+There are three DMARC policies:
+
+- `p=none`
+- `p=quarantine`
+- `p=reject`
+
+`p=quarantine` and `p=reject` instruct the server that receives an email to quarantine that email or
+ignore it if the SPF or DKIM check fails.
+
+.. note::
+   **For the DMARC to pass, the DKIM or SPF check needs to pass** and the domains must be in
+   alignment. If the hosting type is Odoo Online, DKIM configuration on the sending domain is
+   required to pass the DMARC.
+
+Passing DMARC generally means that the email will be successfully delivered. However, it's important
+to note that **other factors like spam filters can still reject or quarantine a message**.
+
+`p=none` is used for the domain owner to receive reports about entities using their domain. It
+should not impact the deliverability.
+
+.. example::
+   :literal:`_dmarc IN TXT “v=DMARC1; p=none; rua=mailto:postmaster@example.com”` means that
+   aggregate DMARC reports will be sent to `postmaster\@example.com`.
+
+.. _email_domain/mail_config_common_providers:
+.. _email-domain-providers-documentation:
+
+SPF, DKIM and DMARC documentation of common providers
+=====================================================
+
+- `OVH DNS <https://docs.ovh.com/us/en/domains/web_hosting_how_to_edit_my_dns_zone/>`_
+- `GoDaddy TXT record <https://www.godaddy.com/help/add-a-txt-record-19232>`_
+- `GoDaddy SPF, DKIM, or DMARC records
+  <https://www.godaddy.com/help/set-up-spf-dkim-or-dmarc-records-for-my-hosting-email-40810>`_
+- `NameCheap
+  <https://www.namecheap.com/support/knowledgebase/article.aspx/317/2237/how-do-i-add-txtspfdkimdmarc-records-for-my-domain/>`_
+- `CloudFlare DNS <https://support.cloudflare.com/hc/en-us/articles/360019093151>`_
+- `Squarespace DNS records
+  <https://support.squarespace.com/hc/en-us/articles/360002101888-Adding-custom-DNS-records-to-your-Squarespace-managed-domain>`_
+- `Azure DNS <https://docs.microsoft.com/en-us/azure/dns/dns-getstarted-portal>`_
+
+To fully test the configuration, use the `Mail-Tester <https://www.mail-tester.com/>`_ tool, which
+gives a full overview of the content and configuration in one sent email. Mail-Tester can also be
+used to configure records for other, lesser-known providers.
+
+.. seealso::
+   - `Using Mail-Tester to set SPF Records for specific carriers
+     <https://www.mail-tester.com/spf/>`_
+   - `Magic Sheet - SPF, DKIM and DMARC configuration [PDF]
+     <https://drive.google.com/drive/folders/1TJIXQpdR0VN8UQx5JP7q7vFuAr3e1Q3r>`_
+
+
+==================================================
+SECTION: email_servers_inbound.rst
+PATH: applications/general/email_communication/email_servers_inbound.rst
+==================================================
+
+=======================
+Manage inbound messages
+=======================
+
+An inbound message is an email delivered to an Odoo database. Anyone can send an email to an email
+alias created in the database or reply to an email that was previously sent from the database based
+on the *reply-to* header.
+
+.. _email-inbound-aliases:
+
+Email aliases
+=============
+
+.. _email-inbound-aliases-model:
+
+Model specific aliases
+----------------------
+
+Some applications have their specific aliases (sales teams, helpdesk teams, projects, etc.). These
+aliases are used to:
+
+- Create a record when an email is sent directly to the alias,
+- Receive replies to an email initially sent from a record.
+
+.. example::
+
+   .. image:: email_servers_inbound/sales-team-alias-config.png
+      :alt: The local-part "info" is used for the alias of the sales team.
+
+   In the example displayed above, sending an email to `info@company-name.odoo.com` will create a
+   new opportunity or a new lead automatically assigned to the corresponding sales team. If an email
+   is sent from the chatter of an existing opportunity, the *reply-to* will be
+   `info@company-name.odoo.com`. The reply will be posted in the right chatter, according to the
+   *message-id* header.
+
+.. _email-inbound-aliases-catchall:
+
+Catchall
+--------
+
+If an application does not have an alias, a generic fallback alias is used: the catchall. An email
+sent from a chatter has a reply address set to this catchall alias. A reply sent to the catchall is
+posted to the right chatter thanks to the *message-id* header.
+
+By default, the local-part *catchall* will be used. Enable :ref:`developer-mode` and go to
+:menuselection:`Settings --> Technical --> Emails: Alias Domains` to access the configuration.
+
+An email to the catchall always needs to be a reply to a previous email sent from the database. If
+an email is sent directly to the catchall, the sender will receive the following message:
+
+.. image:: email_servers_inbound/direct-mail-to-catchall.png
+   :alt: Bounce email from "MAILER-DEAMON" explaining how to contact the database.
+
+.. note::
+   The email address `info@company-name.com` displayed in the screenshot above is the email address
+   set on the company. Upon entering the developer mode on a company profile, additional
+   configuration options (such as catchall and bounce) become readable. It can be modified by
+   clicking on the internal link of the Email Domain. It is generally not recommended to modify
+   these options unless specific needs dictate, as it will affect all replies to previously sent
+   emails.
+
+.. example::
+   An alias can be configured on a sales team in the CRM app. When a customer replies to an email
+   coming from the CRM app, the *reply-to* is `info@company-name.odoo.com`.
+
+   When an email is sent from the Contact app, the reply address is `catchall@company-name.odoo.com`
+   because there is no alias on the contact model.
+
+.. note::
+   It is advised to keep the local-part of the catchall and the bounce unchanged. If this value is
+   modified, previous emails sent from the database will still have the previous local-part values.
+   This could lead to replies not being correctly received in the database.
+
+.. _email-inbound-aliases-bounce:
+
+Bounce
+------
+
+In the same way the catchall alias is used to build the reply address, the bounce alias is used to
+build the *return-path* of the email. The *return-path* is used when emails cannot be delivered to
+the recipient and an error is returned to the sender.
+
+By default the name *bounce* will be used. Enable :ref:`developer-mode` and go to
+:menuselection:`Settings --> Technical --> Emails: Alias Domains` to access the configuration.
+
+.. note::
+   On Odoo Online, when using the default outgoing email server, the return-path address is forced
+   to the value `bounce@company-name.odoo.com` independently of the value set as bounce alias.
+
+When an error occurs, a notification is received and displayed in a red envelope in the chatter. In
+some cases, the red envelope can just contain a `no error` message, meaning there is an error that
+could not be handled by Odoo.
+
+A notification will also be displayed in the Discuss icon on the navigation bar.
+
+.. image:: email_servers_inbound/mail-error-notif-navbar.png
+   :alt: An email sent to a contact had an issue and the error is reported on the navbar.
+
+.. example::
+   If the email address of the recipient is incorrect, by clicking on the red envelope in the
+   chatter an error message containing the reason for the failure will be given.
+
+   .. image:: email_servers_inbound/red-envelope-info.png
+      :alt: An email sent to a wrong domain generates a bounce displayed as a red envelope.
+
+.. _email-inbound-default:
+
+Receive emails with Odoo's default configuration
+================================================
+
+On **Odoo Online** and **Odoo.sh**, the email alias, reply, and bounce addresses are pre-configured.
+These addresses use the alias domain automatically added to a standard database.
+
+.. example::
+   Assuming the database URL is `https://mydatabase.odoo.com`, the alias domain
+   `mydatabase.odoo.com` is automatically created. Catchall and bounce can be used and their address
+   is respectively `catchall@mydatabase.odoo.com`, and `bounce@mydatabase.odoo.com`.
+
+   If the CRM app is installed, and a sales team with the alias `info` is created, the
+   `info@mydatabase.odoo.com` address can be used immediately. The same goes for any other alias
+   created in other applications.
+
+The database domain is ready to be used to receive emails without any additional configuration.
+
+.. _email-inbound-multiple-subdomains:
+
+Use multiple Odoo subdomains
+============================
+
+On **Odoo Online**, the only Odoo subdomain is the one defined at the database creation.
+
+On **Odoo.sh**, it is possible to use several Odoo subdomains. In the settings of the branch,
+additional Odoo subdomains can be added as long as they are not used yet in another branch. These
+domains must then be added to the alias domains to be used by a company.
+
+.. image:: email_servers_inbound/custom-subdomain-sh.png
+   :alt: Setting up an Odoo subdomain on a branch.
+
+.. _email-inbound-custom-domain:
+
+Use a custom domain for inbound messages
+========================================
+
+The :ref:`alias domain <email-outbound-alias-domain>` must be selected in the general
+settings. If you have multiple companies, each one must be configured.
+
+.. image:: email_servers_inbound/alias-domain-settings.png
+   :alt: The alias domain in the general settings.
+
+All the aliases will use this custom domain. Replies on models for which an alias is configured
+are done to `[alias]@my-custom-domain.com`. Replies to other models are sent to the catchall through
+`catchall@my-custom-domain.com`.
+
+.. image:: email_servers_inbound/diagram-mail-custom-domain.png
+   :alt: Technical schema of mailing route when using a custom domain in Odoo.
+
+.. important::
+   If emails are sent using Odoo's email servers while using a custom domain, follow the
+   :ref:`"Using a custom domain with Odoo’s email server" instructions
+   <email-outbound-custom-domain-odoo-server>`.
+
+Since this custom domain is used, all emails using an alias (replies, bounces and direct
+sends) are sent to an address of the domain. They are thus delivered to the email server linked to the domain (MX record). To
+display them in the chatter or to create new records, it is necessary to retrieve these incoming
+emails in the Odoo database.
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Method
+     - Benefits
+     - Drawbacks
+   * - :ref:`Redirections <email-inbound-custom-domain-redirections>`
+     - Easy to set up, emails are directly sent to the database.
+     - Each alias of a database needs to be configured.
+   * - :ref:`Incoming mail servers <email-inbound-custom-domain-incoming-server>`
+     - Allows to keep a copy of the email in your mailbox (with IMAP).
+       Allows to create records in the chosen model.
+     - Depends on a CRON, meaning emails are not retrieved immediately in the database.
+       Each alias of a database needs to be configured.
+   * - :ref:`MX record <email-inbound-custom-domain-mx>`
+     - Only one record needs to be created to make all aliases work properly.
+     - Using a subdomain is required.
+       Requires advanced technical knowledge.
+
+.. important::
+   For **on-premise databases**, the redirection and the MX record methods also require configuring
+   the :doc:`mail gateway script <../../../../administration/on_premise/email_gateway>`. Going
+   through this script requires **advanced technical and infrastructure knowledge**.
+
+.. important::
+   Refer to your provider’s documentation for more detailed information on how to handle the methods
+   detailed below.
+
+.. _email-inbound-custom-domain-redirections:
+
+Redirections
+------------
+
+If the database is hosted on **Odoo Online** or **Odoo.sh**, using redirections is recommended. They
+allow messages to be received without delay in the database.
+
+.. warning::
+   When configuring email redirections with Microsoft 365 (Exchange Online), be aware that certain
+   technical limitations may affect your setup. Some users have reported that Microsoft 365 does not
+   support true redirection and only allows forwarding, which may not behave as needed for Odoo's
+   email routing.
+
+   For more information on Microsoft Exchange configuration, visit `Microsoft Learn
+   <https://learn.microsoft.com/en-us/exchange/exchange-online>`_.
+
+It is mandatory to redirect the catchall and bounce address to the Odoo subdomain of the database.
+Every other alias used must be redirected as well.
+
+.. example::
+   With one sales team, the following redirections are required:
+
+   - `catchall@company-name.com` → `catchall@company-name.odoo.com`
+   - `bounce@company-name.com` → `bounce@company-name.odoo.com`
+   - `info@company-name.com` → `info@company-name.odoo.com`
+
+.. important::
+   Some providers ask to validate the redirection by sending a link to the target email address.
+   This procedure is an issue for catchall and bounce since they are not used to create records.
+
+   #. Modify the catchall value on the mail alias domain. :ref:`developer-mode` must be enabled to
+      access this menu. For example, it can be changed from `catchall` to `temp-catchall`. This will
+      allow to use `catchall` as the local-part of another alias.
+   #. Open an app that uses an alias. For example, CRM contains aliases for each sales team. Set
+      `catchall` as the local-part of the alias of a sales team.
+   #. The validation email will create a record in the CRM app. The email sent will be visible in
+      the chatter, allowing you to validate the redirection.
+   #. Do not forget to change back the alias of the sales team and the catchall value on the mail
+      alias domain, just as they were before this procedure.
+
+.. note::
+   An alternative to redirections is **forwarding**. With forwarding, **the address forwarding the
+   email will be identified as the sender**, while with redirections, the original sender will
+   always remain.
+
+.. _email-inbound-custom-domain-incoming-server:
+
+Incoming mail servers
+---------------------
+
+As mentioned earlier, using redirections is the recommended method to receive emails in Odoo.
+However, it is also possible to set up incoming mail servers. Using this method means creating an
+incoming email server for each mailbox on your server, catchall, bounce, and every alias of the
+database, in order to fetch all incoming emails.
+
+.. warning::
+   Odoo's *Incoming Mail Servers* feature is designed for shared inboxes (e.g.,
+   `sales@yourcompany.com` or `support@yourcompany.com`) to route messages to team pipelines,
+   tickets, or documents.
+
+   Using personal email addresses (e.g., `mitchell.admin@yourcompany.com`) as incoming mail servers
+   is **not** recommended. Doing so can lead to increased security risks, unintended message
+   routing, privacy issues, and difficulties syncing replies correctly.
+
+Incoming mail servers are created by going to :menuselection:`Settings --> Technical --> Emails:
+Incoming Mail Servers`.
+
+.. important::
+   We recommend using the IMAP protocol over the POP protocol, as IMAP fetches all unread emails,
+   while POP fetches all the emails' history and then tags them as deleted in your mailbox.
+
+.. tip::
+   It is also possible to connect a mailbox through :doc:`Gmail with Google OAuth <google_oauth>` or
+   :doc:`Outlook with Microsoft Azure OAuth <azure_oauth>`.
+
+Regardless of the protocol chosen, emails are fetched using the *Mail: Fetchmail Service* scheduled
+action.
+
+Additionally, using an incoming mail server in Odoo gives the opportunity to create new records in a
+specified model. Each incoming mail server can create records in a different model.
+
+.. example::
+   Emails received on `task@company-name.com` are fetched by the Odoo database. All fetched emails will
+   create a new project task in the database.
+
+   .. image:: email_servers_inbound/incoming-mail-server.png
+      :alt: Technical schema of mailing route when using a custom domain in Odoo.
+
+.. _email-inbound-custom-domain-mx:
+
+MX record
+---------
+
+A third option is to create a MX record in your DNS zone which specifies the mail server managing
+emails sent to your domain. **Advanced technical knowledge is required.**
+
+.. important::
+   This configuration only works with a subdomain on the Odoo Online or Odoo.sh infrastructure
+   (e.g., `@mail.mydomain.com`)
+
+Below are presented some specifications depending on the hosting type:
+
+.. tabs::
+
+   .. group-tab:: Odoo Online
+
+      The custom subdomain must be added to your :doc:`Odoo Portal
+      <../../websites/website/configuration/domain_names>`.
+
+   .. group-tab:: Odoo.sh
+
+      The custom subdomain must be added to the :doc:`settings of the project
+      <../../../administration/odoo_sh/getting_started/settings>`:
+
+      .. image:: email_servers_inbound/custom-subdomain-sh.png
+         :alt: Adding a custom subdomain for mail to Odoo.sh project settings.
+
+.. _email-inbound-loops:
+
+Infinite email loops
+====================
+
+In some cases, infinite mailing loops can be created. Odoo provides some protection against such
+loops, ensuring the same sender cannot send too many emails **that would create records** to an
+alias in a specific time span.
+
+By default, an email address can send up to 20 emails in 120 minutes. If more emails are sent, they
+are blocked and the sender receives the following message:
+
+.. image:: email_servers_inbound/bounce-mail-loop.png
+   :alt: Bounce email received after attempting contact too many times an alias.
+
+To change the default behavior, enable :ref:`developer-mode`, then go to :menuselection:`Settings
+--> Technical --> Parameters: System Parameters` to add two parameters.
+
+- For the first parameter, enter `mail.gateway.loop.minutes` as the :guilabel:`Key` and choose a
+  number of minutes as the :guilabel:`Value` (`120` is the default behavior).
+- For the second parameter, enter `mail.gateway.loop.threshold` as the :guilabel:`Key` and choose a
+  number of emails as the :guilabel:`Value` (`20` is the default behavior).
+
+Allow alias domain system parameter
+===================================
+
+Incoming aliases are set in the Odoo database to create records by receiving incoming emails. To
+view aliases set in the Odoo database, first activate the :ref:`developer mode <developer-mode>`.
+Then, go to :menuselection:`Settings app --> Technical --> Aliases`.
+
+The following system parameter, `mail.catchall.domain.allowed`, set with allowed alias domain
+values, separated by commas, filters out correctly addressed emails to aliases. Setting the domains
+for which the alias can create a ticket, lead, opportunity, etc., eliminates false positives where
+email addresses with only the prefix alias, not the domain, are present.
+
+In some instances, matches have been made in the Odoo database when an email is received with the
+same alias prefix and a different domain on the incoming email address. This is true in the sender,
+recipient, and :abbr:`CC (Carbon Copy)` email addresses of an incoming email.
+
+.. example::
+   When Odoo receives emails with the `commercial` prefix alias in the sender, recipient, or
+   :abbr:`CC (Carbon Copy)` email addresses (e.g. commercial\@example.com), the database falsely
+   treats the email as the full `commercial` alias, with a different domain, and therefore, creates
+   a ticket/lead/opportunity/etc.
+
+To add the `mail.catchall.domain.allowed` system parameter, first, activate the :ref:`developer mode
+<developer-mode>`. Then, go to :menuselection:`Settings app --> Technical --> System Parameters`.
+Click :guilabel:`New`. Then, type in `mail.catchall.domain.allowed` for the :guilabel:`Key` field.
+
+Next, for the :guilabel:`Value` field, add the domains separated by commas. Manually
+:icon:`fa-cloud-upload` :guilabel:`(Save)`, and the system parameter takes immediate effect.
+
+.. image:: email_servers_inbound/allowed-domain.png
+   :alt: mail.catchall.domain.allowed system parameter set.
+
+Local-part based incoming detection
+===================================
+
+When creating a new alias, there is an option to enable :guilabel:`Local-part based incoming
+detection`. If enabled, Odoo only requires the local-part to match for routing an incoming email. If
+this feature is turned off, Odoo requires the whole email address to match for routing an incoming
+email.
+
+
+==================================================
+SECTION: email_servers_outbound.rst
+PATH: applications/general/email_communication/email_servers_outbound.rst
+==================================================
+
+========================
+Manage outbound messages
+========================
+
+.. _email-outbound-default:
+
+Sending emails with Odoo's default configuration
+================================================
+
+On **Odoo Online** and **Odoo.sh**, sending and receiving emails works out of the box. No
+configuration is required.
+
+When a database is created, the subdomain `company-name.odoo.com` is used to send and receive
+emails. The deliverability is optimized for this subdomain as it uses Odoo’s DNS configuration.
+
+.. example::
+   If the database subdomain is `company-name.odoo.com` and all mailing configurations are the
+   default ones, all emails will be sent from `notifications@company-name.odoo.com`.
+
+.. _email-outbound-default-from-filtering:
+
+This configuration is handled by the system parameter `mail.default.from_filter`.
+In case where the sender's domain do not match the value of this parameter, the notification address
+is used instead. Multiple values can be defined in this system parameter: comma-separated, domains
+or full email addresses are all allowed. Once an :ref:`outgoing mail server is configured
+<email-outbound-different-servers-personalized>`, the system parameter is no longer considered
+and the value used is the :ref:`FROM filtering
+<email-outbound-different-servers-personalized-from-filtering>` of the mail server.
+
+.. image:: email_servers_outbound/diagram-inbound-mailing-method.png
+   :alt: Odoo’s default outbound messages configuration.
+
+Emails are sent with `catchall@company-name.odoo.com` as the *reply-to* address. In addition,
+delivery errors are sent to `bounce@company-name.odoo.com`.
+
+.. note::
+   The catchall, bounce, and notification addresses do not work like other aliases. They do not have
+   the vocation to create records in a database. Emails sent to an alias are automatically routed
+   and will reply to an existing and linked record or will create a new one in the database.
+
+.. _email-outbound-custom-domain:
+
+Using a custom domain to send emails
+====================================
+
+The database can be configured to use a custom domain, in which case all default email addresses are
+built using the custom domain. If the custom domain is `company-name.com`, the sender address will
+be `notifications@company-name.com`, the *reply-to* address `catchall@company-name.com`, and the
+*bounce* address `bounce@company-name.com`. The custom domain can be utilized when sending emails
+either with Odoo’s email servers or an external one.
+
+This section assumes ownership of a custom domain. If not, a custom domain must be purchased from a
+domain registrar such as GoDaddy, Namecheap, or any alternative provider.
+
+.. seealso::
+   `Magic Sheet - Email domain name configuration [PDF]
+   <https://drive.google.com/drive/folders/1cW3watvBO4h190rz-a08AshUepVzDeg5>`_
+
+.. _email-outbound-custom-domain-odoo-server:
+
+Using a custom domain with Odoo’s email server
+----------------------------------------------
+
+On **Odoo Online** or **Odoo.sh**, some configurations are mandatory in the custom domain's DNS to
+ensure good deliverability.
+
+.. warning::
+   Most of the configuration will be done on the domain provider’s side, and it might require some
+   configuration on the mail server itself. **Some technical knowledge is required.**
+
+The first step is to configure the :ref:`SPF <email-domain-spf>` and :ref:`DKIM <email-domain-dkim>`
+to be compliant with Odoo’s mail server.
+
+Next, the custom domain must be set as the alias domain of a company. Select the company, open the
+:guilabel:`Settings`, and add the custom domain under the :guilabel:`Alias Domain` field.
+
+After adding the alias domain, click the :icon:`oi-arrow-right` (:guilabel:`internal link`) icon to
+assign more companies to the custom domain if needed. Enable the :ref:`developer-mode` mode to
+modify the default aliases if desired:
+
+- :guilabel:`Bounce Alias`: the mailbox used to catch delivery errors and populate the :ref:`red
+  envelope <email-issues-outgoing-delivery-failure>` on the corresponding message.
+- :guilabel:`Catchall Alias`: the default mailbox used to centralize all replies.
+- :guilabel:`Default From Alias`: the default sender address.
+
+.. note::
+   At the creation of the first alias domain, all companies will use it. If you create a new
+   company, the alias domain automatically set is the one with the lowest priority (ad displayed on
+   the alias domain list in :ref:`developer-mode`).
+
+All email aliases (e.g., related to CRM or Helpdesk teams) must have their corresponding mailbox in
+the custom domain mail server.
+
+.. image:: email_servers_outbound/diagram-owned-domain-odoo-server.png
+   :alt: Technical schema of external mail server configuration with Odoo.
+
+To receive emails in the Odoo database within the corresponding chatter (CRM, invoices, sales
+orders, etc.), one of these three methods must be used:
+
+- :ref:`Redirections/forwarding <email-inbound-custom-domain-redirections>`,
+- :ref:`Incoming mail servers <email-inbound-custom-domain-incoming-server>`,
+- :ref:`MX record <email-inbound-custom-domain-mx>` (requires advanced technical knowledge)
+
+Using a custom domain implies that specific :ref:`local-parts
+<email-outbound-custom-domain-smtp-server-local-part>` might be used by Odoo to send emails.
+
+.. _email-outbound-custom-domain-smtp-server:
+
+Sending emails with an external SMTP server
+-------------------------------------------
+
+.. note::
+   If utilizing your own outgoing mail server, it must be paired with your own domain, as updating
+   the DNS of an Odoo subdomain is not feasible.
+
+To add an external SMTP server in Odoo, open :guilabel:`Settings`, and enable the :guilabel:`Use
+Custom Email Servers` option found under the :guilabel:`Emails` section. Then, click
+:guilabel:`Save` at the top of the page to save the changes.
+
+Returning to the :guilabel:`Emails` section, click :guilabel:`Outgoing Email Servers`, then `New` to
+create an outgoing mail server record. Most fields are the common parameters used to set up a
+connection to an SMTP server; use the values provided by your email provider.
+
+Once completed, click :guilabel:`Test Connection`. Note that a successful test connection does not
+confirm that the email will go out as some restriction might remain on the provider side, thus, it
+is recommended to consult your provider’s documentation.
+
+.. _email-outbound-custom-domain-smtp-server-local-part:
+
+Local-part values
+~~~~~~~~~~~~~~~~~
+
+Below are presented the different local-part values that can be used by Odoo to send emails. It
+might be required to whitelist them in your mail server:
+
+- The Alias Domain Bounce Alias (default value = `bounce`),
+- The Alias Domain Default From (default value = `notifications`),
+- The default admin address `admin@company-name.odoo.com` or, if changed, the new value),
+- The default Odoobot address `odoobot@company-name.odoo.com` or, if changed, the new value),
+- The specific FROM defined on an email marketing campaign,
+- The specific FROM that can be defined in an email template.
+
+.. seealso::
+   - :doc:`google_oauth`
+   - :doc:`azure_oauth`
+
+.. _email-outbound-different-servers:
+
+Setting up different servers for transactional and mass emails
+==============================================================
+
+.. _email-outbound-different-servers-personalized:
+
+Personalized mail servers
+-------------------------
+
+Transactional emails and mass mailings can be sent using separate email servers in Odoo. Doing so
+means day-to-day emails, quotations, or invoices sent to clients will be handled as *transactional
+emails*. *Mass mailing emails*, including the sending of batches of invoices or quotations, will be
+managed by the Marketing Automation or Email Marketing application.
+
+.. example::
+   You can use services like Gmail, Amazon SES, or Brevo for transactional emails, and services like
+   Mailgun, Sendgrid, or Mailjet for mass mailings.
+
+First, activate the :ref:`developer-mode` and go to :menuselection:`Settings --> Technical -->
+Email: Outgoing Mail Servers`. There, add two outgoing email server records, one for the
+transactional emails server and one for the mass mailings server. Enter a lower :guilabel:`Priority`
+value for the transactional server (e.g., `1`) over the mass mailings server (e.g., `2`) so
+transactional emails are given priority.
+
+.. image:: email_servers_outbound/split-transaction-massmail-mail-servers.png
+   :alt: Example of split between transaction and mass mailing mail servers.
+
+Now, go to :menuselection:`Email Marketing --> Configuration --> Settings`, enable
+:guilabel:`Dedicated Server`, and select the appropriate email server. Odoo uses the server with the
+lowest priority value for transactional emails, and the server selected here for mass mailings.
+
+.. image:: email_servers_outbound/dedicated-mass-mail-server.png
+   :alt: Dedicated mail server on Email Marketing app settings.
+
+.. _email-outbound-different-servers-personalized-from-filtering:
+
+FROM filtering
+~~~~~~~~~~~~~~
+
+.. important::
+   It’s **highly recommended** to configure the FROM Filtering on the outgoing mail servers as per
+   the instructions of your provider.
+
+The :guilabel:`FROM Filtering` field allows for the use of a specific outgoing email server
+depending on the *From* email address or domain that Odoo is sending on behalf of. The **value must
+be a domain or a complete address** that matches the sender’s email address and is trusted on the
+outgoing mail server provider's side.
+
+If FROM filtering is not used, emails will go out using the notification address.
+
+.. warning::
+   Some outgoing mail servers require a specific configuration of the FROM filter.
+
+When an email is sent from Odoo, the following sequence is used to choose the outgoing email server:
+
+- First, Odoo searches for a server that has the same FROM filtering value as the From value (i.e.,
+  email address) defined in the outgoing email. This configuration is ideal if all users of a
+  company share the same domain but have different local-parts.
+
+.. example::
+   If the sender's email address is `test@example.com`, only an email server having a FROM filtering
+   value equal to `test@example.com` or `example.com` can be used.
+
+- If no server is found based on the first criteria, Odoo looks for the first server without a FROM
+  filtering value set. The email will be overridden with the notification address.
+
+- If no server is found based on the second criteria, Odoo uses the first server, and the email will
+  be overridden with the notification address.
+
+.. note::
+   To determine which server is first, Odoo uses the priority value (the lower the value is, the
+   higher the priority is). Failing to do so, the first server is determined by the servers' names,
+   using alphabetical order.
+
+- If there is no mail server, Odoo relies on the :ref:`system parameter
+  <email-outbound-default-from-filtering>` value.
+
+It is also possible to use Odoo's mail server for transactional emails in addition to mass mailings.
+
+.. _email-outbound-different-servers-external-odoo:
+
+Using an external email server and Odoo’s default server
+--------------------------------------------------------
+
+On Odoo Online and Odoo.sh, databases are started with Odoo's SMTP server. If no outgoing mail
+server is set, the default Odoo's SMTP server will be used.
+
+.. image:: email_servers_outbound/command-line-interface-option-mail-server.png
+   :alt: Adding a mail server using the Odoo's mail server with the CLI authentication.
+
+.. example::
+   If an outgoing mail server is used simultaneously with Odoo’s default server (CLI), the FROM
+   filter of the outgoing mail server must contain a custom domain, and the FROM filter of the CLI
+   must contain Odoo’s subdomain. If there is no FROM filtering, the email will go out using the
+   notification address.
+
+.. image:: email_servers_outbound/split-mail-servers.png
+   :alt: Splitting of Odoo mail server for transactional emails and Mail server for Mass mailing.
+
+.. note::
+   On Odoo Online, the command line interface is equivalent to the default Odoo mail server, using
+   the same limit as if there was no outgoing mail server in place.
+
+.. tip::
+   On Odoo Online, the page also shows your daily email usage and your daily limit. On Odoo.sh, you
+   need to check on the monitor page the number of outgoing emails that were sent.
+
+.. note::
+   On Odoo.sh, to use the command-line interface, an outgoing mail server can be configured on the
+   configuration file.
+
+.. warning::
+   Odoo’s mail server is meant for transactional emails and small-scale marketing campaigns. The
+   :ref:`daily limit <email-issues-outgoing-delivery-failure-messages-limit>` depends on the
+   database type and the applications used.
+
+.. _email-outbound-custom-domain-external-server:
+
+Using a custom domain with an external email server
+===================================================
+
+Similar to the :ref:`previous chapter <email-outbound-different-servers-external-odoo>`, proper
+configuration might be needed to ensure that the external email server is allowed to send emails
+using your custom domain. Refer to your provider’s documentation to properly set up the relevant
+records (SPF, DKIM, and DMARC). A list of the :ref:`most common providers is available
+<email-domain-providers-documentation>`.
+
+.. note::
+   DNS configuration is required when you use your own domain. If an external outgoing mail server
+   is used, configuring the records as described in the :doc:`Odoo DNS configuration for our mail
+   servers documentation <email_domain>` **will not have the desired effect**, as it is independent
+   of Odoo when using a custom email server. Odoo does not allow the configuration of Odoo's
+   subdomain.
+
+.. _email-outbound-port-restriction:
+
+Port restriction
+================
+
+Port 25 is blocked for security reasons on Odoo Online and Odoo.sh. Try using port 465, 587, or 2525
+instead.
+
+.. _email-outbound-alias-domain:
+
+Alias domain
+============
+
+The catchall domain is company-specific. By default, all companies share Odoo’s subdomain (e.g.,
+`company-name.odoo.com`), but each company may have its own custom email domain.
+
+When the :ref:`developer-mode` is activated, the alias domain options are available by going to
+:menuselection:`Settings --> Technical --> Email: Alias Domains`.
+
+.. warning::
+   Any modification of the alias domain must be done very carefully. If one of the aliases (bounce,
+   catchall, default from) is changed, all previous emails that are not properly redirected to the
+   new aliases will be lost.
+
+The :guilabel:`Default From Alias` field can be filled with a local-part of the email address (by
+default `notifications`) or a full email address. Configure it to determine the `FROM` header of
+your emails. If a full email address is used, all outgoing emails will be overwritten with this
+address.
+
+.. _email-outbound-notifications:
+
+Notification system
+===================
+
+When an email is sent from the chatter, customers can reply directly to it. If a customer replies
+directly to an email, the answer is logged in the same chatter, thus functioning as a message thread
+related to the record.
+
+Upon receiving the reply, Odoo then uses the subscribed followers (based on the subscribed subtypes)
+to send them a notification by email, or in the Odoo inbox, depending on the user’s preferences.
+
+.. example::
+   If a customer with the email address `“Mary” <mary@customer.example.com>` makes a direct reply to
+   an email coming from the Odoo database, Odoo's default behavior is to redistribute the email's
+   content to all other followers within the thread.
+
+   As Mary’s domain does not belong to the alias domain, Odoo overrides the email address and uses
+   the notification email address to notify the followers. This override depends on the
+   configuration done in the database. By default, on Odoo Online and Odoo.sh, the email `FROM`
+   address will be overridden with the value `notifications@company-name.odoo.com` instead of
+   `mary@customer.example.com`.
+
+   The address is constructed using the name of the sender and
+   `{alias domain, default from alias}`@`{alias domain, domain name}`, by default,
+   `notifications@company-name.odoo.com`.
+
+.. _email-outbound-unique-address:
+
+Using a unique email address for all outgoing emails
+====================================================
+
+To force the email address from which emails are sent, activate the :ref:`developer-mode`, and go to
+:menuselection:`Settings --> Technical --> Email: Alias Domains`. On the :guilabel:`Default From
+Alias`, use the local-part or a complete email address as the value.
+
+.. warning::
+   If a **complete address** is used as the :guilabel:`Default From Alias` value, **all** outgoing
+   emails will be overwritten by this address.
+
+
+==================================================
+SECTION: faq.rst
+PATH: applications/general/email_communication/faq.rst
+==================================================
+
+====================================
+Common emailing issues and solutions
+====================================
+
+This page lists the most common emailing issues and their solutions.
+
+.. _email-issues-provider:
+
+Odoo is not an email provider
+=============================
+
+Odoo does not function like a classic email inbox, such as Gmail, Outlook, Yahoo, etc.
+
+While Odoo uses emails as a way to notify and communicate with users/customers, it is, by design,
+not a replacement for a dedicated email server. Therefore, it might not behave in the expected way
+when compared to a traditional email inbox.
+
+The main differences are the following:
+
+- By default, once a notification or transactional email (quote, invoice, direct message to a
+  contact) is sent out successfully, the email object is deleted. The email message's content lives
+  in the chatter of the related record. It prevents cluttering the database with multiple copies of
+  the content of the same email (when sent to multiple recipients) if the content is already present
+  in the chatter.
+- There is no concept of (blind) carbon copy ([B]CC). Odoo uses the concept of *followers* added to
+  a chatter to automatically decide when and how :ref:`a contact is notified
+  <email-outbound-notifications>` or receives a copy of an email.
+- Incoming emails are handled by checking if the *TO* email address is a valid email address in the
+  Odoo database or, in case of a reply email, if there is a reference in the email header that
+  matches a message sent from the Odoo database. All other emails will be bounced and **not**
+  temporarily parked in a spam or quarantine folder. In other words, any email unrelated to an Odoo
+  database is lost.
+
+.. _email-issues-outgoing:
+
+Outgoing emails
+===============
+
+.. _email-issues-outgoing-admin-address:
+
+Changing the email address of the admin user account
+----------------------------------------------------
+
+When an Odoo database is created, the main admin account is assigned a placeholder email address. It
+is recommended to **replace the admin email address** with a valid email address to prevent outgoing
+email issues.
+
+To do so, on the admin account, click the user icon, click :guilabel:`My Profile` (or
+:guilabel:`Preferences`), and update the :guilabel:`Email` field found under the
+:guilabel:`Preferences` tab. Either use any other email address or use your Odoo subdomain (e.g.,
+`company-name.odoo.com`) and `admin` for the local-part (e.g., `admin@company-name.odoo.com`).
+
+.. _email-issues-outgoing-delivery-failure:
+
+Delivery failure
+----------------
+
+When a message is sent, an :icon:`fa-envelope-o` :guilabel:`(envelope)` icon is displayed in the
+chatter. The icon turns red when delivery has failed for at least one recipient.
+
+.. image:: faq/red-envelope.png
+   :alt: Red envelope icon displayed in the chatter.
+
+Left-click the envelope to display information about the delivery, and, if possible, the relevant
+:ref:`error messages <email-issues-outgoing-delivery-failure-messages>`.
+
+.. image:: faq/sending-failures.png
+   :alt: Example of a sending failure.
+
+Click :guilabel:`See Error Details` to get extra information for the fail reason, **if** Odoo was
+able to process the original error or bounce email.
+
+Click :guilabel:`Send & close` to retry sending the email to all **toggled-on**
+(:icon:`fa-toggle-on`) recipients under the :guilabel:`Try Again` column. All **toggled-off**
+(:icon:`fa-toggle-off`) recipients will be ignored.
+
+Click :guilabel:`Ignore all` to ignore all currently failing emails and turn the envelope icon from
+red to white.
+
+Unsent emails also appear in the Odoo email queue. To access it, activate the :ref:`developer mode
+<developer-mode>` and go to :menuselection:`Settings --> Technical --> Email: Emails`.
+
+.. image:: faq/technical-menu-email-delivery-failed.png
+   :alt: Example of the technical email queue view.
+
+Failed emails display the :guilabel:`Delivery Failed` status. Click :guilabel:`Retry` to put a
+failed email in the email queue again. It will then appear with the :guilabel:`Outgoing` status. The
+email will be sent again the next time the scheduled action for the email queue runs.
+
+Optionally, queued emails can be sent immediately by clicking :guilabel:`Send Now`. Click
+:guilabel:`Cancel Email` to remove it from the email queue.
+
+.. note::
+   Sent emails are periodically cleaned from the queue. This is controlled by the *Auto-Vacuum*
+   scheduled action that cleans redundant data on your Odoo database.
+
+.. _email-issues-outgoing-delivery-failure-messages:
+
+Common error messages
+~~~~~~~~~~~~~~~~~~~~~
+
+.. _email-issues-outgoing-delivery-failure-messages-limit:
+
+Daily limit reached
+*******************
+
+.. image:: faq/email-limit.png
+   :alt: Email limit reached warning.
+
+Odoo limits the number of emails that can be sent from an Odoo Online database. Most email service
+providers (e.g., Google, Yahoo, etc.) will blacklist Odoo's server IP if Odoo's email server is
+sending too many emails to addresses that do not exist or are no longer valid. It also applies to
+unsolicited spam emails sent through an Odoo database.
+
+The default daily email limit varies between **5 and 200 emails**. The exact limit is depends on
+several factors (subject to change):
+
+- Type of database subscription (one app free, trial, paying subscription)
+- Apps installed (i.e., Email Marketing, Marketing Automation)
+- If a database migration is ongoing
+
+If the daily limit is reached, you can:
+
+- Contact :ref:`Odoo Support <email-issues-support>` to increase your email quota. The following factors
+  will be taken into account:
+
+  #. Numbers of users on the database
+  #. Apps installed
+  #. Bounce rate (the percentage of email addresses that did not receive emails because they were
+     returned by an email server on their way to the final recipient).
+  #. Whether your :ref:`email aliases are correctly set up and use the appropriate custom domains
+     <email-outbound-alias-domain>`.
+
+     .. tip::
+        When using a custom domain, verify that :ref:`SPF <email-domain-spf>`, :ref:`DKIM
+        <email-domain-dkim>`, and :ref:`DMARC <email-domain-dmarc>` are correctly configured so that
+        :ref:`Odoo's email servers are allowed to send emails on your custom domain's behalf
+        <email-outbound-custom-domain-odoo-server>`.
+
+- :doc:`Use an external outgoing email server <../email_communication>` to be independent of Odoo's
+  email limit.
+- Wait until the next day, and retry sending the email. To do so, activate the :ref:`developer mode
+  <developer-mode>`, go to :menuselection:`Settings --> Technical --> Email: Emails`, and click
+  :guilabel:`Retry` next to the unsent email.
+
+.. important::
+   The daily email limit counts every email leaving your Odoo database, triggered either manually
+   or automatically. By default, any internal message, notification, logged note, etc., counts as an
+   email if it notifies someone via email. This can be mitigated by receiving :ref:`notifications in
+   Odoo <discuss_app/notification_preferences>` instead of by email.
+
+.. _email-issues-outgoing-delivery-failure-messages-smtp:
+
+SMTP error
+**********
+
+`Simple Mail Transport Protocol (SMTP)
+<https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol>`_ is a standard used to transmit
+emails between email servers and/or email clients.
+
+If you use :ref:`an external STMP server to send emails <email-outbound-custom-domain-smtp-server>`,
+a standard set of `SMTP error codes exists
+<https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes#Common_status_codes>`_. While the
+code numbers are not specific to Odoo, the exact content of the error message might vary from email
+server to email server.
+
+.. example::
+   A 550 SMTP permanent delivery error from sendgrid.com:
+
+   .. code-block:: text
+
+      Mail Delivery Failed
+      Mail delivery failed via SMTP server 'None'.
+      SMTPDataError: 550
+      The from address does not match a verified Sender Identity. Mail cannot be sent until this
+      error is resolved. Visit https://sendgrid.com/docs/for-developers/sending-email/sender-identity/
+      to see the Sender Identity requirements
+
+   The error message indicates that you tried sending an email from an unverified email address.
+   Investigating the outgoing email server configuration or the default *FROM* address of your
+   database is a good starting point to troubleshoot the issue, and verify that you whitelisted the
+   email address on the side of sendgrid.com.
+
+Usually, inputting the error message content in a Google search can yield information on what the
+root cause might be and how to correct the issue.
+
+If the issue cannot be resolved and keeps occurring, contact :ref:`Odoo Support
+<email-issues-support>`.
+
+.. _email-issues-outgoing-delivery-failure-messages-no-error:
+
+No error populated
+******************
+
+Odoo is not always capable of providing information on the reason a delivery failed. The different
+email providers implement their own policy on bounced emails, and it is not always possible for Odoo
+to interpret it correctly.
+
+If there is a recurring problem with the same customer or the same domain, contact :ref:`Odoo
+Support <email-issues-support>`.
+
+.. note::
+   One of the most common reasons for an email failing to be sent with no error message is related
+   to the :ref:`SPF <email-domain-spf>` or :ref:`DKIM <email-domain-dkim>` configuration. Also,
+   verify that the implemented email notification setup is adapted to your business needs. See the
+   :doc:`Communication in Odoo by email documentation <../email_communication>` for more
+   information.
+
+.. _email-issues-outgoing-execution-time:
+
+Execution time
+--------------
+
+The exact time of an email is sent is handled by a system utility *cron* (scheduled action) that can
+be used to schedule tasks to run automatically at predetermined intervals. Odoo uses this approach
+to send emails that are considered "not urgent" (i.e., newsletters formats such as mass mailing,
+marketing automation, and events). This avoids cluttering the mail servers and, instead, prioritizes
+individual communication.
+
+.. spoiler:: What is a cron?
+
+   A cron is an action that Odoo runs in the background to execute particular code to complete a
+   task. Odoo also creates cron triggers in certain workflows that can trigger a scheduled action
+   earlier than its scheduled date. Running a scheduled action manually or changing its frequency
+   is generally not recommended, as it might create errors or break specific workflows.
+
+By default, for the normal email queue, the :guilabel:`Mail: Email Queue Manager` cron runs every 60
+minutes. The lowest running interval for a cron is 5 minutes. Odoo recommends an interval of 15
+minutes to ensure proper operation. If the interval is too short, not all emails may be processed,
+which may cause the cron to timeout.
+
+Emails that are considered urgent (from one person to another, such as sales orders, invoices,
+purchase orders, etc.) are sent immediately. They do not show up under :menuselection:`Settings -->
+Technical --> Email: Emails`, unless their delivery fails.
+
+.. image:: faq/email-marketing-asap-notice.png
+   :alt: Example of sending information header when a mailing campaign is queued.
+
+Email campaigns are sent as soon as possible (after clicking the :guilabel:`Send` button) or at a
+scheduled time (after clicking the :guilabel:`Schedule` button).
+
+For the email marketing queue, the :guilabel:`Mail Marketing: Process queue` cron runs once a day,
+but will be **automatically triggered early** if a campaign is scheduled outside of this default
+frequency. If a mailing list contains a large number of recipients, triggering the cron manually
+multiple times is **not recommended**, as it will not accelerate the processing time and might
+create errors.
+
+.. tip::
+   To edit crons, enable the :ref:`developer mode <developer-mode>` and go to
+   :menuselection:`Settings --> Technical --> Automation: Scheduled Actions`.
+
+.. seealso::
+   For more information about crons when using Odoo.sh, check out :doc:`Odoo.sh frequent technical
+   questions <../../../administration/odoo_sh/advanced/frequent_technical_questions>`.
+
+.. _email-issues-outgoing-execution-time-campaigns:
+
+Email Marketing campaigns stuck in the queue
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If multiple Email Marketing campaigns are put in the queue, they are processed in chronological
+order based on their creation date.
+
+.. example::
+   If there are three campaigns: Campaign_1 (created 1st of January), Campaign_2 (created 2nd of
+   January), and Campaign_3 (created 3rd of January), they are put in the queue by clicking
+   :guilabel:`Send` on all three of them.
+
+   .. image:: faq/email-marketing-order-queue-example.png
+      :alt: Example of three email marketing campaigns.
+
+   The cron will try to process Campaign_1, then Campaign_2, and finally Campaign_3. It will not
+   start processing Campaign_2 until it finishes processing Campaign_1.
+
+   If an email campaign never leaves the queue, there might be an issue with the campaign at the top
+   of the queue. To troubleshoot, we could remove Campaign_1 from the queue by clicking the
+   :guilabel:`Cancel` button, and see if the two other campaigns are sent. Then we could try to fix
+   Campaign_1 or contact :ref:`Odoo Support <email-issues-support>`.
+
+.. _email-issues-incoming:
+
+Incoming emails
+===============
+
+When there is an issue with incoming emails, there might not be an indication, per se, in Odoo. It
+is the sending email client, who tries to contact a database, that will get a bounce message (most
+of the time a :guilabel:`550: mailbox unavailable` error message).
+
+.. _email-issues-incoming-not-received:
+
+Email is not received
+---------------------
+
+.. tabs::
+
+   .. tab:: Odoo Online
+
+      Contact :ref:`Odoo Support <email-issues-support>` if there is a recurring issue with the same
+      client or domain.
+
+   .. tab:: Odoo.sh
+
+      You can use database logs to understand and fix issues. Logs are a stored collection of all
+      the tasks completed in a database. They are a text-only representation, complete with
+      timestamps of every action taken on the Odoo database. This can be helpful to track emails
+      leaving the database. Sending failures can also be seen by logs when they indicate that the
+      message tried to send repeatedly. Logs show every action to the email servers from the
+      database.
+
+      Live logs are located in the :file:`~/logs/` folder (accessed by the command line or on the
+      Odoo.sh dashboard). Log files are created everyday at 5:00 AM (UTC).
+
+      .. tip::
+         The two most recent files, for the current day and the previous one, are named
+         :file:`odoo.log` and :file:`odoo.log.1`.
+
+         Log files for older dates are named using their dates and are compressed. Use the commands
+         :command:`grep` and :command:`zgrep` (for the compressed ones) to search through the files.
+
+      .. seealso::
+         For more information on logs and how to access them via the Odoo.sh dashboard, refer to the
+         :ref:`Odoo.sh logs documentation <odoo-sh/branches/tabs/logs>`.
+
+         For more information on accessing logs via the command line, refer to the :ref:`developer
+         logging documentation <reference/cmdline/server/logging>`.
+
+.. _email-issues-support:
+
+Information for Odoo Support
+============================
+
+Here is a list of helpful information to include when reaching out to `Odoo Support
+<https://www.odoo.com/help>`_:
+
+#. An export of the full email from the inbox. These are usually in `.eml` or `.msg` file formats
+   containing technical information required for an investigation. The exact process to download the
+   file depends on your third-party email provider.
+
+   .. seealso::
+      - `Gmail Help Center: Trace an email with its full header
+        <https://support.google.com/mail/answer/29436>`_
+      - `Microsoft Support: View internet message headers in Outlook <https://support.microsoft.com/en-us/office/view-internet-message-headers-in-outlook-cd039382-dc6e-4264-ac74-c048563d212c#tab=Web>`_
+
+   When using a local email software (e.g., Thunderbird, Apple Mail, Outlook, etc.) to synchronize
+   emails, it is usually possible to export the local copies of emails as EML/MSG files. Refer to
+   the documentation of the software used for more information.
+
+   .. tip::
+      If possible, the EML/MSG file should be based on the original email that was sent and is
+      failing or is causing issues.
+
+      For **incoming emails**: if possible contact the original email sender and request an EML/MSG
+      copy of the original email. Sending a copy of the original email (forwarded) only contains
+      partial information related to the troubleshooting.
+
+      For **outgoing emails**: either provide the EML/MSG of the email or specify what record in the
+      database is affected (e.g., sales order number, contact name, invoice number) and the
+      date/time when the email was sent (e.g., email sent on the 10th January 2024 11:45 AM Central
+      European Time).
+
+#. An explanation of the exact flow that is being followed to normally receive those emails in Odoo.
+   Try to answer the following questions:
+
+   - Is this a notification message from a reply being received in Odoo?
+   - Is this a message being sent from the Odoo database?
+   - Is there an incoming email server being used, or is the email being redirected/forwarded
+     through a custom email server or provider?
+   - Is there an example of an email that has been correctly forwarded?
+   - Have you changed any email-related settings recently? Did it stop working after those changes?
+
+#. An answer to the following questions:
+
+   - Is it a generic issue or is it specific to a use case? If specific to a use case, which one?
+   - Is it working as expected? In case the email is sent using Odoo, the bounce email should reach
+     the Odoo database and display the :ref:`red envelope <email-issues-outgoing-delivery-failure>`.
+
+
+==================================================
+SECTION: google_oauth.rst
+PATH: applications/general/email_communication/google_oauth.rst
+==================================================
+
+========================================
+Connect Gmail to Odoo using Google OAuth
+========================================
+
+Odoo is compatible with Google's OAuth for Gmail. In order to send secure emails from a custom
+domain, all that is required is to configure a few settings on Google's *Workspace* platform, as
+well as on the back end of the Odoo database. This configuration works by using either a personal
+email address or an address created by a custom domain.
+
+.. tip::
+   For more information, visit `Google's documentation
+   <https://support.google.com/cloud/answer/6158849>`_ on setting up OAuth.
+
+.. seealso::
+   - :doc:`/applications/general/users/google`
+   - :doc:`/applications/productivity/calendar/google`
+
+Setup in Google
+===============
+
+Create a new project
+--------------------
+
+To get started, go to the `Google API Console <https://console.developers.google.com>`_. Log in
+with your *Google Workspace* account if you have one, otherwise log in with your personal Gmail
+account (this should match the email address you want to configure in Odoo).
+
+After that, click on :guilabel:`Create Project`, located on the far right of the :guilabel:`OAuth
+consent screen`. If a project has already been created in this account, then the :guilabel:`New
+Project` option will be located on the top right under the :guilabel:`Select a project` drop-down
+menu.
+
+On the :menuselection:`New Project` screen, rename the :guilabel:`Project name` to `Odoo` and
+browse for the :guilabel:`Location`. Set the :guilabel:`Location` as the *Google Workspace
+organization*. If you are using a personal Gmail account, then leave the :guilabel:`Location` as
+:guilabel:`No Organization`.
+
+.. image:: google_oauth/new-project.png
+   :align: center
+   :alt: Project Name and Location for Google OAuth.
+
+Click on :guilabel:`Create` to finish this step.
+
+OAuth consent screen
+--------------------
+
+If the page doesn't redirect to the :menuselection:`User Type` options, click on :guilabel:`OAuth
+consent screen` in the left menu.
+
+Under :guilabel:`User Type` options, select the appropriate :guilabel:`User Type`, and then click on
+:guilabel:`Create` again, which will finally navigate to the :menuselection:`Edit app registration`
+page.
+
+.. warning::
+   *Personal* Gmail Accounts are only allowed to be **External** User Type, which means Google may
+   require an approval, or for *Scopes* to be added on. However, using a *Google WorkSpace* account
+   allows for **Internal** User Type to be used.
+
+   Note, as well, that while the API connection is in the *External* testing mode, then no approval is
+   necessary from Google. User limits in this testing mode is set to 100 users.
+
+Edit app registration
+---------------------
+
+Next we will configure the app registration of the project.
+
+On the :guilabel:`OAuth consent screen` step, under the :guilabel:`App information` section, enter
+`Odoo` in the :guilabel:`App name` field. Select the organization's email address under the
+:guilabel:`User support` email field.
+
+Next, under :menuselection:`App Domain --> Authorized domains`, click on :guilabel:`Add Domain` and
+enter `odoo.com`.
+
+After that, under the :guilabel:`Developer contact information` section, enter the organization's
+email address. Google uses this email address to notify the organization about any changes to your
+project.
+
+Next, click on the :guilabel:`Save and Continue` button. Then, skip the :menuselection:`Scopes` page
+by scrolling to the bottom and clicking on :guilabel:`Save and Continue`.
+
+If continuing in testing mode (External), add the email addresses being configured under the
+:guilabel:`Test users` step, by clicking on :guilabel:`Add Users`, and then the :guilabel:`Save and
+Continue` button. A summary of the app registration appears.
+
+Finally, scroll to the bottom and click on :guilabel:`Back to Dashboard` to finish setting up the
+project.
+
+Create Credentials
+------------------
+
+Now that the project is set up, credentials should be created, which includes the *Client ID* and
+*Client Secret*. First, click on :guilabel:`Credentials` in the left sidebar menu.
+
+Then, click on :guilabel:`Create Credentials` in the top menu and select :guilabel:`OAuth client ID`
+from the dropdown menu.
+
+- Under :guilabel:`Application Type`, select :guilabel:`Web Application` from the dropdown menu.
+- In the :guilabel:`Name` field, enter `Odoo`.
+- Under the :guilabel:`Authorized redirect URIs` label, click the button :guilabel:`ADD URI`, and
+  then input `https://yourdbname.odoo.com/google_gmail/confirm` in the :guilabel:`URIs 1` field.
+  Be sure to replace the *yourdbname* part of the URL with the actual Odoo database name.
+- Next, click on :guilabel:`Create` to generate an OAuth :guilabel:`Client ID` and :guilabel:`Client
+  Secret`. Finally, copy each generated value for later use when configuring in Odoo, and then
+  navigate to the Odoo database.
+
+.. image:: google_oauth/client-credentials.png
+   :align: center
+   :alt: Client ID and Client Secret for Google OAuth.
+
+Setup in Odoo
+=============
+
+Enter Google Credentials
+------------------------
+
+First, open Odoo and navigate to the :guilabel:`Apps` module. Then, remove the :guilabel:`Apps`
+filter from the search bar and type in `Google`. Install the module called :guilabel:`Google
+Gmail`.
+
+Next, navigate to :menuselection:`Settings --> General Settings`, and under the :guilabel:`Discuss`
+section, ensure that the checkbox for :guilabel:`Custom Email Servers` or :guilabel:`External Email
+Servers` is checked. This populates a new option for :guilabel:`Gmail Credentials` or :guilabel:`Use
+a Gmail Sever`. Then, copy and paste the respective values into the :guilabel:`Client ID` and
+:guilabel:`Client Secret` fields and :guilabel:`Save` the settings.
+
+Configure outgoing email server
+-------------------------------
+
+To configure the external Gmail account, return to the top of the :guilabel:`Custom Email Servers`
+setting and then click the :guilabel:`Outgoing Email Servers` link.
+
+.. image:: google_oauth/outgoing-servers.png
+   :align: center
+   :alt: Configure Outgoing Email Servers in Odoo.
+
+Then, click on :guilabel:`New` or :guilabel:`Create` to create a new email server, and fill in the
+:guilabel:`Name`, :guilabel:`Description`, and the email :guilabel:`Username` (if required).
+
+Next, click on :guilabel:`Gmail OAuth Authentication` or :guilabel:`Gmail` (under the
+:guilabel:`Authenticate with` or :guilabel:`Connection` section). Finally, click on
+:guilabel:`Connect your Gmail Account`.
+
+A new window labeled :guilabel:`Google` opens to complete the authorization process. Select the
+appropriate email address that is being configured in Odoo.
+
+If the email address is a personal account, then an extra step pops up, so click
+:guilabel:`Continue` to allow the verification and connect the Gmail account to Odoo.
+
+Then, allow Odoo to access the Google account by clicking on :guilabel:`Continue` or
+:guilabel:`Allow`. After that, the page navigates back to the newly configured outgoing email
+server in Odoo. The configuration automatically loads the token in Odoo, and a tag stating
+:guilabel:`Gmail Token Valid` appears in green.
+
+.. image:: google_oauth/green-token.png
+   :align: center
+   :alt: Configure Outgoing Email Servers in Odoo.
+
+Finally, :guilabel:`Test the Connection`. A confirmation message should appear. The Odoo database
+can now send safe, secure emails through Google using OAuth authentication.
+
+Google OAuth FAQ
+================
+
+Production VS Testing Publishing Status
+---------------------------------------
+
+Choosing :guilabel:`Production` as the :guilabel:`Publishing Status` (instead of
+:guilabel:`Testing`) will display the following warning message:
+
+.. image:: google_oauth/published-status.png
+   :align: center
+   :alt: OAuth is Limited to 100 Sensitive Scope Logins.
+
+To correct this warning, navigate to the `Google API Platform
+<https://console.cloud.google.com/apis/credentials/consent>`_. If the :guilabel:`Publishing status`
+is :guilabel:`In Production`, click :guilabel:`Back to Testing` to correct the issue.
+
+No Test Users Added
+-------------------
+
+If no test users are added to the OAuth consent screen, then a 403 access denied error will
+populate.
+
+.. image:: google_oauth/403-error.png
+   :align: center
+   :alt: 403 Access Denied Error.
+
+To correct this error, return to the :guilabel:`OAuth consent screen` under :guilabel:`APIs &
+Services` and add test user(s) to the app. Add the email that you are configuring in Odoo.
+
+Gmail Module not updated
+------------------------
+
+If the *Google Gmail* module in Odoo has not been updated to the latest version, then a
+:guilabel:`Forbidden` error message populates.
+
+.. image:: google_oauth/forbidden-error.png
+   :align: center
+   :alt: Forbidden you don't have the permission to access the requested resource.
+
+To correct this error, go to the :menuselection:`Apps` module and clear out the search terms. Then,
+search for `Gmail` or `Google` and upgrade the :guilabel:`Google Gmail` module. Finally, click
+on the three dots on the upper right of the module and select :guilabel:`Upgrade`.
+
+Application Type
+----------------
+
+When creating the credentials (OAuth *Client ID* and *Client Secret*), if :guilabel:`Desktop App` is
+selected for the :guilabel:`Application Type`, an :guilabel:`Authorization Error` appears.
+
+.. image:: google_oauth/error-400.png
+   :align: center
+   :alt: Error 400 Redirect URI Mismatch.
+
+To correct this error, delete the credentials already created and create new credentials, selecting
+:guilabel:`Web Application` for the :guilabel:`Application Type`. Then, under :guilabel:`Authorized
+redirect URIs`, click :guilabel:`ADD URI` and type:
+`https://yourdbname.odoo.com/google_gmail/confirm` in the field, being sure to replace *yourdbname*
+in the URL with the Odoo database name.
+
+
+==================================================
+SECTION: mailjet_api.rst
+PATH: applications/general/email_communication/mailjet_api.rst
+==================================================
+
+===========
+Mailjet API
+===========
+
+Odoo is compatible with Mailjet's :abbr:`API (Application Programming Interface)` for mass mailing.
+Set up a dedicated mass mailing server through Mailjet by configuring settings in the Mailjet
+account and the Odoo database. In some circumstances, settings need to be configured on the custom
+domain's :abbr:`DNS (Domain Name System)` settings as well.
+
+Set up in Mailjet
+=================
+
+Create API credentials
+----------------------
+
+To get started, sign in to the `Mailjet Account Information <https://app.mailjet.com/account>`_
+page. Next, navigate to the :guilabel:`Senders & Domains` section and click on :guilabel:`SMTP and
+SEND API Settings`.
+
+.. image:: mailjet_api/api-settings.png
+   :alt: SMTP and Send API Settings link in the Senders & Domains section of Mailjet.
+
+Then, copy the :abbr:`SMTP (Simple Mail Transfer Protocol)` configuration settings onto a notepad.
+They can be found under the :guilabel:`Configuration (SMTP only)` section. The :abbr:`SMTP (Simple
+Mail Transfer Protocol)` configuration settings include the server address, the security option
+needed (Use :abbr:`SSL (Secure Sockets Layer)`/:abbr:`TLS (Transport Layer Security)`), and the
+port number. The settings are needed to configure Mailjet in Odoo, which is covered in the
+:ref:`last section <maintain/mailjet-api/odoo-setup>`.
+
+.. seealso::
+   `Mailjet: How can I configure my SMTP parameters?
+   <https://documentation.mailjet.com/hc/articles/360043229473>`_
+
+.. important::
+   Odoo :ref:`blocks port 25 <email-outbound-port-restriction>` on Odoo Online and Odoo.sh
+   databases.
+
+.. image:: mailjet_api/smtp-config.png
+   :alt: SMTP configuration from Mailjet.
+
+Next, click on the button labeled :guilabel:`Retrieve your API credentials` to retrieve the Mailjet
+API credentials.
+
+Then, click on the eye icon to reveal the :guilabel:`API key`. Copy this key to a notepad, as this
+serves as the :guilabel:`Username` in the Odoo configuration. Next, click on the
+:guilabel:`Generate Secret Key` button to generate the :guilabel:`Secret Key`. Copy this key to a
+notepad, as this serves as the :guilabel:`Password` in the Odoo configuration.
+
+Add verified sender address(es)
+-------------------------------
+
+The next step is to add a sender address or a domain to the Mailjet account settings so that the
+email address or domain is approved to send emails using Mailjet's servers. First, navigate to the
+`Mailjet Account Information <https://app.mailjet.com/account>`_ page. Next, click on the
+:guilabel:`Add a Sender Domain or Address` link under the :guilabel:`Senders & Domains` section.
+
+.. image:: mailjet_api/add-domain-email.png
+   :alt: Add a sender domain or address in the Mailjet interface.
+
+Determine if a sender's email address or the entire domain needs to be added to the Mailjet
+settings. It may be easier to configure the domain as a whole if :abbr:`DNS (Domain Name System)`
+access is available. Jump to the :ref:`Add a domain <maintain/mailjet-api/add-domain>` section for
+steps on adding the domain.
+
+.. note::
+   Either all email addresses of the Odoo database users who are sending emails using Mailjet's
+   servers need to be configured or the domain(s) of the users' email addresses can be configured.
+
+By default, the email address originally set up in the Mailjet account is added as a trusted
+sender. To add another email address, click on the button labeled :guilabel:`Add a sender address`.
+Then, add the email address that is configured to send from the custom domain.
+
+At minimum the following email addresses should be set up in the provider and verified in Mailjet:
+
+- notifications\@yourdomain.com
+- bounce\@yourdomain.com
+- catchall\@yourdomain.com
+
+.. note::
+   Replace `yourdomain` with the custom domain for the Odoo database. If there isn't one, then use
+   the :guilabel:`mail.catchall.domain` system parameter.
+
+After that, fill out the :guilabel:`Email Information` form, making sure to select the appropriate
+email type: transactional email or mass emails. After completing the form, an activation email is
+sent to the email address and the trusted sender can be activated.
+
+It is recommended to set up the :abbr:`SPF (Sender Policy Framework)`/:abbr:`DKIM (DomainKeys
+Identified Mail)`/:abbr:`DMARC (Domain-based Message Authentication, Reporting, and
+Conformance)` settings on the domain of the sender.
+
+.. seealso::
+   - `Mailjet's SPF/DKIM documentation
+     <https://documentation.mailjet.com/hc/en-us/articles/360049641733-Authenticating-Domains-with-SPF-and-DKIM-A-Complete-Guide>`_
+   - `Mailjet's DMARC documentation
+     <https://documentation.mailjet.com/hc/en-us/articles/20531905163419-Understanding-DMARC>`_
+
+.. important::
+   If the database is not using a custom domain, then in order to verify the sender's address, a
+   temporary alias (of the three email addresses mentioned above) should be set up in Odoo CRM to
+   create a lead. Then, the database is able to receive the verification email and verify the
+   accounts.
+
+.. _maintain/mailjet-api/add-domain:
+
+Add a domain
+------------
+
+By adding an entire domain to the Mailjet account, all the sender addresses related to that domain
+are automatically validated for sending emails using Mailjet servers. First, navigate to the
+`Mailjet Account Information <https://app.mailjet.com/account>`_ page. Next, click on
+:guilabel:`Add a Sender Domain or Address` link under the :guilabel:`Senders & Domains` section.
+Then, click on :guilabel:`Add domain` to add the custom domain.
+
+.. note::
+   The domain needs to be added to the Mailjet account and then validated through the :abbr:`DNS
+   (Domain Name System)`.
+
+After that, fill out the :guilabel:`Add a new Domain` page on Mailjet and click
+:guilabel:`Continue`.
+
+After adding the domain, a validation page will populate. Unless the Odoo database is on-premise
+(in which case, choose :guilabel:`Option 1`), choose :guilabel:`Option 2: Create a DNS Record`.
+Copy the TXT record information to a notepad and then navigate to the domain's :abbr:`DNS (Domain
+Name System)` provider to complete validation.
+
+.. image:: mailjet_api/host-value-dns.png
+   :alt: The TXT record information to input on the domain's DNS.
+
+Setup in the domain's DNS
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After getting the TXT record information from the Mailjet account, add a TXT record to the domain's
+:abbr:`DNS (Domain Name System)`. This process varies depending on the :abbr:`DNS (Domain Name
+System)` provider. Consult the provider for specific configuration processes. The TXT record
+information consists of the :guilabel:`Host` and :guilabel:`Value`. Paste these into
+the corresponding fields in the TXT record.
+
+Return to Mailjet account information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After adding the TXT record to the domain's :abbr:`DNS (Domain Name System)`, navigate back to the
+Mailjet account. Then, navigate to :menuselection:`Account Information --> Add a Sender Domain or
+Address`, click the gear icon next to :guilabel:`Domain`, and select :guilabel:`Validate`.
+
+This action can also be done by going to the `Sender domains & addresses <https://app.mailjet.com/
+account/sender>`_ page on the Mailjet account information and clicking on :guilabel:`Manage`.
+
+Next, click :guilabel:`Check Now` to validate the TXT record that was added on the domain. A
+success screen will appear if the domain is configured correctly.
+
+.. image:: mailjet_api/check-dns.png
+   :alt: Check DNS record in Mailjet.
+
+After successfully setting up the domain, there is an option to :guilabel:`Authenticate this domain
+(SPF/DKIM)`. This button populates :abbr:`SPF (Sender Policy Framework)` & :abbr:`DKIM (DomainKeys
+Identified Mail) records to input into the :abbr:`DNS (Domain Name System)` provider.
+
+.. seealso::
+   `Mailjet's SPF/DKIM/DMARC documentation <https://documentation.mailjet.com/hc/articles/
+   360042412734-Authenticating-Domains-with-SPF-DKIM>`_
+
+.. image:: mailjet_api/authenticate.png
+   :alt: Authenticate the domain with SPF/DKIM records in Mailjet.
+
+.. _maintain/mailjet-api/odoo-setup:
+
+Set up in Odoo
+==============
+
+To complete the setup, navigate to the Odoo database and go to the :guilabel:`Settings`. With
+:ref:`developer-mode` turned on, go to the :menuselection:`Technical Menu --> Email --> Outgoing
+Mail Servers`. Then, create a new outgoing server configuration by clicking on the
+:guilabel:`Create` button.
+
+Next, input the `SMTP server` (in-v3.mailjet.com), `port number` (587 or 465), and `Security
+(SSL/TLS)` that was copied earlier from the Mailjet account. They can also be found `here
+<https://app.mailjet.com/account/setup>`_. It is recommended to use :abbr:`SSL (Secure Sockets
+Layer)`/:abbr:`TLS (Transport Layer Security)` even though Mailjet may not require it.
+
+For the :guilabel:`Username`, input the :guilabel:`API KEY`. For the :guilabel:`Password`, input
+the :guilabel:`SECRET KEY` that was copied from the Mailjet account to the notepad earlier. These
+settings can be found on :menuselection:`Mailjet -->  Account Settings --> SMTP and SEND API
+Settings`.
+
+Then, if the Mailjet server is used for mass emailing, set the :guilabel:`Priority` value higher
+than that of any transactional email server(s). Finally, save the settings and :guilabel:`Test the
+Connection`.
+
+.. image:: mailjet_api/server-settings.png
+   :alt: Odoo outgoing email server settings.

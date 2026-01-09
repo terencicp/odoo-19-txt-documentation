@@ -1,0 +1,1050 @@
+
+
+==================================================
+SECTION: appraisals.rst
+PATH: applications/hr/appraisals.rst
+==================================================
+
+:nosearch:
+
+==========
+Appraisals
+==========
+
+.. toctree::
+
+   appraisals/schedule_appraisals
+   appraisals/new_appraisals
+   appraisals/appraisal_templates
+   appraisals/360
+   appraisals/goals
+   appraisals/appraisal_analysis
+   appraisals/skills_evolution
+
+
+==================================================
+SECTION: 360.rst
+PATH: applications/hr/appraisals/360.rst
+==================================================
+
+============
+360 Feedback
+============
+
+Odoo's **Appraisals** app lets managers gather feedback on their direct reports from anyone in the
+company. Input from colleagues gives managers a fuller view of each employee's strengths, growth
+areas, and collaboration skills.
+
+.. _appraisals/360-dashboard:
+
+360 feedback dashboard
+======================
+
+The :guilabel:`360 Feedback` section displays information for all the surveys configured for the
+**Appraisals** app. To view the surveys and their statistics, navigate to :menuselection:`Appraisals
+app --> Configuration --> 360 Feedback`.
+
+.. image:: 360/survey-list.png
+   :alt: A list view of all available surveys in the Appraisals application.
+
+Each appraisal, or survey, is presented on its own line on the :guilabel:`360 Feedback` dashboard,
+along with various information related to that particular appraisal.
+
+Each appraisal includes the following information:
+
+- :guilabel:`Survey Name`: the name of the specific survey.
+- :guilabel:`Responsible`: the employee responsible for the survey, including the month and year
+  they were given that designation.
+- :guilabel:`Questions`: the number of questions in that particular survey.
+- :guilabel:`Average Duration`: the average time a user spends completing the survey.
+- :guilabel:`Registered`: the number of people who have been sent the survey.
+- :guilabel:`Completed`: the number of people who have completed the survey.
+- :guilabel:`Certified`: if the survey is for a certification, the percentage of users who have
+  passed the certification.
+
+Each appraisal row offers two actions:
+
+- :guilabel:`Test`: Opens the appraisal in a new tab to preview the questions without submitting
+  answers. Close the tab to return to the list, or click :icon:`oi-arrow-right` :guilabel:`Go to
+  Survey`/:guilabel:`Go to Appraisal` for the full form.
+- :guilabel:`See Results`: :ref:`View response analytics <appraisals/360-view-results>`.
+
+.. _appraisals/360-request-feedback:
+
+Request feedback
+================
+
+To request feedback from a colleague, navigate to the **Appraisals** app, and click on the appraisal
+card to open it.
+
+Click the :guilabel:`Ask Feedback` button, and an :guilabel:`Ask Feedback` email pop-up window
+appears, using the :guilabel:`Appraisal: Ask Feedback` email template.
+
+First, using the drop-down menu, select the employees being asked to provide feedback in the
+:guilabel:`Recipients` field. Multiple employees may be selected. Next, make any desired changes to
+the default message, and attach any relevant documents.
+
+The :guilabel:`Answer Deadline` date is automatically set to the day after the :guilabel:`Appraisal
+Date` on the appraisal form. Using the calendar selector, modify the date, if desired.
+
+Click :guilabel:`Send`, and the feedback requests are sent to the specified employees.
+
+.. image:: 360/ask-feedback.png
+   :alt: The email pop-up when requesting feedback from other employees.
+
+.. _appraisals/360-view-results:
+
+View results
+============
+
+To view the results from everyone who has completed a survey, click the :guilabel:`See Results`
+button at the end of the corresponding survey line in the :ref:`360 Feedback dashboard
+<appraisals/360-dashboard>`. This presents all the answers for the survey in a new tab. Each
+question provides information on how many people responded to a question, and how many people
+skipped it. All answers for each question are visible.
+
+To save a PDF version of the survey results, click the :icon:`fa-print` :guilabel:`(Print)` icon at
+the top of the page. To exit, close the tab.
+
+In addition to viewing the responses from past appraisals and surveys, new surveys can also be
+created from the :guilabel:`360 Feedback` page. Click the :guilabel:`New` button in the top-left of
+the page to create a new survey.
+
+For more information on how to create a survey, refer to the :doc:`../../marketing/surveys/create`
+document.
+
+
+==================================================
+SECTION: appraisal_analysis.rst
+PATH: applications/hr/appraisals/appraisal_analysis.rst
+==================================================
+
+==================
+Appraisal analysis
+==================
+
+The **Appraisals** app has the ability to report on all the appraisals in the system, including
+past, present, and future appraisals, and their respective statuses. This report helps managers
+track scheduled appraisals, and identify any overdue or unconfirmed ones.
+
+To access the *Appraisal Analysis* report, navigate to :menuselection:`Appraisals app --> Reporting
+--> Appraisal Analysis`.
+
+On the :guilabel:`Appraisal Analysis` page, a report loads, displaying all the appraisals in the
+database, in a default graph chart. Appraisals are grouped by :guilabel:`Month`, then
+:guilabel:`Department`.
+
+View by status
+==============
+
+Another way to view the *Appraisal Analysis* report is in the Gantt view, which provides visual
+information on the appraisal's status.
+
+Navigate to :menuselection:`Appraisals app --> Reporting --> Appraisal Analysis`, and click the
+:icon:`fa-tasks` :guilabel:`(Gantt)` icon in the upper-right corner. The report displays the current
+year, grouped by department, with the current month highlighted.
+
+Each entry is highlighted in a different color to represent their status:
+
++-----------+----------------------------+------------------------------------------------+
+| Color     | Status                     | Meaning                                        |
++===========+============================+================================================+
+| Yellow    |:guilabel:`Done`            | The appraisal was completed.                   |
++-----------+----------------------------+------------------------------------------------+
+| Orange    |:guilabel:`Appraisal Sent`  |The appraisal was confirmed, but not completed. |
++-----------+----------------------------+------------------------------------------------+
+| Red       |:guilabel:`Cancelled`       |The appraisal was cancelled.                    |
++-----------+----------------------------+------------------------------------------------+
+| Gray      |:guilabel:`To Start`        | The appraisal was scheduled, but not confirmed.|
++-----------+----------------------------+------------------------------------------------+
+
+.. note::
+   Appraisals are scheduled automatically (appear in gray), according to their respective
+   :ref:`appraisals/appraisal-plan`.
+
+To change the period of time that is presented, adjust the date settings in the top-left corner of
+the report by clicking the :icon:`fa-calendar` :guilabel:`From: (date) to (date)` to reveal a
+drop-down menu of options. The options to display are :guilabel:`Today`, :guilabel:`This week`,
+:guilabel:`This month`, :guilabel:`This quarter`, and :guilabel:`This year`.
+
+Additionally, a range of dates can be entered in the :guilabel:`From` and :guilabel:`To` fields at
+the bottom of the list, then click :guilabel:`Apply`.
+
+At any point, click the :icon:`fa-crosshairs` :guilabel:`(Focus Today)` button to have the report
+include today's date in the view.
+
+To view the details of any appraisal, click on any appraisal. A pop-over window appears, displaying
+the due date for the appraisal. To view more details, click the :guilabel:`View` button, and further
+details appear in an :guilabel:`Open` pop-up window.
+
+The report can have other :ref:`filters <search/filters>` and :ref:`groupings <search/group>` set in
+the search bar at the top.
+
+.. image:: appraisal_analysis/analysis.png
+   :alt: A report showing all the appraisals for the Appraisal Analysis report.
+
+.. _appraisals/group-status:
+
+Group by status
+===============
+
+When a company has a large number of employees, the default :guilabel:`Appraisal Analysis` report
+may display too much information to view at one time. In this scenario, viewing the data by status
+can be beneficial.
+
+First, clear any filters or groups from the search bar. Next, click the :icon:`fa-caret-down`
+:guilabel:`(Toggle Search Panel)` icon in the far-right of the search bar. Click :guilabel:`Status`
+in the :icon:`oi-group` :guilabel:`Group By` column. Click away from the drop-down menu to close it.
+
+All the appraisals are now organized by status, in the following order: :guilabel:`Cancelled`,
+:guilabel:`Done`, :guilabel:`To Start`, and :guilabel:`Appraisal Sent`.
+
+This view shows which appraisals need to be completed, and when, as well as which appraisals still
+need to be confirmed.
+
+.. image:: appraisal_analysis/by-status.png
+   :alt: A report showing all the appraisals, grouped by status.
+
+Use case: view only the user's appraisals
+=========================================
+
+When viewing the :guilabel:`Appraisal Analysis` report, it can save time to only view the appraisals
+the signed-in user is responsible for, and hide the rest.
+
+To only view this data, click the :icon:`fa-caret-down` :guilabel:`(Toggle Search Panel)` icon in
+the far-right of the search bar, revealing a drop-down menu.
+
+.. note::
+   It is not necessary to remove the default :icon:`oi-group` :guilabel:`Department` grouping. If it
+   remains active, the results are grouped by department. If it is removed, the results appear in a
+   list, alphabetically.
+
+Click :guilabel:`Add Custom Filter` at the bottom of the :icon:`fa-filter` :guilabel:`Filters`
+column, and a :guilabel:`Add Custom Filter` pop-up window appears.
+
+Click into the first field, and a pop-over appears with a variety of options. Click the
+:icon:`fa-chevron-right` :guilabel:`(right arrow)` icon after the word :guilabel:`Employee`, then
+scroll down and click on :guilabel:`Manager`. Next, set the middle field to :guilabel:`=`
+:guilabel:`(equal)`. Last, click the third field and select the desired user from the list. When all
+the fields are set, click :guilabel:`Add`.
+
+.. image:: appraisal_analysis/custom.png
+   :alt: A customized filter to show only the user's employees.
+
+Now, the only appraisals that appear are the appraisals that the selected user is responsible for,
+instead of viewing *all* the appraisals.
+
+This report can also be :ref:`grouped by status <appraisals/group-status>`.
+
+.. image:: appraisal_analysis/users-appraisals.png
+   :alt: A report showing only the appraisals the user is responsible for, by status.
+
+.. seealso::
+   - :doc:`Odoo essentials reporting <../../essentials/reporting>`
+   - :doc:`../../essentials/search`
+
+
+==================================================
+SECTION: appraisal_templates.rst
+PATH: applications/hr/appraisals/appraisal_templates.rst
+==================================================
+
+===================
+Appraisal templates
+===================
+
+.. |5-stars| replace:: :icon:`fa-star-o` :icon:`fa-star-o` :icon:`fa-star-o` :icon:`fa-star-o`
+                       :icon:`fa-star-o`
+
+The **Appraisals** app uses a preconfigured default template, which is general enough to be
+applicable to all employees. If desired, the default template :ref:`can be modified
+<appraisals/modify-template>`, or, if different templates are needed, such as department-specific
+appraisal templates, new templates :ref:`can be created <appraisals/create-template>`.
+
+.. _appraisals/modify-template:
+
+Modify appraisal templates
+==========================
+
+If needed, changes can be made to the default template. To view the default template, navigate to
+:menuselection:`Appraisals app --> Configuration --> Appraisal Templates`.
+
+The default template appears in a list view, named :guilabel:`Default Template`. Click on the
+template to view the template details. Make any desired changes to the template.
+
+The default template consists of the following questions:
+
+.. list-table:: Odoo **Appraisals** default appraisal template
+   :header-rows: 1
+
+   * - **Employee Feedback**
+     - **Manager Feedback**
+
+
+   * - **My work**
+
+       **What are my best achievement(s) since my last appraisal?**
+
+       *Describe something that made you proud, a piece of work positive for the company.*
+
+       **What has been the most challenging aspect of my work this past year and why?**
+
+       *Did you face new difficulties? Did you confront yourself to new obstacles?*
+
+       **What would I need to improve my work?**
+
+       *How can the company help you with your needs and objectives so you can reach your goals and
+       foster better collaboration.*
+
+       **My future**
+
+       **What are my short and long-term goals with the company, and for my career?**
+
+       - *Give an example of a short-term objective (< 6 months)*
+       - *Give an example of a long-term objective (> 6 months)*
+
+       **Which parts of my job do I most / least enjoy?**
+
+       *Every job has strong points - which tasks do you enjoy the most and the least?*
+
+       **My feelings**
+
+       **How do I feel about the company...**
+
+       - Culture/Behavior: |5-stars|
+       - Internal Communication: |5-stars|
+
+       **How do I feel about my own...**
+
+       - Job content: |5-stars|
+       - Work organization: |5-stars|
+       - Remuneration: |5-stars|
+
+     - **Feedback**
+
+       **Give one positive achievement that convinced you of the employee's value.**
+
+       *Some achievements that illustrate their strengths in addressing job challenges.*
+
+       **Evaluation**
+
+       +---------------------+-----------+
+       | *Stress Resistance* | |5-stars| |
+       +---------------------+-----------+
+       | *Time Management*   | |5-stars| |
+       +---------------------+-----------+
+       | *Teamwork*          | |5-stars| |
+       +---------------------+-----------+
+       | *Autonomy*          | |5-stars| |
+       +---------------------+-----------+
+       | *Pro-activity*      | |5-stars| |
+       +---------------------+-----------+
+
+       **Improvements**
+
+       **How could the employee improve?**
+
+       *From a manager's point of view, how could you help them overcome their weaknesses?*
+
+       **Short term (6-months) actions / decisions / objectives**
+
+       *Do you need a rapid response to the current situation?*
+
+       **Long term (> 6 months) career discussion, where does the employee want to go, how can you
+       help them reach this path?**
+
+       *How do you see the employee's future - does your vision align with their aspirations?*
+
+.. _appraisals/create-template:
+
+Create appraisal templates
+==========================
+
+Large companies with many departments may prefer department-specific appraisal templates, instead of
+using a default universal template. Creating and using department-specific templates can be helpful
+if specific feedback is needed.
+
+.. example::
+   An appliance repair company has two main types of employees, office workers who handle
+   administrative tasks and scheduling, and repair technicians who work in the field, performing
+   repairs at customers' homes.
+
+   This type of company may create two different appraisal templates, one for the office workers,
+   and one for the on-site repair technicians.
+
+To create a new appraisal template, click the :guilabel:`New` button in the upper-left corner. Next,
+:doc:`configure the appraisal <../../marketing/surveys/create>` by adding questions to the template.
+
+Additionally, a new appraisal template can be created by duplicating the default template, and
+making modifications to the copy. To duplicate the template, navigate to :menuselection:`Appraisals
+app --> Configuration --> Appraisal Templates`, then click on the template being duplicated. Click
+the :icon:`fa-gear` :guilabel:`(Actions)` icon, then click :icon:`fa-clone` :guilabel:`Duplicate`.
+
+First, change the name of the template, then make any desired changes to the template.
+
+.. important::
+   Appraisal templates are housed in the **Surveys** app. Any appraisal template created *in* the
+   **Appraisals** app must be configured to be used with the **Appraisals** app, or it will *not* be
+   available for appraisals.
+
+   To ensure a new template is available for the **Appraisals** app, navigate to the **Surveys**
+   app, and click on the appraisal template.
+
+   Tick the radio button next to :guilabel:`Appraisal` at the top of the survey. This setting allows
+   the survey to be used in the **Appraisals** app, and is visible in the :guilabel:`Appraisal
+   Template` drop-down menu.
+
+   .. image:: appraisal_templates/appraisal-button.png
+      :alt: The appraisal radio button ticked on an appraisal form in the Surveys app.
+
+
+==================================================
+SECTION: goals.rst
+PATH: applications/hr/appraisals/goals.rst
+==================================================
+
+=====
+Goals
+=====
+
+The Odoo **Appraisals** application allows managers to set (and track) clear goals for their
+employees. Continuous progress towards goals give employees a concrete target between reviews, and
+give managers reliable insights when evaluating performance.
+
+View goals
+==========
+
+To view all goals, navigate to :menuselection:`Appraisals app --> Goals`. This presents all the
+goals for every employee, in a default list view, grouped by :guilabel:`Employee`.
+
+Click on an employee to expand the listed goals. Each goal displays the following information:
+
+- :guilabel:`Name`: The name of the goal.
+- :guilabel:`Created on`: The date the goal was made.
+- :guilabel:`Progress`: The percentage of progress the employee has achieved.
+- :guilabel:`Employee`: The employee assigned to the goal.
+
+.. note::
+   Only employees with goals assigned to them appear in the list.
+
+.. image:: goals/goal-list.png
+   :alt: A list of goals for all employees.
+
+.. _appraisals/goal-card:
+
+Create goals
+============
+
+To create new goals, navigate to :menuselection:`Appraisals app --> Goals`, and click
+:guilabel:`New` in the top-left corner to open a blank goal form. Add the following information on
+the form:
+
+- :guilabel:`Goal`: Type in a brief name for the goal in this field.
+- :guilabel:`Employee`: Using the drop-down menu, select the employee being assigned the goal. Once
+  this field is populated, the employee's manager populates the :guilabel:`Manager` field.
+- :guilabel:`Progress`: Click the current percentage of competency for the goal. The options are
+  :guilabel:`0%`, :guilabel:`25%`, :guilabel:`50%`, :guilabel:`75%`, or :guilabel:`100%`.
+- :guilabel:`Manager`: Using the drop-down menu, select the employee's manager (if not already
+  selected).
+- :guilabel:`Deadline`: Using the calendar selector, enter the due date for the goal.
+- :guilabel:`Tags`: Using the drop-down menu, add any relevant :ref:`tags <appraisals/add-tags>` to
+  the goal.
+- :guilabel:`Description` tab: Enter any details regarding the goal in this tab.
+
+.. tip::
+   Some goals can be broken down into steps, which may be input as a checklist. A checklist is a
+   tool the employee may use to mark their progress.
+
+.. image:: goals/new-goal.png
+   :alt: A completed goal created for learning Python.
+
+.. _appraisals/add-tags:
+
+Tags
+----
+
+Adding tags to goals can help when viewing the goals report, to see how many goals with specific
+tags are assigned to employees.
+
+To view all the current tags, and add new ones, navigate to :menuselection:`Appraisals app -->
+Configuration --> Tags`. All tags appear in a list view. The default tags are: :guilabel:`External`,
+:guilabel:`Hard Skills`, :guilabel:`Internal`, :guilabel:`Programming`, :guilabel:`Soft Skills`, and
+:guilabel:`Training`.
+
+To add a new tag, click the :guilabel:`New` button in the upper-left corner, and a new line appears
+at the bottom of the list. Enter the tag, then press return or click away from the field.
+
+Update goals
+============
+
+During employee appraisals, goals are reviewed to see how much progress the employee has made. When
+an employee has achieved the next level of progress, the goal must be updated accordingly.
+
+To update a goal's progress percentage, navigate to :menuselection:`Appraisals app --> Goals`.
+Expand the employee whose goals are being evaluated, and click on an individual goal to open the
+goal record.
+
+Click the new :guilabel:`Progress` box to set the new progress level. It is recommended to add notes
+in the :guilabel:`Description` tab, as the employee progresses with the goal. The notes should
+include dates the progress changed, and any supporting information regarding the change.
+
+.. note::
+   Goal progress can be updated at any time by the employee's manager, not only during an appraisal.
+
+Complete goals
+==============
+
+When a goal has been met, it is important to update the record. Navigate to
+:menuselection:`Appraisals app --> Goals`. Expand the employee whose goals are being evaluated, and
+click on an individual goal to open the goal record.
+
+Click the :guilabel:`Mark as Done` button in the upper-left corner. A green :guilabel:`Done` banner
+appears in the top-right corner of the goal card, and the :guilabel:`Progress` changes to
+:guilabel:`100%`.
+
+.. note::
+   On the :guilabel:`Goals` dashboard, completed goals are indicated with a green :guilabel:`100%`
+   in the :guilabel:`Progress` column.
+
+
+==================================================
+SECTION: new_appraisals.rst
+PATH: applications/hr/appraisals/new_appraisals.rst
+==================================================
+
+==================
+Conduct appraisals
+==================
+
+This guide explains the end-to-end appraisal workflow in Odoo, from creation to final rating,
+showing how managers and employees collaborate at each stage.
+
+- :ref:`Employee self-assessment <appraisals/employee-feedback>`: The employee completes the
+  Employee's Feedback template and updates their skills. Responses remain hidden until the employee
+  sets the form to *Visible to Manager*.
+- :ref:`Manager feedback <appraisals/manager-feedback>`: While the employee works on their section,
+  the manager reviews goals, gathers peer input if needed, and fills out the *Manager's Feedback*
+  template. Feedback can remain hidden until the appraisal meeting.
+- :ref:`Appraisal review <appraisals/review>`: Manager and employee meet to discuss both feedback
+  sections, validate skill changes, and agree on next steps. The meeting can be scheduled directly
+  from the appraisal or the calendar.
+- :ref:`Completion and rating <appraisals/complete>`: After the discussion, the manager assigns a
+  final rating, adds any private notes, and marks the appraisal Done. The record then locks unless
+  it is reopened for further edits.
+
+Throughout the process, optional actions, such as requesting peer feedback or logging private
+manager notes, enhance the appraisal's accuracy and relevance.
+
+.. _appraisals/employee-feedback:
+
+Employee self-assessment
+========================
+
+Once an appraisal is confirmed, the employee is required to fill out the self-assessment.
+
+.. note::
+   Only confirmed appraisals can be worked on. If an appraisal is *not* confirmed, the fields on the
+   appraisal form cannot be edited, and feedback cannot be recorded.
+
+After the employee receives a notification via email that an appraisal is confirmed and scheduled,
+they are requested to fill out their half of the default appraisal template, and update any skills.
+
+Employee's can click on the link in the confirmation email to navigate to the appraisal, or they
+can open their appraisal in the **Appraisals** app. To do this, open the **Appraisals** app, then
+click on the appraisal card.
+
+The :guilabel:`Employee's Feedback` half of the template includes the following sections:
+:guilabel:`My work`, :guilabel:`My future`, and :guilabel:`My feelings`. Each of these sections
+consists of several questions for the employee to answer, allowing the employee to perform a
+self-assessment, and provide feedback on how they feel about the company and their role.
+
+Employee skills
+---------------
+
+After completing the :ref:`Employee's Feedback <appraisals/employee-feedback>` section in the
+:guilabel:`Appraisal` tab, the employee next updates their skills in the :guilabel:`Skills` tab.
+
+Any skills that were present on the employee's record when the appraisal was confirmed, appear in
+this tab. If a :guilabel:`Skill Level` has changed since the last appraisal, the level must be
+updated.
+
+.. note::
+   The :guilabel:`Skills` tab does not appear on the appraisal until the appraisal is confirmed.
+
+Click on the :guilabel:`Skill Level` for the skill that has changed, revealing a drop-down of all
+available levels. Click on the new level for the skill. Once selected, the :guilabel:`Progress`
+field updates accordingly. Next, click into the :guilabel:`Justification` field for the skill, and
+enter any relevant details explaining the change. This field is not necessary, but may aid
+management when reviewing the employee's skills.
+
+Complete the self-assessment
+----------------------------
+
+The employee feedback remains hidden from management while the employee is performing their
+self-assessment. Once the employee has completed their half of the appraisal, and updated any
+skills, they tick the gray :guilabel:`Not Visible to Manager` toggle. This changes the toggle text
+to :guilabel:`Visible to Manager`, the color changes to green, and their responses are then visible
+to management.
+
+Additionally, a green dot appears on the appraisal card on the **Appraisals** app dashboard,
+indicating the employee has completed their assessment, and marked their half of the appraisal as
+done.
+
+.. _appraisals/manager-feedback:
+
+Manager feedback
+================
+
+While the employee is completing their :guilabel:`Employee's Feedback` section, the manager fills
+out the :guilabel:`Manager's Feedback` section.
+
+Before the manager fills out their portion of the appraisal, managers typically review the
+employee's goals and skills, and ask for :ref:`additional feedback <appraisals/ask-feedback>` from
+the employee's coworkers, to better understand all the achievements and challenges for the employee.
+
+Once the manager has all the information they need to evaluate the employee, they fill out the
+:guilabel:`Manager's Feedback` section of the appraisal form. The manager's half has the following
+sections: :guilabel:`Feedback`, :guilabel:`Evaluation`, and :guilabel:`Improvements`.
+
+The manager's appraisal focuses on the employee's accomplishments, as well as identifying areas of
+improvements, with actionable steps to help the employee achieve their goals in both the long and
+short term.
+
+When the feedback section is completed, the manager can tick the :guilabel:`Not Visible to Employee`
+toggle. This changes the toggle text to :guilabel:`Visible to Employee`, the color changes to green,
+and their responses are then visible to the employee.
+
+.. note::
+   Some managers prefer to keep their feedback hidden from the employee until they :ref:`meet with
+   the employee <appraisals/review>` to discuss the appraisal.
+
+.. _appraisals/ask-feedback:
+
+Ask for feedback
+----------------
+
+As part of the appraisal process, the manager can :ref:`request feedback for an employee
+<appraisals/360-request-feedback>`  from anyone in the company about an employee. In Odoo, this is
+referred to as *360 Feedback*.
+
+Feedback is requested from coworkers and anyone else who works with the employee. This is to get a
+more well-rounded view of the employee, and aid in the manager's overall assessment.
+
+.. important::
+   To request feedback, the appraisal **must** be confirmed. Once confirmed, an :guilabel:`Ask
+   Feedback` button appears in the upper-left corner of the form.
+
+.. _appraisals/review:
+
+Appraisal review
+================
+
+Once both portions of an appraisal are completed (the :ref:`employee <appraisals/employee-feedback>`
+and :ref:`manager <appraisals/manager-feedback>` feedback sections), it is time for the employee and
+manager to :ref:`meet and discuss the appraisal <appraisals/schedule>`.
+
+During the appraisal meeting, the manager reviews both the :ref:`Employee's Feedback
+<appraisals/employee-feedback>` section as well as their own :ref:`Manager feedback
+<appraisals/manager-feedback>`.
+
+Additionally, the employee's :ref:`skills <appraisals/skills>` and :doc:`goals <goals>`
+are reviewed at this time, and updated as needed.
+
+.. _appraisals/schedule:
+
+Schedule appraisal review
+-------------------------
+
+A meeting can be scheduled in one of two ways: either from the **Appraisals** app dashboard, or from
+an individual appraisal card.
+
+To schedule an appraisal from the dashboard of the **Appraisals** app, first navigate to
+:menuselection:`Appraisals app --> Appraisals`.
+
+Click the activity icon beneath the appraisal date on the desired appraisal card, and an activity
+pop-up window appears. Click :icon:`fa-plus` :guilabel:`Schedule an activity`, and set the
+:guilabel:`Activity Type`` to :guilabel:`Meeting`. For more information on scheduling activities,
+refer to the :ref:`activities documentation <activities/all>`.
+
+Doing so opens a :guilabel:`New Event` pop-up form. From this pop-up form, make any desired
+modifications, such as designating a :guilabel:`Start` time.
+
+The employee populates the :guilabel:`Attendees` section by default. Add anyone else who should be
+in the meeting, if necessary.
+
+To make the meeting a video call, instead of an in-person meeting, click :icon:`fa-plus`
+:guilabel:`Odoo meeting`, and a :guilabel:`Videocall URL` link appears in the field.
+
+Once all the desired changes are complete, click :guilabel:`Save & Close`.
+
+The meeting now appears on the calendar, and the invited parties are informed, via email.
+
+.. image:: new_appraisals/meeting.png
+   :alt: The meeting form with all information entered for Ronnie Hart's annual appraisal.
+
+The other way to schedule a meeting is from the individual appraisal form. To do this, navigate to
+the :menuselection:`Appraisal app` dashboard, then click on an appraisal card.
+
+Next, click on the :icon:`fa-calendar` :guilabel:`Meeting` smart button, and the calendar loads.
+Follow the same directions above to create the meeting.
+
+For more detailed information on how to schedule activities, refer to the :doc:`activities
+<../../essentials/activities>` documentation.
+
+.. note::
+   If no meetings are scheduled, the :guilabel:`Meeting` smart button reads :guilabel:`No Meeting`.
+
+.. _appraisals/skills:
+
+Review employee skills
+----------------------
+
+Part of an appraisal is evaluating an employee's skills, and tracking their progress over time. The
+:guilabel:`Skills` tab of the appraisal form auto-populates with the skills from the :ref:`employee
+form <employees/skills>`, once an appraisal is confirmed.
+
+Each skill is grouped with like skills, and the :guilabel:`Skill Level`, :guilabel:`Progress`, and
+:guilabel:`Justification` are displayed for each skill.
+
+:ref:`Update any skills, or add any new skills <employees/skills>` to the :guilabel:`Skills` tab.
+
+If a skill level has increased, enter a reason for the improved rating in the
+:guilabel:`Justification` field, such as `took a fluency language test` or `received Javascript
+certification`.
+
+After an appraisal is completed, and the skills have been updated, the next time an appraisal is
+confirmed, the updated skills populate the :guilabel:`Skills` tab.
+
+.. note::
+   The :guilabel:`Skills` tab *can* be modified **after** the employee and their manager have met
+   and discussed the employee's appraisal.
+
+   This is a common situation as the manager may not have all the necessary information to assess
+   and update the employee's skills before meeting.
+
+.. _appraisals/complete:
+
+Complete an appraisal
+=====================
+
+After the appraisal has been filled out by both the employee and the manager, and both parties have
+met and discussed the employee's performance, the manager then :ref:`logs any notes
+<appraisals/notes>`, and :ref:`assigns a rating <appraisals/rate>`.
+
+When completed, click the :guilabel:`Mark as Done` button in the upper-left corner of the appraisal
+form.
+
+Once the appraisal is marked as *Done*, the status changes from :guilabel:`Confirmed` to
+:guilabel:`Done`, and the :guilabel:`Mark as Done` button changes to a :guilabel:`Reopen` button.
+
+.. tip::
+   Modifications are **not** possible once the appraisal is marked as done.
+
+   To make any changes to an appraisal with a status of :guilabel:`Done`, click the
+   :guilabel:`Reopen` button, then, click :guilabel:`Confirm`, and make any modifications needed.
+   Once all modifications are complete, click the :guilabel:`Mark as Done` button again.
+
+.. _appraisals/notes:
+
+Add a private note
+------------------
+
+Managers can log notes on an appraisal that are **only** visible to other managers. Enter any notes
+in the :guilabel:`Private Note` tab. This can be done anytime during the appraisal process.
+
+The employee being evaluated does **not** have access to this tab, and the tab does **not** appear
+on their appraisal.
+
+The tab is optional and does not affect the final rating.
+
+.. _appraisals/rate:
+
+Provide a final rating
+----------------------
+
+After both the manager and employee have met to discuss the employee's performance, the appraisal
+must be given a :guilabel:`Final Rating`.
+
+Using the drop-down menu, select the rating for the employee. The default options are:
+:guilabel:`Needs improvement`, :guilabel:`Meets expectations`, :guilabel:`Exceeds expectations`,
+:guilabel:`Strongly Exceeds Expectations`, and :guilabel:`Good`.
+
+To add a new rating, navigate to :menuselection:`Appraisals app --> Configuration --> Evaluation
+Scale`. The default ratings are presented in a list view. To add a new rating, click the
+:guilabel:`New` button in the upper-left corner, and a blank line appears at the bottom of the list.
+Enter the new rating, then press the enter key, or click away from the line. Add as many new ratings
+as needed.
+
+Click :menuselection:`Appraisals` in the top menu to return to the :guilabel:`Appraisals` dashboard,
+click on the appraisal, then select the desired :guilabel:`Final Rating`.
+
+.. seealso::
+   - :doc:`../appraisals/goals`
+   - :doc:`../appraisals/appraisal_analysis`
+   - :doc:`../appraisals/skills_evolution`
+
+
+==================================================
+SECTION: schedule_appraisals.rst
+PATH: applications/hr/appraisals/schedule_appraisals.rst
+==================================================
+
+===================
+Schedule appraisals
+===================
+
+Odoo's **Appraisals** app helps managers run recurring performance reviews. Each review can include
+a self-assessment and can follow any schedule the company sets.
+
+Regular appraisals turn day-to-day work into clear goals and measurable skill targets. They also
+supply the objective evidence HR needs for raises or promotions, and keep individual performance
+aligned with company KPIs.
+
+Reviews can be :ref:`scheduled automatically <appraisals/auto>` through an :ref:`appraisal plan
+<appraisals/appraisal-plan>` that triggers evaluations at set intervals, or :ref:`created manually
+<appraisals/manual>` whenever needed—such as before a promotion or department transfer.
+
+.. _appraisals/auto:
+
+Automatic scheduling
+====================
+
+To ensure no appraisal is missed, enable automatic scheduling by going to :menuselection:`Appraisals
+app --> Configuration --> Settings`.
+
+The :guilabel:`Appraisals Plan` settings determines the frequency that appraisals are scheduled.
+
+.. image:: schedule_appraisals/appraisals-setting.png
+   :alt: The appraisals sections with the timeline filled in and 360 feedback enabled.
+
+.. _appraisals/appraisal-plan:
+
+Appraisals plans
+----------------
+
+By default, appraisals are preconfigured to be automatically created six months after an employee is
+hired, with a second appraisal exactly six months after that.
+
+Once those two initial appraisals have been completed in the employee's first year, following
+appraisals are only created once a year (every twelve months).
+
+To modify this schedule, change the number of months in the blank fields under the
+:guilabel:`Appraisals Plans` section.
+
+.. important::
+   Changing the :guilabel:`Appraisals Plans` field updates **every** employee record whose
+   :guilabel:`Next Appraisal Dates` is empty.
+
+Appraisals automation
+---------------------
+
+Tick the checkbox next to :guilabel:`Appraisals Automation` to have Odoo automatically schedule
+*and* confirm appraisals.
+
+Appraisals are scheduled according to the :ref:`appraisal plan <appraisals/appraisal-plan>`.
+
+.. _appraisals/manual:
+
+Manually schedule an appraisal
+==============================
+
+Managers can schedule an appraisal at any time, outside the regular cycle.
+
+For example, if an employee is promoted, or transfers to a new role or a new department, an
+appraisal is scheduled to assess performance in the current role.
+
+To create a new appraisal, open the :menuselection:`Appraisals` app, and click the :guilabel:`New`
+button in the upper-left corner. This opens a blank :guilabel:`Appraisals` form.
+
+First, using the drop-down menu, select the employee being evaluated, in the first field on the
+form. Once an employee is selected, the employee's :guilabel:`Manager`, :guilabel:`Job Position`,
+and :guilabel:`Department` fields are populated according to the information on the employee record.
+
+The current date populates the :guilabel:`Appraisal Date` field, which is the date the appraisal is
+scheduled to be completed. Using the calendar selector, adjust the date, if desired. This field is
+typically updated when the manager submits their final rating at the end of the appraisal process.
+
+If there is an :ref:`appraisal plan <appraisals/appraisal-plan>` configured, the :guilabel:`Next
+Appraisal Date` field displays :guilabel:`Ongoing`. This indicates that the following appraisal will
+be scheduled according to the appraisal schedule. Once the appraisal is marked as complete, the
+:guilabel:`Next Appraisal Date` is updated with the date of the next appraisal.
+
+Last, select the desired :guilabel:`Appraisal Template`. The :guilabel:`Default Template` populates
+this field, by default, and is created when the **Appraisals** app is installed. Using the drop-down
+menu, select a different template, if desired.
+
+Once the information in the top-half of the :guilabel:`Appraisals` form is complete, click the
+:guilabel:`Confirm` button in the upper-left corner, and the appraisal is scheduled, and the
+employee is notified.
+
+Once the appraisal is confirmed, both the employee and manager can start to fill out the appraisal.
+
+.. image:: schedule_appraisals/new-appraisal.png
+   :alt: A new appraisal form with the top half filled out.
+
+
+==================================================
+SECTION: skills_evolution.rst
+PATH: applications/hr/appraisals/skills_evolution.rst
+==================================================
+
+================
+Skills evolution
+================
+
+In Odoo's **Appraisals** app, it is possible to view employee's skills as they progress over time in
+the :ref:`Skills Evolution <appraisals/identify-skills-evolution>` report, also known as the
+*Appraisal Skills Report*.
+
+Managers can use this to see who is achieving their various skill goals set on their appraisals, who
+is meeting their skill deadlines, who has the highest performance in terms of skill development, and
+more.
+
+The *Skills Evolution* report also provides the ability to :ref:`search for employees with specific
+skills <appraisals/identify-skills>` at certain levels, which can be helpful for scenarios where
+specific skills are required.
+
+.. _appraisals/identify-skills-evolution:
+
+Skills evolution report
+=======================
+
+To access this *Skills Evolution* report, navigate to :menuselection:`Appraisals app --> Reporting
+--> Skills Evolution`.
+
+Doing so reveals the :guilabel:`Appraisal Skills Report` page. All skills are grouped by the month
+they were created, then by employee, and then by skill type.
+
+.. important::
+    The :guilabel:`Appraisals Skills Report` only displays skills for employees with at least one
+    completed appraisal. Skills for employees whose appraisals are still draft or pending are not
+    included.
+
+   When an employee completes their first appraisal, all their skills appear on the report. Once
+   subsequent appraisals are marked as done, any skill changes from the previous appraisal appear on
+   the report.
+
+   Any skill level changes from ongoing appraisals that have **not** been finalized are **not**
+   included in this report.
+
+To view the specific details for an employee's skill types, expand the :guilabel:`Employee`, then
+expand the individual :guilabel:`Skill Types`. Each skill type displays the following information:
+
+- :guilabel:`Employee`: the name of the employee.
+- :guilabel:`Skill Type`: the category the skill falls under.
+- :guilabel:`Skill`: the specific, individual skill.
+- :guilabel:`Current Level`: the current level the employee has achieved for the skill.
+- :guilabel:`Previous Progress`: the previous percentage of competency achieved for the skill.
+- :guilabel:`Current Progress`: the current percentage of competency achieved for the skill.
+- :guilabel:`Justification`: any notes entered on the skill, explaining the progress.
+
+The color of the skill text indicates any changes from the previous appraisal. Skill levels that
+have increased since the last appraisal appear in green, as an *Improvement*. Skill levels that have
+**not** changed appear in black, as *No Change*. Skills that have regressed appear in red, as
+*Regression*.
+
+This report can be modified to find specific information by adjusting the :ref:`filters
+<search/filters>` and :ref:`groupings <search/group>` set in the search bar at the top.
+
+.. image:: skills_evolution/skills-report.png
+   :alt: A report showing all the skills grouped by employee.
+
+.. _appraisals/identify-skills:
+
+Use case: Identify employees with specific skills
+=================================================
+
+Since the :guilabel:`Appraisal Skills Report` organizes all skills by month, then employee, it can
+be difficult to find employees with a specific skill at a specific level. To find these employees, a
+custom filter must be used.
+
+In this example, the report is modified to show employees with an expert level of Javascript
+knowledge. To view only those employees, first remove all active filters in the search bar.
+
+Next, click the :icon:`fa-caret-down` :guilabel:`(Toggle Search Panel)` icon in the search bar, then
+click :guilabel:`Add Custom Filter` beneath the :icon:`fa-filters` :guilabel:`Filters` column to
+load an :guilabel:`Add Custom Filter` pop-up window.
+
+Using the drop-down menu in the first field, select :guilabel:`Skill`. Then, keep the second field
+as-is (:guilabel:`is in)`, and select :guilabel:`Javascript` from the third drop-down menu in the
+third field.
+
+Next, click :guilabel:`New Rule`, and another line appears. In this second line, select
+:guilabel:`Current Level` for the first drop-down field, leave the second field as-is :guilabel:`(is
+in)`, then select :guilabel:`Expert` for the third drop-down field.
+
+After the second rule is added, navigate to the text at the top of the pop-up window that shows
+:guilabel:`Match any` :icon:`fa-caret-down` :guilabel:`of the following rules`. Click the drop-down
+menu for :guilabel:`any` and change it to :guilabel:`all`.
+
+Finally, click the :guilabel:`Add` button.
+
+.. image:: skills_evolution/javascript.png
+   :alt: The Custom Filter pop-up with the parameters set.
+
+Now, only employees that have an :guilabel:`Expert` level for the skill :guilabel:`Javascript`
+appear. In this example, only :guilabel:`Marc Demo` meets these criteria.
+
+.. image:: skills_evolution/results.png
+   :alt: The employees with expert Javascript skills.
+
+Use case: Assess highest improvement
+====================================
+
+Another way to modify the :guilabel:`Appraisal Skills Report` is to identify the employee who has
+the highest amount of improved skills over a specific period of time.
+
+To view this information, first remove the default filter in the search bar. Next, click the
+:icon:`fa-caret-down` :guilabel:`(Toggle Search Panel)` icon in the search bar, then click
+:guilabel:`Improvement` beneath the :icon:`fa-filter` :guilabel:`Filters` column. Enabling this
+filter only presents skills that have improved.
+
+It is possible to view the skills that have improved over a period of time, such as a specific
+quarter, or month. With the search bar drop-down menu still expanded, click :guilabel:`Add Custom
+Filter` at the bottom of the :icon:`fa-filter` :guilabel:`Filters` column, and an :guilabel:`Add
+Custom Filter` pop-up window appears.
+
+Select :guilabel:`Create Date` for the first drop-down field, then select :guilabel:`is between` for
+the second drop-down field. Once :guilabel:`is between` is selected, a second field appears after
+the last field. Using the calendar selector, select the date range to apply the filter to. Once all
+the fields are properly formatted, click :guilabel:`Add`.
+
+The custom filter presents all skills that have been improved, organized by employee, in a default
+list view.
+
+.. example::
+   To determine the employee with the most amount of improved skills for the second quarter, remove
+   the default filter in the search bar of the :guilabel:`Appraisal Skills Report`. Next, activate
+   the :guilabel:`Improvement` filter, then click :guilabel:`Add Custom Filter` at the bottom of the
+   :icon:`fa-filter` :guilabel:`Filters` column.
+
+   In the resulting :guilabel:`Add Custom Filter` pop-up window, select :guilabel:`Create Date` for
+   the first drop-down field, then select :guilabel:`is between` for the second drop-down field. Two
+   date fields appear after :guilabel:`is between` is selected.
+
+   Using the calendar selector, set the first date to :guilabel:`04/01/2025` and the second date to
+   :guilabel:`06/30/2025`, then click :guilabel:`Add`.
+
+   .. image:: skills_evolution/custom-filter.png
+      :alt: The Custom Filter pop-up with the parameters set.
+
+To view the number of employees and skills in further detail, click the :icon:`oi-view-pivot`
+:guilabel:`(Pivot)` icon in the top-right corner to view the data in a pivot table. This presents a
+pivot table with the employees populating the rows, and the only visible column represents the total
+number of improved skills.
+
+To expand the columns to view which skill types had the most overall improvement, click
+:icon:`fa-plus-square` :guilabel:`Total` above the :guilabel:`Count` column, then click
+:guilabel:`Add Custom Group` :icon:`fa-caret-down`, then click :guilabel:`Skill` from the resulting
+drop-down menu. This expands all the improved skills, organized by individual skill.
+
+.. example::
+   In this example, :guilabel:`Audrey Peterson` improved the most in the third quarter, with five
+   improved skills.
+
+  .. image:: skills_evolution/largest-improvement.png
+     :alt: The pivot table showing the skill improvements for the third quarter.
+
+.. seealso::
+   - :doc:`Odoo essentials reporting <../../essentials/reporting>`
+   - :doc:`../../essentials/search`

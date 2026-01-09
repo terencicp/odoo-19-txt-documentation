@@ -1,0 +1,2074 @@
+
+
+==================================================
+SECTION: adyen.rst
+PATH: applications/finance/payment_providers/adyen.rst
+==================================================
+
+=====
+Adyen
+=====
+
+`Adyen <https://www.adyen.com/>`_ is a Dutch company that offers several online payment
+possibilities.
+
+.. note::
+   Adyen only works with customers processing **more than 10 million annually** or invoicing a
+   **minimum of 1000 transactions per month**.
+
+.. _payment_providers/adyen/configure_dashboard:
+
+Adyen configuration
+===================
+
+#. Create an Adyen account if necessary and log into your Adyen Customer Area.
+
+   .. tip::
+      Log into your **Test account** to try the integration without charging customers.
+      Switch to your **Live account** once you are ready to accept payments.
+
+#. `Contact the Adyen support team <https://docs.adyen.com/platforms/quickstart-guide/support#contact-adyen-support>`_
+   to enable the **Multiple partial capture** feature.
+#. In the Adyen Customer Area, go to :menuselection:`Developers --> API credentials` and click the
+   relevant API credential user name in the list or click :guilabel:`Create new credential` to
+   create a new one.
+#. In the :guilabel:`Server settings` section, click :guilabel:`Generate API key`, then click the
+   :icon:`fa-copy` (:guilabel:`Copy API key`) icon and save the value for the
+   :ref:`payment_providers/adyen/configure_odoo` step.
+#. In the :guilabel:`Client settings` section, click :guilabel:`Generate client key`, then
+   click the :icon:`fa-copy` (:guilabel:`Copy API key`) icon and save the value for
+   the :ref:`payment_providers/adyen/configure_odoo` step.
+#. Enter your Odoo website URL in the :guilabel:`Add allowed origins` field, then click
+   :guilabel:`Add`.
+#. Click :guilabel:`Save changes` at the bottom of the page.
+#. Go to :menuselection:`Developers --> Webhooks` in the left menu and click :guilabel:`Create new
+   webhook`.
+#. In the :guilabel:`Create new webhook` popup, click :guilabel:`Add` on to the :guilabel:`Standard
+   webhook` line.
+#. On the :guilabel:`Webhook generation` form, in the :guilabel:`Server configuration` section,
+   enter your Odoo database :guilabel:`URL` followed by `/payment/adyen/notification`.
+#. In the :guilabel:`Security` section, click :guilabel:`Generate` under :guilabel:`HMAC`, then
+   click the :icon:`fa-copy` (:guilabel:`Copy HMAC to the clipboard`) icon and save the value for
+   the :ref:`payment_providers/adyen/configure_odoo` step.
+#. Click :guilabel:`Save configuration` at the bottom of the page.
+#. Go to :menuselection:`Developers --> API URLs`, then copy the :guilabel:`Prefix` and save it for
+   the :ref:`payment_providers/adyen/configure_odoo` step.
+
+.. _payment_providers/adyen/configure_odoo:
+
+Odoo configuration
+==================
+
+#. :ref:`Navigate to the Adyen payment provider<payment_providers/add_new>`.
+#. Fill in the :guilabel:`Merchant account`, :guilabel:`API Key`, :guilabel:`Client Key`,
+   :guilabel:`HMAC Key`, and :guilabel:`API URL Prefix` fields with the values saved at the
+   :ref:`Adyen configuration step <payment_providers/adyen/configure_dashboard>`.
+#. Configure the remaining options as needed.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled`.
+
+.. tip::
+   If you want to :ref:`test Adyen without affecting live transactions
+   <payment_providers/test-mode>`, use your **Test account** credentials, enter
+   `https://checkout-test.adyen.com` in the :guilabel:`API URL Prefix` field, and set the
+   :guilabel:`State` field to :guilabel:`Test Mode`.
+
+Manual capture
+==============
+
+To enable :ref:`manual capture <payment_providers/manual_capture>` for Adyen payments, follow
+these steps:
+
+#. :ref:`Navigate to the Adyen payment provider <payment_providers/add_new>`.
+#. Go to the :guilabel:`Configuration` tab and enable :guilabel:`Capture Amount Manually`.
+#. Log in to your Adyen Customer Area, then go to :menuselection:`Settings` and click
+   :guilabel:`Company` in the :guilabel:`Account management` section.
+#. In the :guilabel:`General` section, click the :icon:`fa-pencil` (:guilabel:`Edit property`)
+   icon next to the :guilabel:`Capture Delay` field.
+#. In the popup, set the :guilabel:`Capture delay` field to :guilabel:`Manual` and click
+   :guilabel:`Save`.
+
+.. note::
+   - If the transaction is not captured within 7 days, the customer is entitled to revoke it.
+   - You can :ref:`manually capture <payment_providers/manual_capture>` and :ref:`refund
+     <payment_providers/refunds>` payments directly from your Adyen Customer Area.
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: amazon_payment_services.rst
+PATH: applications/finance/payment_providers/amazon_payment_services.rst
+==================================================
+
+=======================
+Amazon Payment Services
+=======================
+
+`Amazon Payment Services <https://paymentservices.amazon.com/>`_ or APS is an online payment provider
+established in Dubai offering several online payment options.
+
+.. _payment_providers/aps/configure-dashboard:
+
+Configuration on APS Dashboard
+==============================
+
+#. Log into your `Amazon Payment Services Dashboard <https://fort.payfort.com/>`_ and go to
+   :menuselection:`Integration Settings --> Security Settings`. Generate the
+   :guilabel:`Access Code` if none has been generated yet. Copy the values of the
+   :guilabel:`Merchant Identifier`, :guilabel:`Access Code`, :guilabel:`SHA Request Phrase` and
+   :guilabel:`SHA Response Phrase` fields, and save them for later.
+#. Enter your Odoo database URL in the :guilabel:`Origin URL`, for example:
+   `https://yourcompany.odoo.com/`. Then, click on :guilabel:`Save Changes`.
+#. Navigate to :menuselection:`Integration Settings --> Technical Settings` and click on
+   :guilabel:`Redirection`. Make sure :guilabel:`Status` is set to `Active` and select your
+   preferred payment methods underneath in :guilabel:`Payment Options`.
+#. | Set :guilabel:`Send Response Parameters` to :guilabel:`Yes` and enter your database URL
+     followed by `/payment/aps/return` in the :guilabel:`Redirection URL`.
+   | For example `https://yourcompany.odoo.com/payment/aps/return`.
+   | Enter your database URL followed by `/payment/aps/webhook` in the
+     :guilabel:`Direct Transaction Feedback` and :guilabel:`Notification URL` fields.
+   | For example `https://yourcompany.odoo.com/payment/aps/webhook`.
+   | Click on :guilabel:`Save Changes`.
+#. Under :menuselection:`Integration Settings --> Payment Page Template` you can customize the
+   look and feel of the Amazon Payment Services payment page (where customers fill out their
+   credit card details during payment).
+
+.. _payment_providers/aps/configure-odoo:
+
+Configuration on Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider Amazon Payment Services <payment_providers/add_new>`,
+   change its state to :guilabel:`Enabled`, and make sure it is :guilabel:`Published`.
+#. In the :guilabel:`Credentials` tab, fill the :guilabel:`Merchant Identifier`,
+   :guilabel:`Access Code`, :guilabel:`SHA Request Phrase` and :guilabel:`SHA Response Phrase` with
+   the values you saved at the step :ref:`payment_providers/aps/configure-dashboard`.
+#. Configure the rest of the options to your liking.
+
+
+==================================================
+SECTION: asiapay.rst
+PATH: applications/finance/payment_providers/asiapay.rst
+==================================================
+
+=======
+AsiaPay
+=======
+
+`AsiaPay <https://www.asiapay.com/>`_ is an online payments provider established in Hong Kong and
+covering several Asian countries and payment methods.
+
+.. _payment_providers/asiapay/configure_dashboard:
+
+Configuration on AsiaPay Dashboard
+==================================
+
+#. Log into AsiaPay Dashboard according to the account provided by AsiaPay.
+
+   - `PayDollar <https://www.paydollar.com/b2c2/eng/merchant/index.jsp>`_: For markets in HK,
+     CN, MO, TW, SG, MY, IN, VN, NZ and AU
+   - `PesoPay <https://www.pesopay.com/b2c2/eng/merchant/index.jsp>`_: For market in PH
+   - `SiamPay <https://www.siampay.com/b2c2/eng/merchant/index.jsp>`_: For market in TH
+   - `BimoPay <https://www.bimopay.com/b2c2/eng/merchant/index.jsp>`_: For market in ID
+
+#. Go to :menuselection:`Profile --> Account Information`. Copy the values of the
+   :guilabel:`Currency` and :guilabel:`Secure Hash` fields and save them for later.
+#. | Go to :menuselection:`Profile --> Payment Account Settings` and enable the option
+     :guilabel:`Return Value Link (Datefeed)`;
+   | Enter your Odoo database URL followed by `/payment/asiapay/webhook` in the
+     :guilabel:`Return Value Link (Datefeed)` text field. For example:
+     `https://yourcompany.odoo.com/payment/asiapay/webhook`;
+   | Click on :guilabel:`Test` to check if the webhook is working correctly.
+#. Click on :guilabel:`Update` to finalize the configuration.
+
+.. _payment_providers/asiapay/configure_odoo:
+
+Configuration on Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider AsiaPay <payment_providers/add_new>` and change its state
+   to :guilabel:`Enabled`.
+#. | In the :guilabel:`Credentials` tab, choose the :guilabel:`Brand` of your Asiapay account. Then
+     fill in the :guilabel:`Merchant ID` and :guilabel:`Secure Hash Secret`, and the
+     :guilabel:`Currency` in the :guilabel:`Configuration` tab with the values you saved at the
+     step :ref:`payment_providers/asiapay/configure_dashboard`;
+   | By default, the payment provider AsiaPay is configured to verify the secret hash with the hash
+     function `SHA1`. If a different function is :ref:`set on your account
+     <payment_providers/asiapay/configure_dashboard>`, activate the :ref:`developer mode
+     <developer-mode>` and set the same value to the field :guilabel:`Secure Hash Function` in the
+     :guilabel:`Credentials` tab.
+#. Configure the rest of the options to your liking.
+
+.. seealso::
+   - :doc:`../payment_providers`
+
+
+==================================================
+SECTION: authorize.rst
+PATH: applications/finance/payment_providers/authorize.rst
+==================================================
+
+=============
+Authorize.Net
+=============
+
+`Authorize.Net <https://www.authorize.net>`_ is a United States-based online payment solution
+provider, allowing businesses to accept **credit cards**.
+
+Configuration
+=============
+
+.. seealso::
+   - :ref:`payment_providers/add_new`
+
+Credentials tab
+---------------
+
+Odoo needs your **API Credentials & Keys** to connect with your Authorize.Net account, which
+comprise:
+
+- **API Login ID**: The ID solely used to identify the account with Authorize.Net.
+- **API Transaction Key**
+- **API Signature Key**
+- **API Client Key**
+
+To retrieve them, log into your Authorize.Net account, go to :menuselection:`Account --> Settings
+--> Security Settings --> API Credentials & Keys`, generate your **Transaction Key** and
+**Signature Key**, and paste them on the related fields in Odoo. Then, click on **Generate Client
+Key**.
+
+.. important::
+   To test Authorize.Net with a *sandbox* account, change the :guilabel:`State` to :guilabel:`Test
+   Mode`. We recommend doing this on a test Odoo database, rather than on your main database.
+
+   If you use the :guilabel:`Test Mode` with a regular account, it results in the following error:
+   *The merchant login ID or password is invalid or the account is inactive*.
+
+Configuration tab
+-----------------
+
+Place a hold on a card
+~~~~~~~~~~~~~~~~~~~~~~
+
+With Authorize.Net, you can enable the :ref:`manual capture
+<payment_providers/manual_capture>`. If enabled, the funds are reserved for 30 days on the
+customer's card, but not charged yet.
+
+.. warning::
+   After **30 days**, the transaction is **voided automatically** by Authorize.Net.
+
+.. seealso::
+   - :doc:`../payment_providers`
+
+.. _authorize/ach_payments:
+
+ACH payments (USA only)
+=======================
+
+:abbr:`ACH (automated clearing house)` is an electronic funds transfer system used between bank
+accounts in the United States.
+
+Configuration
+-------------
+
+To give customers the possibility to pay using ACH, `sign up for Authorize.Net eCheck's service
+<https://www.authorize.net/payments/echeck.html>`_. Once eCheck is activated, duplicate the
+previously configured Authorize.Net payment provider on Odoo by going to :menuselection:`Accounting
+--> Configuration --> Payment Providers --> Authorize.net`. Then, click the cog icon
+(:guilabel:`⛭`) and select :guilabel:`Duplicate`. Change the provider's name to differentiate both
+versions (e.g., `Authorize.net - Banks`).
+
+When ready, change the provider's :guilabel:`State` to :guilabel:`Enabled` for a regular account or
+:guilabel:`Test Mode` for a sandbox account.
+
+Import an Authorize.Net statement
+=================================
+
+.. _authorize-import-template:
+
+Export from Authorize.Net
+-------------------------
+
+.. admonition:: Template
+
+   :download:`Download the Excel import template. <authorize/authorize-net-magic-sheet.xlsx>`
+
+- Log in to Authorize.Net.
+- Go to :menuselection:`Account --> Statements --> eCheck.Net Settlement Statement`.
+- Define an export range using an *opening* and *closing* batch settlement. All transactions within
+  the two batch settlements will be exported to Odoo.
+- Select all transactions within the desired range, copy them, and paste them into the
+  :guilabel:`Report 1 Download` sheet of the :ref:`Excel import template
+  <authorize-import-template>`.
+
+.. image:: authorize/authorize-report1.png
+   :alt: Selecting Authorize.Net transactions to import
+
+.. example::
+
+   .. image:: authorize/authorize-settlement-batch.png
+      :align: center
+      :alt: Settlement batch of an Authorize.Net statement
+
+   In this case, the first batch (01/01/2021) of the year belongs to the settlement of 12/31/2020,
+   so the **opening** settlement is from 12/31/2020.
+
+Once the data is in the :guilabel:`Report 1 Download` sheet:
+
+- Go to the :guilabel:`Transaction Search` tab on Authorize.Net.
+- Under the :guilabel:`Settlement Date` section, select the previously used range of batch
+  settlement dates in the :guilabel:`From:` and :guilabel:`To:` fields and click :guilabel:`Search`.
+- When the list has been generated, click :guilabel:`Download to File`.
+- In the pop-up window, select :guilabel:`Expanded Fields with CAVV Response/Comma Separated`,
+  enable :guilabel:`Include Column Headings`, and click :guilabel:`Submit`.
+- Open the text file, select :guilabel:`All`, copy the data, and paste it into the :guilabel:`Report
+  2 Download` sheet of the :ref:`Excel import template <authorize-import-template>`.
+- Transit lines are automatically filled in and updated in the :guilabel:`transit for report 1` and
+  :guilabel:`transit for report 2` sheets of the :ref:`Excel import template
+  <authorize-import-template>`. Make sure all entries are present, and **if not**, copy the formula
+  from previously filled-in lines of the :guilabel:`transit for report 1` or :guilabel:`2` sheets
+  and paste it into the empty lines.
+
+.. important::
+   To get the correct closing balance, **do not remove** any line from the Excel sheets.
+
+Import into Odoo
+----------------
+
+To import the data into Odoo:
+
+- Open the :ref:`Excel import template <authorize-import-template>`.
+- Copy the data from the :guilabel:`transit for report 2` sheet and use *paste special* to only
+  paste the values in the :guilabel:`Odoo Import to CSV` sheet.
+- Look for *blue* cells in the :guilabel:`Odoo Import to CSV` sheet. These are chargeback entries
+  without any reference number. As they cannot be imported as such, go to
+  :menuselection:`Authorize.Net --> Account --> Statements --> eCheck.Net Settlement Statement`.
+- Look for :guilabel:`Charge Transaction/Chargeback`, and click it.
+- Copy the invoice description, paste it into the :guilabel:`Label` cell of the :guilabel:`Odoo
+  Import to CSV` sheet, and add `Chargeback /` before the description.
+- If there are multiple invoices, add a line into the :ref:`Excel import template
+  <authorize-import-template>` for each invoice and copy/paste the description into each respective
+  :guilabel:`Label` line.
+
+.. note::
+   For **combined chargeback/returns** in the payouts, create a new line in the :ref:`Excel import
+   template <authorize-import-template>` for each invoice.
+
+.. example::
+
+   .. image:: authorize/authorize-chargeback-desc.png
+      :alt: Chargeback description
+
+- Next, delete *zero transaction* and *void transaction* line items, and change the format
+  of the :guilabel:`Amount` column in the :guilabel:`Odoo Import to CSV` sheet to *Number*.
+- Go back to :menuselection:`eCheck.Net Settlement Statement --> Search for a Transaction` and
+  search again for the previously used batch settlements dates.
+- Verify that the batch settlement dates on eCheck.Net match the related payments' dates found in
+  the :guilabel:`Date` column of the :guilabel:`Odoo Import to CSV`.
+- If it does not match, replace the date with the one from eCheck.Net. Sort the column by *date*,
+  and make sure the format is `MM/DD/YYYY`.
+- Copy the data - column headings included - from the :guilabel:`Odoo Import to CSV` sheet, paste
+  it into a new Excel file, and save it using the CSV format.
+- Open the Accounting app, go to :menuselection:`Configuration --> Journals`, tick the
+  :guilabel:`Authorize.Net` box, and click :menuselection:`Favorites --> Import records --> Load
+  file`. Select the CSV file and upload it into Odoo.
+
+.. tip::
+   List of `eCheck.Net return codes <https://support.authorize.net/knowledgebase/Knowledgearticle/?code=000001293>`_
+
+
+==================================================
+SECTION: bank_payments.rst
+PATH: applications/finance/payment_providers/bank_payments.rst
+==================================================
+
+=============
+Bank payments
+=============
+
+.. seealso::
+   :doc:`../payment_providers`
+
+.. _payment_providers/bank_payments/wire_transfer:
+
+Wire transfer
+=============
+
+The **Wire Transfer** payment method allows you to provide payment instructions to customers,
+such as your bank details and a reference to include with the payment. These instructions are
+displayed after the customer selects :guilabel:`Wire Transfer` as the payment method and clicks the
+:guilabel:`Pay now` button at the end of the checkout process on your ecommerce website or on the
+customer portal.
+
+.. note::
+   - While this method is widely accessible and requires minimal setup, it is not efficient
+     process-wise. It is recommended to set up a :doc:`payment provider <../payment_providers>`
+     instead.
+   - Online orders remain in the :guilabel:`Quotation sent` (i.e., unpaid order) stage until you
+     receive the payment and manually :guilabel:`Confirm` the order.
+
+To configure **Wire Transfer**, follow these steps:
+
+#. :ref:`Navigate to the Wire Transfer payment provider <payment_providers/supported_providers>`.
+#. In the :guilabel:`Configuration` tab, select whether the memo or :guilabel:`Communication` to be
+   displayed alongside the payment instructions should be:
+
+   - :guilabel:`Based on Document Reference`: the sales order or invoice number
+   - :guilabel:`Based on Customer ID`: the customer identifier
+
+#. Enable :guilabel:`Enable QR codes` to activate QR code payments.
+
+   .. note::
+      :doc:`Additional accounting setup <../accounting/customer_invoices/epc_qr_code>` is required
+      to use QR codes.
+
+#. Define the payment instructions in the :guilabel:`Messages` tab. If :doc:`a bank account
+   <../accounting/bank>` has already been defined, the account number is automatically added to the
+   default message generated by Odoo. You can also add it afterward and update the message by
+   clicking :guilabel:`Reload pending message`.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled`.
+
+.. tip::
+   The **Wire transfer** payment method can serve as a template for other payment methods that are
+   processed manually, such as checks. :ref:`Access the Wire Transfer payment method
+   <payment_providers/payment_methods>`, then duplicate it if needed and rename it accordingly.
+
+.. _payment_providers/bank_payments/sdd:
+
+SEPA Direct Debit
+=================
+
+.. |sdd| replace:: :abbr:`SDD (SEPA Direct Debit)`
+
+SEPA (Single Euro Payments Area) is a payment-integration initiative of the European Union that
+facilitates standardized and simplified electronic payments in euros across participating countries.
+
+SEPA Direct Debit (SDD) is a payment provider that allows future payments to be collected from
+customers' bank accounts based on a signed :ref:`SEPA Direct Debit mandate
+<accounting/batch_sdd/sdd_mandates>`. This is particularly useful for recurring payments based on a
+:doc:`subscription </applications/sales/subscriptions>`.
+
+.. important::
+   To use the SEPA Direct Debit (SDD) payment provider and create :ref:`SEPA Direct Debit mandates
+   <accounting/batch_sdd/sdd_mandates>`:
+
+   - The invoice being paid must be for an amount in euros.
+   - The :guilabel:`SEPA Direct Deposit (SDD)` feature must be enabled, and the company's
+     :guilabel:`Creditor Identifier` must be defined in the :ref:`Accounting or Invoicing settings
+     <accounting/batch_sdd/sepa-configuration>`.
+
+.. _sdd/configuration:
+
+Configuration
+-------------
+
+To configure **SEPA Direct Debit**, follow these steps:
+
+#. :ref:`Navigate to the SEPA Direct Debit payment provider <payment_providers/supported_providers>`.
+#. In the :guilabel:`Configuration` tab, select whether the memo or :guilabel:`Communication` to be
+   displayed alongside the payment instructions should be:
+
+   - :guilabel:`Based on Document Reference`: the sales order or invoice number
+   - :guilabel:`Based on Customer ID`: the customer identifier
+
+#. Select the :guilabel:`Enable QR codes` check box to activate QR code payments.
+
+   .. note::
+      :doc:`Additional accounting setup <../accounting/customer_invoices/epc_qr_code>` is required
+      to use QR codes.
+
+#. Edit the default payment instructions in the :guilabel:`Messages` tab to include your **bank
+   account number**. These instructions are displayed at the end of the checkout process on your
+   ecommerce website or on the customer portal.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled`.
+
+.. important::
+   - Leave the :guilabel:`Currencies` field set to the default :guilabel:`EUR` tag to ensure |sdd|
+     is only available for payments in euros.
+   - The :guilabel:`Bank Account` defined for the :guilabel:`Payment Journal` must be a valid IBAN.
+
+.. tip::
+   You can also test SEPA direct debit payments using the :ref:`payment_providers/test-mode`.
+
+Online payments with |sdd|
+--------------------------
+
+Customers selecting |sdd| as a payment method are prompted to enter their IBAN to complete the
+:ref:`SEPA Direct Debit mandate <accounting/batch_sdd/sdd_mandates>`.
+
+The |sdd| mandate is then automatically created in :guilabel:`Draft` based on the provided IBAN. To
+validate the information, customers must confirm each new mandate with a successful bank transfer of
+the expected amount **using the specified payment reference (communication)** defined in the
+:ref:`SEPA Direct Debit payment provider's form <sdd/configuration>`. Once this initial payment is
+received and :doc:`reconciled <../accounting/bank/reconciliation>`, the mandate is automatically
+validated and updated to the :guilabel:`Active` status. Once a mandate is active, it is reused for
+all subsequent payments made with the |sdd| payment method. You can then collect them by
+:ref:`uploading them to your online banking interface <accounting/batch_sdd/XML>`.
+
+.. seealso::
+   :doc:`../accounting/payments/batch_sdd`
+
+.. note::
+   - Mandates are automatically :ref:`closed <accounting/batch_sdd/close-revoke-mandate>` 36 months
+     after the date of the last collection.
+   - |sdd| is also available as a payment method through other providers, such as
+     :doc:`adyen`, :doc:`buckaroo`, and :doc:`stripe`. In these cases, |sdd| mandates are handled
+     externally by the payment provider.
+
+
+==================================================
+SECTION: buckaroo.rst
+PATH: applications/finance/payment_providers/buckaroo.rst
+==================================================
+
+========
+Buckaroo
+========
+
+`Buckaroo <https://www.buckaroo.eu/>`_ is a Dutch-based company that offers several online payment
+possibilities.
+
+.. _payment_providers/buckaroo/configure_dashboard:
+
+Configuration on Buckaroo Plaza
+===============================
+
+#. Log into `Buckaroo Plaza <https://plaza.buckaroo.nl>`_, go to :menuselection:`My Buckaroo -->
+   Websites` and select the :guilabel:`Push settings` tab.
+#. Tick the :guilabel:`Enable Push Response` check box in the :guilabel:`Delayed and Push responses`
+   section.
+#. Enter the URL of your Odoo database, followed by `/payment/buckaroo/webhook` in both the
+   :guilabel:`Push URI Success/Pending` and :guilabel:`Push URI Failure` text fields. For example:
+   `https://yourcompany.odoo.com/payment/buckaroo/webhook`.
+#. Leave the other fields as they are and click :guilabel:`Save`.
+#. In the :guilabel:`General` tab, copy the website :guilabel:`Key` (i.e., the key used to uniquely
+   identify your website with Buckaroo) and save it for later.
+#. Go to :menuselection:`Configuration --> Security --> Secret key`, enter or :guilabel:`Generate` a
+   :guilabel:`Secret key` and click :guilabel:`Save`. Save the key for later.
+
+Configuration on Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider Buckaroo <payment_providers/add_new>` and change its state
+   to :guilabel:`Enabled`.
+#. In the :guilabel:`Credentials` tab, fill the :guilabel:`Website Key` and :guilabel:`Secret Key`
+   fields with the values you saved at the step
+   :ref:`payment_providers/buckaroo/configure_dashboard`.
+#. Configure the options in the other tabs to your liking.
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: demo.rst
+PATH: applications/finance/payment_providers/demo.rst
+==================================================
+
+====
+Demo
+====
+
+Odoo's **Demo Payment Provider** allows you to test business flows involving online transactions
+without requiring real banking credentials.
+
+Configuration
+=============
+
+.. seealso::
+   :ref:`payment_providers/add_new`
+
+.. important::
+   Switch the state to :guilabel:`Test Mode`.
+
+Payment outcome
+===============
+
+Upon checkout or when paying a bill online, you can choose the payment outcome when using the demo
+payment provider. To do so, click on the :guilabel:`Payment Status` drop-down menu and select the
+desired outcome.
+
+.. image:: demo/demo-payment-outcome.png
+   :align: center
+   :alt: Payment status outcomes.
+
+Transaction state
+=================
+
+If you selected :guilabel:`Pending` as **payment outcome**, you can change the state of the
+transaction straight from its form view. To access a transaction's form view, activate the
+:ref:`developer mode <developer-mode>`, and go to :menuselection:`Accounting / Website -->
+Configuration --> Payment Transactions`. Then, change the status of a transaction by clicking on the
+state bar (:guilabel:`Draft, Pending, Authorized, Confirmed, Cancelled, Error`).
+
+.. image:: demo/demo-view-form.png
+   :align: center
+   :alt: Transaction's status bar.
+
+
+==================================================
+SECTION: dpo.rst
+PATH: applications/finance/payment_providers/dpo.rst
+==================================================
+
+=======
+DPO Pay
+=======
+
+`DPO Pay <https://dpogroup.com/>`_ is a payment provider based in Africa that operates across
+multiple countries on the continent.
+
+.. _payment_providers/dpo/configure_dashboard:
+
+DPO Pay account creation
+========================
+
+#. `Fill in the DPO Pay onboarding form <https://dpo-pay-network.odoo.com/form>`_ and upload
+   the required documents.
+#. Agree to the :guilabel:`Terms and Conditions` and click :guilabel:`Submit`.
+#. DPO Pay creates a test account based on the submitted information and sends you an email
+   containing your login credentials for the `DPO portal <https://portal.dpopay.com>`_
+   and the :ref:`test credentials <payment_providers/test-mode>` to enter in
+   :ref:`Odoo <payment_providers/dpo/configure_odoo>` if you want to try DPO Pay without affecting
+   live transactions.
+#. Once DPO has verified the information and documents, they will transition your test account to a
+   live account and send another email containing your live credentials to configure in
+   :ref:`Odoo <payment_providers/dpo/configure_odoo>`.
+
+.. _payment_providers/dpo/configure_odoo:
+
+Configuration in Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider DPO Pay <payment_providers/add_new>`.
+#. Fill in the :guilabel:`Service ID` and :guilabel:`Company Token` fields with the
+   :ref:`information received from DPO Pay <payment_providers/dpo/configure_dashboard>`.
+#. Configure the remaining options to your liking.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled` (or :guilabel:`Test Mode` if you are
+   trying DPO Pay as a :ref:`test <payment_providers/test-mode>`).
+
+.. note::
+   All `payment methods supported by DPO Pay <https://dpogroup.com/Payment-methods>`_ are grouped
+   under the :guilabel:`Card / Mobile` payment method. When they select this payment method,
+   customers are redirected to a DPO Pay page where they can select their preferred payment method.
+   To enable or disable specific payment options, contact `DPO Pay support
+   <https://dpogroup.com/contact-us/>`_.
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: flutterwave.rst
+PATH: applications/finance/payment_providers/flutterwave.rst
+==================================================
+
+===========
+Flutterwave
+===========
+
+`Flutterwave <https://flutterwave.com/>`_ is an online payments provider established in Nigeria and
+covering several African countries and payment methods.
+
+.. _payment_providers/flutterwave/configure_dashboard:
+
+Configuration on Flutterwave Dashboard
+======================================
+
+#. Log into `Flutterwave Dashboard <https://dashboard.flutterwave.com/>`_ and go to
+   :menuselection:`Settings --> API`. Copy the values of the :guilabel:`Public Key` and
+   :guilabel:`Secret Key` fields and save them for later.
+#. | Go to :menuselection:`Settings --> Webhooks` and enter your Odoo database URL followed by
+     `/payment/flutterwave/webhook` in the :guilabel:`URL` text field.
+   | For example: `https://yourcompany.odoo.com/payment/flutterwave/webhook`.
+#. Fill the :guilabel:`Secret hash` with a password that you generate and save its value for later.
+#. Make sure *all* the remaining checkboxes are ticked.
+#. Click on **Save** to finalize the configuration.
+
+.. image:: flutterwave/flutterwave-settings.png
+   :alt: Flutterwave settings
+
+.. _payment_providers/flutterwave/configure_odoo:
+
+Configuration on Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider Flutterwave <payment_providers/add_new>` and change its
+   state to :guilabel:`Enabled`.
+#. In the :guilabel:`Credentials` tab, fill the :guilabel:`Public Key`, :guilabel:`Secret Key`, and
+   :guilabel:`Webhook Secret` with the values you saved at the step
+   :ref:`payment_providers/flutterwave/configure_dashboard`.
+#. Configure the rest of the options to your liking.
+
+   .. important::
+      If you choose to allow saving payment methods, it is recommended to only enable card payments
+      from Flutterwave dashboard, as only cards can be saved as payment tokens. To do so, go to your
+      Flutterwave Dashboard and then to :menuselection:`Settings --> Account Settings`.
+
+.. seealso::
+   - :doc:`../payment_providers`
+
+
+==================================================
+SECTION: inperson_payments.rst
+PATH: applications/finance/payment_providers/inperson_payments.rst
+==================================================
+
+==================
+In-person payments
+==================
+
+.. note::
+   Sales orders are automatically confirmed when paid using an in-person payment method.
+
+.. _payment_providers/inperson_payments/pay_on_site:
+
+Pay on site
+===========
+
+To allow customers to reserve products online and pay when collecting them in-store, enable and
+configure the :ref:`Click & Collect feature <ecommerce/shipping/instore-pickup>`. The **Pay on
+Site** payment provider is automatically enabled and published. To edit the default instructions
+shown to customers, :ref:`access the payment provider form <payment_providers/supported_providers>`
+and go to the :guilabel:`Messages` tab.
+
+.. note::
+   The method is only available at checkout for customers who select the **Pick up in store**
+   delivery method.
+
+.. _payment_providers/inperson_payments/cash_on_delivery:
+
+Cash on delivery
+================
+
+The **Cash on Delivery** payment method allows customers to pay for their order at the time of
+delivery. To make it available to customers, :doc:`navigate to the relevant delivery method form
+</applications/inventory_and_mrp/inventory/shipping_receiving/setup_configuration/new_delivery_method>`
+and enable :guilabel:`Cash on Delivery`. The **Cash on Delivery** payment provider is automatically
+enabled and published. To edit the default instructions shown to customers, :ref:`access the payment
+provider form <payment_providers/supported_providers>` and go to the :guilabel:`Messages` tab.
+
+.. note::
+   This method is only available at checkout for customers who select a delivery method with the
+   :guilabel:`Cash on Delivery` feature enabled.
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: iyzico.rst
+PATH: applications/finance/payment_providers/iyzico.rst
+==================================================
+
+======
+Iyzico
+======
+
+`Iyzico <https://www.iyzico.com/>`_ is an online payment provider covering Turkey.
+
+.. _payment_providers/iyzico/configure-dashboard:
+
+Configuration on the Iyzico Dashboard
+=====================================
+
+#. Log into the `Iyzico Dashboard <https://merchant.iyzipay.com>`_.
+#. Navigate to :menuselection:`Settings --> Merchant Settings`.
+#. Copy the values of the :guilabel:`API Key` and :guilabel:`Secret Key` fields and save them for
+   the :ref:`payment_providers/iyzico/configure-odoo` step.
+#. On the same :guilabel:`Merchant Settings` page, enable :guilabel:`Merchant Notifications`.
+#. | Enter your Odoo database URL followed by `/payment/iyzico/webhook` in the
+     :guilabel:`Merchant Notification Url` field.
+   | For example: `https://example.odoo.com/payment/iyzico/webhook`.
+#. Click :guilabel:`Save`.
+
+.. _payment_providers/iyzico/configure-odoo:
+
+Odoo configuration
+==================
+
+#. :ref:`Navigate to the payment provider Iyzico <payment_providers/add_new>`.
+#. In the :guilabel:`Credentials` tab, fill the :guilabel:`API Key` and :guilabel:`Secret Key`
+   fields with the values you saved at the step :ref:`payment_providers/iyzico/configure-dashboard`.
+#. Configure the remaining options as needed.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled`.
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: mercado_pago.rst
+PATH: applications/finance/payment_providers/mercado_pago.rst
+==================================================
+
+============
+Mercado Pago
+============
+
+`Mercado Pago <https://www.mercadopago.com/>`_ is an online payment provider covering several
+countries, currencies and payment methods in Latin America.
+
+.. _payment_providers/mercado_pago/configure_dashboard:
+
+Configuration on Mercado Pago Dashboard
+=======================================
+
+#. Log into the `Mercado Pago Dashboard <https://www.mercadopago.com.mx/developers/panel>`_
+   and select your application or create a new one.
+#. Select :guilabel:`Credenciales de producción` in the left part of the application page, then
+   select the industry, optionally enter your domain, and click :guilabel:`Activar credenciales
+   de producción`.
+#. Copy the :guilabel:`Access token` and save it for later.
+
+.. tip::
+   If you are trying Mercado Pago as a test, select :guilabel:`Credienciales de prueba` in the left
+   part of the application page, then copy the test :guilabel:`Access token`.
+
+.. image:: mercado_pago/mp-credentials.png
+   :alt: Production and testing credentials in Mercado Pago.
+
+.. _payment_providers/mercado_pago/configure_odoo:
+
+Configuration on Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider Mercado Pago <payment_providers/add_new>` and change its
+   state to :guilabel:`Enabled`.
+#. In the :guilabel:`Credentials` tab, fill in the :guilabel:`Access Token` with the value you saved
+   at the :ref:`payment_providers/mercado_pago/configure_dashboard` step.
+#. Configure the rest of the options to your liking.
+
+.. seealso::
+   - :doc:`../payment_providers`
+   - `Mercado Pago Odoo webinar <https://www.youtube.com/watch?v=CX8vPHMb1ic>`_
+
+
+==================================================
+SECTION: mollie.rst
+PATH: applications/finance/payment_providers/mollie.rst
+==================================================
+
+======
+Mollie
+======
+
+`Mollie <https://www.mollie.com/>`_ is an online payments platform established in the Netherlands.
+
+.. _payment_providers/mollie/configure_dashboard:
+
+Mollie configuration
+====================
+
+#. `Create a Mollie account
+   <https://my.mollie.com/dashboard/signup>`_ if necessary
+   and log in to the `Mollie Dashboard <https://my.mollie.com/dashboard/login>`_.
+#. Go to :menuselection:`Payments` in the top menu, then click :guilabel:`API keys`.
+#. :guilabel:`Copy` the :guilabel:`Live API Key` (or the :guilabel:`Test API Key` if you
+   wish to test the integration without affecting live transactions) and save it for the
+   :ref:`payment_providers/mollie/configure_odoo` step.
+
+.. _payment_providers/mollie/configure_odoo:
+
+Odoo configuration
+==================
+
+#. :ref:`Navigate to the payment provider Mollie <payment_providers/add_new>`
+#. Fill in the :guilabel:`API Key` with the value :ref:`previously saved
+   <payment_providers/mollie/configure_dashboard>`.
+#. Configure the remaining options as needed.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled` (or :guilabel:`Test Mode` if you
+   want to :ref:`test the integration without affecting live transactions <payment_providers/test-mode>`).
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: nuvei.rst
+PATH: applications/finance/payment_providers/nuvei.rst
+==================================================
+
+=====
+Nuvei
+=====
+
+`Nuvei <https://www.nuvei.com>`_ is a Canadian-based payment solution provider that covers
+several Latin American countries, the US, and Canada. It allows businesses to accept credit cards
+and several local payment methods.
+
+.. _payment_providers/nuvei/dashboard:
+
+Configuration on the Nuvei Dashboard
+====================================
+
+#. Create a Nuvei account, if necessary, via our `referral page <https://pages.nuvei.com/odoo-referral-0>`_.
+#. Nuvei uses two separate portals for Sandbox and Production environments. Utilize the
+   `Sandbox Dashboard <https://sandbox.nuvei.com/login>`_ to test the integration without charging
+   your customers. Once you are ready to accept payments, switch to the
+   `Production Dashboard <https://cpanel.nuvei.com/login>`_.
+#. Go to :guilabel:`Settings` in the left sidebar, select :guilabel:`My Integration Settings`, then
+   select your payment page in the :guilabel:`Website` dropdown menu.
+#. Copy the :guilabel:`Merchant ID` and :guilabel:`Site ID` values and save them for :ref:`later
+   <payment_providers/nuvei/odoo>`.
+#. Click :guilabel:`Reveal`, then copy the :guilabel:`Secret Key` and save it for :ref:`later
+   <payment_providers/nuvei/odoo>`.
+
+.. tip::
+   Nuvei supports additional functionality relating to error handling from the same page as above.
+   For example, the following options are available for handling failed transactions: Enable
+   :guilabel:`User Trap` to redirect users back to the payment page and allow them to attempt
+   another deposit or :guilabel:`Decline Recovery` to display a popup suggesting alternative or
+   similar payment methods.
+
+.. _payment_providers/nuvei/odoo:
+
+Configuration on Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider Nuvei <payment_providers/add_new>` and fill in the
+   :guilabel:`Merchant Identifier`, :guilabel:`Site Identifier`, and :guilabel:`Secret Key` fields
+   with the information saved at the step :ref:`payment_providers/nuvei/dashboard`.
+#. To activate the provider, change its state to :guilabel:`Enabled` or :guilabel:`Test Mode`.
+#. Configure the rest of the options to your liking.
+
+.. tip::
+   You can also test Nuvei using the :ref:`test mode <payment_providers/test-mode>` and your Sandbox
+   Dashboard values.
+
+.. _payment_providers/nuvei/services:
+
+Payment methods
+===============
+
+Most Nuvei payment methods are **region specific**. The supported payment methods and brands for
+each country are listed below:
+
++---------------------------------+----------------------------------+
+| **Argentina**                   | **Ecuador**                      |
+|                                 |                                  |
+| - Boleto                        | - Card (AMEX, Mastercard, Visa)  |
+| - Card (AMEX, Mastercard, Visa) | - AstroPay TEF (Banco Guayaquil, |
+|                                 |   Banco Pichincha, Facilito)     |
++---------------------------------+----------------------------------+
+| **Brazil**                      | **Mexico**                       |
+|                                 |                                  |
+| - Boleto                        | - Card (AMEX, Mastercard, Visa)  |
+| - Card (AMEX, Mastercard, Visa) | - SPEI                           |
+| - Pix                           | - Oxxo Pay                       |
++---------------------------------+----------------------------------+
+| **Canada**                      | **Peru**                         |
+|                                 |                                  |
+| - Card (AMEX, Mastercard, Visa) | - Card (AMEX, Mastercard, Visa)  |
+|                                 | - Boleto                         |
++---------------------------------+----------------------------------+
+| **Chile**                       | **United States**                |
+|                                 |                                  |
+| - Card (AMEX, Mastercard, Visa) | - Card (AMEX, Mastercard, Visa)  |
+| - WebPay                        |                                  |
++---------------------------------+----------------------------------+
+| **Colombia**                    | **Uruguay**                      |
+|                                 |                                  |
+| - Card (AMEX, Mastercard, Visa) | - Card (AMEX, Mastercard, Visa)  |
+| - PSE                           | - Local Payments (Abitab,        |
+|                                 |   RedPagos)                      |
++---------------------------------+----------------------------------+
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: payment_providers.rst
+PATH: applications/finance/payment_providers.rst
+==================================================
+
+:show-content:
+
+===============
+Online payments
+===============
+
+.. toctree::
+   :titlesonly:
+
+   payment_providers/adyen
+   payment_providers/amazon_payment_services
+   payment_providers/asiapay
+   payment_providers/authorize
+   payment_providers/buckaroo
+   payment_providers/demo
+   payment_providers/dpo
+   payment_providers/flutterwave
+   payment_providers/iyzico
+   payment_providers/mercado_pago
+   payment_providers/mollie
+   payment_providers/nuvei
+   payment_providers/paymob
+   payment_providers/paypal
+   payment_providers/razorpay
+   payment_providers/redsys
+   payment_providers/stripe
+   payment_providers/worldline
+   payment_providers/xendit
+   payment_providers/bank_payments
+   payment_providers/inperson_payments
+
+Odoo embeds several **payment providers** that allow your customers to pay online, on their
+*customer portals*, or on your *eCommerce website*. They can pay sales orders, invoices, or
+subscriptions with recurring payments using their favorite payment methods, such as
+**credit cards**.
+
+Each payment provider is linked to a list of supported :ref:`payment methods
+<payment_providers/payment_methods>` that can be (de)activated based on your needs.
+
+.. image:: payment_providers/online-payment.png
+   :alt: Online payment form
+
+.. note::
+   Odoo apps delegate the handling of sensitive information to the certified payment provider so
+   that you don't ever have to worry about PCI compliance. No sensitive information (such as credit
+   card numbers) is stored on Odoo servers or Odoo databases hosted elsewhere. Instead, Odoo apps
+   use a unique reference number for the data stored safely in the payment providers' systems.
+
+.. _payment_providers/supported_providers:
+
+Supported payment providers
+===========================
+
+To access the supported payment providers, go to :menuselection:`Accounting --> Configuration -->
+Payment Providers`, :menuselection:`Website --> Configuration --> Payment Providers`, or
+:menuselection:`Sales --> Configuration --> Payment Providers`. Click the relevant payment provider
+card to access and configure the related provider.
+
+.. _payment_providers/online_providers:
+
+Online payment providers
+------------------------
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+   :widths: auto
+
+   * -
+     - Payment flow from
+     - :ref:`Tokenization <payment_providers/tokenization>`
+     - :ref:`Manual capture <payment_providers/manual_capture>`
+     - :ref:`Refunds <payment_providers/refunds>`
+     - :ref:`Express checkout <payment_providers/express_checkout>`
+   * - :doc:`Adyen <payment_providers/adyen>`
+     - Odoo
+     - |V|
+     - Full and partial
+     - Full and partial
+     -
+   * - :doc:`Amazon Payment Services <payment_providers/amazon_payment_services>`
+     - The provider's website
+     -
+     -
+     -
+     -
+   * - :doc:`AsiaPay <payment_providers/asiapay>`
+     - The provider's website
+     -
+     -
+     -
+     -
+   * - :doc:`Authorize.Net <payment_providers/authorize>`
+     - Odoo
+     - |V|
+     - Full only
+     - Full only
+     -
+   * - :doc:`Buckaroo <payment_providers/buckaroo>`
+     - The provider's website
+     -
+     -
+     -
+     -
+   * - :doc:`DPO Pay <payment_providers/dpo>`
+     - The provider's website
+     -
+     -
+     -
+     -
+   * - :doc:`Flutterwave <payment_providers/flutterwave>`
+     - The provider's website
+     - |V|
+     -
+     -
+     -
+   * - :doc:`Iyzico <payment_providers/iyzico>`
+     - The provider's website
+     -
+     -
+     -
+     -
+   * - :doc:`Mercado Pago <payment_providers/mercado_pago>`
+     - The provider's website
+     -
+     -
+     -
+     -
+   * - :doc:`Mollie <payment_providers/mollie>`
+     - The provider's website
+     -
+     -
+     -
+     -
+   * - :doc:`Nuvei <payment_providers/nuvei>`
+     - The provider's website
+     -
+     -
+     -
+     -
+   * - :doc:`Paymob <payment_providers/paymob>`
+     - The provider's website
+     -
+     -
+     -
+     -
+   * - :doc:`PayPal <payment_providers/paypal>`
+     - Odoo
+     -
+     -
+     -
+     -
+   * - :doc:`Razorpay <payment_providers/razorpay>`
+     - Odoo
+     - |V|
+     - Full only
+     - Full and partial
+     -
+   * - :doc:`Redsys <payment_providers/redsys>`
+     - The provider's website
+     -
+     -
+     -
+     -
+   * - :doc:`Stripe <payment_providers/stripe>`
+     - Odoo
+     - |V|
+     - Full only
+     - Full and partial
+     - |V|
+   * - :doc:`Worldline <payment_providers/worldline>`
+     - The provider's website
+     - |V|
+     -
+     -
+     -
+   * - :doc:`Xendit <payment_providers/xendit>`
+     - Odoo or the provider's website
+     - |V| *
+     -
+     -
+     -
+
+.. |V| replace:: ✔
+.. [*] Refer to the :doc:`Xendit documentation <payment_providers/xendit>` for more information.
+
+.. note::
+   - Each provider has its own specific configuration flow, depending on which feature is
+     available.
+   - Some of these online payment providers can also be added as :doc:`bank accounts
+     <../finance/accounting/bank>`, but this is **not** the same process as adding them as payment
+     providers. Payment providers allow customers to pay online, and bank accounts are added and
+     configured in the Accounting app to do a :doc:`bank reconciliation
+     <accounting/bank/reconciliation>`.
+
+.. tip::
+   In addition to the regular payment providers that integrate with an API, such as Stripe, PayPal,
+   or Adyen, Odoo bundles the :doc:`Demo payment provider <payment_providers/demo>`. This payment
+   provider allows you to test business flows involving online payments. No credentials are required
+   as the demo payments are dummy payments.
+
+.. _payment_providers/bank_payments:
+
+Bank payments
+-------------
+
+- | :ref:`Wire Transfer <payment_providers/bank_payments/wire_transfer>`
+  | Odoo displays your payment information with a payment reference. You have to approve the payment
+    manually once it has been received in your bank account.
+- | :ref:`SEPA Direct Debit <payment_providers/bank_payments/sdd>`
+  | Customers can make a bank transfer to register a SEPA Direct Debit mandate and allow their
+    account to be charged directly for future payments.
+
+In-person payments
+------------------
+
+- | :ref:`Pay on Site <payment_providers/inperson_payments/pay_on_site>`
+  | Customers can reserve products online and pay when collecting their orders in store.
+- | :ref:`Cash on Delivery <payment_providers/inperson_payments/cash_on_delivery>`
+  | Customers can pay for their orders upon delivery.
+
+.. _payment_providers/add_new:
+
+Enabling a payment provider
+===========================
+
+To add a new payment provider and make its related payment methods available to your customers,
+proceed as follows:
+
+#. Go to the payment provider's website, create an account, and make sure you have the API
+   credentials requested for third-party use. These are necessary for Odoo to communicate with the
+   payment provider.
+#. In Odoo, navigate to the :guilabel:`Payment providers` by going to :menuselection:`Accounting -->
+   Configuration --> Payment Providers`, :menuselection:`Website --> Configuration --> Payment
+   Providers`, or :menuselection:`Sales --> Configuration --> Payment Providers`.
+#. Select the provider and configure the :guilabel:`Credentials` tab.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled`.
+
+.. note::
+   - The fields available in the :guilabel:`Credentials` tab depend on the payment provider. Refer
+     to the :ref:`related documentation <payment_providers/supported_providers>` for more
+     information.
+   - Once you have enabled the payment provider, it is automatically published on your website.
+     If you wish to unpublish it, click the :guilabel:`Published` button. Customers cannot make
+     payments through an unpublished provider, but they can still manage
+     :dfn:`(delete and assign to a subscription)` their existing tokens linked to such a provider.
+
+.. _payment_providers/test-mode:
+
+Test mode
+---------
+
+.. warning::
+   We recommend using the test mode on a **duplicate** or a **test** database to avoid potential
+   issues with invoice numbering.
+
+To try a payment provider without affecting live transactions, set the :guilabel:`State` field in
+the payment provider form to :guilabel:`Test mode`. Then, enter the **provider's dedicated test or
+sandbox credentials** in the :guilabel:`Credentials` tab. Each payment provider has its own separate
+test account or environment for this purpose.
+
+.. note::
+   By default, the payment provider remains **unpublished** in test mode so that it's not visible to
+   visitors.
+
+.. _payment_providers/payment_methods:
+
+Payment methods
+===============
+
+Each payment provider is related to a list of supported payment methods; the methods listed in the
+:guilabel:`Payment methods` field in the :guilabel:`Configuration` tab of the payment provider form
+are the ones that have been activated. To activate or deactivate a payment method for a provider,
+click :guilabel:`Enable Payment Methods`, then click the toggle button of the related method.
+
+.. tip::
+   - To view the complete list of supported payment methods, go to :menuselection:`Accounting -->
+     Configuration --> Payment Methods`, :menuselection:`Website --> Configuration -->
+     Payment Methods`, or :menuselection:`Sales --> Configuration --> Payment Methods`.
+   - Payment methods are displayed on the ecommerce website based on their sequence order. To
+     reorder them, drag and drop the payment methods into the desired order in the
+     :guilabel:`Payment Methods` list.
+
+Icons and brands
+----------------
+
+The icons displayed next to the payment method on your website are either the icons of the brands
+activated for the payment method or, if there aren't any, the icons of the payment methods
+themselves. To modify them, :ref:`access the list of payment methods
+<payment_providers/payment_methods>`, then click the relevant one.
+
+To modify a payment method's icon, hover your mouse over the image in the upper-right corner of the
+payment method's form and click the :icon:`fa-pencil` (:guilabel:`pencil`) icon.
+
+Select the :guilabel:`Brands` tab to view the brands that have been activated for the payment
+method. The brands and their related icons are displayed based on their sequence order; to reorder
+them, drag and drop them into the desired order. To modify a brand's icon, select the brand, then,
+in the popup window that opens, hover the mouse over the image in the upper-right corner and click
+the :icon:`fa-pencil` (:guilabel:`pencil`) icon.
+
+Advanced configuration
+----------------------
+
+To further configure payment methods, follow these steps:
+
+#. Activate the :ref:`developer mode <developer-mode>`.
+#. :ref:`Access the list of payment methods <payment_providers/payment_methods>` and click the
+   relevant one.
+#. Go to the :guilabel:`Configuration` tab and adjust the features as needed.
+
+.. danger::
+   - Each payment method is preconfigured in a way that aligns with the payment providers'
+     behavior and their integration with Odoo. Any change to this configuration may result in errors
+     and should be tested on a duplicate or test database first.
+   - Modifications to the payment method's configuration only work to the extent of the method's
+     and provider's capabilities. For example, adding :ref:`countries
+     <payment_providers/currencies_countries>` for a payment method only supported in one country or
+     enabling :ref:`tokenization <payment_providers/tokenization>` for a method linked to a provider
+     that does not support it will not produce the intended results.
+
+.. _payment_providers/tokenization:
+
+Tokenization
+============
+
+:ref:`If the payment provider supports this feature <payment_providers/online_providers>`, customers
+can save their payment method details for later. To enable this feature, go to the
+:guilabel:`Configuration` tab of the selected payment provider and enable :guilabel:`Allow Saving
+Payment Methods`.
+
+In this case, a **payment token** is created in Odoo to be used as a payment method for subsequent
+payments without the customer having to enter their payment method details again. This is
+particularly useful for the eCommerce conversion rate and subscriptions that use recurring payments.
+
+.. tip::
+   To add or delete their saved payment method details, customers can click :guilabel:`Manage
+   payment methods` in the :ref:`customer portal <users-portal-payment-methods>`.
+
+.. admonition:: PCI DSS and Attestation of Compliance
+
+   Odoo is not `PCI <https://www.pcisecuritystandards.org>`_ DSS-certified because it does not
+   store cardholder data or process payments. Instead, it outsources tokenization and payment to
+   :ref:`external payment providers <payment_providers/online_providers>`, which means that as an
+   Odoo customer, you only need to complete the minimal Self-Assessment Questionnaire (SAQ) with
+   the provider to obtain the Attestation of Compliance (AoC) and achieve PCI compliance. Odoo
+   should not be mentioned as a payment processor or a third-party service provider in the
+   :abbr:`SAQ (Self-Assessment Questionnaire)`.
+
+.. _payment_providers/manual_capture:
+
+Manual capture
+==============
+
+:ref:`If the payment provider supports this feature <payment_providers/online_providers>`, you can
+authorize and capture payments in two steps instead of one. To enable this feature, go to the
+:guilabel:`Configuration` tab of the selected payment provider and enable :guilabel:`Capture Amount
+Manually`.
+
+When you authorize a payment, the funds are reserved on the customer's payment method but not
+immediately charged. They are charged when you manually capture the payment later on. You can also
+void the authorization to cancel it and release the reserved funds. Capturing payments manually is
+helpful in many situations:
+
+- Receive the payment confirmation and wait until the order is shipped to capture the payment.
+- Review and verify that orders are legitimate before the payment is completed and the fulfillment
+  process starts.
+- Avoid potentially high refund fees for refunded payments: payment providers will not charge you
+  for voiding an authorization.
+- Hold a security deposit to return later, minus any deductions (e.g., in case of damages).
+
+To capture the payment after it was authorized, go to the related sales order or invoice and click
+the :guilabel:`Capture Transaction` button. To release the funds, click the :guilabel:`Void
+Transaction` button.
+
+.. note::
+   - Some payment providers support capturing only part of the authorized amount. The remaining
+     amount can then be either captured or voided. These providers have the value **Full and
+     partial** in the :ref:`table above <payment_providers/online_providers>`. The providers that
+     only support capturing or voiding the total amount have the value **Full only**.
+   - The funds are likely not reserved forever. After a certain time, they may be automatically
+     released back to the customer's payment method. Refer to your payment provider's documentation
+     for the exact reservation duration.
+   - :doc:`payment_providers/adyen` and :doc:`payment_providers/stripe` allow to capture payments
+     manually directly from their website interface.
+
+.. _payment_providers/refunds:
+
+Refunds
+=======
+
+If your payment provider supports this feature, you can refund payments directly from Odoo. It does
+not need to be enabled first. To refund a customer payment, navigate to it and click the
+:guilabel:`Refund` button.
+
+.. note::
+   - Some payment providers support refunding only part of the amount. The remaining amount can then
+     optionally be refunded, too. These providers have the value **Full and partial** in the
+     :ref:`table above <payment_providers/online_providers>`. The providers that only support
+     refunding the total amount have the value **Full only**.
+   - :doc:`payment_providers/adyen` and :doc:`payment_providers/stripe` allow to refund payments
+     directly from their website interface.
+
+.. _payment_providers/express_checkout:
+
+Express checkout
+================
+
+:ref:`If the payment provider supports this feature <payment_providers/online_providers>`, you can
+allow customers to use the :guilabel:`Google Pay` and :guilabel:`Apple Pay` buttons and pay their
+eCommerce orders in one click. When they use one of these buttons, customers go straight from the
+cart to the confirmation page without filling out the contact form. They just have to validate the
+payment on Google's or Apple's payment form.
+
+To enable this feature, go to the :guilabel:`Configuration` tab of the selected payment provider and
+enable :guilabel:`Allow Express Checkout`.
+
+.. note::
+   All prices shown on the express checkout payment form always include taxes.
+
+.. _payment_providers/availability:
+
+Availability
+============
+
+You can adapt the payment provider's availability by specifying the :guilabel:`Maximum amount`
+allowed and modifying the :guilabel:`Currencies` and :guilabel:`Countries` in the
+:guilabel:`Configuration` tab.
+
+.. tip::
+   To display an availability report for payment providers and payment methods, and to help diagnose
+   potential availability issues on the payment form, enable the :ref:`developer-mode`, then click
+   the :icon:`fa-bug` (:guilabel:`bug`) icon next to the :guilabel:`Choose a payment method`
+   heading on the payment form. The report includes a list of enabled payment providers and payment
+   methods, reasons for any payment providers or methods not being available, if applicable, and a
+   list of supported providers for each payment method.
+
+.. _payment_providers/currencies_countries:
+
+Currencies and countries
+------------------------
+
+All payment providers have a different list of available currencies and countries. They serve as a
+first filter during payment operations, i.e., the payment methods linked to the payment provider are
+not available for selection if the customer's currency or country is not in the supported list. As
+there might be errors, updates, and unknowns in the lists of available currencies and countries,
+adding or removing a payment provider's supported currencies or countries is possible.
+
+.. note::
+
+   - :ref:`Payment methods <payment_providers/payment_methods>` also have their own list of
+     available currencies and countries that serves as another filter during payment operations.
+   - If the list of supported currencies or countries is empty, it means the list is too long to be
+     displayed, or Odoo does not have information on that payment provider. The payment provider
+     remains available, even though it is possible the payment will be refused at a later stage
+     should the country or currency not be supported.
+
+.. _payment_providers/maximum_amount:
+
+Maximum amount
+--------------
+
+You can restrict the :guilabel:`Maximum Amount` that can be paid with the selected provider. Leave
+the field to `0.00` to make the payment provider available regardless of the payment amount.
+
+.. important::
+   This feature is not intended to work on pages that allow the customer to update the payment
+   amount, e.g., the **Donation** snippet and the **Checkout** page when paid :doc:`shipping methods
+   <../websites/ecommerce/shipping>` are enabled.
+
+.. _payment_providers/journal:
+
+Payment journal
+===============
+
+A :doc:`payment journal <accounting/bank>` must be defined for the payment provider to record the
+payments on an **outstanding account**. By default, the :guilabel:`Bank` journal is added as the
+payment journal for all payment providers. To modify it, go to the :guilabel:`Configuration` tab of
+the selected payment provider and select another :guilabel:`Payment journal`.
+
+.. note::
+   - The payment journal must be a :guilabel:`Bank` journal.
+   - The same journal can be used for several payment providers.
+   - Payment journals must only be configured if the :doc:`Invoicing or Accounting app <accounting>`
+     is installed.
+
+Accounting perspective
+----------------------
+
+From an accounting perspective, there are two types of online payment workflows: the payments that
+are directly deposited into your bank account and follow the usual :doc:`reconciliation
+<accounting/bank/reconciliation>` workflow, and those coming from third-party :ref:`online payment
+providers <payment_providers/online_providers>` and require you to follow another accounting
+workflow. For these payments, you need to consider how you want to record your payments' journal
+entries. We recommend you ask your accountant for advice.
+
+By default, the :guilabel:`Bank Account` defined for the :ref:`payment journal
+<payment_providers/journal>` is used, but you can also specify an :ref:`outstanding account
+<accounting/journals/outstanding-accounts>` for each payment provider to separate the provider's
+payments from other payments.
+
+.. image:: payment_providers/bank_journal.png
+   :alt: Define an outstanding account for a payment provider.
+
+.. seealso::
+   - :doc:`payment_providers/adyen`
+   - :doc:`payment_providers/authorize`
+   - :doc:`payment_providers/asiapay`
+   - :doc:`payment_providers/buckaroo`
+   - :doc:`payment_providers/demo`
+   - :doc:`payment_providers/dpo`
+   - :doc:`payment_providers/mercado_pago`
+   - :doc:`payment_providers/mollie`
+   - :doc:`payment_providers/nuvei`
+   - :doc:`payment_providers/paymob`
+   - :doc:`payment_providers/paypal`
+   - :doc:`payment_providers/razorpay`
+   - :doc:`payment_providers/redsys`
+   - :doc:`payment_providers/stripe`
+   - :doc:`payment_providers/worldline`
+   - :doc:`payment_providers/xendit`
+   - :doc:`payment_providers/bank_payments`
+   - :doc:`payment_providers/inperson_payments`
+   - :doc:`accounting/bank`
+
+
+==================================================
+SECTION: paymob.rst
+PATH: applications/finance/payment_providers/paymob.rst
+==================================================
+
+======
+Paymob
+======
+
+`Paymob <https://paymob.com/>`_ is an Egypt-based payment service provider operating in Egypt, Oman,
+Pakistan, Saudi Arabia, and the United Arab Emirates. It allows businesses to accept online payments
+through credit and debit cards, as well as several local payment methods.
+
+.. _payment_providers/paymob/configure_dashboard:
+
+Configuration on the Paymob dashboard
+=====================================
+
+#. Create a Paymob account if necessary and log into the Paymob dashboard:
+
+   - `Paymob dashboard for Egypt <https://accept.paymob.com/portal2/en/login>`_
+   - `Paymob dashboard for Oman <https://oman.paymob.com/portal2/en/login>`_
+   - `Paymob dashboard for Pakistan <https://pakistan.paymob.com/portal2/en/login>`_
+   - `Paymob dashboard for Saudi Arabia <https://ksa.paymob.com/portal2/en/login>`_
+   - `Paymob dashboard for the United Arab Emirates <https://uae.paymob.com/portal2/en/login>`_
+
+#. Check the account mode in the top left corner of the page. Use the :guilabel:`Test` mode to try
+   the integration without charging customers. Switch to :guilabel:`Live` mode once you are
+   ready to accept payments.
+#. Navigate to :menuselection:`Settings` in the left menu.
+#. In the :guilabel:`Account Info` section, copy the value of the :guilabel:`HMAC` field and save it
+   for :ref:`later <payment_providers/paymob/configure_odoo>`.
+#. Click :guilabel:`View` next to the :guilabel:`API Key`, :guilabel:`Secret Key`, and
+   :guilabel:`Public Key` fields to reveal each value. Copy each key and save it for
+   :ref:`later <payment_providers/paymob/configure_odoo>`.
+#. Navigate to :menuselection:`Developers --> Payment Integrations` in the left menu.
+#. Ensure that all required payment methods are listed in the payment integrations. If any
+   payment method is missing, contact Paymob support.
+
+.. _payment_providers/paymob/configure_odoo:
+
+Configuration on Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider Paymob <payment_providers/add_new>` and change its state
+   to :guilabel:`Enabled` (or :guilabel:`Test Mode` if you are trying Paymob as a :ref:`test
+   <payment_providers/test-mode>`).
+#. In the :guilabel:`Credentials` tab, set the :guilabel:`Account Country` field to your company's
+   country.
+#. Fill in the :guilabel:`HMAC Key`, :guilabel:`API key`,
+   :guilabel:`Secret Key`, and :guilabel:`Public Key` fields with the information saved at the step
+   :ref:`payment_providers/paymob/configure_dashboard`.
+#. In the :guilabel:`Configuration` tab, click :guilabel:`Enable Payment Methods`, then
+   :ref:`activate the payment methods <payment_providers/payment_methods>` you want to offer.
+#. Return to the provider's form and click :guilabel:`Synchronize with Paymob`.
+
+   .. important::
+      - For a payment method to be available to customers, it must be activated in Odoo **and**
+        added to the :ref:`list of payment integrations on the Paymob dashboard
+        <payment_providers/paymob/configure_dashboard>`.
+      - If a payment method is added to the Paymob dashboard **after** synchronization, click
+        :guilabel:`Synchronize with Paymob` again to make it available in Odoo.
+
+#. Configure the remaining options as needed.
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: paypal.rst
+PATH: applications/finance/payment_providers/paypal.rst
+==================================================
+
+======
+PayPal
+======
+
+`Paypal <https://www.paypal.com/>`_ is an American online payment provider available worldwide and
+one of the few that does not charge a subscription fee.
+
+.. note::
+   While PayPal is available in `over 200 countries/regions
+   <https://www.paypal.com/webapps/mpp/country-worldwide>`_, only `a selection of currencies are
+   supported <https://developer.paypal.com/docs/reports/reference/paypal-supported-currencies>`_.
+
+.. _payment_providers/paypal/configuration-paypal:
+
+Configuration in PayPal
+=======================
+
+#. `Log into your PayPal Developer Dashboard <https://developer.paypal.com/dashboard/>`_.
+#. Click :guilabel:`Apps & Credentials` and click :guilabel:`Create App`.
+#. Enter an :guilabel:`App Name` and click :guilabel:`Create App`.
+#. Copy the :guilabel:`Client ID` and :guilabel:`Secret` and save them for
+   :ref:`later <payment_providers/paypal/configuration-odoo>`.
+
+.. important::
+   If you use customer names or addresses that include accented or non-Latin characters, you
+   **must** configure the encoding format of the payment request sent by Odoo to PayPal to avoid
+   transaction failures without notice. To do so, access the `PayPal button language encoding
+   setting <https://www.paypal.com/cgi-bin/websrc?cmd=_profile-language-encoding>`_, click
+   :guilabel:`More Options`, and set the :guilabel:`Encoding` field to :guilabel:`UTF-8`.
+
+   If you are trying PayPal as a test, access your :ref:`PayPal Sandbox account
+   <payment_providers/paypal/testing>` and `configure the encoding format for your sandbox account
+   <https://sandbox.paypal.com/cgi-bin/customerprofileweb?cmd=_profile-language-encoding>`_.
+
+.. tip::
+   For encrypted website payments & EWP_SETTINGS errors, please check the `PayPal documentation
+   <https://developer.paypal.com/docs/online/>`_.
+
+.. _payment_providers/paypal/configuration-odoo:
+
+Configuration in Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider PayPal <payment_providers/add_new>`.
+#. In the :guilabel:`Credentials` tab, enter the :guilabel:`Email` linked to your PayPal account,
+   then fill in the :guilabel:`Client ID` and :guilabel:`Client Secret` fields with the values you
+   saved at the step :ref:`payment_providers/paypal/configuration-paypal`.
+#. Click :guilabel:`Generate your webhook` to create the :guilabel:`Webhook ID`.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled`, and make sure the PayPal payment provider
+   is :guilabel:`Published`.
+#. Configure the remaining options as desired.
+
+.. _payment_providers/paypal/testing:
+
+Testing
+=======
+
+PayPal provides two sandbox accounts that you can use to simulate live transactions:
+
+-  A business account (to use as the merchant account, e.g., `ab-1abc12345678@business.example.com`);
+-  A default personal account (to use as the shopper account, e.g.,
+   `ba-9cba87654321@personal.example.com`).
+
+To test the PayPal payment workflow in Odoo:
+
+#. Log into the `Paypal Developer Site <https://developer.paypal.com/>`_ using your PayPal
+   credentials and go to :menuselection:`Testing Tools --> Sandbox Accounts`.
+#. Click the :icon:`fa-ellipsis-v` (:guilabel:`ellipsis`) icon next to the sandbox business account
+   and select :guilabel:`View/Edit account`.
+#. Copy the :guilabel:`Email`, :guilabel:`Client ID`, and :guilabel:`Secret` and save them for the
+   next step.
+#. In Odoo, :ref:`configure the PayPal payment provider <payment_providers/paypal/configuration-odoo>`
+   with the values saved at the previous step and set the :guilabel:`State` field to
+   :guilabel:`Test Mode`.
+
+You can then run a test transaction from Odoo using the sandbox personal account.
+
+.. seealso::
+   - :ref:`payment_providers/test-mode`
+   - :doc:`../payment_providers`
+
+
+==================================================
+SECTION: razorpay.rst
+PATH: applications/finance/payment_providers/razorpay.rst
+==================================================
+
+========
+Razorpay
+========
+
+`Razorpay <https://razorpay.com/>`_ is an online payments provider established in India that
+supports more than 100 payment methods.
+
+.. _payment_providers/razorpay/oauth-connection:
+
+Create a Razorpay account with Odoo (Indian companies only)
+===========================================================
+
+.. note::
+   - This method is only available for Indian companies.
+   - This flow does not support the :ref:`test mode <payment_providers/test-mode>`.
+
+#. :ref:`Navigate to the Razorpay payment provider <payment_providers/supported_providers>` and
+   click :guilabel:`Connect`.
+#. Go through the account creation process and enter the verification codes when prompted.
+
+   .. tip::
+      If you already have a Razorpay account, enter your Razorpay credentials, select the account
+      you want to link to your Odoo database (if applicable), then click :guilabel:`Continue`.
+
+#. At the end of the process, click :guilabel:`Authorize`. If all required information
+   has been submitted, you are then redirected to Odoo, and the payment provider is
+   :guilabel:`Enabled`.
+
+.. _payment_providers/razorpay/manual-connection:
+
+Manual credentials and webhook input
+====================================
+
+.. _payment_providers/razorpay/configure_dashboard:
+
+Razorpay configuration
+----------------------
+
+#. `Create a Razorpay account <https://accounts.razorpay.com/>`_ if necessary and log into the
+   `Razorpay Dashboard <https://dashboard.razorpay.com/>`_.
+#. Go to the :guilabel:`Payments` tab at the top of the page.
+#. Toggle the :guilabel:`Test Mode` switch in the left menu to try the integration without
+   charging customers. Toggle it off once you are ready to accept real payments.
+#. Click :guilabel:`Account & Settings` in the left menu, then, under :guilabel:`Website and app
+   settings`, select `API Keys <https://dashboard.razorpay.com/app/website-app-settings/api-keys>`_.
+#. Copy the values of the :guilabel:`Key Id` and :guilabel:`Secret Key` fields and save them for
+   later.
+#. Click :guilabel:`Account & Settings` in the left menu, then, under :guilabel:`Website and app
+   settings`, select `Webhooks <https://dashboard.razorpay.com/app/website-app-settings/webhooks>`_.
+#. | Click :guilabel:`Add New Webhook`, then enter your Odoo database URL followed by
+     `/payment/razorpay/webhook` in the :guilabel:`Webhook URL` field.
+   | For example: `https://example.odoo.com/payment/razorpay/webhook`.
+#. Fill the :guilabel:`Secret` field with a password of your choice and save it for later.
+#. Enable the following events: :guilabel:`payment.authorized`, :guilabel:`payment.captured`,
+   :guilabel:`payment.failed`, :guilabel:`refund.failed`, and :guilabel:`refund.processed`.
+#. Click :guilabel:`Create Webhook` to finalize the configuration.
+
+.. _payment_providers/razorpay/recurring_payments:
+
+.. important::
+   The `Recurring payments <https://razorpay.com/docs/payments/recurring-payments/>`_ feature must
+   be activated to accept recurring payments. To enable this feature, submit a request to the
+   `Razorpay Support team <https://razorpay.com/support/#request>`_.
+
+.. _payment_providers/razorpay/configure_odoo:
+
+Odoo configuration
+------------------
+
+#. Activate :ref:`developer mode <developer-mode>`.
+#. :ref:`Navigate to the Razorpay payment provider <payment_providers/add_new>`.
+#. In the :guilabel:`Credentials` tab, fill the :guilabel:`Key Id`, :guilabel:`Key Secret`, and
+   :guilabel:`Webhook Secret` with the values you saved during
+   :ref:`payment_providers/razorpay/configure_dashboard`.
+#. Configure the remaining options as needed.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled` (or :guilabel:`Test Mode` if you are
+   trying Razorpay as a :ref:`test <payment_providers/test-mode>`).
+
+.. important::
+   If you configure Odoo to :ref:`capture amounts manually <payment_providers/manual_capture>`:
+
+   - **Manual voiding** of a transaction is not supported by Razorpay.
+   - Transactions that remain uncaptured for more than **five days** are automatically **voided**.
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: redsys.rst
+PATH: applications/finance/payment_providers/redsys.rst
+==================================================
+
+======
+Redsys
+======
+
+`Redsys <https://redsys.es>`_ is a Spain-based payment service provider that processes online and
+in-store payments for businesses across Europe. It allows merchants to accept major credit and debit
+cards, as well as other local payment methods supported by Spanish banks.
+
+.. _payment_providers/redsys/configure_redsys:
+
+Redsys account configuration
+============================
+
+#. Contact your bank to request activation of an online payment terminal (TPV) with Redsys.
+#. `Log into your Redsys account
+   <https://sis-t.redsys.es:25443/admincanales-web/index.jsp#/login>`_ using the credentials
+   provided by your bank.
+#. In the left-hand menu, navigate to :menuselection:`Merchant Configuration`.
+#. In the :guilabel:`Merchant Information` section, fill in the :guilabel:`Name`,
+   :guilabel:`Merchant URL`, and :guilabel:`Merchant Email` fields.
+#. Set the fields in the :guilabel:`Configuration data` section as follows:
+
+   - :guilabel:`Online notification`: :guilabel:`With online notification: HTTP`
+   - :guilabel:`Synchronization`: :guilabel:`Synchronous`
+   - :guilabel:`Parameters in the URLs`: :guilabel:`Yes`
+
+#. Copy the merchant code and merchant terminal number displayed in the :guilabel:`Merchant
+   management` section and save them for :ref:`later <payment_providers/redsys/configure_odoo>`.
+#. Click :guilabel:`See key`, enter your user identifier and password to display the key, and save
+   it for :ref:`later <payment_providers/redsys/configure_odoo>`.
+
+.. _payment_providers/redsys/configure_odoo:
+
+Configuration in Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider Redsys <payment_providers/add_new>`.
+#. Fill in the :guilabel:`Merchant Code`, :guilabel:`Merchant Terminal`, and :guilabel:`Secret Key`
+   fields with the information saved at the step :ref:`payment_providers/redsys/configure_redsys`.
+#. Configure the rest of the options to your liking.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled` (or :guilabel:`Test Mode` if you want to
+   :ref:`test the integration without affecting live transactions <payment_providers/test-mode>`).
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: stripe.rst
+PATH: applications/finance/payment_providers/stripe.rst
+==================================================
+
+======
+Stripe
+======
+
+`Stripe <https://stripe.com/>`_ is a United States-based online payment solution provider allowing
+businesses to accept **credit cards** and other payment methods.
+
+.. seealso::
+   - `List of countries supported by Stripe <https://stripe.com/global>`_
+   - `List of payment methods supported by Stripe <https://stripe.com/payments/payment-methods>`_
+   - :doc:`../payment_providers`
+   - :doc:`Use Stripe as a payment terminal in Point of Sale
+     <../../sales/point_of_sale/payment_methods/terminals/stripe>`
+
+.. _payment_providers/stripe/create_account:
+
+Create your Stripe account with Odoo
+====================================
+
+To create a new Stripe account and link it to your Odoo database, make sure the company's
+:guilabel:`Email` is configured in the :ref:`company's settings <general/companies/company>`, then
+follow the steps below according to your hosting type:
+
+.. tabs::
+   .. group-tab:: Odoo Online
+
+      #. :ref:`Navigate to the payment provider Stripe <payment_providers/supported_providers>` and
+         click :guilabel:`Connect Stripe`.
+      #. Go through the setup process and confirm your email address when Stripe sends you a
+         confirmation email.
+      #. At the end of the process, click :guilabel:`Agree and submit`. If all requested information
+         has been submitted, you are then redirected to Odoo, and your payment provider is enabled.
+
+   .. group-tab:: Odoo.sh or On-premise
+
+      #. :ref:`Navigate to the payment provider Stripe <payment_providers/supported_providers>` and
+         click :guilabel:`Connect Stripe`.
+      #. Go through the setup process and confirm your email address when Stripe sends you a
+         confirmation email.
+      #. At the end of the process, click :guilabel:`Agree and submit`; you are then redirected to
+         the payment provider **Stripe** in Odoo.
+      #. :ref:`Fill in your credentials <payment_providers/stripe/manual_input>`.
+      #. Set the :guilabel:`State` field to :guilabel:`Enabled`.
+
+.. tip::
+   If you have created an account instead of :ref:`linking an existing one
+   <payment_providers/stripe/manual_input>`, :ref:`enable the developer mode <developer-mode>`, then
+   click :guilabel:`Reset your Stripe Account` on the Stripe payment provider form, then
+   :ref:`fill in your Stripe account's credentials <payment_providers/stripe/manual_input>`.
+
+.. _payment_providers/stripe/manual_input:
+
+Manual credential input
+=======================
+
+Manual credential input is needed, for example, when linking an existing Stripe account to your
+Odoo database, when using an account :ref:`created on Odoo.sh or On-premise
+<payment_providers/stripe/create_account>`, or when :ref:`testing Stripe without affecting live
+transactions <payment_providers/test-mode>`.
+
+.. _payment_providers/stripe/stripe-configuration:
+
+Stripe configuration
+--------------------
+
+#. Go to `the API keys page on Stripe <https://dashboard.stripe.com/account/apikeys>`_, or log into
+   your Stripe dashboard and go to :menuselection:`Developers --> API Keys`.
+#. In the :guilabel:`Standard keys` section, copy the :guilabel:`Publishable key` and the
+   :guilabel:`Secret key` and save them for the :ref:`payment_providers/stripe/odoo-configuration`
+   step.
+
+.. _payment_providers/stripe/odoo-configuration:
+
+Odoo configuration
+------------------
+
+#. :ref:`Enable the developer mode <developer-mode>`.
+#. :ref:`Navigate to the Stripe payment provider <payment_providers/supported_providers>`.
+#. In the :guilabel:`Credentials` tab, fill in the :guilabel:`Publishable Key` and
+   :guilabel:`Secret Key` fields with the values you :ref:`previously saved
+   <payment_providers/stripe/stripe-configuration>`.
+#. Click :guilabel:`Generate your webhook`.
+#. Configure the remaining options as needed.
+#. Set the :guilabel:`State` field to :guilabel:`Enabled`.
+
+.. tip::
+   - You can also test Stripe without affecting live transactions using the :ref:`test mode
+     <payment_providers/test-mode>` and the :ref:`API keys
+     <payment_providers/stripe/stripe-configuration>` of your `Stripe account's Test Mode or
+     a sandbox environment <https://docs.stripe.com/testing-use-cases>`_.
+   - To link the same Stripe account to :doc:`multiple companies
+     </applications/general/companies/multi_company>` in a database, :ref:`create an account
+     <payment_providers/stripe/create_account>` and :ref:`fill in the credentials
+     <payment_providers/stripe/manual_input>` for one company, then reuse the same credentials and
+     webhook for the others. To view the webhook, go to the `Webhooks page on Stripe
+     <https://dashboard.stripe.com/webhooks>`_, or log into your Stripe dashboard and go to
+     :menuselection:`Developers --> Webhooks`. Click the destination in the list, then click the
+     :icon:`fa-eye` (:guilabel:`Reveal secret`) icon next to the :guilabel:`Signing secret`
+     field and copy the value.
+
+Enable Apple Pay
+================
+
+To allow customers to use the Apple Pay button to pay for their eCommerce orders, :ref:`navigate to
+the Stripe payment provider <payment_providers/supported_providers>`, then go to the
+:guilabel:`Configuration` tab, enable :guilabel:`Allow Express Checkout`, and click
+:guilabel:`Enable Apple Pay`.
+
+.. seealso::
+   :ref:`Express checkout and Google Pay <payment_providers/express_checkout>`
+
+.. tip::
+   Stripe allows to :ref:`manually capture <payment_providers/manual_capture>` and :ref:`refund
+   <payment_providers/refunds>` payments either from Odoo or directly from the Stripe dashboard.
+
+
+==================================================
+SECTION: worldline.rst
+PATH: applications/finance/payment_providers/worldline.rst
+==================================================
+
+=========
+Worldline
+=========
+
+`Worldline <https://worldline.com/>`_ is a France-based company and the world's fourth largest
+payment provider.
+
+Settings in Worldline
+=====================
+
+.. _worldline/API-user:
+
+Create an API user
+------------------
+
+It is recommended to set up an **API user** to create transactions from Odoo to ensure that your
+Worldline configuration remains safe even if credentials are compromised. Additionally, API users do
+not require frequent password updates like regular accounts.
+
+To create an **API user**, proceed as follows:
+
+#. Log into your `Worldline Merchant Portal <https://merchant-portal.worldline-solutions.com/>`_,
+   click the :icon:`fa-th` (:guilabel:`menu`) icon, and select :guilabel:`Back Office`.
+#. Go to :menuselection:`Configuration --> Users` and click on :guilabel:`New User`.
+#. Configure the following fields:
+
+   #. Specify a :guilabel:`UserID`, :guilabel:`User's name`, :guilabel:`E-mail address`, and
+      :guilabel:`Timezone` of your choice.
+   #. Set the :guilabel:`Profile` field to :guilabel:`Admin`.
+   #. Enable :guilabel:`Special user for API`.
+
+.. tip::
+   - If you have already set up a user, make sure it is activated without any error.
+   - To test the payment flow with Worldline, use their `test environment
+     <https://merchant-portal.preprod.worldline-solutions.com/>`_ together with the :ref:`test mode
+     <payment_providers/test-mode>`.
+
+.. _worldline/set-up:
+
+Set up Worldline for Odoo
+-------------------------
+
+Worldline must now be configured to accept payments from Odoo.
+
+#. From your merchant portal, go to :menuselection:`Developer --> Payment API` and click on
+   :guilabel:`Generate API key`. Copy the :guilabel:`API key ID` and the :guilabel:`Secret API key`
+   and save them for :ref:`later <wordline/odoo-configuration>`.
+#. Go to :menuselection:`Developer --> Webhooks` and click on :guilabel:`Generate webhook keys`.
+   Copy the :guilabel:`Webhook ID` and the associated :guilabel:`Secret webhook key` and
+   save them for :ref:`later <wordline/odoo-configuration>`.
+#. | Click :guilabel:`Add webhook endpoint`, enter your Odoo database's URL followed by
+     `/payment/worldline/webhook` in the :guilabel:`Endpoint url` field, and :guilabel:`Confirm`.
+   | For example: `https://example.odoo.com/payment/worldline/webhook`.
+
+.. _wordline/odoo-configuration:
+
+Settings in Odoo
+================
+
+To set up Worldline in Odoo:
+
+#. :ref:`Navigate to the payment provider Worldline <payment_providers/add_new>` and change its
+   state to :guilabel:`Enabled`.
+#. In the :guilabel:`Credentials` tab, enter the :guilabel:`PSPID` of your Worldline account and
+   fill in the :guilabel:`API Key`, :guilabel:`API Secret`, :guilabel:`Webhook Key`, and
+   :guilabel:`Webhook Secret` with the values you saved at the step :ref:`Set up Worldline for
+   Odoo <worldline/set-up>`.
+#. Configure the rest of the options to your liking.
+
+.. seealso::
+   :doc:`../payment_providers`
+
+
+==================================================
+SECTION: xendit.rst
+PATH: applications/finance/payment_providers/xendit.rst
+==================================================
+
+======
+Xendit
+======
+
+`Xendit <https://www.xendit.co>`_ is an Indonesian-based payment solution provider that covers
+several Southeast Asian countries. It allows businesses to accept credit cards as well as several
+local payment methods.
+
+.. note::
+    * Credit card payments are processed through Odoo, while all other payment methods are handled
+      via Xendit's website.
+    * Xendit supports card payment tokenization, provided the customer has requested Merchant
+      Initiated Transaction (MIT) from `Xendit Support <https://www.xendit.co/en/contact/>`_.
+
+.. _payment_providers/xendit/configure_dashboard:
+
+Configuration on the Xendit Dashboard
+=====================================
+
+#. `Create a Xendit account
+   <https://dashboard.xendit.co/register/1?referral_code=odooid&countr_code=ID>`_ if necessary
+   and log in to the `Xendit Dashboard <https://dashboard.xendit.co>`_.
+#. Check your account mode in the top left corner of the page. Use the :guilabel:`Test Mode` to try
+   the integration without charging your customers. Switch to :guilabel:`Live Mode` once you are
+   ready to accept payments.
+#. Navigate to :menuselection:`Configuration: Settings` in the left part of the application page.
+   In the :guilabel:`Developers` section, click
+   `API Keys <https://dashboard.xendit.co/settings/developers#api-keys>`_.
+#. Click :guilabel:`Generate Secret Key`. In the popup box, enter any :guilabel:`API key name`,
+   select :guilabel:`Write` for the :guilabel:`Money-in Products` permission and :guilabel:`None`
+   for all other permissions then click :guilabel:`Generate key`.
+#. Confirm your password to display your API key. Copy or download the key and **save
+   this information securely for later**. This is the only time the API key can be viewed or
+   downloaded.
+#. Once completed, scroll down the page to the
+   `Webhooks <https://dashboard.xendit.co/settings/developers#webhooks>`_ section to generate
+   the webhook token.
+#. Under :guilabel:`Webhook verification token`, click :guilabel:`View Webhook Verification Token`,
+   then confirm your password to display the token. Save it for later.
+#. In the :guilabel:`Webhook URL` section, enter your Odoo database's URL, followed by
+   `/payment/xendit/webhook` (e.g., `https://example.odoo.com/payment/xendit/webhook`) in the field
+   :guilabel:`Invoices paid` and click the :guilabel:`Test and save` button next to it.
+#. To allow recurring payments for credit cards, go to :menuselection:`Configuration: Payment
+   Channels` in the left part of the application page. Then, hover your mouse over the
+   :guilabel:`Visa, Mastercard, JCB, Amex` channel, click :guilabel:`View Details`, and enable
+   :guilabel:`Recurring Payments` by toggling the related switch.
+
+Configuration on Odoo
+=====================
+
+#. :ref:`Navigate to the payment provider Xendit <payment_providers/add_new>` and change its state
+   to :guilabel:`Enabled`.
+#. Fill in the :guilabel:`Secret Key` and :guilabel:`Webhook Token` fields with the
+   information saved at the step :ref:`payment_providers/xendit/configure_dashboard`.
+#. Configure the rest of the options to your liking.
+
+.. seealso::
+   :doc:`../payment_providers`

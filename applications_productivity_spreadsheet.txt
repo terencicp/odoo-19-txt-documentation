@@ -1,0 +1,3457 @@
+
+
+==================================================
+SECTION: spreadsheet.rst
+PATH: applications/productivity/spreadsheet.rst
+==================================================
+
+:nosearch:
+:show-content:
+:hide-page-toc:
+
+===========
+Spreadsheet
+===========
+
+.. toctree::
+   :titlesonly:
+
+   spreadsheet/get_started
+   spreadsheet/insert
+   spreadsheet/work_with_data
+   spreadsheet/visualize_data
+   spreadsheet/share_collaborate
+
+**Odoo Spreadsheet** allows you to organize, manipulate, analyze, and visualize data. It offers
+similar functionality to other spreadsheet solutions with the added benefit of integrating directly
+with your Odoo database.
+
+With Odoo Spreadsheet, you can:
+
+- :ref:`create spreadsheets <spreadsheet/get-started/create-spreadsheet>` or :ref:`upload files
+  <spreadsheet/get-started/upload-files>` and open them as Odoo spreadsheets
+- :ref:`create and use templates <spreadsheet/get-started/templates>`
+- :doc:`use functions, including Odoo-specific functions <spreadsheet/work_with_data/functions>`
+- :doc:`insert and link to Odoo data <spreadsheet/insert>`
+- :doc:`create and use dynamic pivot tables <spreadsheet/work_with_data/dynamic_pivot_tables>`
+- filter data across multiple Odoo data sources using :doc:`global filters
+  <spreadsheet/work_with_data/global_filters>`
+- visualize data using :doc:`charts <spreadsheet/visualize_data/charts>` and :doc:`formatting
+  <spreadsheet/visualize_data/conditional_formatting>`
+- :doc:`share files internally and externally <spreadsheet/share_collaborate>`
+
+The Spreadsheet module is part of **Odoo Documents**.
+
+.. tip::
+   Within a spreadsheet, opening the command palette, using the :doc:`keyboard shortcut
+   <../essentials/keyboard_shortcuts>` `Ctrl` + `K` or `Command` + `K`, allows you
+   to browse and execute spreadsheet commands via the keyboard, without having to navigate menus.
+
+.. note::
+   Odoo spreadsheets serve as the foundation for the :doc:`dashboards available in Odoo Dashboards
+   <dashboards>`. On a dashboard, charts and data tables are used to
+   display dynamic Odoo data and provide an overview of key business metrics.
+
+   :ref:`Standard, pre-configured dashboards
+   <dashboards/standard>` can be :ref:`customized <build_and_customize_dashboards/customize>` by
+   editing the dashboard's underlying spreadsheet via Dashboards. :ref:`Custom dashboards
+   <build_and_customize_dashboards/build>` can also be created from scratch, starting from an Odoo
+   spreadsheet; any subsequent :ref:`modifications <build_and_customize_dashboards/customize>` are
+   performed via Dashboards.
+
+
+==================================================
+SECTION: charts.rst
+PATH: applications/productivity/spreadsheet/visualize_data/charts.rst
+==================================================
+
+======
+Charts
+======
+
+Charts present data visually, making them a user-friendly way to show patterns, trends, and
+relationships between data.
+
+.. tip::
+   Charts can be :ref:`created manually based on spreadsheet data
+   <spreadsheet/visualize/create-chart>` or :ref:`inserted directly from an Odoo graph view
+   <spreadsheet/insert/chart>`.
+
+.. _spreadsheet/visualize/create-chart:
+
+Create a chart
+--------------
+
+To create a chart manually:
+
+#. Select the cells containing the data you want to represent using a chart.
+#. Click :menuselection:`Insert --> Chart` from the menu bar.
+
+   .. tip:: Odoo uses the most appropriate :ref:`chart type <spreadsheet/visualize/chart-types>` for
+      the selected data; this can be changed in the configuration section of the :ref:`chart
+      properties <spreadsheet/visualize/customize-charts>`, which opens on the right side of the
+      spreadsheet.
+
+#. Make any desired changes to the configuration or design of the chart in the :ref:`chart
+   properties <spreadsheet/visualize/customize-charts>`.
+
+.. _spreadsheet/visualize/customize-charts:
+
+Customize charts
+----------------
+
+A chart that has been :ref:`created manually <spreadsheet/visualize/create-chart>` or :ref:`inserted
+from an Odoo graph view <spreadsheet/insert/chart>` can be further customized via the
+:ref:`chart properties <spreadsheet/visualize/customize-charts>`.
+
+Here, it is possible to modify various aspects of the chart's configuration and design via the
+:icon:`fa-sliders` :ref:`Configuration <spreadsheet/visualize/charts-configuration>` and
+:icon:`fa-paint-brush` :ref:`Design <spreadsheet/visualize/charts-design>` tabs respectively.
+
+.. tip::
+   A chart's properties can be accessed at any time, as follows:
+
+   - For any chart, whether manually created or inserted from an Odoo view, hover over
+     the chart then click the :icon:`fa-bars` :guilabel:`(menu)` icon and click
+     :icon:`fa-pencil-square-o` :guilabel:`Edit`.
+   - For a chart inserted from an Odoo graph view, click :guilabel:`Data` on the menu bar then
+     select the relevant chart, as prefaced by the :icon:`fa-bar-chart` :guilabel:`(chart)` icon,
+     e.g., :icon:`fa-bar-chart` *(#1) Sales Analysis*.
+
+.. _spreadsheet/visualize/charts-configuration:
+
+Configuration
+~~~~~~~~~~~~~
+
+The :icon:`fa-sliders` :guilabel:`Configuration` tab includes the following sections:
+
+- :ref:`Chart type <spreadsheet/visualize/chart-types>`: the type of chart. For a chart that has
+  been:
+
+  - manually created, this is by default the chart type suggested by Odoo;
+  - inserted from an Odoo graph view, this is by default the type of chart selected in the graph
+    view before the chart was inserted in the spreadsheet.
+
+  To change the chart type, click the dropdown menu to select the desired chart type.
+
+- :guilabel:`Domain`: the rules used to determine which records are shown. Click :ref:`Edit domain
+  <search/custom-filters>` to add or edit rules.
+- :guilabel:`Link to Odoo menu`: to add a :ref:`clickable link <spreadsheet/insert/clickable-links>`
+  from a chart to an Odoo menu item, i.e., a specific view of a model.
+
+.. _spreadsheet/visualize/chart-types:
+
+Chart types
+***********
+
+When a chart is:
+
+- :ref:`created manually <spreadsheet/visualize/create-chart>`, any of the chart types in the tabs
+  below can be selected;
+- :ref:`inserted directly from an Odoo graph view <spreadsheet/insert/chart>`, any chart type except
+  those
+  shown in the :guilabel:`Other` tab can be selected.
+
+.. tabs::
+
+   .. tab:: Line
+
+      .. image:: charts/chart-type-line.png
+         :alt: Line chart icon
+
+      :guilabel:`Line`: best for showing trends or changes over time, such as sales
+      growth across months or temperature variations.
+
+      .. image:: charts/chart-type-line-stacked.png
+         :alt: Stacked line chart icon
+
+      :guilabel:`Stacked Line`: useful for visualizing cumulative trends where multiple series
+      contribute to a total, like revenue by department over time.
+
+      .. image:: charts/chart-type-line-combo.png
+         :alt: Combo chart icon
+
+      :guilabel:`Combo`: combines multiple chart types (e.g., bars and lines) to compare different
+      data types or highlight key metrics alongside trends.
+
+   .. tab:: Column
+
+      .. image:: charts/chart-type-column.png
+         :alt: Column chart icon
+
+      :guilabel:`Column`: ideal for comparing values across discrete categories, such as sales per
+      product or revenue by region.
+
+      .. image:: charts/chart-type-column-stacked.png
+         :alt: Stacked column chart icon
+
+      :guilabel:`Stacked Column`: displays part-to-whole relationships within categories, such as
+      regional contributions to total sales.
+
+   .. tab:: Bar
+
+      .. image:: charts/chart-type-bar.png
+         :alt: Bar chart icon
+
+      :guilabel:`Bar`: similar to a column chart but horizontal, making it better for comparing
+      long category names or datasets.
+
+      .. image:: charts/chart-type-bar-stacked.png
+         :alt: Stacked bar chart icon
+
+      :guilabel:`Stacked Bar`: highlights cumulative contributions across categories, often used
+      in demographic or resource allocation analysis.
+
+   .. tab:: Area
+
+      .. image:: charts/chart-type-area.png
+         :alt: Area chart icon
+
+      :guilabel:`Area`: similar to a line chart but fills the area beneath the lines to emphasize
+      magnitude, perfect for cumulative metrics over time.
+
+      .. image:: charts/chart-type-area-stacked.png
+         :alt: Stacked area chart icon
+
+      :guilabel:`Stacked Area`: visualizes the composition of changes over time, such as market
+      share by product category.
+
+   .. tab:: Pie
+
+      .. image:: charts/chart-type-pie.png
+         :alt: Pie chart icon
+
+      :guilabel:`Pie`: best for showing proportions or percentages of a whole, such as market
+      share or budget allocation.
+
+      .. image:: charts/chart-type-doughnut.png
+         :alt: Doughnut chart icon
+
+      :guilabel:`Doughnut`: A variation of the pie chart with a hollow center, offering similar
+      use cases but with a modern aesthetic.
+
+   .. tab:: Hierarchical
+
+      .. image:: charts/chart-type-sunburst.png
+         :alt: Sunburst chart icon
+
+      :guilabel:`Sunburst`: a variation of the doughnut chart with hierarchical rings, showcasing
+      part-to-whole relationships across multiple levels.
+
+      .. image:: charts/chart-type-treemap.png
+         :alt: Treemap chart icon
+
+      :guilabel:`Treemap`: a multi-level rectangular chart that displays hierarchical data through
+      nested rectangles, ideal for illustrating proportions and categories.
+
+   .. tab:: Miscellaneous
+
+      .. image:: charts/chart-type-scatter.png
+        :alt: Scatter chart icon
+
+      :guilabel:`Scatter`: ideal for analyzing relationships or correlations between two numerical
+      variables, such as price vs. quantity sold.
+
+      .. image:: charts/chart-type-waterfall.png
+         :alt: Waterfall chart icon
+
+      :guilabel:`Waterfall`: ideal for visualizing cumulative effects of sequential positive and
+      negative values, such as profit/loss analysis.
+
+      .. image:: charts/chart-type-population-pyramid.png
+         :alt: Population pyramid chart icon
+
+      :guilabel:`Population Pyramid`: a specialized chart for comparing distributions, often used
+      in demographics, such as age and gender group analysis.
+
+      .. image:: charts/chart-type-radar.png
+         :alt: Radar chart icon
+
+      :guilabel:`Radar`: displays multivariate data as a polygon on axes radiating from a center,
+      allowing for profile comparisons across multiple variables.
+
+      .. image:: charts/chart-type-filled-radar.png
+         :alt: Filled radar chart icon
+
+      :guilabel:`Filled radar`: fills the area within the radar chart's polygon, emphasizing the
+      overall magnitude of values across different attributes for comparison.
+
+      .. image:: charts/chart-type-geo.png
+         :alt: Geo chart icon
+
+      :guilabel:`Geo`: visualizes data on a map using color variations to represent values or
+      categories across different geographical regions.
+
+      .. image:: charts/chart-type-funnel.png
+         :alt: Funnel chart icon
+
+      :guilabel:`Funnel`: visualizes data that progressively decreases over stages of a process,
+      with the option to display cumulative data for each stage.
+
+   .. tab:: Other
+
+      When creating a chart from spreadsheet data, rather than inserting one from a graph view,
+      the following chart types are also available:
+
+      .. image:: charts/chart-type-gauge.png
+         :alt: Gauge chart icon
+
+      :guilabel:`Gauge`: displays progress toward a goal or a single key metric, such as
+      performance against a target.
+
+      .. image:: charts/chart-type-scorecard.png
+         :alt: Scorecard icon
+
+      :guilabel:`Scorecard`: used to summarize key performance indicators (KPIs) in a compact
+      format, such as total sales or conversion rates, and compare to a baseline or a previous
+      value.
+
+.. _spreadsheet/visualize/charts-design:
+
+Design
+~~~~~~
+
+Depending on the chart type, the :icon:`fa-paint-brush` :guilabel:`Design` tab has one or more
+sections.
+
+The :guilabel:`General` section allows you to modify the following elements:
+
+- :guilabel:`Background color`: Add or change the background color by clicking on the color dot.
+  Choose one of the standard colors or click the :icon:`fa-plus` icon to manually select a custom
+  color.
+- :guilabel:`Chart title`: Edit the chart title, if needed. The font formatting, horizontal
+  alignment, font size, and color of the title can be modified using the editor.
+- :guilabel:`Legend position`: Change the position of the legend or opt to have no legend.
+- Enable :guilabel:`Show values` to add numeric values to the data points on the
+  chart.
+
+The :guilabel:`Data Series` section allows you to modify the following elements:
+
+- :guilabel:`Series color`: With the relevant data series selected, change the color of the related
+  data points on the chart by clicking on the color dot circle. Choose one of the standard colors or
+  click the :icon:`fa-plus` icon to manually select a custom color.
+- :guilabel:`Series name`: Edit the name of a data series, if needed.
+- :guilabel:`Serie type`: For each data series of a :guilabel:`Combo` chart, determine whether the
+  series is shown as a :guilabel:`Bar` or :guilabel:`Line`.
+- :guilabel:`Vertical axis`: For the selected data series of a :guilabel:`Line`, :guilabel:`Area`,
+  or :guilabel:`Column` chart, select whether it should be displayed on the :guilabel:`Left`
+  (primary) or :guilabel:`Right` (secondary) vertical axis.
+- :guilabel:`Trend line`: With the relevant data series selected, enable :guilabel:`Show trend line`
+  then select the type of trend line from the dropdown; the options are :guilabel:`Linear`,
+  :guilabel:`Exponential`, :guilabel:`Polynomial`, :guilabel:`Logarithmic`, and :guilabel:`Trailing
+  moving average`. The color of the trend line can be changed by clicking on the color circle.
+
+The :guilabel:`Axes` section allows you add a title to one or both axes of a chart. The font
+formatting, horizontal alignment, font size, and color of the title can be modified using the
+editor.
+
+Waterfall charts have a dedicated :guilabel:`Waterfall design` section.
+
+.. _spreadsheet/visualize/manage-charts:
+
+Manage charts
+-------------
+
+To reposition a chart within the same sheet, select the chart then drag it to the desired position.
+Resize a chart by selecting it, then clicking and dragging the blue markers until the chart is the
+desired size.
+
+Hovering over the chart reveals a :icon:`fa-bars` :guilabel:`(menu)` icon in the top right corner of
+the chart. Click the menu to reveal the following options:
+
+- :icon:`fa-edit` :guilabel:`Edit` to open the :ref:`chart properties
+  <spreadsheet/visualize/customize-charts>`, where various aspects of the chart's configuration and
+  design can be modified.
+
+- :icon:`fa-clipboard` :guilabel:`Copy` or :icon:`os-cut` :guilabel:`Cut` to copy or cut a chart
+  with the intention of pasting it *within the same spreadsheet*. Alternatively, with the chart
+  selected, use the relevant keyboard shortcut to copy or cut the chart.
+
+  Paste the chart in the desired location by clicking :menuselection:`Edit -->` :icon:`os-paste`
+  :menuselection:`Paste` from the menu bar or use the relevant keyboard shortcut.
+
+  .. note::
+     For a chart inserted from an Odoo graph view, copying/cutting and pasting a chart in this way
+     maintains the :ref:`link between the chart and your database
+     <spreadsheet/insert/data-sources>`. The data in the pasted chart remains up-to-date, and
+     :ref:`clicking on a data point <spreadsheet/insert/accessing-data>` opens the related list view
+     in the database.
+
+- :icon:`os-copy-as-image` :guilabel:`Copy as image` to copy an image of a chart to your clipboard
+  with the intention of pasting it *in any location within or outside your spreadsheet*.
+
+  Paste the image in the desired location using the paste function of the destination program or the
+  relevant keyboard shortcut.
+
+  .. note::
+     For a chart inserted from an Odoo graph view, copying and pasting a static image of a chart
+     implies there is no longer any link between the chart and your database.
+
+- :icon:`fa-download` :guilabel:`Download` to download an image of the chart as as `.png` file.
+
+- :icon:`fa-trash-o` :guilabel:`Delete` to delete a chart from the spreadsheet. Alternatively, use
+  your preferred keyboard command to delete a chart.
+
+  .. note::
+     For a chart inserted from an Odoo graph view, deleting a chart also deletes the chart's
+     underlying :ref:`data source <spreadsheet/insert/data-sources>`.
+
+
+==================================================
+SECTION: conditional_formatting.rst
+PATH: applications/productivity/spreadsheet/visualize_data/conditional_formatting.rst
+==================================================
+
+======================
+Conditional formatting
+======================
+
+Conditional formatting applies specific formatting, such as a background color or font color, to
+a range of cells that meet one or more defined criteria, or rules. This allows you to visually
+highlight important data, patterns, trends, or anomalies.
+
+.. note::
+   When a spreadsheet containing dynamic Odoo data is reopened or refreshed, any conditional
+   formatting that has been defined is updated to reflect any changes to the data.
+
+Different types of conditional formatting are possible:
+
+- :ref:`Single color <spreadsheet/conditional-formatting/single-color>`: changes the color of the
+  cell’s background or font, or changes the font formatting if cell values meet the defined
+  conditions, e.g., changes a cell to red if an invoice is overdue.
+- :ref:`Color scale <spreadsheet/conditional-formatting/color-scale>`: uses color intensity to
+  represent smaller and larger values on a two- or three-color scale, e.g., shows sales performance
+  using increasingly dark tones of the same color.
+- :ref:`Icon set <spreadsheet/conditional-formatting/icon-set>`: uses sets of arrows, smileys, or
+  dots in green, orange, and red to visually show how cell values in a range compare to certain
+  defined values, e.g., a green smiley to represent sales performance above a certain amount.
+- :ref:`Data bar <spreadsheet/conditional-formatting/data-bar>`: inserts colored bars inside a cell
+  to show how a value compares to the value of other cells in the defined range, e.g., the customer
+  generating the highest sales has the longest bar, with bars of decreasing length for customers
+  generating lower sales.
+
+To add conditional formatting to a range of cells:
+
+#. Select the cells the formatting rule should apply to.
+#. Click :menuselection:`Format --> Conditional formatting` from the menu bar.
+#. In the :guilabel:`Conditional formatting` panel that opens to the right of the spreadsheet, click
+   :guilabel:`+ Add another rule`.
+
+   .. tip::
+      Click :guilabel:`Add range` to select additional ranges of cells if needed.
+
+#. Select the type of :guilabel:`Format rules`, then enter the information required depending on the
+   rule selected.
+
+.. _spreadsheet/conditional-formatting/single-color:
+
+Single color
+============
+
+With the range selected and :guilabel:`Single color` selected as the rule type:
+
+#. Define the conditions to be met for the formatting to be applied by choosing the desired value
+   from the :guilabel:`Format cells if …` dropdown.
+#. Define the :guilabel:`Formatting style` to be applied by selecting the appropriate font
+   formatting, font color, and/or background color.
+#. Click :guilabel:`Save`.
+
+.. example::
+   In the example, single-color conditional formatting changes the background color of cells
+   containing the value `FALSE` to red, showing at a glance which eLearning courses are not yet
+   published.
+
+   .. image:: conditional_formatting/single-color.png
+      :alt: Single-color conditional formatting showing cells containing 'False' colored red
+
+.. _spreadsheet/conditional-formatting/color-scale:
+
+Color scale
+===========
+
+With the range selected and :guilabel:`Color scale` selected as the rule type:
+
+#. Define what is used as the :guilabel:`Minpoint`, i.e., the lowest value, and the
+   :guilabel:`MaxPoint`, i.e., the highest value, by selecting the appropriate category from the
+   dropdown.
+#. Optionally, to create a three-color scale, add a :guilabel:`MidPoint`, i.e., the middle value.
+#. Define the color range by choosing a color for the lowest value, i.e., the :guilabel:`Minpoint`,
+   and the highest value, i.e., the :guilabel:`MaxPoint`. For a three-color scale, also choose a
+   color for the :guilabel:`MidPoint`.
+#. Click :guilabel:`Save`.
+
+.. example::
+   In the example, sales performance by salesperson is shown using a two-color scale, with white
+   representing the lowest value, and increasing amounts intensifying in color towards the selected
+   green color.
+
+   .. image:: conditional_formatting/color-scale.png
+      :alt: Color scale conditional formatting showing sales performance by salesperson
+
+   Adding a :guilabel:`Midpoint`, with a corresponding color, allows you to highlight performance in
+   relation to a defined target or neutral value, e.g., below or above a target %, or to distinguish
+   between positive or negative values.
+
+.. _spreadsheet/conditional-formatting/icon-set:
+
+Icon set
+========
+
+With the range selected and :guilabel:`Icon set` selected as the rule type:
+
+#. Click on the set of :guilabel:`Icons` to use.
+#. For the first and second icons:
+
+   - enter the value that represents the *lower* threshold for the icon
+   - indicate whether the cell value must be `>` :guilabel:`(greater than)` or
+     `≥` :guilabel:`(greater than or equal to)` the threshold value
+   - define whether the threshold value is a :guilabel:`Number`, :guilabel:`Percentage`,
+     :guilabel:`Percentile` or :guilabel:`Formula`
+
+   The third icon is added to all cells whose values are below the threshold for the second icon.
+
+   .. tip::
+      Click :guilabel:`Reverse icons` to reverse the order of the icons.
+
+#. Click :guilabel:`Save`.
+
+.. example::
+   In the example, sales performance by salesperson is shown using a three-scale set of colored
+   dots:
+
+   - A **green** dot represents high performance, and is added to total sales amounts *greater than
+     or equal to* $50,000.
+   - An **orange** dot represents average performance, and is added to total sales amounts *greater
+     than* $25,000 (but less than $50,000 as this is the lower threshold for the green dot).
+   - A **red** dot represents low performance, and is added to all other amounts (i.e., amounts
+     below below $25,000 as this is the lower threshold for the orange dot).
+
+   .. image:: conditional_formatting/icon-set.png
+      :alt: Icon set conditional formatting applied to sales amounts
+
+.. _spreadsheet/conditional-formatting/data-bar:
+
+Data bar
+========
+
+.. note::
+   Unlike other conditional formatting rules in Odoo Spreadsheet, this rule allows for the
+   formatting to be applied either on the cells containing the values the rule is based on, or on a
+   corresponding range of cells, e.g., on a column containing text. The :guilabel:`Apply to range`
+   determines *where the formatting is shown*, while the :guilabel:`Range of values` determines
+   which cells the rule is based on.
+
+With :guilabel:`Data bar` selected as the rule type:
+
+#. Click below :guilabel:`Apply to range`, then, in the spreadsheet, select the range of cells
+   *where the data bars should appear*. Click :guilabel:`Confirm`.
+#. Click on the :guilabel:`Color` dot to select the color of the data bars.
+#. Click below :guilabel:`Range of values`, then, in the spreadsheet, select the range of cells
+   *containing the values the rule should be based on*. Click :guilabel:`Confirm`.
+#. Click :guilabel:`Save`.
+
+.. example::
+   In the example, the rule is based on the `Total sales` amounts in column B (with the
+   :guilabel:`Range of values` being `B2:B14`), while the formatting is applied on the
+   `Salesperson` names in column A (with the :guilabel:`Apply to range` being `A2:A14`).
+
+   .. image:: conditional_formatting/data-bar.png
+      :alt: Data bar conditional formatting
+
+
+==================================================
+SECTION: dynamic_pivot_tables.rst
+PATH: applications/productivity/spreadsheet/work_with_data/dynamic_pivot_tables.rst
+==================================================
+
+====================
+Dynamic pivot tables
+====================
+
+When a pivot view from an Odoo database is inserted in a spreadsheet, it is by default a static
+pivot table. Each cell in a static pivot table contains an :ref:`Odoo-specific function
+<spreadsheet/insert/pivot-table-functions-static>` that retrieves data from your database.
+
+.. image:: dynamic_pivot_tables/pivot-function-static.png
+   :alt: Function of static pivot table cell
+
+When the corresponding data in your database changes, e.g., the sales related to a given quarter or
+an individual salesperson, the cells of your static pivot table are updated.
+
+However, a static pivot table does not expand automatically to accommodate new data, e.g., sales
+data for a new quarter or for a newly hired salesperson. Neither is it possible to add or manipulate
+dimensions (i.e., columns or rows) or measures via the pivot table properties.
+
+.. note::
+   If you attempt to update or manipulate the properties of a pivot table that has just been
+   inserted into a spreadsheet, an error message appears in the top right corner of the screen:
+
+   .. image:: dynamic_pivot_tables/pivot-table-error.png
+      :alt: Error message when trying to manipulate static pivot table
+
+To have more flexibility in how you can manipulate your pivot table, you can :ref:`create a dynamic
+pivot table <spreadsheet/dynamic-pivot-tables/create>` from a static pivot table.
+
+.. _spreadsheet/dynamic-pivot-tables/create:
+
+Create a dynamic pivot table
+============================
+
+There are two main ways to create a dynamic pivot table from a static pivot table:
+
+- **Duplicate the static pivot table from the pivot table properties**: :ref:`Open the pivot table
+  properties <spreadsheet/insert/pivot-table-properties>`, click the :icon:`fa-cog`
+  (:guilabel:`gear`) icon at the top right of the pane, then click :icon:`fa-clone`
+  :guilabel:`Duplicate`.
+
+  A new data source is created and a dynamic version of the pivot table is inserted into a new
+  sheet. The dynamic pivot table has the same styling as the original pivot table.
+
+  .. note::
+     When you use this method, your new dynamic pivot table gets the next available pivot ID. This
+     means you can create multiple pivot views associated with the same model, but with distinct
+     settings, groupings, or calculations.
+
+- **Re-insert the dynamic pivot table from the Data menu**: On the sheet that contains your static
+  pivot table, position your cursor in an empty cell. Click :menuselection:`Data -->`
+  :icon:`os-insert-pivot` :menuselection:`Re-insert dynamic pivot` from the menu bar, then select
+  the relevant pivot table.
+
+  A new, dynamic pivot table appears, with the same styling as the original pivot table.
+
+  .. note::
+     When you use this method, your static and dynamic pivot share the same data source, and,
+     consequently, the same pivot ID. To avoid confusion, delete the original static pivot table.
+
+.. tip::
+   It is also possible to directly enter the :ref:`function
+   <spreadsheet/dynamic-pivot-tables/functions>` of the dynamic pivot table in an empty cell.
+   However, with this method, the table styling needs to be re-applied manually.
+
+.. _spreadsheet/dynamic-pivot-tables/functions:
+
+Dynamic pivot table functions
+-----------------------------
+
+Instead of each cell containing a unique function that retrieves data from your database, as in a
+:ref:`static pivot table <spreadsheet/insert/pivot-table-functions-static>`, a dynamic pivot table
+has a single function:
+
+.. code-block:: text
+
+   =PIVOT(pivot_id, [row_count], [include_total], [include_column_titles], [column_count] )
+
+The arguments of the function are as follows:
+
+- `pivot_id`: the ID assigned when the pivot table is inserted. The first pivot table
+  inserted in a spreadsheet is assigned pivot ID `1`, the second, pivot ID `2`, etc.
+- `row_count` and `column count`: the number of rows and columns respectively.
+- `include_total` and `include_column_titles`: values of `0` remove the total and column
+  titles respectively.
+
+This is an array function, which allows the pivot table to expand automatically to accommodate the
+results of the function.
+
+The top-left cell contains the editable function, while clicking on any other cell reveals this
+formula greyed out.
+
+.. image:: dynamic_pivot_tables/pivot-function-dynamic.png
+   :alt: Array function of a dynamic pivot table
+
+.. tip::
+   If necessary, you can update the function of a dynamic pivot table to remove elements like the
+   total or column titles.
+
+   With the function open in the formula bar or the top-left cell of the pivot table, position your
+   cursor after the pivot ID then type `,` to advance to the optional field you want to modify. In
+   the example below, adding the value `0` for `[include_total]` removes both the row total and
+   column total from the pivot table.
+
+   .. image:: dynamic_pivot_tables/modify-function.png
+      :alt: Modifying the function of a dynamic pivot table
+
+.. _spreadsheet/dynamic-pivot-tables/manipulate:
+
+Manipulate a dynamic pivot table
+================================
+
+To manipulate data in a dynamic pivot table, :ref:`open the pivot table properties
+<spreadsheet/insert/pivot-table-properties>`.
+
+The following options are available by clicking the :icon:`fa-cog` (:guilabel:`gear`) icon:
+
+- :icon:`fa-exchange` :guilabel:`Flip axes`: to move all the dimensions represented in columns to
+  rows and vice versa.
+
+  .. tip::
+     Flipping the axes presents the data from a different perspective, possibly bringing new
+     insights. However, depending on the volume of data, it can result in #SPILL errors. This
+     happens when a formula tries to output a range of values, but something is blocking those
+     cells, such as other data, merged cells, or the boundaries of the current sheet.
+
+     Hovering over the cell containing :guilabel:`#SPILL` details the error.
+
+- :icon:`fa-clone` :guilabel:`Duplicate`: to duplicate the dynamic pivot table and create a new data
+  source with distinct properties.
+- :icon:`fa-trash` :guilabel:`Delete`: to delete the data source of the dynamic pivot table.
+
+  .. note::
+     Deleting the data source of a pivot table does not delete the visual representation of the
+     data. Delete the table from the spreadsheet using your preferred means, e.g., via keyboard
+     commands, spreadsheet menus, or by deleting the sheet.
+
+.. _spreadsheet/dynamic-pivot-tables/manipulate-dimensions:
+
+Dimensions
+----------
+
+The dimensions of the pivot table, i.e., how the data is grouped, are placed in :guilabel:`Columns`
+and :guilabel:`Rows` according to how they appeared in the pivot view in your database, i.e., before
+the pivot table was inserted in the spreadsheet.
+
+You can:
+
+- add new dimensions by clicking :guilabel:`Add`
+- delete existing dimensions by clicking the :icon:`fa-trash` :guilabel:`(delete)` icon on the
+  relevant dimension
+- change the order in which dimensions are displayed in :guilabel:`Columns` or :guilabel:`Rows` by
+  clicking then dragging the dimension to the desired position within its respective section
+- change the axis on which a dimension is shown by clicking then dragging the dimension from
+  :guilabel:`Columns` to :guilabel:`Rows` or vice versa
+- change how a dimension's values are ordered by selecting :guilabel:`Ascending`,
+  :guilabel:`Descending`, or :guilabel:`Unsorted` in the :guilabel:`Order by` field
+- for date- or time-based dimensions, select the desired :guilabel:`Granularity` from the options in
+  the dropdown menu
+
+.. _spreadsheet/dynamic-pivot-tables/manipulate-measures:
+
+Measures
+--------
+
+The measures of your pivot table, i.e., what you are measuring, or analyzing, based on the
+dimensions you have chosen, are listed in the order they appeared in the pivot view in your
+database.
+
+You can:
+
+- add new measures, including :ref:`calculated measures
+  <spreadsheet/dynamic-pivot-tables/manipulate-measures-calculated-measures>`, by clicking
+  :guilabel:`Add`
+- hide (:icon:`fa-eye`), show (:icon:`fa-eye-slash`), or delete (:icon:`fa-trash`) existing measures
+- edit the name of existing measures by clicking on the measure's name
+- change the order in which measures are displayed by clicking then dragging the measure to the
+  desired position
+- change how measures are displayed by clicking the :icon:`fa-cog` :guilabel:`(gear)` icon, then
+  selecting the desired option from the dropdown menu, e.g., :guilabel:`% of grand total` or
+  :guilabel:`Rank smallest to largest`. The pivot table data updates dynamically as different
+  options are selected.
+- choose how measures are aggregated, e.g., by :guilabel:`Sum`, :guilabel:`Average`,
+  :guilabel:`Minimum`
+
+.. tip::
+   To sort the values of a dynamic pivot table by measure for a specific dimension, right-click any
+   pivot table value, then click :icon:`os-sort-range` :guilabel:`Sort pivot` and select
+   :guilabel:`Ascending` or :guilabel:`Descending` from the dropdown. To return to the default
+   order, follow the same steps then select :guilabel:`No sorting` from the dropdown.
+
+.. _spreadsheet/dynamic-pivot-tables/manipulate-measures-calculated-measures:
+
+Calculated measures
+~~~~~~~~~~~~~~~~~~~
+
+It is possible to add calculated measures if the desired measure did not exist in the original pivot
+view. For example, a calculated measure could be added to show the average revenue per order or the
+profit margin per product.
+
+To add a calculated measure:
+
+#. From the :guilabel:`Measures` section of the pivot table properties, click :guilabel:`Add`.
+#. Below the scrollable list, click :icon:`os-formula` :guilabel:`Add calculated measure`.
+#. Rename the calculated measure by clicking on the name and typing.
+#. Click on the line starting with `=` and enter the formula.
+
+   .. example::
+      In the below example, the average revenue per order is added by dividing the sum of the sales
+      by the number of orders.
+
+      .. image:: dynamic_pivot_tables/calculated-measure.png
+         :alt: Formula for a calculated measure
+
+#. Choose how the measure should be aggregated by selecting a value from the dropdown.
+
+.. tip::
+   There are advantages to using a static pivot table, for example, being able to see the functions
+   behind individual cells. To have this possibility, select the relevant portion of your dynamic
+   pivot table, copy it, then paste it into an empty part of the sheet. Click on any pasted cell to
+   see the :ref:`Odoo function <spreadsheet/functions/odoo>` used to retrieve the data.
+
+
+
+==================================================
+SECTION: functions.rst
+PATH: applications/productivity/spreadsheet/work_with_data/functions.rst
+==================================================
+
+=========
+Functions
+=========
+
+**Odoo Spreadsheet** supports formulas and functions found in most spreadsheet solutions. This page
+presents the available functions by category. Odoo-specific functions are included both in the
+relevant category and in a dedicated :ref:`Odoo <spreadsheet/functions/odoo>` category:
+
+- :ref:`Array <spreadsheet/functions/array>`
+- :ref:`Database <spreadsheet/functions/database>`
+- :ref:`Date <spreadsheet/functions/date>`
+- :ref:`Engineering <spreadsheet/functions/engineering>`
+- :ref:`Filter <spreadsheet/functions/filter>`
+- :ref:`Financial <spreadsheet/functions/financial>`
+- :ref:`Info <spreadsheet/functions/info>`
+- :ref:`Logical <spreadsheet/functions/logical>`
+- :ref:`Lookup <spreadsheet/functions/lookup>`
+- :ref:`Math <spreadsheet/functions/math>`
+- :ref:`Operators <spreadsheet/functions/operators>`
+- :ref:`Parser <spreadsheet/functions/parser>`
+- :ref:`Statistical <spreadsheet/functions/statistical>`
+- :ref:`Text <spreadsheet/functions/text>`
+- :ref:`Web <spreadsheet/functions/web>`
+- :ref:`Odoo-specific functions <spreadsheet/functions/odoo>`
+
+.. note::
+   Formulas containing functions that are not compatible with Excel are replaced by their evaluated
+   result when exporting a spreadsheet.
+
+.. _spreadsheet/functions/array:
+
+Array
+=====
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - ARRAY.CONSTRAIN(input_range, rows, columns)
+     - Returns a result array constrained to a specific width and height (not compatible with Excel)
+   * - CHOOSECOLS(array, col_num, [col_num2, ...])
+     - `Excel CHOOSECOLS article <https://support.microsoft.com/office/choosecols-function-bf117976-2722-4466-9b9a-1c01ed9aebff>`_
+   * - CHOOSEROWS(array, row_num, [row_num2, ...])
+     - `Excel CHOOSEROWS article <https://support.microsoft.com/office/chooserows-function-51ace882-9bab-4a44-9625-7274ef7507a3>`_
+   * - EXPAND(array, rows, [columns], [pad_with])
+     - `Excel EXPAND article <https://support.microsoft.com/office/expand-function-7433fba5-4ad1-41da-a904-d5d95808bc38>`_
+   * - FLATTEN(range, [range2, ...])
+     - Flattens all the values from one or more ranges into a single column (not compatible with
+       Excel)
+   * - FREQUENCY(data, classes)
+     - `Excel FREQUENCY article <https://support.microsoft.com/office/frequency-function-44e3be2b-eca0-42cd-a3f7-fd9ea898fdb9>`_
+   * - HSTACK(range1, [range2, ...])
+     - `Excel HSTACK article <https://support.microsoft.com/office/hstack-function-98c4ab76-10fe-4b4f-8d5f-af1c125fe8c2>`_
+   * - MDETERM(square_matrix)
+     - `Excel MDETERM article <https://support.microsoft.com/office/mdeterm-function-e7bfa857-3834-422b-b871-0ffd03717020>`_
+   * - MINVERSE(square_matrix)
+     - `Excel MINVERSE article <https://support.microsoft.com/office/minverse-function-11f55086-adde-4c9f-8eb9-59da2d72efc6>`_
+   * - MMULT(matrix1, matrix2)
+     - `Excel MMULT article <https://support.microsoft.com/office/mmult-function-40593ed7-a3cd-4b6b-b9a3-e4ad3c7245eb>`_
+   * - SUMPRODUCT(range1, [range2, ...])
+     - `Excel SUMPRODUCT article <https://support.microsoft.com/office/sumproduct-function-16753e75-9f68-4874-94ac-4d2145a2fd2e>`_
+   * - SUMX2MY2(array_x, array_y)
+     - `Excel SUMX2MY2 article <https://support.microsoft.com/office/sumx2my2-function-9e599cc5-5399-48e9-a5e0-e37812dfa3e9>`_
+   * - SUMX2PY2(array_x, array_y)
+     - `Excel SUMX2PY2 article <https://support.microsoft.com/office/sumx2py2-function-826b60b4-0aa2-4e5e-81d2-be704d3d786f>`_
+   * - SUMXMY2(array_x, array_y)
+     - `Excel SUMXMY2 article <https://support.microsoft.com/office/sumxmy2-function-9d144ac1-4d79-43de-b524-e2ecee23b299>`_
+   * - TOCOL(array, [ignore], [scan_by_column])
+     - `Excel TOCOL article <https://support.microsoft.com/office/tocol-function-22839d9b-0b55-4fc1-b4e6-2761f8f122ed>`_
+   * - TOROW(array, [ignore], [scan_by_column])
+     - `Excel TOROW article <https://support.microsoft.com/office/torow-function-b90d0964-a7d9-44b7-816b-ffa5c2fe2289>`_
+   * - TRANSPOSE(range)
+     - `Excel TRANSPOSE article <https://support.microsoft.com/office/transpose-function-ed039415-ed8a-4a81-93e9-4b6dfac76027>`_
+   * - VSTACK(range1, [range2, ...])
+     - `Excel VSTACK article <https://support.microsoft.com/office/vstack-function-a4b86897-be0f-48fc-adca-fcc10d795a9c>`_
+   * - WRAPCOLS(range, wrap_count, [pad_with])
+     - `Excel WRAPCOLS article <https://support.microsoft.com/office/wrapcols-function-d038b05a-57b7-4ee0-be94-ded0792511e2>`_
+   * - WRAPROWS(range, wrap_count, [pad_with])
+     - `Excel WRAPROWS article <https://support.microsoft.com/office/wraprows-function-796825f3-975a-4cee-9c84-1bbddf60ade0>`_
+
+.. _spreadsheet/functions/database:
+
+Database
+========
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - DAVERAGE(database, field, criteria)
+     - `Excel DAVERAGE article <https://support.microsoft.com/office/daverage-function-a6a2d5ac-4b4b-48cd-a1d8-7b37834e5aee>`_
+   * - DCOUNT(database, field, criteria)
+     - `Excel DCOUNT article <https://support.microsoft.com/office/dcount-function-c1fc7b93-fb0d-4d8d-97db-8d5f076eaeb1>`_
+   * - DCOUNTA(database, field, criteria)
+     - `Excel DCOUNTA article <https://support.microsoft.com/office/dcounta-function-00232a6d-5a66-4a01-a25b-c1653fda1244>`_
+   * - DGET(database, field, criteria)
+     - `Excel DGET article <https://support.microsoft.com/office/dget-function-455568bf-4eef-45f7-90f0-ec250d00892e>`_
+   * - DMAX(database, field, criteria)
+     - `Excel DMAX article <https://support.microsoft.com/office/dmax-function-f4e8209d-8958-4c3d-a1ee-6351665d41c2>`_
+   * - DMIN(database, field, criteria)
+     - `Excel DMIN article <https://support.microsoft.com/office/dmin-function-4ae6f1d9-1f26-40f1-a783-6dc3680192a3>`_
+   * - DPRODUCT(database, field, criteria)
+     - `Excel DPRODUCT article <https://support.microsoft.com/office/dproduct-function-4f96b13e-d49c-47a7-b769-22f6d017cb31>`_
+   * - DSTDEV(database, field, criteria)
+     - `Excel DSTDEV article <https://support.microsoft.com/office/dstdev-function-026b8c73-616d-4b5e-b072-241871c4ab96>`_
+   * - DSTDEVP(database, field, criteria)
+     - `Excel DSTDEVP article <https://support.microsoft.com/office/dstdevp-function-04b78995-da03-4813-bbd9-d74fd0f5d94b>`_
+   * - DSUM(database, field, criteria)
+     - `Excel DSUM article <https://support.microsoft.com/office/dsum-function-53181285-0c4b-4f5a-aaa3-529a322be41b>`_
+   * - DVAR(database, field, criteria)
+     - `Excel DVAR article <https://support.microsoft.com/office/dvar-function-d6747ca9-99c7-48bb-996e-9d7af00f3ed1>`_
+   * - DVARP(database, field, criteria)
+     - `Excel DVARP article <https://support.microsoft.com/office/dvarp-function-eb0ba387-9cb7-45c8-81e9-0394912502fc>`_
+
+.. _spreadsheet/functions/date:
+
+Date
+====
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - DATE(year, month, day)
+     - `Excel DATE article <https://support.microsoft.com/office/date-function-e36c0c8c-4104-49da-ab83-82328b832349>`_
+   * - DATEDIF(start_date, end_date, unit)
+     - `Excel DATEDIF article <https://support.microsoft.com/office/datedif-function-25dba1a4-2812-480b-84dd-8b32a451b35c>`_
+   * - DATEVALUE(date_string)
+     - `Excel DATEVALUE article <https://support.microsoft.com/office/datevalue-function-df8b07d4-7761-4a93-bc33-b7471bbff252>`_
+   * - DAY(date)
+     - `Excel DAY article <https://support.microsoft.com/office/day-function-8a7d1cbb-6c7d-4ba1-8aea-25c134d03101>`_
+   * - DAYS(end_date, start_date)
+     - `Excel DAYS article <https://support.microsoft.com/office/days-function-57740535-d549-4395-8728-0f07bff0b9df>`_
+   * - DAYS360(start_date, end_date, [method])
+     - `Excel DAYS360 article <https://support.microsoft.com/office/days360-function-b9a509fd-49ef-407e-94df-0cbda5718c2a>`_
+   * - EDATE(start_date, months)
+     - `Excel EDATE article <https://support.microsoft.com/office/edate-function-3c920eb2-6e66-44e7-a1f5-753ae47ee4f5>`_
+   * - EOMONTH(start_date, months)
+     - `Excel EOMONTH article <https://support.microsoft.com/office/eomonth-function-7314ffa1-2bc9-4005-9d66-f49db127d628>`_
+   * - HOUR(time)
+     - `Excel HOUR article <https://support.microsoft.com/office/hour-function-a3afa879-86cb-4339-b1b5-2dd2d7310ac7>`_
+   * - ISOWEEKNUM(date)
+     - `Excel ISOWEEKNUM article <https://support.microsoft.com/office/isoweeknum-function-1c2d0afe-d25b-4ab1-8894-8d0520e90e0e>`_
+   * - MINUTE(time)
+     - `Excel MINUTE article <https://support.microsoft.com/office/minute-function-af728df0-05c4-4b07-9eed-a84801a60589>`_
+   * - MONTH(date)
+     - `Excel MONTH article <https://support.microsoft.com/office/month-function-579a2881-199b-48b2-ab90-ddba0eba86e8>`_
+   * - MONTH.END(date)
+     - Last day of the month following a date (not compatible with Excel)
+   * - MONTH.START(date)
+     - First day of the month preceding a date (not compatible with Excel)
+   * - NETWORKDAYS(start_date, end_date, [holidays])
+     - `Excel NETWORKDAYS article <https://support.microsoft.com/office/networkdays-function-48e717bf-a7a3-495f-969e-5005e3eb18e7>`_
+   * - NETWORKDAYS.INTL(start_date, end_date, [weekend], [holidays])
+     - `Excel NETWORKDAYS.INTL article <https://support.microsoft.com/office/networkdays-intl-function-a9b26239-4f20-46a1-9ab8-4e925bfd5e28>`_
+   * - NOW()
+     - `Excel NOW article <https://support.microsoft.com/office/now-function-3337fd29-145a-4347-b2e6-20c904739c46>`_
+   * - QUARTER(date)
+     - Quarter of the year a specific date falls in (not compatible with Excel)
+   * - QUARTER.END(date)
+     - Last day of the quarter of the year a specific date falls in (not compatible with Excel)
+   * - QUARTER.START(date)
+     - First day of the quarter of the year a specific date falls in (not compatible with Excel)
+   * - SECOND(time)
+     - `Excel SECOND article <https://support.microsoft.com/office/second-function-740d1cfc-553c-4099-b668-80eaa24e8af1>`_
+   * - TIME(hour, minute, second)
+     - `Excel TIME article <https://support.microsoft.com/office/time-function-9a5aff99-8f7d-4611-845e-747d0b8d5457>`_
+   * - TIMEVALUE(time_string)
+     - `Excel TIMEVALUE article <https://support.microsoft.com/office/timevalue-function-0b615c12-33d8-4431-bf3d-f3eb6d186645>`_
+   * - TODAY()
+     - `Excel TODAY article <https://support.microsoft.com/office/today-function-5eb3078d-a82c-4736-8930-2f51a028fdd9>`_
+   * - WEEKDAY(date, [type])
+     - `Excel WEEKDAY article <https://support.microsoft.com/office/weekday-function-60e44483-2ed1-439f-8bd0-e404c190949a>`_
+   * - WEEKNUM(date, [type])
+     - `Excel WEEKNUM article <https://support.microsoft.com/office/weeknum-function-e5c43a03-b4ab-426c-b411-b18c13c75340>`_
+   * - WORKDAY(start_date, num_days, [holidays])
+     - `Excel WORKDAY article <https://support.microsoft.com/office/workday-function-f764a5b7-05fc-4494-9486-60d494efbf33>`_
+   * - WORKDAY.INTL(start_date, num_days, [weekend], [holidays])
+     - `Excel WORKDAY.INTL article <https://support.microsoft.com/office/workday-intl-function-a378391c-9ba7-4678-8a39-39611a9bf81d>`_
+   * - YEAR(date)
+     - `Excel YEAR article <https://support.microsoft.com/office/year-function-c64f017a-1354-490d-981f-578e8ec8d3b9>`_
+   * - YEAR.END(date)
+     - Last day of the year a specific date falls in (not compatible with Excel)
+   * - YEAR.START(date)
+     - First day of the year a specific date falls in (not compatible with Excel)
+   * - YEARFRAC(start_date, end_date, [day_count_convention])
+     - Exact number of years between two dates (not compatible with Excel)
+
+.. _spreadsheet/functions/engineering:
+
+Engineering
+===========
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - DELTA(number1, [number2])
+     - `Excel DELTA article <https://support.microsoft.com/office/delta-function-2f763672-c959-4e07-ac33-fe03220ba432>`_
+
+.. _spreadsheet/functions/filter:
+
+Filter
+======
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - FILTER(range, condition1, [condition2, ...])
+     - `Excel FILTER article <https://support.microsoft.com/office/filter-function-f4f7cb66-82eb-4767-8f7c-4877ad80c759>`_
+   * - ODOO.FILTER.VALUE(filter_name)
+     - Returns the current value of a spreadsheet filter (not compatible with Excel)
+   * - SORT(range, [sort_column, ...], [is_ascending, ...])
+     - `Excel SORT article <https://support.microsoft.com/office/sort-function-22f63bd0-ccc8-492f-953d-c20e8e44b86c>`_
+   * - UNIQUE(range, [by_column], [exactly_once])
+     - `Excel UNIQUE article <https://support.microsoft.com/office/unique-function-c5ab87fd-30a3-4ce9-9d1a-40204fb85e1e>`_
+
+.. _spreadsheet/functions/financial:
+
+Financial
+=========
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - ACCRINTM(issue, maturity, rate, redemption, [day_count_convention])
+     - `Excel ACCRINTM article <https://support.microsoft.com/office/accrintm-function-f62f01f9-5754-4cc4-805b-0e70199328a7>`_
+   * - AMORLINC(cost, purchase_date, first_period_end, salvage, period, rate,
+       [day_count_convention])
+     - `Excel AMORLINC article <https://support.microsoft.com/office/amorlinc-function-7d417b45-f7f5-4dba-a0a5-3451a81079a8>`_
+   * - COUPDAYBS(settlement, maturity, frequency, [day_count_convention])
+     - `Excel COUPDAYBS article <https://support.microsoft.com/office/coupdaybs-function-eb9a8dfb-2fb2-4c61-8e5d-690b320cf872>`_
+   * - COUPDAYS(settlement, maturity, frequency, [day_count_convention])
+     - `Excel COUPDAYS article <https://support.microsoft.com/office/coupdays-function-cc64380b-315b-4e7b-950c-b30b0a76f671>`_
+   * - COUPDAYSNC(settlement, maturity, frequency, [day_count_convention])
+     - `Excel COUPDAYSNC article <https://support.microsoft.com/office/coupdaysnc-function-5ab3f0b2-029f-4a8b-bb65-47d525eea547>`_
+   * - COUPNCD(settlement, maturity, frequency, [day_count_convention])
+     - `Excel COUPNCD article <https://support.microsoft.com/office/coupncd-function-fd962fef-506b-4d9d-8590-16df5393691f>`_
+   * - COUPNUM(settlement, maturity, frequency, [day_count_convention])
+     - `Excel COUPNUM article <https://support.microsoft.com/office/coupnum-function-a90af57b-de53-4969-9c99-dd6139db2522>`_
+   * - COUPPCD(settlement, maturity, frequency, [day_count_convention])
+     - `Excel COUPPCD article <https://support.microsoft.com/office/couppcd-function-2eb50473-6ee9-4052-a206-77a9a385d5b3>`_
+   * - CUMIPMT(rate, number_of_periods, present_value, first_period, last_period,
+       [end_or_beginning])
+     - `Excel CUMIPMT article <https://support.microsoft.com/office/cumipmt-function-61067bb0-9016-427d-b95b-1a752af0e606>`_
+   * - CUMPRINC(rate, number_of_periods, present_value, first_period, last_period,
+       [end_or_beginning])
+     - `Excel CUMPRINC article <https://support.microsoft.com/office/cumprinc-function-94a4516d-bd65-41a1-bc16-053a6af4c04d>`_
+   * - DB(cost, salvage, life, period, [month])
+     - `Excel DB article <https://support.microsoft.com/office/db-function-354e7d28-5f93-4ff1-8a52-eb4ee549d9d7>`_
+   * - DDB(cost, salvage, life, period, [factor])
+     - `Excel DDB article <https://support.microsoft.com/office/ddb-function-519a7a37-8772-4c96-85c0-ed2c209717a5>`_
+   * - DISC(settlement, maturity, price, redemption, [day_count_convention])
+     - `Excel DISC article <https://support.microsoft.com/office/disc-function-71fce9f3-3f05-4acf-a5a3-eac6ef4daa53>`_
+   * - DOLLARDE(fractional_price, unit)
+     - `Excel DOLLARDE article <https://support.microsoft.com/office/dollarde-function-db85aab0-1677-428a-9dfd-a38476693427>`_
+   * - DOLLARFR(decimal_price, unit)
+     - `Excel DOLLARFR article <https://support.microsoft.com/office/dollarfr-function-0835d163-3023-4a33-9824-3042c5d4f495>`_
+   * - DURATION(settlement, maturity, rate, yield, frequency, [day_count_convention])
+     - `Excel DURATION article <https://support.microsoft.com/office/duration-function-b254ea57-eadc-4602-a86a-c8e369334038>`_
+   * - EFFECT(nominal_rate, periods_per_year)
+     - `Excel EFFECT article <https://support.microsoft.com/office/effect-function-910d4e4c-79e2-4009-95e6-507e04f11bc4>`_
+   * - FV(rate, number_of_periods, payment_amount, [present_value], [end_or_beginning])
+     - `Excel FV article <https://support.microsoft.com/office/fv-function-2eef9f44-a084-4c61-bdd8-4fe4bb1b71b3>`_
+   * - FVSCHEDULE(principal, rate_schedule)
+     - `Excel FVSCHEDULE article <https://support.microsoft.com/office/fvschedule-function-bec29522-bd87-4082-bab9-a241f3fb251d>`_
+   * - INTRATE(settlement, maturity, investment, redemption, [day_count_convention])
+     - `Excel INTRATE article <https://support.microsoft.com/office/intrate-function-5cb34dde-a221-4cb6-b3eb-0b9e55e1316f>`_
+   * - IPMT(rate, period, number_of_periods, present_value, [future_value], [end_or_beginning])
+     - `Excel IPMT article <https://support.microsoft.com/office/ipmt-function-5cce0ad6-8402-4a41-8d29-61a0b054cb6f>`_
+   * - IRR(cashflow_amounts, [rate_guess])
+     - `Excel IRR article <https://support.microsoft.com/office/irr-function-64925eaa-9988-495b-b290-3ad0c163c1bc>`_
+   * - ISPMT(rate, period, number_of_periods, present_value)
+     - `Excel ISPMT article <https://support.microsoft.com/office/ispmt-function-fa58adb6-9d39-4ce0-8f43-75399cea56cc>`_
+   * - MDURATION(settlement, maturity, rate, yield, frequency, [day_count_convention])
+     - `Excel MDURATION article <https://support.microsoft.com/office/mduration-function-b3786a69-4f20-469a-94ad-33e5b90a763c>`_
+   * - MIRR(cashflow_amounts, financing_rate, reinvestment_return_rate)
+     - `Excel MIRR article <https://support.microsoft.com/office/mirr-function-b020f038-7492-4fb4-93c1-35c345b53524>`_
+   * - NOMINAL(effective_rate, periods_per_year)
+     - `Excel NOMINAL article <https://support.microsoft.com/office/nominal-function-7f1ae29b-6b92-435e-b950-ad8b190ddd2b>`_
+   * - NPER(rate, payment_amount, present_value, [future_value], [end_or_beginning])
+     - `Excel NPER article <https://support.microsoft.com/office/nper-function-240535b5-6653-4d2d-bfcf-b6a38151d815>`_
+   * - NPV(discount, cashflow1, [cashflow2, ...])
+     - `Excel NPV article <https://support.microsoft.com/office/npv-function-8672cb67-2576-4d07-b67b-ac28acf2a568>`_
+   * - ODOO.ACCOUNT.GROUP(type)
+     - Returns the account ids of a given group (not compatible with Excel)
+   * - ODOO.BALANCE(account_codes, date_range, [offset], [company_id], [include_unposted])
+     - Returns the total balance for the specified account(s) and period (not compatible with Excel)
+   * - ODOO.BALANCE.TAG(account_tag_ids, [date_range], [offset], [company_id], [include_unposted])
+     - Returns the balance of accounts for the specified tag(s) and period (not compatible with
+       Excel)
+   * - ODOO.CREDIT(account_codes, date_range, [offset], [company_id], [include_unposted])
+     - Returns the total credit for the specified account(s) and period (not compatible with Excel)
+   * - ODOO.CURRENCY.RATE(currency_from, currency_to, [date])
+     - Takes two currency codes as arguments, and returns the exchange rate from the first currency
+       to the second as float (not compatible with Excel)
+   * - ODOO.DEBIT(account_codes, date_range, [offset], [company_id], [include_unposted])
+     - Returns the total debit for the specified account(s) and period (not compatible with Excel)
+   * - ODOO.FISCALYEAR.END(day, [company_id])
+     - Returns the ending date of the fiscal year encompassing the provided date (not compatible
+       with Excel)
+   * - ODOO.FISCALYEAR.START(day, [company_id])
+     - Returns the starting date of the fiscal year encompassing the provided date (not compatible
+       with Excel)
+   * - ODOO.PARTNER.BALANCE(partner_ids, [account_codes], [date_range], [offset], [company_id],
+       [include_unposted])
+     - Returns the partner balance for the specified account(s) and period (not compatible with
+       Excel)
+   * - ODOO.RESIDUAL([account_codes], [date_range], [offset], [company_id], [include_unposted])
+     - Returns the residual amount for the specified account(s) and period (not compatible with
+       Excel)
+   * - PDURATION(rate, present_value, future_value)
+     - `Excel PDURATION article <https://support.microsoft.com/office/pduration-function-44f33460-5be5-4c90-b857-22308892adaf>`_
+   * - PMT(rate, number_of_periods, present_value, [future_value], [end_or_beginning])
+     - `Excel PMT article <https://support.microsoft.com/office/pmt-function-0214da64-9a63-4996-bc20-214433fa6441>`_
+   * - PPMT(rate, period, number_of_periods, present_value, [future_value], [end_or_beginning])
+     - `Excel PPMT article <https://support.microsoft.com/office/ppmt-function-c370d9e3-7749-4ca4-beea-b06c6ac95e1b>`_
+   * - PRICE(settlement, maturity, rate, yield, redemption, frequency, [day_count_convention])
+     - `Excel PRICE article <https://support.microsoft.com/office/price-function-3ea9deac-8dfa-436f-a7c8-17ea02c21b0a>`_
+   * - PRICEDISC(settlement, maturity, discount, redemption, [day_count_convention])
+     - `Excel PRICEDISC article <https://support.microsoft.com/office/pricedisc-function-d06ad7c1-380e-4be7-9fd9-75e3079acfd3>`_
+   * - PRICEMAT(settlement, maturity, issue, rate, yield, [day_count_convention])
+     - `Excel PRICEMAT article <https://support.microsoft.com/office/pricemat-function-52c3b4da-bc7e-476a-989f-a95f675cae77>`_
+   * - PV(rate, number_of_periods, payment_amount, [future_value], [end_or_beginning])
+     - `Excel PV article <https://support.microsoft.com/office/pv-function-23879d31-0e02-4321-be01-da16e8168cbd>`_
+   * - RATE(number_of_periods, payment_per_period, present_value, [future_value],
+       [end_or_beginning], [rate_guess])
+     - `Excel RATE article <https://support.microsoft.com/office/rate-function-9f665657-4a7e-4bb7-a030-83fc59e748ce>`_
+   * - RECEIVED(settlement, maturity, investment, discount, [day_count_convention])
+     - `Excel RECEIVED article <https://support.microsoft.com/office/received-function-7a3f8b93-6611-4f81-8576-828312c9b5e5>`_
+   * - RRI(number_of_periods, present_value, future_value)
+     - `Excel RRI article <https://support.microsoft.com/office/rri-function-6f5822d8-7ef1-4233-944c-79e8172930f4>`_
+   * - SLN(cost, salvage, life)
+     - `Excel SLN article <https://support.microsoft.com/office/sln-function-cdb666e5-c1c6-40a7-806a-e695edc2f1c8>`_
+   * - SYD(cost, salvage, life, period)
+     - `Excel SYD article <https://support.microsoft.com/office/syd-function-069f8106-b60b-4ca2-98e0-2a0f206bdb27>`_
+   * - TBILLEQ(settlement, maturity, discount)
+     - `Excel TBILLEQ article <https://support.microsoft.com/office/tbilleq-function-2ab72d90-9b4d-4efe-9fc2-0f81f2c19c8c>`_
+   * - TBILLPRICE(settlement, maturity, discount)
+     - `Excel TBILLPRICE article <https://support.microsoft.com/office/tbillprice-function-eacca992-c29d-425a-9eb8-0513fe6035a2>`_
+   * - TBILLYIELD(settlement, maturity, price)
+     - `Excel TBILLYIELD article <https://support.microsoft.com/office/tbillyield-function-6d381232-f4b0-4cd5-8e97-45b9c03468ba>`_
+   * - VDB(cost, salvage, life, start, end, [factor], [no_switch])
+     - `Excel VDB article <https://support.microsoft.com/office/vdb-function-dde4e207-f3fa-488d-91d2-66d55e861d73>`_
+   * - XIRR(cashflow_amounts, cashflow_dates, [rate_guess])
+     - `Excel XIRR article <https://support.microsoft.com/office/xirr-function-de1242ec-6477-445b-b11b-a303ad9adc9d>`_
+   * - XNPV(discount, cashflow_amounts, cashflow_dates)
+     - `Excel XNPV article <https://support.microsoft.com/office/xnpv-function-1b42bbf6-370f-4532-a0eb-d67c16b664b7>`_
+   * - YIELD(settlement, maturity, rate, price, redemption, frequency, [day_count_convention])
+     - `Excel YIELD article <https://support.microsoft.com/office/yield-function-f5f5ca43-c4bd-434f-8bd2-ed3c9727a4fe>`_
+   * - YIELDDISC(settlement, maturity, price, redemption, [day_count_convention])
+     - `Excel YIELDDISC article <https://support.microsoft.com/office/yielddisc-function-a9dbdbae-7dae-46de-b995-615faffaaed7>`_
+   * - YIELDMAT(settlement, maturity, issue, rate, price, [day_count_convention])
+     - `Excel YIELDMAT article <https://support.microsoft.com/office/yieldmat-function-ba7d1809-0d33-4bcb-96c7-6c56ec62ef6f>`_
+
+.. _spreadsheet/functions/info:
+
+Info
+====
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - CELL(info_type, reference)
+     - `Excel CELL article <https://support.microsoft.com/office/cell-function-51bd39a5-f338-4dbe-a33f-955d67c2b2cf>`_
+   * - ISBLANK(value)
+     - `Excel IS article <https://support.microsoft.com/office/is-functions-0f2d7971-6019-40a0-a171-f2d869135665>`_
+   * - ISERR(value)
+     - `Excel IS article <https://support.microsoft.com/office/is-functions-0f2d7971-6019-40a0-a171-f2d869135665>`_
+   * - ISERROR(value)
+     - `Excel IS article <https://support.microsoft.com/office/is-functions-0f2d7971-6019-40a0-a171-f2d869135665>`_
+   * - ISLOGICAL(value)
+     - `Excel IS article <https://support.microsoft.com/office/is-functions-0f2d7971-6019-40a0-a171-f2d869135665>`_
+   * - ISNA(value)
+     - `Excel IS article <https://support.microsoft.com/office/is-functions-0f2d7971-6019-40a0-a171-f2d869135665>`_
+   * - ISNONTEXT(value)
+     - `Excel IS article <https://support.microsoft.com/office/is-functions-0f2d7971-6019-40a0-a171-f2d869135665>`_
+   * - ISNUMBER(value)
+     - `Excel IS article <https://support.microsoft.com/office/is-functions-0f2d7971-6019-40a0-a171-f2d869135665>`_
+   * - ISTEXT(value)
+     - `Excel IS article <https://support.microsoft.com/office/is-functions-0f2d7971-6019-40a0-a171-f2d869135665>`_
+   * - NA()
+     - `Excel NA article <https://support.microsoft.com/office/na-function-5469c2d1-a90c-4fb5-9bbc-64bd9bb6b47c>`_
+
+.. _spreadsheet/functions/logical:
+
+Logical
+=======
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - AND(logical_expression1, [logical_expression2, ...])
+     - `Excel AND article <https://support.microsoft.com/office/and-function-5f19b2e8-e1df-4408-897a-ce285a19e9d9>`_
+   * - FALSE()
+     - `Excel FALSE article <https://support.microsoft.com/office/false-function-2d58dfa5-9c03-4259-bf8f-f0ae14346904>`_
+   * - IF(logical_expression, value_if_true, [value_if_false])
+     - `Excel IF article <https://support.microsoft.com/office/if-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2>`_
+   * - IFERROR(value, [value_if_error])
+     - `Excel IFERROR article <https://support.microsoft.com/office/iferror-function-c526fd07-caeb-47b8-8bb6-63f3e417f611>`_
+   * - IFNA(value, [value_if_error])
+     - `Excel IFNA article <https://support.microsoft.com/office/ifna-function-6626c961-a569-42fc-a49d-79b4951fd461>`_
+   * - IFS(condition1, value1, [condition2, ...], [value2, ...])
+     - `Excel IFS article <https://support.microsoft.com/office/ifs-function-36329a26-37b2-467c-972b-4a39bd951d45>`_
+   * - NOT(logical_expression)
+     - `Excel NOT article <https://support.microsoft.com/office/not-function-9cfc6011-a054-40c7-a140-cd4ba2d87d77>`_
+   * - OR(logical_expression1, [logical_expression2, ...])
+     - `Excel OR article <https://support.microsoft.com/office/or-function-7d17ad14-8700-4281-b308-00b131e22af0>`_
+   * - SWITCH(expression, case1, value1, [case2, ...], [value2, ...], [default])
+     - `Excel SWITCH article <https://support.microsoft.com/office/switch-function-47ab33c0-28ce-4530-8a45-d532ec4aa25e>`_
+   * - TRUE()
+     - `Excel TRUE article <https://support.microsoft.com/office/true-function-7652c6e3-8987-48d0-97cd-ef223246b3fb>`_
+   * - XOR(logical_expression1, [logical_expression2, ...])
+     - `Excel XOR article <https://support.microsoft.com/office/xor-function-1548d4c2-5e47-4f77-9a92-0533bba14f37>`_
+
+.. _spreadsheet/functions/lookup:
+
+Lookup
+======
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - ADDRESS(row, column, [absolute_relative_mode], [use_a1_notation], [sheet])
+     - `Excel ADDRESS article <https://support.microsoft.com/office/address-function-d0c26c0d-3991-446b-8de4-ab46431d4f89>`_
+   * - COLUMN([cell_reference])
+     - `Excel COLUMN article <https://support.microsoft.com/office/column-function-44e8c754-711c-4df3-9da4-47a55042554b>`_
+   * - COLUMNS(range)
+     - `Excel COLUMNS article <https://support.microsoft.com/office/columns-function-4e8e7b4e-e603-43e8-b177-956088fa48ca>`_
+   * - HLOOKUP(search_key, range, index, [is_sorted])
+     - `Excel HLOOKUP article <https://support.microsoft.com/office/hlookup-function-a3034eec-b719-4ba3-bb65-e1ad662ed95f>`_
+   * - INDEX(reference, row, column)
+     - `Excel INDEX article <https://support.microsoft.com/office/index-function-a5dcf0dd-996d-40a4-a822-b56b061328bd>`_
+   * - INDIRECT(reference, [use_a1_notation])
+     - `Excel INDIRECT article <https://support.microsoft.com/office/indirect-function-474b3a3a-8a26-4f44-b491-92b6306fa261>`_
+   * - LOOKUP(search_key, search_array, [result_range])
+     - `Excel LOOKUP article <https://support.microsoft.com/office/lookup-function-446d94af-663b-451d-8251-369d5e3864cb>`_
+   * - MATCH(search_key, range, [search_type])
+     - `Excel MATCH article <https://support.microsoft.com/office/match-function-e8dffd45-c762-47d6-bf89-533f4a37673a>`_
+   * - OFFSET(reference, rows, cols, [height], [width])
+     - `Excel OFFSET article <https://support.microsoft.com/office/offset-function-c8de19ae-dd79-4b9b-a14e-b4d906d11b66>`_
+   * - PIVOT(pivot_id, [row_count], [include_total], [include_column_titles], [column_count])
+     - Creates a pivot table (not compatible with Excel)
+   * - PIVOT.HEADER(pivot_id, [domain_field_name, ...], [domain_value, ...])
+     - Returns the header of a pivot table (not compatible with Excel)
+   * - PIVOT.VALUE(pivot_id, measure_name, [domain_field_name, ...], [domain_value, ...])
+     - Returns the value from a pivot table (not compatible with Excel)
+   * - ROW([cell_reference])
+     - `Excel ROW article <https://support.microsoft.com/office/row-function-3a63b74a-c4d0-4093-b49a-e76eb49a6d8d>`_
+   * - ROWS(range)
+     - `Excel ROWS article <https://support.microsoft.com/office/rows-function-b592593e-3fc2-47f2-bec1-bda493811597>`_
+   * - VLOOKUP(search_key, range, index, [is_sorted])
+     - `Excel VLOOKUP article <https://support.microsoft.com/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1>`_
+   * - XLOOKUP(search_key, lookup_range, return_range, [if_not_found], [match_mode], [search_mode])
+     - `Excel XLOOKUP article <https://support.microsoft.com/office/xlookup-function-b7fd680e-6d10-43e6-84f9-88eae8bf5929>`_
+
+.. _spreadsheet/functions/math:
+
+Math
+====
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - ABS(value)
+     - `Excel ABS article <https://support.microsoft.com/office/abs-function-3420200f-5628-4e8c-99da-c99d7c87713c>`_
+   * - ACOS(value)
+     - `Excel ACOS article <https://support.microsoft.com/office/acos-function-cb73173f-d089-4582-afa1-76e5524b5d5b>`_
+   * - ACOSH(value)
+     - `Excel ACOSH article <https://support.microsoft.com/office/acosh-function-e3992cc1-103f-4e72-9f04-624b9ef5ebfe>`_
+   * - ACOT(value)
+     - `Excel ACOT article <https://support.microsoft.com/office/acot-function-dc7e5008-fe6b-402e-bdd6-2eea8383d905>`_
+   * - ACOTH(value)
+     - `Excel ACOTH article <https://support.microsoft.com/office/acoth-function-cc49480f-f684-4171-9fc5-73e4e852300f>`_
+   * - ASIN(value)
+     - `Excel ASIN article <https://support.microsoft.com/office/asin-function-81fb95e5-6d6f-48c4-bc45-58f955c6d347>`_
+   * - ASINH(value)
+     - `Excel ASINH article <https://support.microsoft.com/office/asinh-function-4e00475a-067a-43cf-926a-765b0249717c>`_
+   * - ATAN(value)
+     - `Excel ATAN article <https://support.microsoft.com/office/atan-function-50746fa8-630a-406b-81d0-4a2aed395543>`_
+   * - ATAN2(x, y)
+     - `Excel ATAN2 article <https://support.microsoft.com/office/atan2-function-c04592ab-b9e3-4908-b428-c96b3a565033>`_
+   * - ATANH(value)
+     - `Excel ATANH article <https://support.microsoft.com/office/atanh-function-3cd65768-0de7-4f1d-b312-d01c8c930d90>`_
+   * - CEILING(value, [factor])
+     - `Excel CEILING article <https://support.microsoft.com/office/ceiling-function-0a5cd7c8-0720-4f0a-bd2c-c943e510899f>`_
+   * - CEILING.MATH(number, [significance], [mode])
+     - `Excel CEILING.MATH article <https://support.microsoft.com/office/ceiling-math-function-80f95d2f-b499-4eee-9f16-f795a8e306c8>`_
+   * - CEILING.PRECISE(number, [significance])
+     - `Excel CEILING.PRECISE article <https://support.microsoft.com/office/ceiling-precise-function-f366a774-527a-4c92-ba49-af0a196e66cb>`_
+   * - COS(angle)
+     - `Excel COS article <https://support.microsoft.com/office/cos-function-0fb808a5-95d6-4553-8148-22aebdce5f05>`_
+   * - COSH(value)
+     - `Excel COSH article <https://support.microsoft.com/office/cosh-function-e460d426-c471-43e8-9540-a57ff3b70555>`_
+   * - COT(angle)
+     - `Excel COT article <https://support.microsoft.com/office/cot-function-c446f34d-6fe4-40dc-84f8-cf59e5f5e31a>`_
+   * - COTH(value)
+     - `Excel COTH article <https://support.microsoft.com/office/coth-function-2e0b4cb6-0ba0-403e-aed4-deaa71b49df5>`_
+   * - COUNTBLANK(value1, [value2, ...])
+     - `Excel COUNTBLANK article <https://support.microsoft.com/office/countblank-function-6a92d772-675c-4bee-b346-24af6bd3ac22>`_
+   * - COUNTIF(range, criterion)
+     - `Excel COUNTIF article <https://support.microsoft.com/office/countif-function-e0de10c6-f885-4e71-abb4-1f464816df34>`_
+   * - COUNTIFS(criteria_range1, criterion1, [criteria_range2, ...], [criterion2, ...])
+     - `Excel COUNTIFS article <https://support.microsoft.com/office/countifs-function-dda3dc6e-f74e-4aee-88bc-aa8c2a866842>`_
+   * - CSC(angle)
+     - `Excel CSC article <https://support.microsoft.com/office/csc-function-07379361-219a-4398-8675-07ddc4f135c1>`_
+   * - CSCH(value)
+     - `Excel CSCH article <https://support.microsoft.com/office/csch-function-f58f2c22-eb75-4dd6-84f4-a503527f8eeb>`_
+   * - DECIMAL(value, base)
+     - `Excel DECIMAL article <https://support.microsoft.com/office/decimal-function-ee554665-6176-46ef-82de-0a283658da2e>`_
+   * - DEGREES(angle)
+     - `Excel DEGREES article <https://support.microsoft.com/office/degrees-function-4d6ec4db-e694-4b94-ace0-1cc3f61f9ba1>`_
+   * - EXP(value)
+     - `Excel EXP article <https://support.microsoft.com/office/exp-function-c578f034-2c45-4c37-bc8c-329660a63abe>`_
+   * - FLOOR(value, [factor])
+     - `Excel FLOOR article <https://support.microsoft.com/office/floor-function-14bb497c-24f2-4e04-b327-b0b4de5a8886>`_
+   * - FLOOR.MATH(number, [significance], [mode])
+     - `Excel FLOOR.MATH article <https://support.microsoft.com/office/floor-math-function-c302b599-fbdb-4177-ba19-2c2b1249a2f5>`_
+   * - FLOOR.PRECISE(number, [significance])
+     - `Excel FLOOR.PRECISE article <https://support.microsoft.com/office/floor-precise-function-f769b468-1452-4617-8dc3-02f842a0702e>`_
+   * - INT(value)
+     - `Excel INT article <https://support.microsoft.com/office/int-function-a6c4af9e-356d-4369-ab6a-cb1fd9d343ef>`_
+   * - ISEVEN(value)
+     - `Excel ISEVEN article <https://support.microsoft.com/office/iseven-function-aa15929a-d77b-4fbb-92f4-2f479af55356>`_
+   * - ISO.CEILING(number, [significance])
+     - `Excel ISO.CEILING article <https://support.microsoft.com/office/iso-ceiling-function-e587bb73-6cc2-4113-b664-ff5b09859a83>`_
+   * - ISODD(value)
+     - `Excel ISODD article <https://support.microsoft.com/office/isodd-function-1208a56d-4f10-4f44-a5fc-648cafd6c07a>`_
+   * - LN(value)
+     - `Excel LN article <https://support.microsoft.com/office/ln-function-81fe1ed7-dac9-4acd-ba1d-07a142c6118f>`_
+   * - LOG(value, [base])
+     - Returns the logarithm of a number for a given base (not compatible with Excel)
+   * - MOD(dividend, divisor)
+     - `Excel MOD article <https://support.microsoft.com/office/mod-function-9b6cd169-b6ee-406a-a97b-edf2a9dc24f3>`_
+   * - MUNIT(dimension)
+     - `Excel MUNIT article <https://support.microsoft.com/office/munit-function-c9fe916a-dc26-4105-997d-ba22799853a3>`_
+   * - ODD(value)
+     - `Excel ODD article <https://support.microsoft.com/office/odd-function-deae64eb-e08a-4c88-8b40-6d0b42575c98>`_
+   * - PI()
+     - `Excel PI article <https://support.microsoft.com/office/pi-function-264199d0-a3ba-46b8-975a-c4a04608989b>`_
+   * - POWER(base, exponent)
+     - `Excel POWER article <https://support.microsoft.com/office/power-function-d3f2908b-56f4-4c3f-895a-07fb519c362a>`_
+   * - PRODUCT(factor1, [factor2, ...])
+     - `Excel PRODUCT article <https://support.microsoft.com/office/product-function-8e6b5b24-90ee-4650-aeec-80982a0512ce>`_
+   * - RAND()
+     - `Excel RAND article <https://support.microsoft.com/office/rand-function-4cbfa695-8869-4788-8d90-021ea9f5be73>`_
+   * - RANDARRAY([rows], [columns], [min], [max], [whole_number])
+     - `Excel RANDARRAY article <https://support.microsoft.com/office/randarray-function-21261e55-3bec-4885-86a6-8b0a47fd4d33>`_
+   * - RANDBETWEEN(low, high)
+     - `Excel RANDBETWEEN article <https://support.microsoft.com/office/randbetween-function-4cc7f0d1-87dc-4eb7-987f-a469ab381685>`_
+   * - ROUND(value, [places])
+     - `Excel ROUND article <https://support.microsoft.com/office/round-function-c018c5d8-40fb-4053-90b1-b3e7f61a213c>`_
+   * - ROUNDDOWN(value, [places])
+     - `Excel ROUNDDOWN article <https://support.microsoft.com/office/rounddown-function-2ec94c73-241f-4b01-8c6f-17e6d7968f53>`_
+   * - ROUNDUP(value, [places])
+     - `Excel ROUNDUP article <https://support.microsoft.com/office/roundup-function-f8bc9b23-e795-47db-8703-db171d0c42a7>`_
+   * - SEC(angle)
+     - `Excel SEC article <https://support.microsoft.com/office/sec-function-ff224717-9c87-4170-9b58-d069ced6d5f7>`_
+   * - SECH(value)
+     - `Excel SECH article <https://support.microsoft.com/office/sech-function-e05a789f-5ff7-4d7f-984a-5edb9b09556f>`_
+   * - SEQUENCE(rows, [columns], [start], ][step])
+     - `Excel SEQUENCE article <https://support.microsoft.com/office/sequence-function-57467a98-57e0-4817-9f14-2eb78519ca90>`_
+   * - SIN(angle)
+     - `Excel SIN article <https://support.microsoft.com/office/sin-function-cf0e3432-8b9e-483c-bc55-a76651c95602>`_
+   * - SINH(value)
+     - `Excel SINH article <https://support.microsoft.com/office/sinh-function-1e4e8b9f-2b65-43fc-ab8a-0a37f4081fa7>`_
+   * - SQRT(value)
+     - `Excel SQRT article <https://support.microsoft.com/office/sqrt-function-654975c2-05c4-4831-9a24-2c65e4040fdf>`_
+   * - SUBTOTAL(function_code, ref1, [ref2, ...])
+     - `Excel SUBTOTAL article <https://support.microsoft.com/en-us/office/subtotal-function-7b027003-f060-4ade-9040-e478765b9939>`_
+   * - SUM(value1, [value2, ...])
+     - `Excel SUM article <https://support.microsoft.com/office/sum-function-043e1c7d-7726-4e80-8f32-07b23e057f89>`_
+   * - SUMIF(criteria_range, criterion, [sum_range])
+     - `Excel SUMIF article <https://support.microsoft.com/office/sumif-function-169b8c99-c05c-4483-a712-1697a653039b>`_
+   * - SUMIFS(sum_range, criteria_range1, criterion1, [criteria_range2, ...], [criterion2, ...])
+     - `Excel SUMIFS article <https://support.microsoft.com/office/sumifs-function-c9e748f5-7ea7-455d-9406-611cebce642b>`_
+   * - TAN(angle)
+     - `Excel TAN article <https://support.microsoft.com/office/tan-function-08851a40-179f-4052-b789-d7f699447401>`_
+   * - TANH(value)
+     - `Excel TANH article <https://support.microsoft.com/office/tanh-function-017222f0-a0c3-4f69-9787-b3202295dc6c>`_
+   * - TRUNC(value, [places])
+     - `Excel TRUNC article <https://support.microsoft.com/office/trunc-function-8b86a64c-3127-43db-ba14-aa5ceb292721>`_
+
+.. _spreadsheet/functions/operators:
+
+Operators
+=========
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - ADD(value1, value2)
+     - Sum of two numbers (not compatible with Excel)
+   * - CONCAT(value1, value2)
+     - `Excel CONCAT article <https://support.microsoft.com/office/concat-function-9b1a9a3f-94ff-41af-9736-694cbd6b4ca2>`_
+   * - DIVIDE(dividend, divisor)
+     - One number divided by another (not compatible with Excel)
+   * - EQ(value1, value2)
+     - Equal (not compatible with Excel)
+   * - GT(value1, value2)
+     - Strictly greater than (not compatible with Excel)
+   * - GTE(value1, value2)
+     - Greater than or equal to (not compatible with Excel)
+   * - LT(value1, value2)
+     - Less than (not compatible with Excel)
+   * - LTE(value1, value2)
+     - Less than or equal to (not compatible with Excel)
+   * - MINUS(value1, value2)
+     - Difference of two numbers (not compatible with Excel)
+   * - MULTIPLY(factor1, factor2)
+     - Product of two numbers (not compatible with Excel)
+   * - NE(value1, value2)
+     - Not equal (not compatible with Excel)
+   * - POW(base, exponent)
+     - A number raised to a power (not compatible with Excel)
+   * - UMINUS(value)
+     - A number with the sign reversed (not compatible with Excel)
+   * - UNARY.PERCENT(percentage)
+     - Value interpreted as a percentage (not compatible with Excel)
+   * - UPLUS(value)
+     - A specified number, unchanged (not compatible with Excel)
+
+.. _spreadsheet/functions/parser:
+
+Parser
+======
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - CONVERT(number, from_unit, to_unit)
+     - `Excel CONVERT article <https://support.microsoft.com/office/convert-function-d785bef1-808e-4aac-bdcd-666c810f9af2>`_
+
+.. _spreadsheet/functions/statistical:
+
+Statistical
+===========
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - AVEDEV(value1, [value2, ...])
+     - `Excel AVEDEV article <https://support.microsoft.com/office/avedev-function-58fe8d65-2a84-4dc7-8052-f3f87b5c6639>`_
+   * - AVERAGE(value1, [value2, ...])
+     - `Excel AVERAGE article <https://support.microsoft.com/office/average-function-047bac88-d466-426c-a32b-8f33eb960cf6>`_
+   * - AVERAGEA(value1, [value2, ...])
+     - `Excel AVERAGEA article <https://support.microsoft.com/office/averagea-function-f5f84098-d453-4f4c-bbba-3d2c66356091>`_
+   * - AVERAGEIF(criteria_range, criterion, [average_range])
+     - `Excel AVERAGEIF article <https://support.microsoft.com/office/averageif-function-faec8e2e-0dec-4308-af69-f5576d8ac642>`_
+   * - AVERAGEIFS(average_range, criteria_range1, criterion1, [criteria_range2, ...],
+       [criterion2, ...])
+     - `Excel AVERAGEIFS article <https://support.microsoft.com/office/averageifs-function-48910c45-1fc0-4389-a028-f7c5c3001690>`_
+   * - AVERAGE.WEIGHTED(values, weights, [additional_values, ...], [additional_weights, ...])
+     - Weighted average (not compatible with Excel)
+   * - CORREL(data_y, data_x)
+     - `Excel CORREL article <https://support.microsoft.com/office/correl-function-995dcef7-0c0a-4bed-a3fb-239d7b68ca92>`_
+   * - COUNT(value1, [value2, ...])
+     - `Excel COUNT article <https://support.microsoft.com/office/count-function-a59cd7fc-b623-4d93-87a4-d23bf411294c>`_
+   * - COUNTA(value1, [value2, ...])
+     - `Excel COUNTA article <https://support.microsoft.com/office/counta-function-7dc98875-d5c1-46f1-9a82-53f3219e2509>`_
+   * - COVAR(data_y, data_x)
+     - `Excel COVAR article <https://support.microsoft.com/office/covar-function-50479552-2c03-4daf-bd71-a5ab88b2db03>`_
+   * - COVARIANCE.P(data_y, data_x)
+     - `Excel COVARIANCE.P article <https://support.microsoft.com/office/covariance-p-function-6f0e1e6d-956d-4e4b-9943-cfef0bf9edfc>`_
+   * - COVARIANCE.S(data_y, data_x)
+     - `Excel COVARIANCE.S article <https://support.microsoft.com/office/covariance-s-function-0a539b74-7371-42aa-a18f-1f5320314977>`_
+   * - FORECAST(x, data_y, data_x)
+     - `Excel FORECAST article <https://support.microsoft.com/office/forecast-and-forecast-linear-functions-50ca49c9-7b40-4892-94e4-7ad38bbeda99>`_
+   * - GROWTH(known_data_y, [known_data_x], [new_data_x], [b])
+     - Fits points to exponential growth trend (not compatible with Excel)
+   * - INTERCEPT(data_y, data_x)
+     - `Excel INTERCEPT article <https://support.microsoft.com/office/intercept-function-2a9b74e2-9d47-4772-b663-3bca70bf63ef>`_
+   * - LARGE(data, n)
+     - `Excel LARGE article <https://support.microsoft.com/office/large-function-3af0af19-1190-42bb-bb8b-01672ec00a64>`_
+   * - LINEST(data_y, [data_x], [calculate_b], [verbose])
+     - `Excel LINEST article <https://support.microsoft.com/office/linest-function-84d7d0d9-6e50-4101-977a-fa7abf772b6d>`_
+   * - LOGEST(data_y, [data_x], [calculate_b], [verbose])
+     - `Excel LOGEST article <https://support.microsoft.com/office/logest-function-f27462d8-3657-4030-866b-a272c1d18b4b>`_
+   * - MATTHEWS(data_x, data_y)
+     - Computes the Matthews correlation coefficient of a dataset (not compatible with Excel)
+   * - MAX(value1, [value2, ...])
+     - `Excel MAX article <https://support.microsoft.com/office/max-function-e0012414-9ac8-4b34-9a47-73e662c08098>`_
+   * - MAXA(value1, [value2, ...])
+     - `Excel MAXA article <https://support.microsoft.com/office/maxa-function-814bda1e-3840-4bff-9365-2f59ac2ee62d>`_
+   * - MAXIFS(range, criteria_range1, criterion1, [criteria_range2, ...], [criterion2, ...])
+     - `Excel MAXIFS article <https://support.microsoft.com/office/maxifs-function-dfd611e6-da2c-488a-919b-9b6376b28883>`_
+   * - MEDIAN(value1, [value2, ...])
+     - `Excel MEDIAN article <https://support.microsoft.com/office/median-function-d0916313-4753-414c-8537-ce85bdd967d2>`_
+   * - MIN(value1, [value2, ...])
+     - `Excel MIN article <https://support.microsoft.com/office/min-function-61635d12-920f-4ce2-a70f-96f202dcc152>`_
+   * - MINA(value1, [value2, ...])
+     - `Excel MINA article <https://support.microsoft.com/office/mina-function-245a6f46-7ca5-4dc7-ab49-805341bc31d3>`_
+   * - MINIFS(range, criteria_range1, criterion1, [criteria_range2, ...], [criterion2, ...])
+     - `Excel MINIFS article <https://support.microsoft.com/office/minifs-function-6ca1ddaa-079b-4e74-80cc-72eef32e6599>`_
+   * - PEARSON(data_y, data_x)
+     - `Excel PEARSON article <https://support.microsoft.com/office/pearson-function-0c3e30fc-e5af-49c4-808a-3ef66e034c18>`_
+   * - PERCENTILE(data, percentile)
+     - `Excel PERCENTILE article <https://support.microsoft.com/office/percentile-exc-function-bbaa7204-e9e1-4010-85bf-c31dc5dce4ba>`_
+   * - PERCENTILE.EXC(data, percentile)
+     - `Excel PERCENTILE.EXC article <https://support.microsoft.com/office/percentrank-exc-function-d8afee96-b7e2-4a2f-8c01-8fcdedaa6314>`_
+   * - PERCENTILE.INC(data, percentile)
+     - `Excel PERCENTILE.INC article <https://support.microsoft.com/office/percentile-inc-function-680f9539-45eb-410b-9a5e-c1355e5fe2ed>`_
+   * - POLYFIT.COEFFS(data_y, data_x, order, [intercept])
+     - Computes the coefficients of polynomial regression of the dataset (not compatible with Excel)
+   * - POLYFIT.FORECAST(x, data_y, data_x, order, [intercept])
+     - Predicts value by computing a polynomial regression of the dataset (not compatible with Excel)
+   * - QUARTILE(data, quartile_number)
+     - `Excel QUARTILE article <https://support.microsoft.com/office/quartile-function-93cf8f62-60cd-4fdb-8a92-8451041e1a2a>`_
+   * - QUARTILE.EXC(data, quartile_number)
+     - `Excel QUARTILE.EXC article <https://support.microsoft.com/office/quartile-exc-function-5a355b7a-840b-4a01-b0f1-f538c2864cad>`_
+   * - QUARTILE.INC(data, quartile_number)
+     - `Excel QUARTILE.INC article <https://support.microsoft.com/office/quartile-inc-function-1bbacc80-5075-42f1-aed6-47d735c4819d>`_
+   * - RANK(value, data, [is_ascending])
+     - `Excel RANK article <https://support.microsoft.com/office/rank-function-6a2fc49d-1831-4a03-9d8c-c279cf99f723>`_
+   * - RSQ(data_y, data_x)
+     - `Excel RSQ article <https://support.microsoft.com/office/rsq-function-d7161715-250d-4a01-b80d-a8364f2be08f>`_
+   * - SLOPE(data_y, data_x)
+     - `Excel SLOPE article <https://support.microsoft.com/office/slope-function-11fb8f97-3117-4813-98aa-61d7e01276b9>`_
+   * - SMALL(data, n)
+     - `Excel SMALL article <https://support.microsoft.com/office/small-function-17da8222-7c82-42b2-961b-14c45384df07>`_
+   * - SPEARMAN(data_y, data_x)
+     - Computes the Spearman rank correlation coefficient of a dataset (not compatible with Excel)
+   * - STDEV(value1, [value2, ...])
+     - `Excel STDEV article <https://support.microsoft.com/office/stdev-function-51fecaaa-231e-4bbb-9230-33650a72c9b0>`_
+   * - STDEV.P(value1, [value2, ...])
+     - `Excel STDEV.P article <https://support.microsoft.com/office/stdev-p-function-6e917c05-31a0-496f-ade7-4f4e7462f285>`_
+   * - STDEV.S(value1, [value2, ...])
+     - `Excel STDEV.S article <https://support.microsoft.com/office/stdev-s-function-7d69cf97-0c1f-4acf-be27-f3e83904cc23>`_
+   * - STDEVA(value1, [value2, ...])
+     - `Excel STDEVA article <https://support.microsoft.com/office/stdeva-function-5ff38888-7ea5-48de-9a6d-11ed73b29e9d>`_
+   * - STDEVP(value1, [value2, ...])
+     - `Excel STDEVP article <https://support.microsoft.com/office/stdevp-function-1f7c1c88-1bec-4422-8242-e9f7dc8bb195>`_
+   * - STDEVPA(value1, [value2, ...])
+     - `Excel STDEVPA article <https://support.microsoft.com/office/stdevpa-function-5578d4d6-455a-4308-9991-d405afe2c28c>`_
+   * - STEYX(data_y, data_x)
+     - `Excel STEYX article <https://support.microsoft.com/office/steyx-function-6ce74b2c-449d-4a6e-b9ac-f9cef5ba48ab>`_
+   * - TREND(known_data_y, [known_data_x], [new_data_x], [b])
+     - Fits points to linear trend derived via least-squares (not compatible with Excel)
+   * - VAR(value1, [value2, ...])
+     - `Excel VAR article <https://support.microsoft.com/office/var-function-1f2b7ab2-954d-4e17-ba2c-9e58b15a7da2>`_
+   * - VAR.P(value1, [value2, ...])
+     - `Excel VAR.P article <https://support.microsoft.com/office/var-p-function-73d1285c-108c-4843-ba5d-a51f90656f3a>`_
+   * - VAR.S(value1, [value2, ...])
+     - `Excel VAR.S article <https://support.microsoft.com/office/var-s-function-913633de-136b-449d-813e-65a00b2b990b>`_
+   * - VARA(value1, [value2, ...])
+     - `Excel VARA article <https://support.microsoft.com/office/vara-function-3de77469-fa3a-47b4-85fd-81758a1e1d07>`_
+   * - VARP(value1, [value2, ...])
+     - `Excel VARP article <https://support.microsoft.com/office/varp-function-26a541c4-ecee-464d-a731-bd4c575b1a6b>`_
+   * - VARPA(value1, [value2, ...])
+     - `Excel VARPA article <https://support.microsoft.com/office/varpa-function-59a62635-4e89-4fad-88ac-ce4dc0513b96>`_
+
+.. _spreadsheet/functions/text:
+
+Text
+====
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - CHAR(table_number)
+     - `Excel CHAR article <https://support.microsoft.com/office/char-function-bbd249c8-b36e-4a91-8017-1c133f9b837a>`_
+   * - CLEAN(text)
+     - `Excel CLEAN article <https://support.microsoft.com/office/clean-function-26f3d7c5-475f-4a9c-90e5-4b8ba987ba41>`_
+   * - CONCATENATE(string1, [string2, ...])
+     - `Excel CONCATENATE article <https://support.microsoft.com/office/concatenate-function-8f8ae884-2ca8-4f7a-b093-75d702bea31d>`_
+   * - EXACT(string1, string2)
+     - `Excel EXACT article <https://support.microsoft.com/office/exact-function-d3087698-fc15-4a15-9631-12575cf29926>`_
+   * - FIND(search_for, text_to_search, [starting_at])
+     - `Excel FIND article <https://support.microsoft.com/office/find-findb-functions-c7912941-af2a-4bdf-a553-d0d89b0a0628>`_
+   * - JOIN(delimiter, value_or_array1, [value_or_array2, ...])
+     - Concatenates elements of arrays with delimiter (not compatible with Excel)
+   * - LEFT(text, [number_of_characters])
+     - `Excel LEFT article <https://support.microsoft.com/office/left-leftb-functions-9203d2d2-7960-479b-84c6-1ea52b99640c>`_
+   * - LEN(text)
+     - `Excel LEN article <https://support.microsoft.com/office/len-lenb-functions-29236f94-cedc-429d-affd-b5e33d2c67cb>`_
+   * - LOWER(text)
+     - `Excel LOWER article <https://support.microsoft.com/office/lower-function-3f21df02-a80c-44b2-afaf-81358f9fdeb4>`_
+   * - MID(text, starting_at, extract_length)
+     - `Excel MID article <https://support.microsoft.com/office/mid-midb-functions-d5f9e25c-d7d6-472e-b568-4ecb12433028>`_
+   * - PROPER(text_to_capitalize)
+     - `Excel PROPER article <https://support.microsoft.com/office/proper-function-52a5a283-e8b2-49be-8506-b2887b889f94>`_
+   * - REPLACE(text, position, length, new_text)
+     - `Excel REPLACE article <https://support.microsoft.com/office/replace-replaceb-functions-8d799074-2425-4a8a-84bc-82472868878a>`_
+   * - REGEXEXTRACT(text, pattern, [return_mode], [case_sensitivity])
+     - `Excel REGEXEXTRACT article <https://support.microsoft.com/en-us/office/regexextract-function-4b96c140-9205-4b6e-9fbe-6aa9e783ff57>`_
+   * - RIGHT(text, [number_of_characters])
+     - `Excel RIGHT article <https://support.microsoft.com/office/right-rightb-functions-240267ee-9afa-4639-a02b-f19e1786cf2f>`_
+   * - SEARCH(search_for, text_to_search, [starting_at])
+     - `Excel SEARCH article <https://support.microsoft.com/office/search-searchb-functions-9ab04538-0e55-4719-a72e-b6f54513b495>`_
+   * - SPLIT(text, delimiter, [split_by_each], [remove_empty_text])
+     - Splits text by specific character delimiter(s) (not compatible with Excel)
+   * - SUBSTITUTE(text_to_search, search_for, replace_with, [occurrence_number])
+     - `Excel SUBSTITUTE article <https://support.microsoft.com/office/substitute-function-6434944e-a904-4336-a9b0-1e58df3bc332>`_
+   * - TEXT(number, format)
+     - `Excel TEXT article <https://support.microsoft.com/office/text-function-20d5ac4d-7b94-49fd-bb38-93d29371225c>`_
+   * - TEXTAFTER(text, delimiter, [instance_num], [match_mode], [match_end], [if_not_found])
+     - `Excel TEXTAFTER article <https://support.microsoft.com/en-us/office/textafter-function-c8db2546-5b51-416a-9690-c7e6722e90b4>`_
+   * - TEXTBEFORE(text, delimiter, [instance_num], [match_mode], [match_end], [if_not_found])
+     - `Excel TEXTBEFORE article <https://support.microsoft.com/en-us/office/textbefore-function-d099c28a-dba8-448e-ac6c-f086d0fa1b29>`_
+   * - TEXTJOIN(delimiter, ignore_empty, text1, [text2, ...])
+     - `Excel TEXTJOIN article <https://support.microsoft.com/office/textjoin-function-357b449a-ec91-49d0-80c3-0e8fc845691c>`_
+   * - TEXTSPLIT(text, col_delimiter, [row_delimiter], [ignore_empty], [match_mode], [pad_with])
+     - `Excel TEXTSPLIT article <https://support.microsoft.com/en-us/office/textsplit-function-b1ca414e-4c21-4ca0-b1b7-bdecace8a6e7>`_
+   * - TRIM(text)
+     - `Excel TRIM article <https://support.microsoft.com/office/trim-function-410388fa-c5df-49c6-b16c-9e5630b479f9>`_
+   * - UPPER(text)
+     - `Excel UPPER article <https://support.microsoft.com/office/upper-function-c11f29b3-d1a3-4537-8df6-04d0049963d6>`_
+   * - VALUE(text)
+     - `Excel VALUE article <https://support.microsoft.com/office/value-function-257d0108-07dc-437d-ae1c-bc2d3953d8c2>`_
+
+.. _spreadsheet/functions/web:
+
+Web
+===
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - HYPERLINK(url, [link_label])
+     - `Excel HYPERLINK article <https://support.microsoft.com/office/hyperlink-function-333c7ce6-c5ae-4164-9c47-7de9b76f577f>`_
+
+.. _spreadsheet/functions/odoo:
+
+Odoo-specific functions
+=======================
+
+This section contains functions that interact directly with your Odoo database.
+
+Array
+-----
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - ARRAY.CONSTRAIN(input_range, rows, columns)
+     - Returns a result array constrained to a specific width and height (not compatible with Excel)
+   * - FLATTEN(range, [range2, ...])
+     - Flattens all the values from one or more ranges into a single column (not compatible with
+       Excel)
+
+Date
+----
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - MONTH.END(date)
+     - Last day of the month following a date (not compatible with Excel)
+   * - MONTH.START(date)
+     - First day of the month preceding a date (not compatible with Excel)
+   * - QUARTER(date)
+     - Quarter of the year a specific date falls in (not compatible with Excel)
+   * - QUARTER.END(date)
+     - Last day of the quarter of the year a specific date falls in (not compatible with Excel)
+   * - QUARTER.START(date)
+     - First day of the quarter of the year a specific date falls in (not compatible with Excel)
+   * - YEAR.END(date)
+     - Last day of the year a specific date falls in (not compatible with Excel)
+   * - YEAR.START(date)
+     - First day of the year a specific date falls in (not compatible with Excel)
+   * - YEARFRAC(start_date, end_date, [day_count_convention])
+     - Exact number of years between two dates (not compatible with Excel)
+
+Financial
+---------
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - ODOO.ACCOUNT.GROUP(type)
+     - Returns the account ids of a given group (not compatible with Excel)
+   * - ODOO.BALANCE(account_codes, date_range, [offset], [company_id], [include_unposted])
+     - Returns the total balance for the specified account(s) and period (not compatible with Excel)
+   * - ODOO.BALANCE.TAG(account_tag_ids, [date_range], [offset], [company_id], [include_unposted])
+     - Returns the balance of accounts for the specified tag(s) and period (not compatible with
+       Excel)
+   * - ODOO.CREDIT(account_codes, date_range, [offset], [company_id], [include_unposted])
+     - Returns the total credit for the specified account(s) and period (not compatible with Excel)
+   * - ODOO.CURRENCY.RATE(currency_from, currency_to, [date])
+     - Takes two currency codes as arguments, and returns the exchange rate from the first currency
+       to the second as float (not compatible with Excel)
+   * - ODOO.DEBIT(account_codes, date_range, [offset], [company_id], [include_unposted])
+     - Returns the total debit for the specified account(s) and period (not compatible with Excel)
+   * - ODOO.FISCALYEAR.START(day, [company_id])
+     - Returns the starting date of the fiscal year encompassing the provided date (not compatible
+       with Excel)
+   * - ODOO.FISCALYEAR.END(day, [company_id])
+     - Returns the ending date of the fiscal year encompassing the provided date (not compatible
+       with Excel)
+   * - ODOO.PARTNER.BALANCE(partner_ids, [account_codes], [date_range], [offset], [company_id],
+       [include_unposted])
+     - Returns the partner balance for the specified account(s) and period (not compatible with
+       Excel)
+   * - ODOO.RESIDUAL([account_codes], [date_range], [offset], [company_id], [include_unposted])
+     - Returns the residual amount for the specified account(s) and period (not compatible with
+       Excel)
+
+Lookup
+------
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - PIVOT(pivot_id, [row_count], [include_total], [include_column_titles], [column_count])
+     - Creates a pivot table (not compatible with Excel)
+   * - PIVOT.HEADER(pivot_id, [domain_field_name, ...], [domain_value, ...])
+     - Returns the header of a pivot table (not compatible with Excel)
+   * - PIVOT.VALUE(pivot_id, measure_name, [domain_field_name, ...], [domain_value, ...])
+     - Returns the value from a pivot table (not compatible with Excel)
+
+Math
+----
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - COUNTUNIQUE(value1, [value2, ...])
+     - Counts number of unique values in a range (not compatible with Excel)
+   * - COUNTUNIQUEIFS(range, criteria_range1, criterion1, [criteria_range2, ...], [criterion2, ...])
+     - Counts number of unique values in a range, filtered by a set of criteria (not compatible with
+       Excel)
+
+Misc
+----
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - FORMAT.LARGE.NUMBER(value, [unit])
+     - Applies a large number format (not compatible with Excel)
+   * - ODOO.LIST(list_id, index, field_name)
+     - Returns the value from a list (not compatible with Excel)
+   * - ODOO.LIST.HEADER(list_id, field_name)
+     - Returns the header of a list (not compatible with Excel)
+
+Operators
+---------
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - ADD(value1, value2)
+     - Sum of two numbers (not compatible with Excel)
+   * - DIVIDE(dividend, divisor)
+     - One number divided by another (not compatible with Excel)
+   * - EQ(value1, value2)
+     - Equal (not compatible with Excel)
+   * - GT(value1, value2)
+     - Strictly greater than (not compatible with Excel)
+   * - GTE(value1, value2)
+     - Greater than or equal to (not compatible with Excel)
+   * - LT(value1, value2)
+     - Less than (not compatible with Excel)
+   * - LTE(value1, value2)
+     - Less than or equal to (not compatible with Excel)
+   * - MINUS(value1, value2)
+     - Difference of two numbers (not compatible with Excel)
+   * - MULTIPLY(factor1, factor2)
+     - Product of two numbers (not compatible with Excel)
+   * - NE(value1, value2)
+     - Not equal (not compatible with Excel)
+   * - POW(base, exponent)
+     - A number raised to a power (not compatible with Excel)
+   * - UMINUS(value)
+     - A number with the sign reversed (not compatible with Excel)
+   * - UNARY.PERCENT(percentage)
+     - Value interpreted as a percentage (not compatible with Excel)
+   * - UPLUS(value)
+     - A specified number, unchanged (not compatible with Excel)
+
+Statistical
+-----------
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - AVERAGE.WEIGHTED(values, weights, [additional_values, ...], [additional_weights, ...])
+     - Weighted average (not compatible with Excel)
+   * - GROWTH(known_data_y, [known_data_x], [new_data_x], [b])
+     - Fits points to exponential growth trend (not compatible with Excel)
+   * - MATTHEWS(data_x, data_y)
+     - Computes the Matthews correlation coefficient of a dataset (not compatible with Excel)
+   * - POLYFIT.COEFFS(data_y, data_x, order, [intercept])
+     - Computes the coefficients of polynomial regression of the dataset (not compatible with Excel)
+   * - POLYFIT.FORECAST(x, data_y, data_x, order, [intercept])
+     - Predicts value by computing a polynomial regression of the dataset (not compatible with Excel)
+   * - SPEARMAN(data_y, data_x)
+     - Computes the Spearman rank correlation coefficient of a dataset (not compatible with Excel)
+   * - TREND(known_data_y, [known_data_x], [new_data_x], [b])
+     - Fits points to linear trend derived via least-squares (not compatible with Excel)
+
+Text
+----
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Name and arguments
+     - Description or link
+   * - JOIN(delimiter, value_or_array1, [value_or_array2, ...])
+     - Concatenates elements of arrays with delimiter (not compatible with Excel)
+
+
+==================================================
+SECTION: get_started.rst
+PATH: applications/productivity/spreadsheet/get_started.rst
+==================================================
+
+===========
+Get started
+===========
+
+.. _spreadsheet/get-started/create-spreadsheet:
+
+Create a new spreadsheet
+========================
+
+To create a new spreadsheet:
+
+#. Open Odoo Documents and navigate to the section or folder in which the spreadsheet should be
+   created.
+#. Click :guilabel:`New` and select :guilabel:`Spreadsheet`.
+
+   .. tip::
+      Alternatively, from the :icon:`fa-folder-o` :guilabel:`All` folder, click :guilabel:`New` and
+      select :guilabel:`Spreadsheet`, then select in which :guilabel:`Folder` the
+      spreadsheet should be created.
+
+#. Click :guilabel:`Blank spreadsheet` or, to create a new spreadsheet using an existing
+   :ref:`template <spreadsheet/get-started/templates>`, select the relevant template.
+#. Click :guilabel:`Create`.
+#. Click on `Untitled spreadsheet` at the top of the screen to edit the name of the spreadsheet.
+
+.. tip::
+   It is also possible to create a new spreadsheet by:
+
+   - clicking :menuselection:`File -->` :icon:`os-clear-and-reload` :menuselection:`New` from the
+     menu bar of an open spreadsheet; or
+   - :doc:`inserting a list, pivot table, or chart from another Odoo app <insert>` into
+     a new spreadsheet directly from the app in question.
+
+   In these cases, the new spreadsheet is saved in Odoo Documents in the :icon:`fa-hdd-o`
+   :guilabel:`My Drive` personal folder.
+
+.. _spreadsheet/get-started/templates:
+
+Templates
+---------
+
+Spreadsheet templates allow you to quickly create spreadsheets without starting from scratch. For
+example, you could create a template for a monthly budget report or a quarterly sales commission
+report.
+
+.. note::
+   Templates are available to all users on the database.
+
+.. _spreadsheet/get-started/templates-create:
+
+Create a template
+~~~~~~~~~~~~~~~~~
+
+Any spreadsheet can be saved as a template.
+
+To create a template:
+
+#. Open the relevant spreadsheet or :ref:`create a new one
+   <spreadsheet/get-started/create-spreadsheet>`.
+#. From the menu bar, click :menuselection:`File -->` :icon:`os-save` :menuselection:`Save as
+   template`. Modify the default :guilabel:`Template Name` if needed and click :guilabel:`Confirm`.
+
+.. important::
+   Once a spreadsheet is saved as a template, any further changes to the open spreadsheet are
+   saved only in that spreadsheet. To make changes to the template, you need to :ref:`edit
+   the template <spreadsheet/get-started/templates-manage>`.
+
+You can also create a template by :ref:`making a copy of an existing template and editing it
+<spreadsheet/get-started/templates-manage>`.
+
+.. _spreadsheet/get-started/templates-use:
+
+Use templates
+~~~~~~~~~~~~~
+
+To create a new spreadsheet using a template, open the Documents app and click :menuselection:`New
+--> Spreadsheet`. Select the relevant template and click :guilabel:`Create`.
+
+Alternatively, go to :menuselection:`Documents --> Configuration --> Spreadsheet Templates` then,
+on the line of the relevant template, click :icon:`fa-plus` :guilabel:`New spreadsheet`.
+
+.. note::
+   By default, the new spreadsheet inherits the name of the template, which is shown at the top of
+   the screen. To rename the spreadsheet, click the name and edit it.
+
+.. _spreadsheet/get-started/templates-manage:
+
+Manage and edit templates
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Manage templates by going to :menuselection:`Documents --> Configuration --> Spreadsheet Templates`.
+Remove the :guilabel:`My Templates` :ref:`filter <search/preconfigured-filters>` to view all
+templates in the database.
+
+Various actions are possible:
+
+- Copy an existing template by clicking :icon:`fa-clone` :guilabel:`Make a copy` at the right of
+  the screen. The new template appears at the bottom of the list. Click the :guilabel:`Name` to
+  edit it.
+
+- Edit an existing template (including one you just copied) by clicking :icon:`fa-pencil`
+  :guilabel:`Edit`, then making the required changes. Modifications are
+  automatically saved.
+
+- Delete a template by ticking the checkbox next to it, clicking :icon:`fa-cog`
+  :guilabel:`Actions`, then :guilabel:`Delete`.
+
+.. _spreadsheet/get-started/upload-files:
+
+Upload files
+============
+
+Files in `.xlsx` or `.csv` format can be uploaded into Odoo Documents and opened with Odoo
+Spreadsheet. To do so:
+
+#. Open Odoo Documents and navigate to the section or folder where the spreadsheet should be saved.
+#. Click :guilabel:`New` and select :guilabel:`Upload`.
+#. Select the relevant `.xlsx` or `.csv` file and click :guilabel:`Open`.
+#. Click on the uploaded file.
+#. By default, the original file is deleted when it is opened with Odoo Spreadsheet. To preserve
+   the original file in the same folder in Odoo Documents, disable :guilabel:`Send source file to
+   trash`.
+#. Click :guilabel:`Open with Odoo Spreadsheet`.
+
+The file can now be fully edited in Odoo Spreadsheet.
+
+.. _spreadsheet/get-started/manage-spreadsheets:
+
+Manage spreadsheets
+===================
+
+Users with :guilabel:`Editor` rights to a specific spreadsheet have various options for managing the
+spreadsheet via the :guilabel:`File` menu:
+
+- :icon:`os-copy-file` :guilabel:`Make a copy`: creates a duplicate of the current spreadsheet with
+  the same :ref:`regional settings <spreadsheet/get-started/manage-spreadsheets-locale>` (or
+  locale).
+- :icon:`fa-share-alt` :guilabel:`Share`: allows you to configure access rights to the spreadsheet
+  and :guilabel:`Share` it with specific users or copy a shareable link. For a spreadsheet
+  containing dynamic Odoo data that needs to be shared with a user who does not have the
+  appropriate access rights to the data, it is possible to :guilabel:`Freeze and share` the
+  spreadsheet.
+
+  .. seealso::
+     :ref:`Access and sharing <spreadsheet/collaboration/access-sharing>`
+
+- :icon:`fa-download` :guilabel:`Download`: downloads the spreadsheet in `.xlsx` format.
+
+  .. important::
+     When you download a spreadsheet in `.xlsx` format, any spreadsheet formulas that retrieve Odoo
+     data from your database, e.g., via an :doc:`inserted list <insert>` or via other
+     :doc:`Odoo-specific functions <work_with_data/functions>`, are converted to the values they
+     would have returned at the moment the spreadsheet was downloaded.
+
+  .. tip::
+     Users with :guilabel:`Viewer` rights can also download a spreadsheet in `.xlsx` format.
+
+- :icon:`fa-print` :guilabel:`Print`: prints a copy of the spreadsheet on a connected printer.
+- :icon:`os-save` :guilabel:`Save as template`: allows the current spreadsheet to be used as a
+  :ref:`template <spreadsheet/get-started/templates>` for future spreadsheets.
+- :icon:`fa-trash` :guilabel:`Move to trash`: moves the spreadsheet to the trash folder of the
+  Documents app
+
+  .. tip::
+     Items in the trash folder are permanently deleted after 30 days.
+
+- :icon:`os-add-to-dashboard` :guilabel:`Add to dashboard`: :ref:`converts
+  <spreadsheet/get-started/convert-to-dashboard>` the current spreadsheet into an
+  :doc:`Odoo dashboard <../dashboards>`.
+- :icon:`os-version-history` :guilabel:`See version history`: provides read-only :ref:`access to
+  previous versions <spreadsheet/get-started/manage-spreadsheets-versioning>` of the current
+  spreadsheet, which can be named and restored if needed.
+- :icon:`os-cog` :guilabel:`Settings`: allows you to view and change the :ref:`locale
+  <spreadsheet/get-started/manage-spreadsheets-locale>` of the current spreadsheet.
+
+.. _spreadsheet/get-started/manage-spreadsheets-versioning:
+
+Version history
+---------------
+
+Odoo Spreadsheet automatically saves versions of spreadsheets as changes are made, allowing users
+with :guilabel:`Editor` rights to browse and restore previous versions.
+
+To access the version history of a spreadsheet, click :menuselection:`File -->`
+:icon:`os-version-history` :menuselection:`See version history` from the menu bar. Saved versions
+appear in a panel on the right of the spreadsheet. The name of the user who made the change is
+shown, as well as the date and time of the change.
+
+The following actions are possible:
+
+- **View an earlier version** in read-only format by clicking on the relevant version.
+- **Restore an earlier version** by clicking :icon:`fa-ellipsis-v` :guilabel:`(vertical ellipsis)`
+  then :guilabel:`Restore this version`.
+- **Copy an earlier version** by clicking :icon:`fa-ellipsis-v` :guilabel:`(vertical ellipsis)` then
+  :menuselection:`Make a copy`. A copy of the version opens as a new spreadsheet.
+- **Create named versions** by clicking on the date and time of the relevant version and entering
+  the desired name. The date and time of the version are then displayed below the new name.
+
+.. tip::
+   When viewing an earlier, read-only version of a spreadsheet, the following actions are still
+   possible:
+
+   - Search the spreadsheet by clicking :menuselection:`Edit -->` :icon:`fa-search`
+     :menuselection:`Find and replace` or using the shortcut `Ctrl` + `H`.
+   - Copy an individual cell or selected area by clicking :menuselection:`Edit -->`
+     :icon:`fa-clipboard` :menuselection:`Copy` or using the shortcut `Ctrl` + `C`.
+
+.. _spreadsheet/get-started/manage-spreadsheets-locale:
+
+Regional settings
+-----------------
+
+To ensure data is displayed consistently for all users, the regional settings (or locale) of a
+spreadsheet, are managed at spreadsheet level. This locale affects the following settings and
+formats:
+
+- thousand and decimal separators
+- date and time formats
+- first day of the week
+
+By default, a new spreadsheet inherits the regional settings of the user who created it. For
+example, any spreadsheets created by a user whose language is set to :guilabel:`French (BE) /
+Français (BE)` will follow Belgian French conventions.
+
+A spreadsheet's locale can be viewed and changed at any time by a user with :guilabel:`Editor`
+rights. To view the locale of a spreadsheet, click :menuselection:`File -->` :icon:`os-cog`
+:menuselection:`Settings` from the menu bar. The :guilabel:`Spreadsheet settings` panel opens on the
+right of the spreadsheet. To change the locale, select the appropriate locale from the dropdown.
+
+.. tip::
+   When you open a spreadsheet that has a different locale to that of your user profile, a blue
+   :icon:`fa-globe` :guilabel:`(globe)` icon appears at the top right of the spreadsheet. Hovering
+   over the icon reveals a warning message that indicates the spreadsheet locale and highlights
+   formats that differ.
+
+   .. image:: get_started/locale-difference.png
+      :alt: Warning about difference between user and spreadsheet locale
+
+   If no :icon:`fa-globe` :guilabel:`(globe)` icon is shown, this means the spreadsheet's locale is
+   the same as that of your user profile.
+
+.. _spreadsheet/get-started/convert-to-dashboard:
+
+Convert a spreadsheet into a dashboard
+--------------------------------------
+
+A user with the appropriate :ref:`access rights <access-rights/groups>` can convert an Odoo
+spreadsheet into a dashboard that is then accessible via
+:doc:`Odoo Dashboards <../../../applications/productivity/dashboards>`. To do so:
+
+#. Click :menuselection:`File -->` :icon:`os-add-to-dashboard` :menuselection:`Add to dashboard`
+   from the menu bar.
+#. Enter the :guilabel:`Dashboard Name`.
+#. Select the relevant :guilabel:`Dashboard Section` from the dropdown or, to create a new dashboard
+   section, type the name of the new section, then click :guilabel:`Create`.
+#. If necessary, modify the :guilabel:`Access Groups` to determine which :ref:`user groups
+   <dashboards/access-and-sharing>` can access the dashboard.
+#. Click :guilabel:`Create`.
+
+.. tip::
+   - By default, the first tab of the spreadsheet serves as the front end of the dashboard.
+   - It is also possible to convert a spreadsheet to a dashboard from within the :ref:`Dashboard
+     configuration settings <dashboards/configuration>`, by directly adding the spreadsheet to
+     an existing or new dashboard section.
+   - After a spreadsheet has been converted to a dashboard, it is deleted from Odoo Documents. Any
+     subsequent :ref:`modifications <build_and_customize_dashboards/customize>` need to be made via
+     Odoo Dashboards.
+
+
+==================================================
+SECTION: global_filters.rst
+PATH: applications/productivity/spreadsheet/work_with_data/global_filters.rst
+==================================================
+
+==============
+Global filters
+==============
+
+Global filters, represented by the :icon:`os-global-filters` :guilabel:`Filters` icon at the top
+right of an Odoo spreadsheet, allow you to apply one or more filters to all the Odoo data that has
+been :doc:`inserted in that spreadsheet <../insert>`.
+
+These filters are particularly useful for reports and dashboards as users can easily and dynamically
+customize the view to answer complex business questions spanning multiple data sources.
+
+.. tip::
+   On a dashboard, global filters that have been :ref:`created in the underlying spreadsheet
+   <spreadsheet/global-filters/create>` are applied via the search bar at the top of the dashboard.
+
+   .. image:: global_filters/dashboard-global-filters.png
+      :alt: Global filters at the top of a dashboard
+
+Four types of global filters are available:
+
+- :ref:`Date <spreadsheet/global-filters/create-date>`: filters data based on a specific time range,
+  with the options :guilabel:`Month / Quarter`, :guilabel:`Relative Period`, or :guilabel:`From /
+  To`.
+- :ref:`Relation <spreadsheet/global-filters/create-relation>`: filters data based on a relational
+  field in a related model, e.g., by :guilabel:`Salesperson` with the *User* model set as the
+  related model.
+- :ref:`Text <spreadsheet/global-filters/create-text>`: filters data based on a string of text or a
+  range of predefined values, e.g., a product reference or barcode.
+- :ref:`Yes/No <spreadsheet/global-filters/create-checkbox>`: filters data based on whether or not a
+  checkbox, or boolean, field is set, e.g., lead is active.
+
+Unlike the standard :icon:`fa-filter` :guilabel:`(Add filters)` spreadsheet function, which lets you
+sort and temporarily hide data, global filters act on the underlying :ref:`data sources
+<spreadsheet/insert/data-sources>`, filtering data *before* it is loaded into the spreadsheet.
+
+When a global filter is created, :ref:`field matching <spreadsheet/global-filters/field-matching>`
+for each data source ensures the filter acts on the correct database :doc:`fields
+</applications/studio/fields>`.
+
+.. tip::
+   - Global filters work by adding extra conditions to the domains of all the data sources in the
+     spreadsheet. Therefore, if you intend to use global filters, do not use the same conditions
+     when configuring the initial list, pivot table, or chart in your database.
+   - Setting default values, where relevant, ensures that the spreadsheet or dashboard loads quickly
+     and provides a useful initial view that can be further customized if needed. For example, a
+     :guilabel:`Date` filter could be set to show data from the last 30 days by default.
+
+.. _spreadsheet/global-filters/field-matching:
+
+Field matching
+==============
+
+.. important::
+   This process is crucial, as matching the wrong fields, or not setting matching fields at all,
+   results in global filters that do not show the desired results.
+
+To function as intended, a global filter needs to act on the correct database fields. Consider
+a :guilabel:`Date` filter applied to sales data. As the *Sales Order* model contains several date
+fields, it is crucial to determine which field is relevant for the filter, e.g., the order date, the
+delivery date, the expected date, or the expiration date.
+
+When :ref:`creating a global filter <spreadsheet/global-filters/create>`, the :guilabel:`Field
+matching` section of the :guilabel:`Filter properties` allows you to determine, for each
+:ref:`data source <spreadsheet/insert/data-sources>` in the spreadsheet, which database field the
+filter should act on, or match with.
+
+Field matching is further explained in the relevant sections on creating
+:ref:`Date <spreadsheet/global-filters/create-date>`,
+:ref:`Relation <spreadsheet/global-filters/create-relation>`,
+:ref:`Text <spreadsheet/global-filters/create-text>`, and
+:ref:`Yes/No <spreadsheet/global-filters/create-checkbox>` global filters.
+
+.. _spreadsheet/global-filters/create:
+
+Create global filters
+=====================
+
+Open the desired spreadsheet from the **Odoo Documents** app or via the **Odoo Dashboards** app if
+you are adding filters to a dashboard.
+
+To add a new filter, click :icon:`os-global-filters` :guilabel:`Filters` to open the
+:guilabel:`Filters` panel. Under :guilabel:`Create filter`, click :icon:`fa-calendar`
+:guilabel:`Date`, :icon:`fa-link` :guilabel:`Relation`, :icon:`fa-font` :guilabel:`Text`, or
+:icon:`fa-toggle-off` :guilabel:`Yes/No` as appropriate.
+
+.. note::
+   Depending on the data source(s) present in the spreadsheet, suggested :ref:`relation filters
+   <spreadsheet/global-filters/create-relation>` may be shown. Clicking on a suggested filter opens
+   the :guilabel:`Filter properties` panel with certain values preconfigured.
+
+When saving a global filter, if any required information is missing or if any information provided
+in the :ref:`Field matching <spreadsheet/global-filters/field-matching>` section is not appropriate,
+an error is shown stating :guilabel:`Some required fields are not valid`.
+
+.. tip::
+   - To access the underlying spreadsheet of a dashboard, :ref:`activate developer mode
+     <developer-mode>`, then click the :icon:`fa-pencil` :guilabel:`(Edit)` icon that appears when
+     hovering over the dashboard name in the left panel.
+   - Click :icon:`fa-thumb-tack` :guilabel:`(pin)` at the top of the :guilabel:`Filters` panel to
+     allow another panel, such as the :guilabel:`Filter properties` panel, to open beside it.
+
+.. _spreadsheet/global-filters/create-date:
+
+Date
+----
+
+.. note::
+   A :guilabel:`Date` filter can only match with a :ref:`Date <studio/fields/simple-fields-date>`
+   or :ref:`Date & Time <studio/fields/simple-fields-date-time>` field.
+
+With the :guilabel:`Filter properties` panel open:
+
+#. Enter a name for the new date filter in the :guilabel:`Label` field.
+#. To set a :guilabel:`Default value`, select one of the available values, e.g, `Last 30 Days` or
+   `Month to Date`. When applying the global filter, any of the available values can be selected.
+#. In the :guilabel:`Field matching` section, for each data source, click beside :guilabel:`Date
+   field` and select the field the filter should match with.
+
+   The :guilabel:`Period offset` option, which appears when a date field is chosen, enables
+   comparisons to be made by shifting the time range by one or more periods in the past or future.
+   By default, no period offset is defined. To define a period offset, select :guilabel:`Previous`
+   or :guilabel:`Next`, then select the desired number of periods in the past or future.
+
+   .. tip::
+
+      To compare data effectively using the :guilabel:`Period offset` feature, :ref:`duplicate the
+      relevant inserted list <spreadsheet/insert/list-duplicate>` or :ref:`pivot table
+      <spreadsheet/insert/pivot-table-duplicate>`, then, when setting up field matching, set a
+      period offset for the second data source but not the first.
+
+      When applying the filter, the original list or pivot table shows data for the time range
+      selected, while the second shows data for a period before or after that time range, as
+      defined.
+
+#. Click :guilabel:`Save`.
+
+.. example::
+   In the example below, a :guilabel:`Date` global filter allows the pivot table and chart to show
+   sales data for any defined time period, in this case, `July 2025`. The :guilabel:`Custom Range`
+   always shows the actual dates corresponding to the chosen period; it can also be updated
+   directly.
+
+   .. image:: global_filters/example-date.png
+      :alt: A date filter filters data for July 2025
+
+   In the :guilabel:`Field matching` section of the :guilabel:`Filter properties`, the field
+   :guilabel:`Order Date` has been selected as the matching date field.
+
+   .. image:: global_filters/field-matching-date.png
+      :alt: A date filter with the Order Date selected as the matching field
+
+.. _spreadsheet/global-filters/create-relation:
+
+Relation
+--------
+
+.. note::
+   A :guilabel:`Relation` filter can only match with a :ref:`Many2One
+   <studio/fields/relational-fields-many2one>`, :ref:`One2Many
+   <studio/fields/relational-fields-one2many>`, or :ref:`Many2Many
+   <studio/fields/relational-fields-many2many>` field.
+
+With the :guilabel:`Filter properties` panel open:
+
+#. Enter a name for the new relation filter in the :guilabel:`Label` field.
+
+#. In the :guilabel:`Related model` field, start typing the model name to reveal a list of all
+   models, then select the appropriate one. Once a model is selected, the
+   :guilabel:`Default value` and :guilabel:`Possible values` fields appear, as well as the
+   :guilabel:`Field matching` section.
+
+#. To set a :guilabel:`Default value`, select one of the available values; these are records from
+   the model. If the related model is the *User* model, the option :guilabel:`Automatically filter
+   on the current user` can be enabled.
+
+#. To limit the values that can be shown, enable :guilabel:`Restrict values with a domain`, then
+   click :ref:`Edit domain <search/custom-filters>` to add or edit rules.
+
+#. In the :guilabel:`Field matching` section, check if the correct matching field has been
+   assigned for each data source. If this is not the case, click below the data source name to
+   select the correct field.
+
+#. Click :guilabel:`Save`.
+
+.. example::
+   In the example below, a :guilabel:`Relation` filter allows the pivot table and chart to show
+   sales data related to selected salespeople only. The *User* model is set as the
+   :guilabel:`Related model`.
+
+   .. image:: global_filters/example-relation.png
+      :alt: Relation filter set on a pivot table
+
+   In the :guilabel:`Field matching` section of the :guilabel:`Filter properties`, the field
+   :guilabel:`Salesperson` was automatically assigned as the matching field for both the pivot table
+   and the chart.
+
+   .. image:: global_filters/field-matching-relation.png
+      :alt: A relation filter with the User model configured
+
+.. _spreadsheet/global-filters/create-text:
+
+Text
+----
+
+.. note::
+   A :guilabel:`Text` filter can only match with a :ref:`Text
+   <studio/fields/simple-fields-text>` (char), :ref:`Integer <studio/fields/simple-fields-integer>`,
+   or :ref:`Decimal <studio/fields/simple-fields-decimal>` (float) field.
+
+With the :guilabel:`Filter properties` panel open:
+
+#. Enter a name for the new text filter in the :guilabel:`Label` field.
+#. Optionally, enable :guilabel:`Restrict values to a range`. Doing so allows you to input a
+   spreadsheet range either by typing the range or selecting it from the relevant sheet. The
+   referenced range must be in the same spreadsheet.
+#. Optionally, enter a :guilabel:`Default value`.
+#. In the :guilabel:`Field matching` section, for each data source click below the data source name
+   and select the field the :guilabel:`Text` filter should match with.
+
+#. Click :guilabel:`Save`.
+
+.. example::
+   In the example below, a :guilabel:`Text` global filter allows the pivot table and chart to show
+   sales data only for products whose internal reference matches or contains the entered value, in
+   this case, `FURN`. Multiple values can be entered if desired.
+
+   .. image:: global_filters/example-text.png
+      :alt: Global filters set on a pivot table
+
+   In the :guilabel:`Field matching` section of the :guilabel:`Filter properties`, the
+   :guilabel:`Internal Reference` of the :guilabel:`Product Variant` was selected as the matching
+   field for both the pivot table and the chart.
+
+   .. image:: global_filters/field-matching-text.png
+      :alt: A text filter matched to the product's internal reference
+
+   .. tip::
+      If you selected :guilabel:`Restrict values to range` when configuring the text filter and
+      defined a range, you select the value of the text field from a dropdown.
+
+.. _spreadsheet/global-filters/create-checkbox:
+
+Yes/No
+------
+
+.. note::
+   A :guilabel:`Yes/No` filter can only match with a :ref:`Checkbox
+   <studio/fields/simple-fields-checkbox>` (boolean) field.
+
+With the :guilabel:`Filter properties` pane open:
+
+#. Enter a name for the new :guilabel:`Yes/No` filter in the :guilabel:`Label` field.
+#. Optionally, select :guilabel:`Is set` or :guilabel:`Is not set` as the :guilabel:`Default value`.
+#. In the :guilabel:`Field matching` section, for each data source, click below the data source name
+   and select the field the :guilabel:`Yes/No` filter should match with.
+#. Click :guilabel:`Save`.
+
+.. example::
+   In the example below, a :guilabel:`Yes/No` global filter was created to allow the user to see
+   all active opportunities, i.e., for which the :guilabel:`Active` checkbox is enabled on the
+   record, or all inactive opportunities, i.e., for which the :guilabel:`Active` checkbox is
+   disabled. Leaving the filter empty shows both active and inactive opportunities.
+
+   .. image:: global_filters/example-boolean.png
+      :alt: Global filters set on a pivot table
+
+   In the :guilabel:`Field matching` section of the :guilabel:`Filter properties`, the field
+   :guilabel:`Active` was assigned as the matching field for the pivot table.
+
+   .. image:: global_filters/field-matching-checkbox.png
+      :alt: A yes/no filter with the Active field set as matching field
+
+.. _spreadsheet/global-filters/manage:
+
+Manage and use global filters
+=============================
+
+Click the :icon:`os-global-filters` :guilabel:`Filters` icon at the top right of an Odoo spreadsheet
+to access the global filters that have been created for that spreadsheet.
+
+It is possible to:
+
+- **Apply one or more global filters** by selecting appropriate values per filter, as relevant.
+
+  .. tip::
+     Reloading the browser will cause any global filters to reset to their initial state or default
+     value, as relevant. To refresh data in an inserted list, pivot table, or chart without losing
+     global filters that have been applied, click :menuselection:`Data -->` :icon:`os-refresh-data`
+     :menuselection:`Refresh all data` from the menu bar.
+
+- **Change the order** of existing filters by hovering over a filter and using the
+  :icon:`os-thin-drag-handle` :guilabel:`(drag handle)` icon to change the position.
+- **Clear filter values** (whether default or selected values) by clicking the :icon:`fa-times`
+  :guilabel:`(Clear)` icon next to the value in the filter.
+- **Edit an existing filter** by selecting the :icon:`fa-cog` :guilabel:`(Edit)` icon to open the
+  filter's :guilabel:`Filter properties` then editing as needed.
+- **Delete an existing filter** by selecting the :icon:`fa-cog` :guilabel:`(Edit)` icon to open the
+  filter's :guilabel:`Filter properties` then clicking :guilabel:`Remove`.
+
+
+==================================================
+SECTION: insert.rst
+PATH: applications/productivity/spreadsheet/insert.rst
+==================================================
+
+============================
+Insert and link to Odoo data
+============================
+
+Several elements from your Odoo database can be inserted into an Odoo spreadsheet, namely:
+
+- lists, i.e., data from a :ref:`list view <studio/views/multiple-records/list>`
+- pivot tables, i.e., data from a :ref:`pivot view <studio/views/reporting/pivot>`
+- charts, i.e., data from a :ref:`graph view <studio/views/reporting/graph>`
+
+.. note::
+   Lists, pivot tables, and charts from different apps and models can be inserted into the same
+   spreadsheet.
+
+Each time a list, pivot table, or chart is inserted, a :ref:`data source
+<spreadsheet/insert/data-sources>` is created. This data source connects the spreadsheet to your
+Odoo database, retrieving up-to-date information every time the spreadsheet is opened, the browser
+page is reloaded, or data is manually refreshed by clicking :menuselection:`Data -->`
+:icon:`os-refresh-data` :menuselection:`Refresh all data` from the menu bar.
+
+:ref:`Inserted lists <spreadsheet/insert/list>` and :ref:`inserted pivot tables
+<spreadsheet/insert/pivot-table>` use formulas with Odoo-specific :ref:`list functions
+<spreadsheet/insert/list-functions>` and :ref:`pivot table functions
+<spreadsheet/insert/pivot-table-functions-static>` to retrieve data from your database and can be
+further manipulated in the spreadsheet. Certain elements of :ref:`inserted charts
+<spreadsheet/insert/chart>` can be modified, but no data manipulation or computation is possible.
+
+.. tip::
+   If you intend to use :doc:`global filters <work_with_data/global_filters>` to dynamically filter
+   Odoo data in a spreadsheet or dashboard, do not use the same conditions to establish the initial
+   list, pivot table, or chart in your database.
+
+It is also possible to:
+
+- :ref:`add clickable links <spreadsheet/insert/clickable-links>` to Odoo menu items, to other
+  sheets of the same spreadsheet, or to external URLs
+- :ref:`insert financial data <spreadsheet/insert/financial-data>` from your Odoo database using
+  Odoo-specific spreadsheet :doc:`functions <work_with_data/functions>`
+- paste data from another Odoo spreadsheet, Excel spreadsheet, or Google Sheet directly into any
+  Odoo spreadsheet
+
+.. _spreadsheet/insert/data-sources:
+
+Data sources
+============
+
+Data sources, which are created each time a :ref:`list <spreadsheet/insert/list>`, :ref:`pivot table
+<spreadsheet/insert/pivot-table>`, or :ref:`chart <spreadsheet/insert/chart>` is inserted into an
+Odoo spreadsheet, connect the spreadsheet and the relevant :doc:`model
+<../../studio/models_modules_apps>` in your database, ensuring the data stays up-to-date and
+allowing you to :ref:`access the underlying data <spreadsheet/insert/accessing-data>`.
+
+Each data source is defined by properties that can be accessed via the :guilabel:`Data` menu. Data
+sources are identified by their respective :icon:`oi-view-pivot` :guilabel:`(pivot table)`,
+:icon:`oi-view-list` :guilabel:`(list)` or :icon:`fa-bar-chart` :guilabel:`(chart)` icon, followed
+by their ID and name, e.g., :icon:`oi-view-pivot` *(#1) Sales Analysis by Product*.
+
+.. image:: insert/data-menu.png
+   :alt: Data sources listed in Data menu
+
+Clicking on a data source opens the related properties in a panel on the right of the spreadsheet.
+
+.. tip::
+   - The properties panel can also be opened by right-clicking any cell of an inserted list or pivot
+     table, then clicking :icon:`oi-view-list` :guilabel:`See list properties` or
+     :icon:`oi-view-pivot` :guilabel:`See pivot properties`, or by clicking the :icon:`fa-bars`
+     :guilabel:`(menu)` icon at the top right of an inserted chart, then clicking
+     :icon:`fa-pencil-square-o` :guilabel:`Edit`.
+   - Once the properties of a specific data source are open, they remain open even when navigating
+     between spreadsheet tabs. To close the properties panel, click the :icon:`fa-times`
+     :guilabel:`(close)` icon at the top right of the panel.
+   - Click :icon:`fa-thumb-tack` :guilabel:`(pin)` at the top of the properties panel to allow
+     another panel, such as the :doc:`global filters <work_with_data/global_filters>` panel, to
+     open beside it.
+
+.. note::
+   Deleting an inserted list or pivot table, or deleting the sheet into which it was inserted, does
+   not delete the underlying data source. The data source of an inserted list or pivot table can
+   only be deleted via the data source's properties.
+
+   A warning in the :guilabel:`Data` menu identifies any data sources for which the corresponding
+   list or pivot table no longer appears in the spreadsheet.
+
+   .. image:: insert/list-deleted.png
+      :alt: Warning message about unused list
+
+   Deleting an inserted chart, on the other hand, also deletes the underlying data source.
+
+.. _spreadsheet/insert/accessing-data:
+
+Accessing underlying data
+-------------------------
+
+The underlying data of an inserted list, pivot table, or chart can be accessed at any time. To view:
+
+- an individual record of an **inserted list**, right-click any cell of the relevant row, then
+  select :icon:`fa-eye` :guilabel:`See record`
+- a list of records referenced by an individual cell of an **inserted pivot table**, right-click the
+  cell, then select :icon:`fa-eye` :guilabel:`See records`
+- a list of records represented by a data point of an **inserted chart**, click the data point.
+
+.. tip::
+   Use the middle mouse button or `Ctrl` + left-click (Microsoft/Linux), or `Command` + left-click
+   (Mac OS) to open the results in a new browser tab.
+
+To return to the spreadsheet after viewing the underlying data, click the name of the spreadsheet in
+the breadcrumbs at the top of the page.
+
+.. _spreadsheet/insert/list:
+
+Insert a list
+=============
+
+.. important::
+   Before inserting a list in a spreadsheet, ensure the list is tailored to your needs. Consider
+   which fields should be visible as well as how the records are filtered and/or sorted. This can
+   impact both the loading time and the user-friendliness of your spreadsheet.
+
+To insert a list:
+
+#. With the relevant list view open in your database, click the :icon:`fa-cog`
+   :guilabel:`(Actions)` icon beside the name of the view, then :menuselection:`Spreadsheet -->`
+   :icon:`oi-view-list` :menuselection:`Insert list in spreadsheet`.
+
+   .. note::
+      To insert only specific records, select the relevant records, click the :icon:`fa-cog`
+      :guilabel:`Actions` button that appears at the top center of the screen, then
+      :icon:`oi-view-list` :guilabel:`Insert in spreadsheet`.
+
+#. In the window that opens, edit the :guilabel:`Name of the list` if needed.
+
+   The list name is used in the sheet name and in the :ref:`list properties
+   <spreadsheet/insert/list-properties>`.
+
+   .. image:: insert/insert-list.png
+      :alt: Inserting a list in a spreadsheet
+
+#. Edit the number of records, i.e., rows, to be inserted if needed.
+
+   By default, the number shown is the number of records visible on the first page of the list. For
+   example, if the list contains 150 records but only 80 are visible, this field will show 80.
+
+   .. note::
+      While the data in your list is kept up to date thanks to the connection to your database, an
+      inserted list will not automatically expand to accommodate new records, e.g., a new product
+      category or a new salesperson.
+
+      If you anticipate new records being added, consider adding extra rows when inserting the list.
+      Records/rows can also be :ref:`added manually <spreadsheet/insert/list-add-records>` after the
+      spreadsheet has been inserted.
+
+      .. example::
+         Your company currently has ten product categories and you insert this list in a
+         spreadsheet. If an 11th product category is created and your inserted list only had ten
+         rows, the new category will be inserted in the appropriate position in the spreadsheet,
+         thereby removing an existing category.
+
+         One way to avoid this is to :ref:`add extra rows <spreadsheet/insert/list-add-records>`
+         when inserting the list.
+
+#. Click :guilabel:`Blank spreadsheet` to create a new spreadsheet, or select in which existing
+   spreadsheet the list should be inserted.
+
+   .. note::
+      When inserting a list into a new spreadsheet, the spreadsheet is saved in the **Odoo
+      Documents** app in the :icon:`fa-hdd-o` :guilabel:`My Drive` personal folder.
+
+#. Click :guilabel:`Confirm`.
+
+The list is inserted into a new sheet in the spreadsheet. The sheet tab in the bottom bar shows the
+name of the list followed by the list ID, e.g., *Quotations by Total (List #1)*. A panel on the right
+side of the screen shows the :ref:`list properties <spreadsheet/insert/list-properties>`.
+
+.. tip::
+   - To sever the link between an inserted list and your database, select the entire list,
+     right-click and select :icon:`fa-clipboard` :guilabel:`Copy` then right-click again and select
+     :menuselection:`Paste special --> Paste as value`.
+   - Do not modify the list ID in the sheet name, as the inserted list retains this ID for the
+     lifetime of the spreadsheet. This list ID is used in the :ref:`spreadsheet functions
+     <spreadsheet/insert/list-functions>` that retrieve data from your database.
+
+.. _spreadsheet/insert/list-functions:
+
+List functions
+--------------
+
+When a list is inserted into a spreadsheet, the following :doc:`functions
+<work_with_data/functions>` are used to retrieve the header and field values, respectively:
+
+.. code-block:: text
+
+   =ODOO.LIST.HEADER(list_id, field_name)
+   =ODOO.LIST(list_id, index, field_name)
+
+The arguments of the function are as follows:
+
+- `list_id`: the ID assigned when the list is inserted. The first list inserted into a spreadsheet
+  is assigned list ID `1`, the second, list ID `2`, etc.
+- `index`: identifies the line on which the record appeared in the list before insertion. The
+  first line has an index of `1`, the second an index of `2`, etc.
+- `field_name`: the technical name of the field.
+
+.. tip::
+   Clicking on an individual cell displays the related formula, if relevant, in the formula bar. To
+   display all the formulas of a spreadsheet at the same time, click :menuselection:`View -->`
+   :icon:`fa-eye` :menuselection:`Show --> Formulas` on the menu bar. The example below shows the
+   functions used to retrieve list headers and values.
+
+   .. image:: insert/list-formulas.png
+      :alt: Viewing formulas of spreadsheet cells
+
+.. _spreadsheet/insert/list-properties:
+
+List properties
+---------------
+
+The list properties appear on the right side of the screen when a list is inserted. They can be
+accessed at any time via the :guilabel:`Data` menu by clicking the relevant list, as prefaced by
+the :icon:`oi-view-list` :guilabel:`(list)` icon, or by right-clicking anywhere on the list and
+clicking :icon:`oi-view-list` :guilabel:`See list properties`.
+
+The following list properties are shown, some of which can be edited:
+
+- :guilabel:`List #`: the list ID. List IDs are assigned sequentially as additional lists are
+  inserted into the spreadsheet.
+- :guilabel:`List Name`: the name of the list. Edit this if needed. Note that editing the list name
+  in the list properties does not modify the list name shown in the sheet name, and vice versa.
+- :guilabel:`Model`: the model from which the data has been extracted.
+- :guilabel:`Columns`: the fields of the model that were visible when the list was inserted.
+- :guilabel:`Domain`: the rules used to determine which records are shown. Click
+  :ref:`Edit domain <search/custom-filters>` to add or edit rules.
+
+  .. note::
+     When :doc:`global filters <work_with_data/global_filters>` are used, this domain is combined
+     with the selected values of the global filter before the data is loaded into the spreadsheet.
+
+- :guilabel:`Sorting`: how the data is sorted, if applicable. To add a sorting rule, click
+  :guilabel:`Add`, select the field, then choose whether sorting should be :guilabel:`Ascending` or
+  :guilabel:`Descending`. Delete a sorting rule by clicking the :icon:`fa-times`
+  :guilabel:`(delete)` icon.
+
+To :ref:`duplicate <spreadsheet/insert/list-duplicate>` or :ref:`delete
+<spreadsheet/insert/list-delete>` a list's data source, click the :icon:`fa-cog` :guilabel:`(gear)`
+icon, then click :icon:`fa-clone` :guilabel:`Duplicate` or :icon:`fa-trash` :guilabel:`Delete` as
+relevant.
+
+.. _spreadsheet/insert/list-manage:
+
+Manage an inserted list
+-----------------------
+
+After a list from an Odoo database has been inserted into an Odoo spreadsheet, you can:
+
+- :ref:`add records <spreadsheet/insert/list-add-records>`, i.e., rows
+- :ref:`add fields <spreadsheet/insert/list-add-fields>`, i.e., columns
+- :ref:`duplicate the list <spreadsheet/insert/list-duplicate>` to create a new, identical data
+  source
+- :ref:`delete the list and its underlying data source <spreadsheet/insert/list-delete>`
+
+.. _spreadsheet/insert/list-add-records:
+
+Add records/rows to a list
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To add records to a list, use one of the following methods:
+
+- Select the last row of the table, then hover over the blue square until the plus icon appears.
+  Click and drag down to add the desired number of rows. The cells of the new rows are populated
+  with the :ref:`appropriate formula <spreadsheet/insert/list-functions>` to retrieve the list
+  values. If there is corresponding data in your database, the cells are populated.
+
+  .. image:: insert/list-add-records.png
+     :alt: Add records by dragging the cell down
+
+- Position your cursor in the top left cell of the sheet, click :menuselection:`Data --> Re-insert
+  list` from the menu bar, then select the appropriate list. In the pop-up window, indicate the
+  number of records to insert and click :guilabel:`Confirm`. An updated list is inserted,
+  overwriting the previous list.
+
+.. tip::
+   The above methods can also be used to add additional blank rows to your spreadsheet table. This
+   may be useful for lists where you expect additional records to be generated in your database,
+   e.g., new product categories or new salespersons.
+
+.. _spreadsheet/insert/list-add-fields:
+
+Add fields/columns to a list
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To add fields/columns to a list:
+
+#. Select the column to the right or left of where the new column should be inserted.
+#. Click :menuselection:`Insert -->` :icon:`os-insert-col` :menuselection:`Insert column` then
+   :icon:`os-insert-col-before` :menuselection:`Column left` or :icon:`os-insert-col-after`
+   :menuselection:`Column right` from the menu bar, or right-click then :icon:`os-insert-col-before`
+   :guilabel:`Insert column left` or :icon:`os-insert-col-after` :guilabel:`Insert column right` as
+   appropriate.
+#. Copy the header cell of any column, paste it into the header cell of the new column, and press
+   `Enter`.
+#. Double-click the new header cell then click on the field name that appears in quotation marks at
+   the end of the formula; a list of all the technical names of the fields of the related model
+   appears.
+
+   .. image:: insert/list-add-columns.png
+      :alt: Add fields/columns by editing the formula
+
+#. Select the appropriate field name and press `Enter`. The field's label appears in the header.
+
+   .. tip::
+      To know a field's technical name, navigate to the relevant view, :ref:`activate developer mode
+      <developer-mode>`, then check the field name by hovering over the question mark beside a
+      field's label.
+
+#. With the header cell selected, double-click on the blue square in the bottom-right corner. The
+   cells of the column are populated with the appropriate formula to retrieve the list values. If
+   there is corresponding data in your database, the cells are populated.
+
+.. _spreadsheet/insert/list-duplicate:
+
+Duplicate a list
+~~~~~~~~~~~~~~~~
+
+Duplicating a list via the list's properties creates an additional data source. This allows for
+different manipulations to be performed on the same data within one spreadsheet.
+
+With the :ref:`list properties <spreadsheet/insert/list-properties>` open, click the :icon:`fa-cog`
+:guilabel:`(gear)` icon then :icon:`fa-clone` :guilabel:`Duplicate`.
+
+The new data source is assigned the next available list ID. For example, if no other lists have been
+inserted in the meantime, duplicating *List #1* results in the creation of *List #2*.
+
+Unlike when you insert a list, a duplicated list is not automatically inserted into the spreadsheet.
+To insert it, perform the following steps:
+
+#. Add a new sheet by clicking the :icon:`os-plus` :guilabel:`(add sheet)` icon at the bottom left
+   of the spreadsheet.
+#. Click :menuselection:`Data --> Re-insert list` from the menu bar, then select the appropriate
+   list.
+#. Define the number of records to insert and click :guilabel:`Confirm`.
+#. Edit the :guilabel:`List Name` in the properties panel if needed.
+#. Rename the sheet by right-clicking on the sheet tab, selecting :guilabel:`Rename`, and entering
+   the new sheet name.
+
+.. note::
+   Duplicating an inserted list by copying and pasting it or by duplicating the sheet into which it
+   has been inserted does not create a new data source. Any changes made to the list's properties
+   would therefore impact any copies of the list.
+
+.. _spreadsheet/insert/list-delete:
+
+Delete a list
+~~~~~~~~~~~~~
+
+To fully delete a list and the underlying data source from a spreadsheet, perform the following
+steps in any order:
+
+- Delete the spreadsheet table using your preferred means, e.g., via keyboard commands, spreadsheet
+  menus, or by deleting the sheet. This deletes the visual representation of the data.
+- From the :ref:`properties panel <spreadsheet/insert/list-properties>` of the relevant list, click
+  the :icon:`fa-cog` :guilabel:`(gear)` icon then :icon:`fa-trash` :guilabel:`Delete`. This deletes
+  the data source of the list from the spreadsheet.
+
+.. _spreadsheet/insert/pivot-table:
+
+Insert a pivot table
+====================
+
+.. tip::
+   Converting an inserted pivot table to a :doc:`dynamic pivot table
+   <work_with_data/dynamic_pivot_tables>` allows you to add, remove, and manipulate dimensions
+   (i.e., columns and rows) and measures. It is therefore possible to insert a basic pivot table
+   with minimal configuration, convert it to a dynamic pivot table, then refine it directly in the
+   spreadsheet.
+
+To insert a pivot table:
+
+#. With the relevant pivot view open in your database, click :guilabel:`Insert in Spreadsheet`.
+#. In the window that opens, edit the :guilabel:`Name of the pivot` if needed.
+
+   This name is used in the sheet name and in the :ref:`pivot table properties
+   <spreadsheet/insert/pivot-table-properties>`.
+
+   .. image:: insert/insert-pivot-table.png
+      :alt: Inserting a pivot table in a spreadsheet
+
+#. Click :guilabel:`Blank spreadsheet` to create a new spreadsheet, or select in which existing
+   spreadsheet the pivot table should be inserted.
+
+   .. note::
+      When inserting a pivot table into a new spreadsheet, the spreadsheet is saved in the **Odoo
+      Documents** app in the :icon:`fa-hdd-o` :guilabel:`My Drive` personal folder.
+
+#. Click :guilabel:`Confirm`.
+
+The pivot table is inserted into a new sheet in the spreadsheet. The sheet tab in the bottom bar
+shows the name of the pivot table followed by the pivot table ID, e.g., *Sales Analysis by Sales
+Team (Pivot #1)*. A panel on the right side of the screen shows the :ref:`pivot table properties
+<spreadsheet/insert/pivot-table-properties>`.
+
+.. tip::
+   - To sever the link between an inserted pivot table and your database, select the entire pivot
+     table, right-click and select :icon:`fa-clone` :guilabel:`Copy`, then right-click again and
+     select :menuselection:`Paste special --> Paste as value`.
+   - Do not modify the pivot table ID in the sheet name, as the inserted pivot table retains this ID
+     for the lifetime of the spreadsheet. This pivot table ID is used in the :ref:`spreadsheet
+     functions <spreadsheet/insert/pivot-table-functions-static>` that retrieve data from your
+     database.
+
+.. _spreadsheet/insert/pivot-table-functions-static:
+
+Pivot table functions
+---------------------
+
+An inserted pivot table that has not been converted to a :doc:`dynamic pivot table
+<work_with_data/dynamic_pivot_tables>` uses the following :doc:`functions
+<work_with_data/functions>` to retrieve the header and field values, respectively:
+
+      .. code-block:: text
+
+         =PIVOT.HEADER(pivot_id, [domain_field_name, …], [domain_value, …])
+         =PIVOT.VALUE(pivot_id, measure_name, [domain_field_name, …], [domain_value, …])
+
+The arguments of the functions are as follows:
+
+- `pivot_id`: the ID assigned when the pivot table is inserted. The first pivot table inserted
+  in a spreadsheet is assigned pivot ID `1`, the second, pivot ID `2`, etc.
+- `measure_name`: the technical name of what is being measured, followed by the type of aggregation,
+  e.g., `product_uom_qty:sum`.
+- `domain_field_name`: the technical name of the field used as a dimension, e.g., `user_id`, or, if
+  the dimension is a time period, the technical name of the date field, followed by the time period,
+  e.g., `date_order:month`.
+- `domain_value`: the ID of the record, or, if the dimension is a time period, the date or time
+  period targeted.
+
+.. tip::
+   Clicking on an individual cell displays the related formula, if relevant, in the formula bar. To
+   display all the formulas of a spreadsheet at the same time, click :menuselection:`View -->`
+   :icon:`fa-eye` :menuselection:`Show --> Formulas` on the menu bar. The example below shows the
+   functions used to retrieve headers and values of a static pivot table.
+
+   .. image:: insert/pivot-table-formulas.png
+      :alt: Functions of a static pivot table
+
+.. _spreadsheet/insert/pivot-table-properties:
+
+Pivot table properties
+----------------------
+
+The pivot table properties appear on the right side of the screen when a pivot table is inserted.
+They can be accessed at any time via the :guilabel:`Data` menu by clicking the relevant pivot table,
+as prefaced by the :icon:`oi-view-pivot` :guilabel:`(pivot)` icon, or by right-clicking anywhere on
+the pivot table and clicking :icon:`oi-view-pivot` :guilabel:`See pivot properties`.
+
+The following pivot table properties are shown, some of which can be edited:
+
+- :guilabel:`Pivot #`: the pivot table ID. Pivot table IDs are assigned sequentially as additional
+  pivot tables are inserted in the spreadsheet.
+- :guilabel:`Name`: the name of the pivot table. Edit this if needed. Note that editing the name
+  in the pivot table properties does not modify the name shown in the sheet name, and vice versa.
+- :guilabel:`Model`: the model from which the data has been extracted.
+- :guilabel:`Columns` and :guilabel:`Rows`: dimensions you are using to categorize or group data
+  from the model.
+- :guilabel:`Measures`: what you are measuring, or analyzing, based on the dimensions you have
+  chosen.
+
+  .. tip::
+     If you attempt to make changes to the columns, rows, or measures of a pivot table that has just
+     been inserted into a spreadsheet, an error appears at the top right of the screen.
+
+      .. image:: insert/pivot-table-error.png
+         :alt: Error message when trying to manipulate static pivot table
+
+     To be able to manipulate a pivot table's properties, convert a static pivot table to a
+     :ref:`dynamic pivot table <spreadsheet/dynamic-pivot-tables/create>`.
+
+- :guilabel:`Domain`: the rules used to determine which records are shown. Click
+  :ref:`Edit domain <search/custom-filters>` to add or edit rules.
+
+  .. note::
+     When :doc:`global filters <work_with_data/global_filters>` are used, this domain is combined
+     with the selected values of the global filter before the data is loaded into the spreadsheet.
+
+To :ref:`duplicate <spreadsheet/insert/pivot-table-duplicate>` or :ref:`delete
+<spreadsheet/insert/pivot-table-delete>` a pivot table's data source, click the :icon:`fa-cog`
+:guilabel:`(gear)` icon then :icon:`fa-clone` :guilabel:`Duplicate` or :icon:`fa-trash`
+:guilabel:`Delete`.
+
+.. _spreadsheet/insert/pivot-table-manage:
+
+Manage an inserted pivot table
+------------------------------
+
+After a pivot table from an Odoo database has been inserted into an Odoo spreadsheet, you can:
+
+- :ref:`convert it to a dynamic pivot table <spreadsheet/dynamic-pivot-tables/create>` to be able to
+  manipulate the dimensions and measures
+- :ref:`duplicate the pivot table <spreadsheet/insert/pivot-table-duplicate>` to create a new,
+  identical data source
+- :ref:`delete the pivot table and its underlying data source
+  <spreadsheet/insert/pivot-table-delete>`
+
+.. _spreadsheet/insert/pivot-table-duplicate:
+
+Duplicate a pivot table
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Duplicating a pivot table via the pivot table's properties creates an additional data source. This
+allows for different manipulations to be performed on the same data within one spreadsheet.
+
+For example, you can see the same data aggregated by different dimensions or use :doc:`global
+filters <work_with_data/global_filters>` to offset the date and create pivot tables that compare the
+current period's data with a previous period.
+
+To duplicate a pivot table, perform the following steps:
+
+#. With the :ref:`pivot table properties <spreadsheet/insert/pivot-table-properties>` open, click
+   the :icon:`fa-cog` :guilabel:`(gear)` icon then :icon:`fa-clone` :guilabel:`Duplicate`.
+
+   The duplicated pivot table is automatically inserted into a new sheet in the spreadsheet, with
+   the pivot table properties open in the right panel.
+#. Edit the :guilabel:`Name` in the properties panel and the sheet tab if needed.
+
+The new data source is assigned the next available pivot table ID. For example, if no other pivot
+tables have been inserted in the meantime, duplicating *Pivot #1* results in the creation of
+*Pivot #2*.
+
+.. note::
+   - Duplicating an inserted pivot table by copying and pasting it or by duplicating the sheet does
+     not create a new data source. Any changes made to the pivot table's properties would therefore
+     impact any copies of the pivot table.
+   - When a pivot table is duplicated, the new pivot table is by default a :doc:`dynamic pivot table
+     <work_with_data/dynamic_pivot_tables>`.
+
+.. _spreadsheet/insert/pivot-table-delete:
+
+Delete a pivot table
+~~~~~~~~~~~~~~~~~~~~
+
+To fully delete a pivot table and the underlying data source from a spreadsheet, perform the
+following steps in any order:
+
+- Delete the spreadsheet table using your preferred means, e.g., via keyboard commands, spreadsheet
+  menus, or by deleting the sheet. This deletes the visual representation of the data.
+- From the :ref:`properties panel <spreadsheet/insert/pivot-table-properties>` of the relevant pivot
+  table, click the :icon:`fa-cog` :guilabel:`(gear)` icon then :icon:`fa-trash` :guilabel:`Delete`.
+  This deletes the data source of the pivot table.
+
+.. _spreadsheet/insert/chart:
+
+Insert a chart
+==============
+
+To insert a chart from an Odoo database into an Odoo spreadsheet:
+
+#. With the relevant graph view open in your database, click :guilabel:`Insert in Spreadsheet`.
+#. In the window that opens, edit the :guilabel:`Name of the graph` if needed.
+
+#. Click :guilabel:`Blank spreadsheet` to create a new spreadsheet, or select in which existing
+   spreadsheet the chart should be inserted.
+
+   .. note::
+      When inserting a chart into a new spreadsheet, the spreadsheet is saved in the **Odoo
+      Documents** app in the :icon:`fa-hdd-o` :guilabel:`My Drive` personal folder.
+
+#. Click :guilabel:`Confirm`.
+
+Charts are inserted on the first sheet of the spreadsheet. A pane on the right side of the screen
+shows the :ref:`chart properties <spreadsheet/visualize/customize-charts>`, where various aspects of
+the chart's configuration and design can be modified.
+
+.. seealso::
+   :ref:`Manage charts <spreadsheet/visualize/manage-charts>`
+
+.. tip::
+   Clicking on a data point in a chart opens the relevant list view in the database. In the example,
+   clicking on :guilabel:`Jessica Childs` opens the list view of all sales by this salesperson that
+   match the domain of the chart.
+
+   .. image:: insert/clickable-link-chart.png
+      :alt: A clickable link to an Odoo menu plus clickable data point
+
+.. _spreadsheet/insert/clickable-links:
+
+Insert clickable links
+======================
+
+Adding links to related or supporting information can make your report or dashboard more
+user-friendly and effective.
+
+You can :ref:`insert a clickable link from any spreadsheet cell
+<spreadsheet/insert/clickable-links-cell>` to:
+
+- an Odoo menu item
+- another sheet inside the same spreadsheet
+- an external URL
+
+You can :ref:`insert a clickable link from any chart <spreadsheet/insert/clickable-links-chart>` to
+an Odoo menu item.
+
+.. note::
+   - Clicking a link to a menu item provides the same result as navigating via the Odoo menu within
+     an app, e.g., the menu item :guilabel:`Sales/Orders/Quotations` corresponds to the default view
+     when navigating to :menuselection:`Sales --> Orders --> Quotations`.
+   - It is also possible to insert a clickable link to a specific view of a model in a spreadsheet
+     starting from the view itself. However, as this method inserts each new link in a new sheet, it
+     is more efficient to create links to specific views starting from the spreadsheet.
+
+.. tip::
+   Use the middle mouse button or `Ctrl` + left-click (Microsoft/Linux), or `Command` + left-click
+   (Mac OS) to open clickable links in a new browser tab.
+
+.. _spreadsheet/insert/clickable-links-cell:
+
+Insert a clickable link from a cell
+-----------------------------------
+
+To insert a clickable link from a cell:
+
+#. Click :menuselection:`Insert -->` :icon:`fa-link` :menuselection:`Link` from the menu bar or
+   right-click on the cell, then click :icon:`fa-link` :guilabel:`Insert link`. Next, depending on
+   the desired outcome, perform one of the following actions:
+
+   - Click the :icon:`fa-bars` :guilabel:`(menu)` icon, then :guilabel:`Link an Odoo menu`. Select
+     the relevant menu item from the list or click :guilabel:`Search more` to choose from a list of
+     all menu items. Click :guilabel:`Confirm`.
+   - Click the :icon:`fa-bars` :guilabel:`(menu)` icon, then :guilabel:`Link sheet`, then choose the
+     relevant sheet from the current spreadsheet.
+   - Under :guilabel:`Link`, type a URL.
+
+#. Enter or edit the label for the link in the :guilabel:`Text` field.
+#. Click :guilabel:`Confirm`.
+
+.. _spreadsheet/insert/clickable-links-chart:
+
+Insert a clickable link from a chart
+------------------------------------
+
+To insert a clickable link from a chart to an Odoo menu item:
+
+#. Hover over the top right of the chart's box, then click the :icon:`fa-bars` :guilabel:`(menu)`
+   icon, then :icon:`fa-pencil-square-o` :guilabel:`Edit`. The chart properties appear at the right
+   of the screen.
+#. At the bottom of the :icon:`fa-sliders` :guilabel:`Configuration` tab of the chart properties
+   panel, click under :guilabel:`Link to Odoo menu`, then select a menu.
+
+Hover over the top right of the chart's box to see that a new :icon:`fa-external-link`
+:guilabel:`(external link)` icon has been added.
+
+.. _spreadsheet/insert/financial-data:
+
+Insert financial data
+=====================
+
+When building reports and dashboards, it may be useful to include certain accounting-related data,
+such as account IDs, credits and debits for specific accounts, and dates of the start and end of the
+tax year.
+
+:ref:`Odoo-specific spreadsheet functions <spreadsheet/functions/odoo>` allow you to retrieve such
+accounting data from your database and insert it into a spreadsheet.
+
+
+==================================================
+SECTION: share_collaborate.rst
+PATH: applications/productivity/spreadsheet/share_collaborate.rst
+==================================================
+
+=====================
+Share and collaborate
+=====================
+
+Odoo Spreadsheet offers various features that allow for efficient real-time collaboration while
+ensuring the appropriate level of control and traceability, including:
+
+- :ref:`permission-based sharing <spreadsheet/collaboration/access-sharing>`
+- :ref:`version history <spreadsheet/get-started/manage-spreadsheets-versioning>`
+- discussions via :ref:`comments and the spreadsheet's chatter thread
+  <spreadsheet/collaboration/chatter>`
+
+.. _spreadsheet/collaboration/access-sharing:
+
+Access and sharing
+==================
+
+In principle, the rights to access Odoo spreadsheets are handled like :ref:`any other file in the
+Documents app <documents/access-rights>`. :ref:`Roles and permissions
+<spreadsheet/collaboration/roles-permissions>` are either inherited from the folder a spreadsheet is
+saved in or controlled at the level of the spreadsheet itself.
+
+However, there are important differences to consider between :ref:`spreadsheets that contain only
+static data <spreadsheet/collaboration/static-spreadsheet>` and :ref:`spreadsheets that contain
+dynamic Odoo data <spreadsheet/collaboration/dynamic-spreadsheet>`, in terms of both access and data
+visibility.
+
+.. tip::
+
+   - Access to a folder or spreadsheet can be managed by its owner or any user with
+     :guilabel:`Editor` rights.
+   - A user with :guilabel:`Viewer` rights cannot share a spreadsheet with a specific user
+     directly, but can copy a link to the spreadsheet.
+   - Any user with access to a spreadsheet can download it as an `.xlsx` file by clicking
+     :menuselection:`File -->` :icon:`fa-download` :menuselection:`Download`  from the menu bar. If
+     the spreadsheet contained dynamic data, the values are frozen at the moment of download.
+
+.. _spreadsheet/collaboration/roles-permissions:
+
+Roles and permissions
+---------------------
+
+Permissions are managed using the following roles:
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+   :widths: 5 5 5 5 5 5 5 5 5
+
+   * - Role
+     - View
+     - Edit
+     - Delete
+     - Download .xlsx
+     - Share
+     - Manage roles
+     - Use comments
+     - Use chatter
+   * - Owner
+     - :icon:`fa-check`
+     - :icon:`fa-check`
+     - :icon:`fa-check`
+     - :icon:`fa-check`
+     - :icon:`fa-check` with specific people or via link
+     - :icon:`fa-check` including changing owner
+     - :icon:`fa-check`
+     - :icon:`fa-check`
+   * - Editor
+     - :icon:`fa-check`
+     - :icon:`fa-check`
+     - :icon:`fa-check`
+     - :icon:`fa-check`
+     - :icon:`fa-check` with specific people or via link
+     - :icon:`fa-check` but cannot change owner
+     - :icon:`fa-check`
+     - :icon:`fa-check`
+   * - Viewer
+     - :icon:`fa-check`
+     - :icon:`oi-close`
+     - :icon:`oi-close`
+     - :icon:`fa-check`
+     - :icon:`fa-check` only via link
+     - :icon:`oi-close`
+     - :icon:`oi-close`
+     - :icon:`fa-check`
+
+.. _spreadsheet/collaboration/static-spreadsheet:
+
+Share a static spreadsheet
+--------------------------
+
+Spreadsheets containing only static data can be shared internally or externally by the owner of the
+spreadsheet or any user with :guilabel:`Editor` rights.
+
+To do so, click :icon:`fa-share-alt` :guilabel:`Share` in the upper-right corner above the
+spreadsheet, then :ref:`configure access as appropriate <documents/access-rights>`.
+
+.. _spreadsheet/collaboration/dynamic-spreadsheet:
+
+Share a dynamic spreadsheet
+---------------------------
+
+A spreadsheet is considered a *dynamic spreadsheet* if it contains any of the following:
+
+- formulas that retrieve live data from an Odoo database, e.g., in a :doc:`list or pivot table that
+  has been inserted into the spreadsheet <insert>`
+- a linked :ref:`data source <spreadsheet/insert/data-sources>`, even if the corresponding list or
+  pivot table has been deleted from the spreadsheet
+- links to Odoo menu items
+
+Internal sharing
+~~~~~~~~~~~~~~~~
+
+Spreadsheets containing dynamic Odoo data can be shared *with internal users only* by the owner of
+the spreadsheet or any user with :guilabel:`Editor` rights.
+
+However, having access to a spreadsheet does not necessarily mean an internal user *sees* all the
+data in the original spreadsheet. The visibility of dynamic Odoo data is based on an internal user’s
+access rights to the model from which the data has been retrieved, and takes into account any record
+rules that may restrict access.
+
+.. important::
+   Permissions to view data are taken into account when an internal user opens a spreadsheet, with
+   the spreadsheet only being populated with data the user is authorized to see.
+
+  .. example::
+     A sales manager creates a spreadsheet that includes sales data for all the salespeople in their
+     team. Users with the permission `Sales / User: Own Documents Only` only see data related to
+     their own sales.
+
+To share a spreadsheet containing dynamic Odoo data, click :icon:`fa-share-alt` :guilabel:`Share` in
+the upper-right corner above the spreadsheet, then :ref:`configure access as appropriate
+<documents/access-rights>`.
+
+External sharing
+~~~~~~~~~~~~~~~~
+
+Spreadsheets containing dynamic Odoo data *cannot be accessed by external users*.
+
+.. note::
+   If an external user attempts to access a dynamic spreadsheet via a link, an error message is
+   shown.
+
+If a spreadsheet containing Odoo data needs to be shared with an external user, the owner of the
+spreadsheet or a user with :guilabel:`Editor` rights can create a frozen, read-only version. In this
+version, all Odoo formulas are converted to their value at the moment the frozen version is created,
+and any links to Odoo menus are removed.
+
+To create a frozen version of a spreadsheet that contains dynamic Odoo data, click
+:menuselection:`File --> Share --> Freeze and share` from the menu bar, then :ref:`configure access
+as appropriate <documents/access-rights>`.
+
+.. tip::
+   It is also possible to download a frozen version of a spreadsheet that contains Odoo data as an
+   `.xlsx` file by clicking :menuselection:`File -->` :icon:`fa-download` :menuselection:`Download`
+   from the menu bar. The values of any dynamic data are frozen at the moment of download.
+
+.. _spreadsheet/collaboration/comments-chatter:
+
+Comments and chatter
+====================
+
+Odoo Spreadsheet offers two ways to communicate with other users who have access to the same
+spreadsheet, namely by using:
+
+- :ref:`comments <spreadsheet/collaboration/comments>`
+- the spreadsheet's :ref:`chatter thread <spreadsheet/collaboration/chatter>`
+
+.. _spreadsheet/collaboration/comments:
+
+Use comments in a spreadsheet
+-----------------------------
+
+Comments, which are added to individual spreadsheet cells, are useful for discussing specific
+elements of a spreadsheet. Other collaborators can be notified by typing `@` followed by their
+name.
+
+.. important::
+   Only the spreadsheet's owner or users with :guilabel:`Editor` rights can use comments in a
+   spreadsheet; both roles can perform the same actions. Comments are not visible to users with
+   :guilabel:`Viewer` rights.
+
+.. _spreadsheet/collaboration/comments-add-react:
+
+Add or react to comments
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+To add or react to a comment:
+
+#. If the comment is:
+
+   - the first comment being added to the cell, right-click the cell then click :icon:`os-comments`
+     :guilabel:`Insert comment` or click :menuselection:`Insert -->` :icon:`os-comments`
+     :menuselection:`Insert comment` from the menu bar.
+   - a reaction to an existing comment thread on a cell, click on the relevant cell or on the
+     comment thread to open the thread.
+
+#. Type a comment in the text box.
+
+   .. tip::
+
+      - Click the :icon:`fa-plus-circle` icon, then:
+
+        - :guilabel:`Add from Documents` to add a file saved in the Documents app
+        - :icon:`oi-gif-picker` :guilabel:`Add GIFS` to add GIFs (if this is enabled in the
+          :guilabel:`General Settings`)
+
+      - Click :icon:`fa-smile-o` :guilabel:`(Add Emojis)` to add emojis.
+      - Type `@` followed by a user's name to tag them in the comment.
+
+#. Click the :icon:`fa-send-o` :guilabel:`(Log)` icon or press `Enter` to log the comment.
+
+Click anywhere else in the spreadsheet to close the comment thread.
+
+.. tip::
+   To react to an individual comment with only an emoji, hover over the comment, click the
+   :icon:`oi-smile-add` :guilabel:`(Add a Reaction)` icon, then select the desired emoji.
+
+.. _spreadsheet/collaboration/comments-view:
+
+View comments
+~~~~~~~~~~~~~
+
+When a comment has been added to a cell, a small yellow triangle appears in the top right corner of
+the cell.
+
+To view a comment thread on a single cell, hover over the cell; click the cell or the comment
+thread to open the thread to be able to add a comment.
+
+To view all comments on a spreadsheet, click :menuselection:`View -->` :icon:`os-comments`
+:menuselection:`All comments` from the menu bar. Alternatively, after opening a comment thread,
+click :guilabel:`Open all comments`.
+
+The :guilabel:`Comments` panel opens on the right side of the spreadsheet. By default, comment
+threads for :guilabel:`All sheets` of the spreadsheet are shown, grouped by sheet. To see only the
+comment threads for the current sheet, select :guilabel:`This sheet` in the :guilabel:`Filter
+comments` field.
+
+Click on a comment thread in the :guilabel:`Comments` panel to open it.
+
+.. _spreadsheet/collaboration/comments-edit-delete:
+
+Edit or delete comments
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+   A spreadsheet's owner or users with :guilabel:`Editor` rights can edit or delete any comment.
+
+To edit a comment:
+
+#. Hover over the comment, then click the :icon:`fa-ellipsis-v` :guilabel:`(ellipsis)` icon.
+#. Click :icon:`fa-pencil` :guilabel:`Edit`.
+#. Make the desired changes, then click :guilabel:`Save` or press `Enter`. To abort the edit, click
+   :guilabel:`Cancel` or press `Escape`.
+
+.. tip::
+   A comment that has been modified has *(edited)* added to the end of the text.
+
+To delete a comment:
+
+#. Hover over the comment, then click the :icon:`fa-ellipsis-v` :guilabel:`(ellipsis)` icon.
+#. Click :icon:`fa-trash` :guilabel:`Delete`.
+#. Click :guilabel:`Confirm` to confirm the deletion.
+
+.. _spreadsheet/collaboration/comments-resolve:
+
+Resolve comment threads
+~~~~~~~~~~~~~~~~~~~~~~~
+
+To resolve a comment thread:
+
+#. Access the :guilabel:`Comments` panel by clicking :menuselection:`View -->` :icon:`os-comments`
+   :menuselection:`All comments` from the menu bar. Alternatively, with a comment thread open, click
+   :guilabel:`Open all comments`.
+#. Click the :icon:`fa-ellipsis-v` :guilabel:`(ellipsis)` icon for the relevant comment thread, then
+   click :guilabel:`Resolve this thread`.
+
+Once resolved, the comment thread is no longer accessible directly on the spreadsheet, but remains
+visible in the :guilabel:`Comments` panel; resolved threads are identified by a :icon:`fa-check`
+:guilabel:`(check)` icon.
+
+To reopen a resolved comment thread, from the :guilabel:`Comments` panel, click the
+:icon:`fa-ellipsis-v` :guilabel:`(ellipsis)` icon for the relevant comment thread, then click
+:guilabel:`Re-open this thread`.
+
+.. _spreadsheet/collaboration/chatter:
+
+Use a spreadsheet's chatter thread
+----------------------------------
+
+Whereas :ref:`comments <spreadsheet/collaboration/comments>` on specific spreadsheet cells are
+suited for discussions about specific elements of a spreadsheet, a spreadsheet’s :doc:`chatter
+thread <../discuss/chatter>` allows for a more general discussion.
+
+To access the chatter thread of a spreadsheet:
+
+#. With the **Documents** app open, navigate to the folder or section where the spreadsheet is
+   saved.
+#. Select the :icon:`oi-view-list` :guilabel:`(List)` view in the upper-right corner.
+#. Select the relevant spreadsheet, then click the :icon:`fa-info-circle` :guilabel:`(Info & tags)`
+   button in the upper-right corner next to the view selector. Alternatively, with the spreadsheet
+   selected, click the :icon:`fa-cog` :guilabel:`Action` button, then select :icon:`fa-info-circle`
+   :guilabel:`(Info & tags)`.
+
+The spreadsheet’s chatter thread opens on the right of the screen, below the spreadsheet's
+:ref:`details panel <documents/details-panel>`.
+
+
+==================================================
+SECTION: visualize_data.rst
+PATH: applications/productivity/spreadsheet/visualize_data.rst
+==================================================
+
+:nosearch:
+
+==========================
+Present and visualize data
+==========================
+
+.. toctree::
+   :titlesonly:
+
+   visualize_data/charts
+   visualize_data/conditional_formatting
+
+
+==================================================
+SECTION: work_with_data.rst
+PATH: applications/productivity/spreadsheet/work_with_data.rst
+==================================================
+
+:nosearch:
+
+==============
+Work with data
+==============
+
+.. toctree::
+   :titlesonly:
+
+   work_with_data/dynamic_pivot_tables
+   work_with_data/functions
+   work_with_data/global_filters
+

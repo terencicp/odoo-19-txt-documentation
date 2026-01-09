@@ -1,0 +1,950 @@
+
+
+==================================================
+SECTION: discuss.rst
+PATH: applications/productivity/discuss.rst
+==================================================
+
+:show-content:
+:hide-page-toc:
+
+=======
+Discuss
+=======
+
+Odoo **Discuss** is an internal communication app that allows users to connect through messages,
+notes, file sharing, and video calls. **Discuss** enables communication through a persistent chat
+window that works across applications, or through the dedicated *Discuss* dashboard.
+
+Upon opening the :menuselection:`Discuss app`, the :guilabel:`Discuss` dashboard appears.
+
+Inbox, starred, and history
+===========================
+
+Upon opening the :menuselection:`Discuss app`, the *Discuss* dashboard appears.
+
+On the :guilabel:`Discuss` dashboard, unread messages are visible in the :icon:`fa-inbox`
+:guilabel:`Inbox`. :icon:`fa-star-o` :guilabel:`Starred` is where starred messages are stored.
+:icon:`fa-history` :guilabel:`History` shows chatter updates for records in the Odoo database the
+user has been assigned to, or tagged on.
+
+Direct messages
+===============
+
+*Direct messages* allow the user to communicate privately with one or multiple team members. To
+start a new direct message, click the :icon:`fa-plus` icon, next to :guilabel:`Direct Messages` on
+the :guilabel:`Discuss` dashboard, and enter the name of the desired person in the :guilabel:`Start
+a conversation` search bar that appears.
+
+.. tip::
+   Multiple names can be selected in the :guilabel:`Start a conversation` search bar. Once all of
+   the names have been entered, press :kbd:`Enter`.
+
+Direct message actions
+----------------------
+
+Hover over a direct message in the chat window to see a menu of actions to take on the message.
+
+- :icon:`oi-smile-add` :guilabel:`(Add a Reaction)`: open a drop-down menu of emojis that can be
+  used to react to the direct message.
+- :icon:`fa-reply` :guilabel:`(Reply)`: reply to the direct message in a thread.
+- :icon:`fa-star-o` :guilabel:`(Mark as Todo)`: add the message to the :guilabel:`Starred` tab.
+- :icon:`fa-ellipsis-h` :guilabel:`(Expand)`: reveals more message actions, including:
+
+  - :icon:`fa-thumb-tack` :guilabel:`Pin`
+  - :icon:`fa-eye-slash` :guilabel:`Mark as Unread`
+  - :icon:`fa-pencil` :guilabel:`Edit`
+  - :icon:`fa-trash` :guilabel:`Delete`
+
+Conversation actions
+--------------------
+
+The icons in the top-right corner of a direct message conversation represent different actions the
+user can take on that conversation.
+
+Click :icon:`fa-bell` :guilabel:`Notification Settings` to set up notification preferences for the
+conversation, or click :icon:`fa-phone` :guilabel:`Start a Call` to begin a meeting. See the
+:ref:`Meetings <discuss/meetings>` section for more information about meetings.
+
+At the top of the direct message window, click the name of the direct message to change the group
+name, and choose to add a description in the adjacent :guilabel:`Add a description` field.
+
+.. image:: discuss/conversation-actions.png
+   :alt: View of the conversation actions.
+
+
+.. note::
+   The :guilabel:`Add a description` field is **only** available for group messages with more than
+   two participants.
+
+User status
+-----------
+
+It is helpful to see what colleagues are up to, and how quickly they can respond to messages, by
+checking their status. The status is displayed as a circle in the bottom-right corner of a contact's
+photo in the :icon:`fa-users` :guilabel:`(Members List)`.
+
+The color of the circle represents the user's status:
+
+- Green = online
+- Orange = away
+- White = offline
+- Airplane = out of the office
+
+Leave a direct message conversation
+-----------------------------------
+
+To leave a direct message conversations, click the :icon:`fa-times` :guilabel:`(Leave this channel)`
+icon next to the conversation name in the :guilabel:`Direct Messages` section of the sidebar.
+
+.. note::
+   Leaving a conversation does **not** delete the direct messages in the conversation. The direct
+   message conversation's history is visible when another direct message with the same person, or
+   group, is created.
+
+.. _discuss/meetings:
+
+Meetings
+========
+
+In **Discuss**, *Meetings* are video calls. To start a meeting from the :guilabel:`Discuss`
+dashboard, click :guilabel:`Start a meeting` in the top-left corner, and select who to invite to the
+meeting, via the :guilabel:`Invite People` drop-down window that appears. To start a meeting from a
+direct message, click the :icon:`fa-phone` :guilabel:`Start a Call` icon in the top-right corner.
+
+.. image:: discuss/meeting.png
+   :alt: View of a Meeting in Odoo Discuss.
+
+Once a meeting has been started, the following buttons can be used:
+
++-----------------------------+--------------------------------+
+| Icon                        | Use                            |
++=============================+================================+
+| :icon:`fa-microphone`       | :guilabel:`Mute`               |
++-----------------------------+--------------------------------+
+| :icon:`fa-microphone-slash` | :guilabel:`Unmute`             |
++-----------------------------+--------------------------------+
+| :icon:`fa-headphones`       | :guilabel:`Deafen`             |
++-----------------------------+--------------------------------+
+| :icon:`fa-deaf`             | :guilabel:`Undeafen`           |
++-----------------------------+--------------------------------+
+| :icon:`fa-video-camera`     | :guilabel:`Turn camera on/off` |
++-----------------------------+--------------------------------+
+| :icon:`fa-hand-paper-o`     | :guilabel:`Raise Hand`         |
++-----------------------------+--------------------------------+
+| :icon:`fa-desktop`          | :guilabel:`Share Screen`       |
++-----------------------------+--------------------------------+
+| :icon:`fa-arrows-alt`       | :guilabel:`Enter Full Screen`  |
++-----------------------------+--------------------------------+
+
+.. _discuss_app/notification_preferences:
+
+User-specific notification preferences
+======================================
+
+Access user-specific preferences for the **Discuss** app by navigating to :menuselection:`Settings
+app --> Manage Users`, select a user, then click the :guilabel:`Preferences` tab.
+
+.. image:: discuss/preferences-user.png
+   :alt: View of the Preferences tab for Odoo Discuss.
+
+By default, the :guilabel:`Notification` field is set as :guilabel:`Handle by Emails`. With this
+setting enabled, a notification email is sent by Odoo every time a message is sent from the chatter
+of a record, a note is sent with an `@` mention (from the chatter of a record), or a notification is
+sent for a record the user follows.
+
+By choosing :guilabel:`Handle in Odoo`, the above notifications are shown in the **Discuss** app's
+*Inbox*.
+
+Chat from different applications
+================================
+
+The **Discuss** application enables communication across all of Odoo's applications. To view chats
+and channels, or start a new message, select the speech bubbles that are consistently present in the
+upper-right corner of the database header.
+
+.. image:: discuss/discuss-in-other-apps.png
+   :alt: Use Discuss across other applications by clicking the speech bubbles.
+
+.. seealso::
+   - :doc:`discuss/team_communication`
+   - :doc:`/applications/essentials/activities`
+   - :doc:`discuss/ice_servers`
+   - :doc:`discuss/chatter`
+
+.. toctree::
+   :titlesonly:
+
+   discuss/team_communication
+   discuss/ice_servers
+   discuss/chatter
+   discuss/canned_responses
+
+
+==================================================
+SECTION: canned_responses.rst
+PATH: applications/productivity/discuss/canned_responses.rst
+==================================================
+
+================
+Canned responses
+================
+
+*Canned responses* are customizable inputs where a typed shortcut populates a longer response. A
+user enters a keyword shortcut, which is then automatically replaced by the expanded substitution
+response. Canned responses save time by allowing users to use shorthand phrases to populate longer
+messages. This also limits the possibility of errors when typing out longer messages because these
+are pre-set messages. This maintains consistency throughout customer interactions.
+
+Canned responses consist of two main components: the *shortcut* and the *substitution*. The shortcut
+is the keyword or key phrase that is to be replaced. The substitution is the longer message that
+replaces the shortcut.
+
+.. image:: canned_responses/canned-response-sample.png
+   :alt: A live chat conversation using a canned response.
+
+Canned responses are available :ref:`to use <discuss/use-cases>` in **Live Chat** conversations, the
+**Discuss** app, and the *Chatter*. Canned responses are also available in direct message
+conversations, channel conversations, and *WhatsApp* messages.
+
+.. _discuss/created-canned-response:
+
+Creating canned responses
+=========================
+
+Canned responses are managed through the **Discuss** application. To create a new canned response,
+or manage the list of existing responses, navigate to :menuselection:`Discuss app --> Configuration
+--> Canned Responses`.
+
+Then, to create a new canned response, click :guilabel:`New` at the top-left of the list. Doing so
+reveals a new blank line in the list.
+
+Canned responses consist of two main components, a *shortcut* the user enters, and the
+*substitution* that replaces the shortcut.
+
+.. image:: canned_responses/shortcut-substitution.png
+   :alt: A list of canned responses emphasizing the shortcut and substitution fields.
+
+Type a shortcut command in the :guilabel:`Shortcut` field. Next, click on the
+:guilabel:`Substitution` field, and type the message that will replace the shortcut.
+
+.. tip::
+   Try to connect the shortcut to the topic of the substitution. Not only does this make it easier
+   to use the responses, it prevents the list of responses from becoming disorganized and
+   overwhelming.
+
+The :guilabel:`Created by` field automatically populates with the name of the user that creates a
+new response. This field cannot be edited.
+
+To :ref:`share <discuss/sharing-responses>` this response with other users, select one or more
+groups in the :guilabel:`Authorized Group` field that should have access.
+
+.. warning::
+   If the :guilabel:`Authorized Group` field is left blank, the response can **only** be used by the
+   user that created it.
+
+   Canned responses created by the database are automatically credited as created by *OdooBot*. They
+   must be assigned to an *authorized group* before they can be used by **any** users. To view the
+   responses created by *OdooBot*, navigate to :menuselection:`Discuss app --> Configuration -->
+   Canned Responses`.
+
+Lastly, the :guilabel:`Last Used` field keeps track of the date and time each response was most
+recently used. This field cannot be edited.
+
+.. _discuss/sharing-responses:
+
+Share responses
+===============
+
+Canned responses, by default, are made available **only** to the user who creates them. To make a
+canned response available for others to use, they need to be shared.
+
+.. note::
+   Users with *Administrator* access rights can view and edit canned responses created by other
+   users through the **Discuss** app. However, they are **only** able to use them if they are
+   included in an authorized group that has been designated on that canned responses item line,
+   located on the :guilabel:`Canned Responses` page.
+
+Access to shared responses is granted on the :ref:`groups <access-rights/groups>` level.
+
+To view the *Groups* a user is a member of, first enable :ref:`Developer mode <developer-mode>`,
+then navigate to :menuselection:`Settings app --> Users & Companies --> Users`. Select a user from
+the list, and click to open their :guilabel:`User Record`. Then, click the :guilabel:`Groups` smart
+button at the top of the page.
+
+.. tip::
+   To view a list of users in a specific group, first enable :doc:`Developer mode
+   <../../general/developer_mode/>`. Next, navigate to :menuselection:`Settings app --> Users &
+   Companies --> Groups`. Select a group from the list, then click to open the :guilabel:`Group
+   Record`. A list of users is included on the :guilabel:`Users` tab.
+
+After determining what groups should have access to a response, they **must** :ref:`be added
+<discuss/created-canned-response>` to the :guilabel:`Authorized Groups` field for each canned
+response.
+
+.. note::
+   The user who created the response can use it, even if they are not a member of one of the
+   *Authorized Groups*.
+
+.. _discuss/use-cases:
+
+Use a canned response
+=====================
+
+To use a canned response in a conversation, click the :icon:`fa-plus-circle` :guilabel:`(plus)` icon
+in the message window. Then, click :guilabel:`Insert a Canned Response`. This opens a list of
+available canned responses. Either select a response from the list, or type the appropriate
+shortcut, then click the :icon:`fa-paper-plane` :guilabel:`(send)` icon or hit :kbd:`Enter`.
+
+.. tip::
+   Typing `::` in the *Chatter* composer, or chat window, on its own generates a drop-down list of
+   available canned responses. A response can be selected from the list, in addition to the use of
+   shortcuts.
+
+   To search through the list of available responses, type `::`, followed by the first few letters
+   of the shortcut.
+
+   .. image:: canned_responses/canned-responses-using.png
+      :alt: A live chat window with a list of all available canned responses.
+
+.. seealso::
+   - :doc:`Chatter <chatter>`
+   - :doc:`Discuss <../discuss>`
+   - :ref:`Commands and Canned Responses <live-chat/canned-responses>`
+
+
+==================================================
+SECTION: chatter.rst
+PATH: applications/productivity/discuss/chatter.rst
+==================================================
+
+=======
+Chatter
+=======
+
+.. |user| replace:: :icon:`fa-user-o` :guilabel:`(user)` icon
+.. |paperclip| replace:: :icon:`fa-paperclip` :guilabel:`(paperclip)` icon
+.. |ve| replace:: :icon:`fa-ellipsis-v` :guilabel:`(vertical ellipsis)`
+
+The *Chatter* feature is integrated throughout Odoo to streamline communication, maintain
+traceability, and provide accountability among team members. Chatter windows, known as *composers*,
+are located on almost every record within the database, and allow users to communicate with both
+internal users and external contacts.
+
+Chatter composers also enable users to log notes, upload files, and schedule activities.
+
+Chatter thread
+==============
+
+A *chatter thread* can be found on most pages in the database, and serves as a record of the updates
+and edits made to a record. A note is logged in the chatter thread when a change is made to the
+record. The note includes details of the change, and a time stamp.
+
+.. example::
+   A user, Mitchell Admin, needs to update the email address of a contact. After they save the
+   changes to the contact record, a note is logged in the chatter of the contact record with the
+   following information:
+
+   - The date when the change occurred.
+   - The email address as it was previously listed.
+   - The updated email address.
+
+   .. image:: chatter/chatter-thread-email-update.png
+      :alt: A close up of a chatter thread with an update to a contact record.
+
+If a record was created, or edited, via an imported file, or was otherwise updated through an
+intervention by the system, the chatter thread creates a log note, and credits the change to
+OdooBot.
+
+.. image:: chatter/odoo-bot-created.png
+   :alt: A close up of a chatter thread of an OdooBot created contact record.
+
+.. _discuss/add-followers:
+
+Add followers
+=============
+
+A *follower* is a user or contact that is added to a record and is notified when the record is
+updated, based on specific :ref:`follower subscription settings <discuss/edit-subscription>`.
+Followers can add themselves, or can be added by another user.
+
+.. note::
+   If a user creates, or is assigned to a record, they are automatically added as a follower.
+
+To follow a record, navigate to any record with a chatter thread. For example, to open a *Helpdesk*
+ticket, navigate to :menuselection:`Helpdesk app --> Tickets --> All Tickets`, and select a ticket
+from the list to open it.
+
+At the top-right, above the chatter composer, click :guilabel:`Follow`. Doing this changes the
+button to read :guilabel:`Following`. Click it again to :guilabel:`Unfollow`.
+
+Manage followers
+----------------
+
+To add another user, or contact, as a follower, click the |user|. This opens a drop-down list of the
+current followers. Click :guilabel:`Add Followers` to open an :guilabel:`Invite Follower` pop-up
+window.
+
+Select one or more contacts from the :guilabel:`Recipients` drop-down list. To notify the contacts,
+tick the :guilabel:`Send Notification` checkbox. Edit the message template as desired, then click
+:guilabel:`Add Followers`.
+
+To remove followers, click the |user| to open the current followers list. Find the name of the
+follower to be removed, and click the :icon:`fa-remove` :guilabel:`(remove)` icon.
+
+.. _discuss/edit-subscription:
+
+Edit follower subscription
+--------------------------
+
+The updates a follower receives can vary based on their subscription settings. To see the type of
+updates a follower is subscribed to, and to edit the list, click the |user|. Find the appropriate
+follower in the list, then click the :icon:`fa-pencil` :guilabel:`(pencil)` icon. This opens the
+:guilabel:`Edit Subscription` pop-up window for the follower.
+
+The list of available subscription settings varies depending on the record type. For example, a
+follower of a *Helpdesk* ticket may be informed when the ticket is rated. This option would not be
+available for the followers of a *CRM* opportunity.
+
+Tick the checkbox for any updates the follower should receive, and clear the checkbox for any
+updates they should **not** receive. Click :guilabel:`Apply` when finished.
+
+.. figure:: chatter/chatter-edit-subscription.png
+   :alt: The Edit Subscription window on a Helpdesk ticket.
+
+   The Edit Subscription options vary depending on the record type. These are the options for a
+   Helpdesk ticket.
+
+.. _discuss/log-notes:
+
+Log notes
+=========
+
+The chatter function includes the ability to log internal notes on individual records. These notes
+are only accessible to internal users, and are available on any records that feature a chatter
+thread.
+
+To log an internal note, first navigate to a record. For example, to open a *CRM* opportunity,
+navigate to :menuselection:`CRM app --> Sales --> My Pipeline`, and click on the Kanban card of an
+opportunity to open it. Then, at the top-right, above the chatter composer, click :guilabel:`Log
+note`.
+
+Enter the note in the chatter composer. To tag an internal user, type `@`, and begin typing the name
+of the person to tag. Then, select a name from the drop-down menu. Depending on their notification
+settings, the user is notified by email, or through Odoo.
+
+.. important::
+   Outside contacts can also be tagged in an internal log note. The contact then receives an email
+   with the contents of the note they were tagged in, including any attachments added directly to
+   the note. If they respond to the email, their response is logged in the chatter, and they are
+   added to the record as a follower.
+
+   Outside contacts are **not** able to log in to view the entire chatter thread, and are only
+   notified of specific updates, based on their :ref:`follower subscription settings
+   <discuss/edit-subscription>`, or when they are tagged directly.
+
+.. _discuss/send-messages:
+
+Send messages
+=============
+
+Chatter composers can send messages to outside contacts, without having to leave the database, or
+open a different application. This makes it easy to communicate with potential customers in the
+*Sales* and *CRM* applications, or vendors in the *Purchase* app.
+
+To send a message, first navigate to a record. For example, to send a message from a *CRM*
+opportunity, navigate to :menuselection:`CRM app --> Sales --> My Pipeline`, and click on the Kanban
+card of an opportunity to open it. Then, at the top-right, above the chatter composer, click
+:guilabel:`Send message`.
+
+.. tip::
+   Press :command:`Ctrl + Enter` to send a message, instead of using the :guilabel:`Send` button.
+
+If any :ref:`followers <discuss/add-followers>` have been added to the record, they are added as
+recipients of the message.
+
+.. warning::
+   :ref:`Followers <discuss/add-followers>` of a record are added as recipients of a message
+   automatically. If a follower should **not** receive a message, they must be removed as a follower
+   before the message is sent, or a note is logged.
+
+.. image:: chatter/send-message-followers.png
+   :alt: A chatter composer preparing to send a message to the followers of a CRM opportunity and
+         the customer listed on the opportunity record.
+
+Expand full composer
+--------------------
+
+The chatter composer can be expanded to a larger pop-up window, allowing for additional
+customizations.
+
+To open the full composer, click the :icon:`fa-expand` :guilabel:`(expand)` icon in the bottom-right
+corner of the composer window.
+
+.. figure:: chatter/chatter-expand-icon.png
+   :alt: A chatter composer with emphasis on the expand icon.
+
+   The expand icon in a chatter composer.
+
+Doing this opens a :guilabel:`Compose Email` pop-up window. Confirm or edit the intended
+:guilabel:`Recipients` of the message, or add additional recipients. The :guilabel:`Subject` field
+auto-populates based on the title of the record, though it can be edited, if desired.
+
+To use an :doc:`email template <../../general/companies/email_template/>` for the message, click the
+|ve| icon, then select a template from the list. Existing templates can also be overwritten or
+deleted from this menu.
+
+.. note::
+   The number and type of templates available vary, based on the record the message is created from.
+
+Click :icon:`fa-paperclip` :guilabel:`(paperclip)` icon to add any files to the message, then click
+:guilabel:`Send`.
+
+.. image:: chatter/chatter-full-composer.png
+   :alt: The expanded full chatter composer in the CRM application.
+
+Generate text with AI
+~~~~~~~~~~~~~~~~~~~~~
+
+To generate message text using AI, click the AI icon from the expanded chatter composer. This opens
+a :guilabel:`Generate Text with AI` pop-up.
+
+Enter a prompt in the :guilabel:`Send a message` field to instruct the AI on the type of content
+needed, then press enter, or click the :icon:`fa-paper-plane` :guilabel:`(paper plane)` icon.
+
+.. image:: chatter/chatter-generate-text-with-ai.png
+   :alt: The generate text with AI popup.
+
+After the text is generated, click :guilabel:`Insert` to insert the text into the message composer.
+
+.. tip::
+   Before sending the final message, be sure to edit any commentary from the AI, or any text in
+   brackets.
+
+   .. image:: chatter/chatter-ai-draft-email.png
+      :alt: A draft of an email with text generated by AI.
+
+Edit sent messages
+------------------
+
+Messages can be edited after they are sent, to fix typos, correct mistakes, or add missing
+information.
+
+.. note::
+   When messages are edited after they have been sent, an updated message is **not** sent to the
+   recipient.
+
+To edit a sent message, click the |ve| menu to the right of the message. Then, select
+:guilabel:`Edit`. Make any necessary adjustments to the message.
+
+.. image:: chatter/chatter-edit.png
+   :alt: The edit message option in a chatter thread.
+
+To save the changes, press :command:`Ctrl + Enter`. To discard the changes, press :command:`Escape`.
+
+.. important::
+   Users with Admin-level access rights can edit any sent messages. Users without Admin rights can
+   **only** edit messages they created.
+
+.. _discuss/search-messages:
+
+Search messages
+===============
+
+Chatter threads can become long after a while, because of all the information they contain. To make
+it easier to find a specific entry, users can search the text of messages and notes for specific
+keywords.
+
+First, select a record with a chatter thread. For example, to search a *CRM* opportunity, navigate
+to :menuselection:`CRM app --> Sales --> My Pipeline`, and click on the Kanban card of an
+opportunity to open it. Then, at the top-right, above the chatter composer, click the
+:icon:`oi-search` :guilabel:`(search)` icon to open the search bar.
+
+Enter a keyword or phrase into the search bar, then hit :command:`Enter`, or click the
+:icon:`oi-search` :guilabel:`(search)` icon to the right of the search bar. Any messages or notes
+containing the keyword or phrase entered are listed below the search bar, with the keyword
+highlighted.
+
+To be taken directly to a particular message in the chatter thread, hover over the upper-right
+corner of the result to reveal a :guilabel:`Jump` button. Click this button to be directed to that
+message's location in the thread.
+
+.. figure:: chatter/chatter-search.png
+   :alt: Search results in a chatter thread emphasising the search icon and the jump button.
+
+   Search results in a chatter thread. Hover over the upper-right corner of a result to see the
+   **Jump** option. Click it to be taken directly to that message in the chatter thread.
+
+.. _discuss/schedule-activities:
+
+Schedule activities
+===================
+
+*Activities* are follow-up tasks tied to a record in an Odoo database. Activities can be scheduled
+on any database page that contains a chatter thread, Kanban view, list view, or activities view of
+an application.
+
+To schedule an activity through a chatter thread, click the :guilabel:`Activities` button, located
+at the top of the chatter on any record. On the :guilabel:`Schedule Activity` pop-up window that
+appears, select an :guilabel:`Activity Type` from the drop-down menu.
+
+.. tip::
+   Individual applications have a list of *Activity Types* dedicated to that application. For
+   example, to view and edit the activities available for the *CRM* application, go to
+   :menuselection:`CRM app --> Configuration --> Activity Types`.
+
+Enter a title for the activity in the :guilabel:`Summary` field, located in the :guilabel:`Schedule
+Activity` pop-up window.
+
+Select a name from the :guilabel:`Assigned to` drop-down menu to assign the activity to a different
+user. Otherwise, the user creating the activity is automatically assigned.
+
+Add any additional information in the optional :guilabel:`Log a note...` field.
+
+.. note::
+   The :guilabel:`Due Date` field on the :guilabel:`Schedule Activity` pop-up window auto-populates
+   based on the configuration settings for the selected :guilabel:`Activity Type`. However, this
+   date can be changed by selecting a day on the calendar in the :guilabel:`Due Date` field.
+
+Lastly, click one of the following buttons:
+
+- :guilabel:`Schedule`: adds the activity to the chatter under :guilabel:`Planned activities`.
+- :guilabel:`Schedule & Mark as Done`: adds the details of the activity to the chatter under
+  :guilabel:`Today`. The activity is added to :guilabel:`Today`, and is automatically marked as
+  done.
+- :guilabel:`Done \& Schedule Next`: adds the task under :guilabel:`Today` marked as done, and opens
+  a new activity window.
+- :guilabel:`Cancel`: discards any changes made on the pop-up window.
+
+Scheduled activities are added to the chatter for the record under :guilabel:`Planned activities`,
+and are color-coded based on their due date.
+
+- **Red** icons indicate an overdue activity.
+- **Yellow** icons indicate an activity with a due date scheduled for the current date.
+- **Green** icons indicate an activity with a due date scheduled in the future.
+
+.. image:: chatter/chatter-activity-icons.png
+   :alt: A chatter thread with planned activities with varying due dates.
+
+.. tip::
+   Click the :icon:`fa-info-circle` :guilabel:`(info)` icon next to a planned activity to see
+   additional details.
+
+   .. image:: chatter/planned-activity-details.png
+      :alt: A detailed view of a planned activity.
+
+After completing an activity, click :guilabel:`Mark Done` under the activity entry in the chatter.
+This opens a :guilabel:`Mark Done` pop-up window, where additional notes about the activity can be
+entered. After adding any comments to the pop-up window, click: :guilabel:`Done \& Schedule Next`,
+:guilabel:`Done`, or :guilabel:`Discard`.
+
+After the activity is marked complete, an entry with the activity type, title, and any other details
+that were included in the pop-up window are listed in the chatter.
+
+.. image:: chatter/chatter-completed-activity.png
+   :alt: A chatter thread with a completed activity, included additional details.
+
+.. _discuss/attach-files:
+
+Attach files
+============
+
+Files can be added as attachments in the chatter, either to send with messages, or to include with a
+record.
+
+.. note::
+   After a file has been added to a chatter thread, it can be downloaded by any user with access to
+   the thread. Click the |paperclip| to make the files header visible, if necessary. Then, click the
+   :icon:`fa-download` :guilabel:`(download)` icon the file to download it.
+
+To attach a file, click the |paperclip| located at the top of the chatter composer of any record
+that contains a chatter thread.
+
+This opens a file explorer pop-up window. Navigate to the desired file, select it, then click
+:guilabel:`Open` to add it to the record. Alternatively, files can be dragged and dropped directly
+onto a chatter thread.
+
+After files have been added, they are listed in the chatter thread, under a :guilabel:`Files`
+heading.
+
+.. note::
+   After at least one file has been added to a chatter record, a new button labeled
+   :guilabel:`Attach files` appears below the :guilabel:`Files` heading. To attach any additional
+   files, this is the button that **must** be used, instead of the |paperclip| at the top of the
+   chatter thread.
+
+   After the :guilabel:`Files` section heading appears in the thread, clicking the |paperclip| no
+   longer opens a file explorer pop-up window. Instead, clicking the |paperclip| toggles the
+   :guilabel:`Files` section from visible to invisible in the chatter thread.
+
+   .. image:: chatter/chatter-attach-files.png
+      :alt: A chatter thread with a file attached and the Attach files button added.
+
+.. _discuss/integrations:
+
+Integrations
+============
+
+Beyond the standard features, additional integrations can be enabled to work with the chatter
+feature, specifically *WhatsApp* and *Google Translate*.
+
+.. important::
+   Before the *WhatsApp* and *Google Translate* integrations can be used with the chatter, they
+   **must** be configured. Step-by-step instructions on how to set-up each of these features can be
+   found in the documentation below:
+
+   - :doc:`WhatsApp <../whatsapp>`
+   - :doc:`Google Translate <../../general/integrations/google_translate>`
+
+WhatsApp
+--------
+
+*WhatsApp* is an instant messaging and voice-over-IP app that allows users to send and receive
+messages, as well as share content.
+
+.. warning::
+   *WhatsApp* is an Odoo Enterprise-only application that does **not** work in the Odoo Community
+   edition. To sign up for an Odoo Enterprise edition, click here: `Odoo Free Trial
+   <https://www.odoo.com/trial>`_.
+
+After *WhatsApp* has been configured and enabled within a database, a :guilabel:`WhatsApp` button is
+added above the chatter composer on any applicable record. If one or more approved *WhatsApp*
+templates are found for that model, clicking this button opens a :guilabel:`Send WhatsApp Message`
+pop-up window.
+
+.. important::
+   *WhatsApp* templates **must** be approved before they can be used. See :ref:`WhatsApp templates
+   <productivity/whatsapp/templates>` for more information.
+
+.. image:: chatter/whats-app-message.png
+   :alt: A send WhatsApp message pop-up window.
+
+Google Translate
+----------------
+
+*Google Translate* can be used to translate user-generated text in the Odoo chatter.
+
+To enable *Google Translate* on a database, an *API key* must first :doc:`be created
+<../../general/integrations/google_translate>` through the `Google API Console
+<https://console.developers.google.com/>`_.
+
+After creating the API key, navigate to the :menuselection:`Settings app --> Discuss section` and
+paste the key in the :guilabel:`Message Translation` field. Click :guilabel:`Save` to save the
+changes.
+
+Translate a chatter message
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To translate a user's text from another language, click the |ve| menu to the right of the chatter.
+Then, select :guilabel:`Translate`. The content translates to the language set in the :doc:`user's
+preferences <../../general/users/language/>`.
+
+.. image:: chatter/chatter-translate-message.png
+   :alt: alt text
+
+.. important::
+   Using the *Google Translate* API **requires** a current billing account with `Google
+   <https://myaccount.google.com/>`_.
+
+.. seealso::
+   - :doc:`Discuss <../discuss>`
+   - :doc:`Discuss Channels <../discuss/team_communication/>`
+   - :doc:`Activities <../../essentials/activities>`
+   - :doc:`WhatsApp <../whatsapp>`
+
+
+==================================================
+SECTION: ice_servers.rst
+PATH: applications/productivity/discuss/ice_servers.rst
+==================================================
+
+=================================
+Configure ICE servers with Twilio
+=================================
+
+Odoo Discuss uses WebRTC API and peer-to-peer connections for voice and video calls. If one of the
+call attendees is behind a symmetric NAT, you need to configure an ICE server to establish a
+connection to the call attendee. To set up an ICE server, first, create a Twilio account for video
+calls, and then, connect that Twilio account to Odoo.
+
+Create a Twilio account
+=======================
+
+First, go to `Twilio <https://www.twilio.com>`_ and click :guilabel:`Sign up` to create a new
+Twilio account. Next, enter your name and email address, create a password, and accept Twilio's
+terms of service. Then, click :guilabel:`Start your free trial`. Verify your email address with
+Twilio, as per their instructions.
+
+Next, enter your phone number into Twilio. Then, Twilio will send you an SMS text message
+containing a verification code. Enter the verification code into Twilio to verify your phone
+number.
+
+After that, Twilio redirects to a welcome page. Use the following list to answer Twilio's
+questions:
+
+- For :guilabel:`Which Twilio product are you here to use?`, select :guilabel:`Video`.
+- For :guilabel:`What do you plan to build with Twilio?`, select :guilabel:`Other`.
+- For :guilabel:`How do you want to build with Twilio?`, select :guilabel:`With no code at all`.
+- For :guilabel:`What is your goal today?`, select :guilabel:`3rd party integrations`.
+
+.. image:: ice_servers/twilio-welcome.png
+   :align: center
+   :alt: The Twilio welcome page.
+
+If necessary, change the billing country. Finally, click :guilabel:`Get Started with Twilio`.
+
+Locate the Twilio Account SID and Auth Token
+============================================
+
+To locate the Account SID and Auth Token, go to the Twilio account dashboard. Then, click
+:guilabel:`Develop` on the sidebar. In the :guilabel:`Account Info` section, locate the
+:guilabel:`Account SID` and the :guilabel:`Auth Token`. Both of these are needed to connect Twilio
+to Odoo.
+
+.. image:: ice_servers/twilio-acct-info.png
+   :align: center
+   :alt: The Twilio Account SID and Auth Token can be found uner the Account Info section.
+
+Connect Twilio to Odoo
+======================
+
+Open the Odoo database and go to :menuselection:`Settings --> General Settings --> Discuss`. Check
+the box next to :guilabel:`Use Twilio ICE servers` and enter the Twilio account's
+:guilabel:`Account SID` and :guilabel:`Auth Token`. Finally, click :guilabel:`Save` to apply these
+changes.
+
+.. image:: ice_servers/connect-twilio-to-odoo.png
+   :align: center
+   :alt: Enable the "Use Twilio ICE servers" option in Odoo General Settings.
+
+Define a list of custom ICE servers
+===================================
+
+This step is not required for the Twilio configuration. However, if Twilio is not configured or is
+not working at any given moment, Odoo will fall back on the custom ICE servers list. The user must
+define the list of custom ICE servers.
+
+In :menuselection:`Settings --> General Settings --> Discuss`, click the :guilabel:`ICE Servers`
+button under :guilabel:`Custom ICE server list`.
+
+.. image:: ice_servers/custom-ice-servers-list.png
+   :align: center
+   :alt: The "ICE Servers" button in Odoo General Settings.
+
+Odoo will redirect to the :guilabel:`ICE servers` page. Here you can define your own list of ICE
+servers.
+
+.. image:: ice_servers/ice-servers-page.png
+   :align: center
+   :alt: The "ICE servers" page in Odoo.
+
+.. note::
+   For on-premise instances of Odoo, the package `python3-gevent` is necessary for the Discuss
+   module to run calls/video calls on Ubuntu (Linux) servers.
+
+
+==================================================
+SECTION: team_communication.rst
+PATH: applications/productivity/discuss/team_communication.rst
+==================================================
+
+===================================
+Use channels for team communication
+===================================
+
+Use channels in the Odoo **Discuss** app to organize discussions between individual teams,
+departments, projects, or any other group that requires regular communication. With channels,
+employees can communicate inside dedicated spaces within the Odoo database around specific topics,
+updates, and latest developments having to do with the organization.
+
+Create a new channel
+====================
+
+To create a new channel, navigate to the :menuselection:`Discuss` app, and then click on the
+:icon:`fa-plus` :guilabel:`(plus)` icon next to the :guilabel:`Channels` heading in the left-side
+menu.
+
+.. image:: team_communication/create-new-channel.png
+   :alt: View of discuss's sidebar and a channel being created in Odoo Discuss.
+
+The channel's :guilabel:`Group Name`, :guilabel:`Description`, and :guilabel:`Privacy` settings can
+be modified by clicking on the channel's settings, represented by a :icon:`fa-cog`
+:guilabel:`(gear)` icon in the left sidebar menu, next to the channel's name.
+
+Privacy tab
+-----------
+
+To control which users can join a channel, open the channel's setting page and navigate to the
+:guilabel:`Privacy` tab.
+
+.. image:: team_communication/channel-settings.png
+   :alt: View of a channel's settings form in Odoo Discuss.
+
+To limit access of the channel to a specific group, select an option from the :guilabel:`Authorized
+Group` drop-down menu.
+
+To automatically add members of a group as followers of the channel, click the :guilabel:`Auto
+Subscribe Groups` field, and select one or more groups from the list.
+
+.. note::
+   Users who are automatically added as followers can manually edit their subscription to the
+   channel, if necessary.
+
+The option to :guilabel:`Auto Subscribe Groups` automatically adds users of that particular user
+group as followers. In other words, while :guilabel:`Authorized Groups` limits which users can
+access the channel, :guilabel:`Auto Subscribe Groups` automatically adds users as members as long as
+they are part of a specific user group. The same is true for :guilabel:`Auto Subscribe Departments`.
+
+Invite members to a channel
+---------------------------
+
+To invite members to a channel, click on the :guilabel:`Members` tab. Click :guilabel:`Add a line`,
+then select either a :guilabel:`Partner` or :guilabel:`Guest` from the drop-down menu.
+
+Inviting members can also be done from the **Discuss** app's main dashboard, by selecting the
+channel, clicking the :icon:`fa-user-plus` :guilabel:`(add user)` icon in the top-right corner of
+the dashboard, and finally clicking :guilabel:`Invite to Channel` once all the users have been
+added.
+
+.. image:: team_communication/invite-channel.png
+   :alt: View of Discuss' option to invite members in Odoo Discuss.
+
+Quick search bar
+================
+
+Once at least 20 channels, direct messages, or live chat conversations are pinned in the sidebar, a
+:guilabel:`Quick search…` bar is displayed. This feature is a convenient way to filter conversations
+and find relevant communications.
+
+.. image:: team_communication/quick-search.png
+   :alt: View of the Discuss' sidebar emphasizing the quick search bar in Odoo Discuss.
+
+Finding channels
+----------------
+
+To view all available channels, click on the :icon:`fa-cog` :guilabel:`(gear)` icon to the right of
+the :guilabel:`CHANNELS` menu. Users can join or leave channels on this screen by clicking the
+:guilabel:`Join` or :guilabel:`Leave` buttons that appear in the channel boxes.
+
+There is also the ability to apply filtering criteria and save them for later use. The
+:guilabel:`Search...` function accepts wildcards by using the underscore character [ `_` ], and
+specific searches can be saved by using the :menuselection:`Favorites --> Save Current Search`
+drop-down menu.
+
+Linking channel in chatter
+==========================
+
+Channels can be linked in the *chatter* of a record to share relvant discussions. To do so, type:
+`#` and the channel name. Click or press enter on the *Channel* name. Upon logging the note a link
+to the channel appears. After clicking on the link a chat window with the channel conversation pops
+up in the lower right corner of the screen.
+
+Users are able to contribute to this group channel by typing messages in window and pressing
+*enter*.
+
+.. image:: team_communication/chatter-channel.png
+   :alt: Channel linked in chatter.
+
+.. seealso::
+   - :doc:`../discuss`
+   - :doc:`/applications/essentials/activities`

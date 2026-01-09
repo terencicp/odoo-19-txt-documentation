@@ -1,0 +1,2552 @@
+
+
+==================================================
+SECTION: tutorials.rst
+PATH: developer/tutorials.rst
+==================================================
+
+:show-content:
+:hide-page-toc:
+
+=========
+Tutorials
+=========
+
+.. toctree::
+   tutorials/setup_guide
+   tutorials/server_framework_101
+   tutorials/discover_js_framework
+   tutorials/master_odoo_web_framework
+   tutorials/define_module_data
+   tutorials/restrict_data_access
+   tutorials/unit_tests
+   tutorials/importable_modules
+   tutorials/mixins
+   tutorials/pdf_reports
+   tutorials/website_theme
+
+.. tip::
+   If you are new to Odoo development, we recommend starting with the :doc:`setup guide
+   <tutorials/setup_guide>`.
+
+Learn the server and web frameworks
+===================================
+
+.. cards::
+
+   .. card:: Server framework 101
+      :target: tutorials/server_framework_101
+      :tag: Beginner
+      :large:
+
+      This introductory tutorial is designed for complete beginners seeking to get started in Odoo
+      development. It covers the essential aspects and key concepts of the server framework. Learn
+      to create a simple module from scratch with step-by-step instructions and practical insights.
+
+   .. card:: Discover the web framework
+      :target: tutorials/discover_js_framework
+      :tag: Beginner
+
+      This tutorial will teach the basics of the web framework and how to work with Owl components
+      by customizing the web client.
+
+   .. card:: Master the web framework
+      :target: tutorials/master_odoo_web_framework
+      :tag: Advanced
+
+      Become an expert in the web framework. A large variety of features are covered such as fields,
+      views, and even the kitten mode.
+
+Expand your knowledge on the server framework
+=============================================
+
+.. cards::
+
+   .. card:: Define module data
+      :target: tutorials/define_module_data
+      :tag: Beginner
+
+      Define master and demo data for an Odoo module, leveraging the strengths of the CSV and XML
+      file formats to accommodate specific data requirements.
+
+   .. card:: Restrict access to data
+      :target: tutorials/restrict_data_access
+      :tag: Beginner
+
+      Implement security measures to restrict access to sensitive data with the help of groups,
+      access rights, and record rules.
+
+   .. card:: Safeguard your code with unit tests
+      :target: tutorials/unit_tests
+      :tag: Beginner
+
+      Write effective unit tests in Python to ensure the resilience of your code and safeguard it
+      against unexpected behaviors and regressions.
+
+   .. card:: Write importable modules
+      :target: tutorials/importable_modules
+
+      Write modules that define new models, fields and logic using only data files.
+
+   .. card:: Reuse code with mixins
+      :target: tutorials/mixins
+
+      Create mixins to code features once and reuse them in multiple models.
+
+   .. card:: Build PDF reports
+      :target: tutorials/pdf_reports
+
+      Use QWeb, Odoo's powerful templating engine, to create custom PDF reports for your documents.
+
+   .. card:: Build a website theme
+      :target: tutorials/website_theme
+
+      Create a tailored website from scratch fully integrated with Odoo and editable via the Website
+      Builder.
+
+
+==================================================
+SECTION: backend.rst
+PATH: developer/tutorials/backend.rst
+==================================================
+
+:orphan:
+
+.. _howto/base:
+.. _howto/module:
+
+=================
+Building a Module
+=================
+
+.. danger::
+   This tutorial is outdated. We recommend reading :doc:`server_framework_101` instead.
+
+.. warning::
+   This tutorial requires :doc:`having installed Odoo </administration/on_premise>`
+
+Start/Stop the Odoo server
+==========================
+
+Odoo uses a client/server architecture in which clients are web browsers
+accessing the Odoo server via RPC.
+
+Business logic and extension is generally performed on the server side,
+although supporting client features (e.g. new data representation such as
+interactive maps) can be added to the client.
+
+In order to start the server, simply invoke the command :ref:`odoo-bin
+<reference/cmdline>` in the shell, adding the full path to the file if
+necessary:
+
+.. code:: bash
+
+   odoo-bin
+
+The server is stopped by hitting ``Ctrl-C`` twice from the terminal, or by
+killing the corresponding OS process.
+
+Build an Odoo module
+====================
+
+Both server and client extensions are packaged as *modules* which are
+optionally loaded in a *database*.
+
+Odoo modules can either add brand new business logic to an Odoo system, or
+alter and extend existing business logic: a module can be created to add your
+country's accounting rules to Odoo's generic accounting support, while the
+next module adds support for real-time visualisation of a bus fleet.
+
+Everything in Odoo thus starts and ends with modules.
+
+Composition of a module
+-----------------------
+
+An Odoo module can contain a number of elements:
+
+Business objects
+    Declared as Python classes, these resources are automatically persisted
+    by Odoo based on their configuration
+
+:doc:`Object views <../reference/user_interface/view_architectures>`
+    Definition of business objects UI display
+
+:ref:`Data files <reference/data>`
+    XML or CSV files declaring the model metadata :
+
+    * :doc:`views <../reference/user_interface/view_architectures>` or :ref:`reports
+      <reference/reports>`,
+    * configuration data (modules parametrization, :ref:`security rules <reference/security>`),
+    * demonstration data
+    * and more
+
+:ref:`Web controllers <reference/controllers>`
+    Handle requests from web browsers
+
+Static web data
+    Images, CSS or javascript files used by the web interface or website
+
+Module structure
+----------------
+
+Each module is a directory within a *module directory*. Module directories
+are specified by using the :option:`--addons-path <odoo-bin --addons-path>`
+option.
+
+.. tip::
+   :class: aphorism
+
+   most command-line options can also be set using :ref:`a configuration file
+   <reference/cmdline/config>`
+
+An Odoo module is declared by its :ref:`manifest <reference/module/manifest>`.
+
+A module is also a
+`Python package <http://docs.python.org/2/tutorial/modules.html#packages>`_
+with a ``__init__.py`` file, containing import instructions for various Python
+files in the module.
+
+For instance, if the module has a single ``mymodule.py`` file ``__init__.py``
+might contain::
+
+    from . import mymodule
+
+Odoo provides a mechanism to help set up a new module, :ref:`odoo-bin
+<reference/cmdline/server>` has a subcommand :ref:`scaffold
+<reference/cmdline/scaffold>` to create an empty module:
+
+.. code-block:: console
+
+   $ odoo-bin scaffold <module name> <where to put it>
+
+The command creates a subdirectory for your module, and automatically creates a
+bunch of standard files for a module. Most of them simply contain commented code
+or XML. The usage of most of those files will be explained along this tutorial.
+
+.. exercise:: Module creation
+
+   Use the command line above to  create an empty module Open Academy, and install it in Odoo.
+
+Object-Relational Mapping
+-------------------------
+
+A key component of Odoo is the :abbr:`ORM (Object-Relational Mapping)` layer.
+This layer avoids having to write most :abbr:`SQL (Structured Query Language)`
+by hand and provides extensibility and security services\ [#rawsql]_.
+
+Business objects are declared as Python classes extending
+:class:`~odoo.models.Model` which integrates them into the automated
+persistence system.
+
+Models can be configured by setting a number of attributes at their
+definition. The most important attribute is
+:attr:`~odoo.models.Model._name` which is required and defines the name for
+the model in the Odoo system. Here is a minimally complete definition of a
+model::
+
+    from odoo import models
+    class MinimalModel(models.Model):
+        _name = 'test.model'
+
+Model fields
+------------
+
+Fields are used to define what the model can store and where. Fields are
+defined as attributes on the model class::
+
+    from odoo import models, fields
+
+    class LessMinimalModel(models.Model):
+        _name = 'test.model2'
+
+        name = fields.Char()
+
+Common Attributes
+~~~~~~~~~~~~~~~~~
+
+Much like the model itself, its fields can be configured, by passing
+configuration attributes as parameters::
+
+    name = fields.Char(required=True)
+
+Some attributes are available on all fields, here are the most common ones:
+
+:attr:`~odoo.fields.Field.string` (``unicode``, default: field's name)
+    The label of the field in UI (visible by users).
+:attr:`~odoo.fields.Field.required` (``bool``, default: ``False``)
+    If ``True``, the field can not be empty, it must either have a default
+    value or always be given a value when creating a record.
+:attr:`~odoo.fields.Field.help` (``unicode``, default: ``''``)
+    Long-form, provides a help tooltip to users in the UI.
+:attr:`~odoo.fields.Field.index` (``bool``, default: ``False``)
+    Requests that Odoo create a `database index`_ on the column.
+
+Simple fields
+~~~~~~~~~~~~~
+
+There are two broad categories of fields: "simple" fields which are atomic
+values stored directly in the model's table and "relational" fields linking
+records (of the same model or of different models).
+
+Example of simple fields are :class:`~odoo.fields.Boolean`,
+:class:`~odoo.fields.Date`, :class:`~odoo.fields.Char`.
+
+Reserved fields
+~~~~~~~~~~~~~~~
+
+Odoo creates a few fields in all models\ [#autofields]_. These fields are
+managed by the system and shouldn't be written to. They can be read if
+useful or necessary:
+
+:attr:`~odoo.fields.Model.id` (:class:`~odoo.fields.Id`)
+    The unique identifier for a record in its model.
+:attr:`~odoo.fields.Model.create_date` (:class:`~odoo.fields.Datetime`)
+    Creation date of the record.
+:attr:`~odoo.fields.Model.create_uid` (:class:`~odoo.fields.Many2one`)
+    User who created the record.
+:attr:`~odoo.fields.Model.write_date` (:class:`~odoo.fields.Datetime`)
+    Last modification date of the record.
+:attr:`~odoo.fields.Model.write_uid` (:class:`~odoo.fields.Many2one`)
+    user who last modified the record.
+
+Special fields
+~~~~~~~~~~~~~~
+
+By default, Odoo also requires a ``name`` field on all models for various
+display and search behaviors. The field used for these purposes can be
+overridden by setting :attr:`~odoo.models.Model._rec_name`.
+
+.. exercise:: Define a model
+
+   Define a new data model *Course* in the *openacademy* module. A course has a title and a
+   description. Courses must have a title.
+
+Data files
+----------
+
+Odoo is a highly data driven system. Although behavior is customized using
+Python_ code part of a module's value is in the data it sets up when loaded.
+
+.. tip:: some modules exist solely to add data into Odoo
+   :class: aphorism
+
+Module data is declared via :ref:`data files <reference/data>`, XML files with
+``<record>`` elements. Each ``<record>`` element creates or updates a database
+record.
+
+.. code-block:: xml
+
+   <odoo>
+
+           <record model="{model name}" id="{record identifier}">
+               <field name="{a field name}">{a value}</field>
+           </record>
+
+   </odoo>
+
+* ``model`` is the name of the Odoo model for the record.
+* ``id`` is an :term:`external identifier`, it allows referring to the record
+  (without having to know its in-database identifier).
+* ``<field>`` elements have a ``name`` which is the name of the field in the
+  model (e.g. ``description``). Their body is the field's value.
+
+Data files have to be declared in the manifest file to be loaded, they can
+be declared in the ``'data'`` list (always loaded) or in the ``'demo'`` list
+(only loaded in demonstration mode).
+
+.. exercise:: Define demonstration data
+
+   Create demonstration data filling the *Courses* model with a few demonstration courses.
+
+.. tip::
+   The content of the data files is only loaded when a module is installed or updated.
+
+   After making some changes, do not forget to use :ref:`odoo-bin -u openacademy
+   <reference/cmdline>` to save the changes to your database.
+
+.. _howtos/module/actions:
+
+Actions and Menus
+-----------------
+
+Actions and menus are regular records in database, usually declared through
+data files. Actions can be triggered in three ways:
+
+#. by clicking on menu items (linked to specific actions)
+#. by clicking on buttons in views (if these are connected to actions)
+#. as contextual actions on object
+
+Because menus are somewhat complex to declare there is a ``<menuitem>``
+shortcut to declare an ``ir.ui.menu`` and connect it to the corresponding
+action more easily.
+
+.. code-block:: xml
+
+   <record model="ir.actions.act_window" id="action_list_ideas">
+       <field name="name">Ideas</field>
+       <field name="res_model">idea.idea</field>
+       <field name="view_mode">list,form</field>
+   </record>
+   <menuitem id="menu_ideas" parent="menu_root" name="Ideas" sequence="10"
+             action="action_list_ideas"/>
+
+.. danger::
+   :class: aphorism
+
+   The action must be declared before its corresponding menu in the XML file.
+
+   Data files are executed sequentially, the action's ``id`` must be present in the database before
+   the menu can be created.
+
+.. exercise:: Define new menu entries
+
+   Define new menu entries to access courses under the OpenAcademy menu entry. A user should be able
+   to:
+
+   - display a list of all the courses
+   - create/modify courses
+
+Basic views
+===========
+
+Views define the way the records of a model are displayed. Each type of view
+represents a mode of visualization (a list of records, a graph of their
+aggregation, …). Views can either be requested generically via their type
+(e.g. *a list of partners*) or specifically via their id. For generic
+requests, the view with the correct type and the lowest priority will be
+used (so the lowest-priority view of each type is the default view for that
+type).
+
+:ref:`View inheritance <reference/view_records/inheritance>` allows altering views
+declared elsewhere (adding or removing content).
+
+Generic view declaration
+------------------------
+
+A view is declared as a record of the model ``ir.ui.view``. The view type
+is implied by the root element of the ``arch`` field:
+
+.. code-block:: xml
+
+   <record model="ir.ui.view" id="view_id">
+       <field name="name">view.name</field>
+       <field name="model">object_name</field>
+       <field name="priority" eval="16"/>
+       <field name="arch" type="xml">
+           <!-- view content: <form>, <list>, <graph>, ... -->
+       </field>
+   </record>
+
+.. danger:: The view's content is XML.
+   :class: aphorism
+
+   The ``arch`` field must thus be declared as ``type="xml"`` to be parsed correctly.
+
+list views
+----------
+
+list views, also called list views, display records in a tabular form.
+
+Their root element is ``<list>``. The simplest form of the list view simply
+lists all the fields to display in the table (each field as a column):
+
+.. code-block:: xml
+
+    <list string="Idea list">
+        <field name="name"/>
+        <field name="inventor_id"/>
+    </list>
+
+.. _howtos/module/views/form:
+
+Form views
+----------
+
+Forms are used to create and edit single records.
+
+
+Their root element is ``<form>``. They are composed of high-level structure
+elements (groups, notebooks) and interactive elements (buttons and fields):
+
+.. code-block:: xml
+
+    <form string="Idea form">
+        <group colspan="4">
+            <group colspan="2" col="2">
+                <separator string="General stuff" colspan="2"/>
+                <field name="name"/>
+                <field name="inventor_id"/>
+            </group>
+
+            <group colspan="2" col="2">
+                <separator string="Dates" colspan="2"/>
+                <field name="active"/>
+                <field name="invent_date" readonly="1"/>
+            </group>
+
+            <notebook colspan="4">
+                <page string="Description">
+                    <field name="description" nolabel="1"/>
+                </page>
+            </notebook>
+
+            <field name="state"/>
+        </group>
+    </form>
+
+.. exercise:: Customise form view using XML
+
+   Create your own form view for the Course object. Data displayed should be: the name and the
+   description of the course.
+
+.. exercise:: Notebooks
+
+   In the Course form view, put the description field under a tab, such that it will be easier to
+   add other tabs later, containing additional information.
+
+Form views can also use plain HTML for more flexible layouts:
+
+.. code-block:: xml
+
+   <form string="Idea Form">
+       <header>
+           <button string="Confirm" type="object" name="action_confirm"
+                   invisible="state != 'draft'" class="oe_highlight" />
+           <button string="Mark as done" type="object" name="action_done"
+                   invisible="state != 'confirmed'" class="oe_highlight"/>
+           <button string="Reset to draft" type="object" name="action_draft"
+                   invisible="state not in ['confirmed', 'done']" />
+           <field name="state" widget="statusbar"/>
+       </header>
+       <sheet>
+           <div class="oe_title">
+               <label for="name" class="oe_edit_only" string="Idea Name" />
+               <h1><field name="name" /></h1>
+           </div>
+           <separator string="General" colspan="2" />
+           <group colspan="2" col="2">
+               <field name="description" placeholder="Idea description..." />
+           </group>
+       </sheet>
+   </form>
+
+Search views
+------------
+
+Search views customize the search field associated with the list view (and
+other aggregated views). Their root element is ``<search>`` and they're
+composed of fields defining which fields can be searched on:
+
+.. code-block:: xml
+
+   <search>
+       <field name="name"/>
+       <field name="inventor_id"/>
+   </search>
+
+If no search view exists for the model, Odoo generates one which only allows
+searching on the ``name`` field.
+
+.. exercise:: Search courses
+
+   Allow searching for courses based on their title or their description.
+
+Relations between models
+========================
+
+A record from a model may be related to a record from another model. For
+instance, a sale order record is related to a client record that contains the
+client data; it is also related to its sale order line records.
+
+.. exercise:: Create a session model
+
+   For the module Open Academy, we consider a model for *sessions*: a session
+   is an occurrence of a course taught at a given time for a given audience.
+
+   Create a model for *sessions*. A session has a name, a start date, a
+   duration and a number of seats. Add an action and a menu item to display
+   them. Make the new model visible via a menu item.
+
+Relational fields
+-----------------
+
+Relational fields link records, either of the same model (hierarchies) or
+between different models.
+
+Relational field types are:
+
+:class:`Many2one(other_model, ondelete='set null') <odoo.fields.Many2one>`
+    A simple link to an other object::
+
+        print(foo.other_id.name)
+
+    .. seealso:: `foreign keys <http://www.postgresql.org/docs/12/static/tutorial-fk.html>`_
+
+:class:`One2many(other_model, related_field) <odoo.fields.One2many>`
+    A virtual relationship, inverse of a :class:`~odoo.fields.Many2one`.
+    A :class:`~odoo.fields.One2many` behaves as a container of records,
+    accessing it results in a (possibly empty) set of records::
+
+        for other in foo.other_ids:
+            print(other.name)
+
+    .. danger::
+
+       Because a :class:`~odoo.fields.One2many` is a virtual relationship,
+       there *must* be a :class:`~odoo.fields.Many2one` field in the
+       :samp:`{other_model}`, and its name *must* be :samp:`{related_field}`
+
+:class:`Many2many(other_model) <odoo.fields.Many2many>`
+    Bidirectional multiple relationship, any record on one side can be related
+    to any number of records on the other side. Behaves as a container of
+    records, accessing it also results in a possibly empty set of records::
+
+        for other in foo.other_ids:
+            print(other.name)
+
+.. exercise:: Many2one relations
+
+   Using a many2one, modify the *Course* and *Session* models to reflect their
+   relation with other models:
+
+   - A course has a *responsible* user; the value of that field is a record of
+     the built-in model ``res.users``.
+   - A session has an *instructor*; the value of that field is a record of the
+     built-in model ``res.partner``.
+   - A session is related to a *course*; the value of that field is a record
+     of the model ``openacademy.course`` and is required.
+   - Adapt the views.
+
+.. exercise:: Inverse one2many relations
+
+   Using the inverse relational field one2many, modify the models to reflect
+   the relation between courses and sessions.
+
+.. exercise:: Multiple many2many relations
+
+   Using the relational field many2many, modify the *Session* model to relate
+   every session to a set of *attendees*. Attendees will be represented by
+   partner records, so we will relate to the built-in model ``res.partner``.
+   Adapt the views accordingly.
+
+Inheritance
+===========
+
+Model inheritance
+-----------------
+
+Odoo provides two *inheritance* mechanisms to extend an existing model in a
+modular way.
+
+The first inheritance mechanism allows a module to modify the behavior of a
+model defined in another module:
+
+- add fields to a model,
+- override the definition of fields on a model,
+- add constraints to a model,
+- add methods to a model,
+- override existing methods on a model.
+
+The second inheritance mechanism (delegation) allows to link every record of a
+model to a record in a parent model, and provides transparent access to the
+fields of the parent record.
+
+.. image:: ../reference/backend/orm/inheritance_methods.png
+   :align: center
+
+.. seealso::
+   * :attr:`~odoo.models.Model._inherit`
+   * :attr:`~odoo.models.Model._inherits`
+
+View inheritance
+----------------
+
+Instead of modifying existing views in place (by overwriting them), Odoo
+provides view inheritance where children "extension" views are applied on top of
+root views, and can add or remove content from their parent.
+
+An extension view references its parent using the ``inherit_id`` field, and
+instead of a single view its ``arch`` field is composed of any number of
+``xpath`` elements selecting and altering the content of their parent view:
+
+.. code-block:: xml
+
+   <!-- improved idea categories list -->
+   <record id="idea_category_list2" model="ir.ui.view">
+       <field name="name">id.category.list2</field>
+       <field name="model">idea.category</field>
+       <field name="inherit_id" ref="id_category_list"/>
+       <field name="arch" type="xml">
+           <!-- find field description and add the field
+                idea_ids after it -->
+           <xpath expr="//field[@name='description']" position="after">
+             <field name="idea_ids" string="Number of ideas"/>
+           </xpath>
+       </field>
+   </record>
+
+``expr``
+    An XPath_ expression selecting a single element in the parent view.
+    Raises an error if it matches no element or more than one
+``position``
+    Operation to apply to the matched element:
+
+    ``inside``
+        appends ``xpath``'s body at the end of the matched element
+    ``replace``
+        replaces the matched element with the ``xpath``'s body, replacing any ``$0`` node occurrence
+        in the new body with the original element
+    ``before``
+        inserts the ``xpath``'s body as a sibling before the matched element
+    ``after``
+        inserts the ``xpaths``'s body as a sibling after the matched element
+    ``attributes``
+        alters the attributes of the matched element using special
+        ``attribute`` elements in the ``xpath``'s body
+
+.. tip::
+   When matching a single element, the ``position`` attribute can be set directly
+   on the element to be found. Both inheritances below will give the same result.
+
+    .. code-block:: xml
+
+       <xpath expr="//field[@name='description']" position="after">
+           <field name="idea_ids" />
+       </xpath>
+
+       <field name="description" position="after">
+           <field name="idea_ids" />
+       </field>
+
+
+.. exercise:: Alter existing content
+
+   * Using model inheritance, modify the existing *Partner* model to add an
+     ``instructor`` boolean field, and a many2many field that corresponds to
+     the session-partner relation
+   * Using view inheritance, display this fields in the partner form view
+
+Domains
+~~~~~~~
+
+In Odoo, :ref:`reference/orm/domains` are values that encode conditions on
+records. A domain is a  list of criteria used to select a subset of a model's
+records. Each criteria is a triple with a field name, an operator and a value.
+
+For instance, when used on the *Product* model the following domain selects
+all *services* with a unit price over *1000*::
+
+    [('product_type', '=', 'service'), ('unit_price', '>', 1000)]
+
+By default criteria are combined with an implicit AND. The logical operators
+``&`` (AND), ``|`` (OR) and ``!`` (NOT) can be used to explicitly combine
+criteria. They are used in prefix position (the operator is inserted before
+its arguments rather than between). For instance to select products "which are
+services *OR* have a unit price which is *NOT* between 1000 and 2000"::
+
+    ['|',
+        ('product_type', '=', 'service'),
+        '!', '&',
+            ('unit_price', '>=', 1000),
+            ('unit_price', '<', 2000)]
+
+A ``domain`` parameter can be added to relational fields to limit valid
+records for the relation when trying to select records in the client interface.
+
+.. exercise:: Domains on relational fields
+
+   When selecting the instructor for a *Session*, only instructors (partners
+   with ``instructor`` set to ``True``) should be visible.
+
+.. exercise:: More complex domains
+
+   Create new partner categories *Teacher / Level 1* and *Teacher / Level 2*.
+   The instructor for a session can be either an instructor or a teacher
+   (of any level).
+
+Computed fields and default values
+==================================
+
+So far fields have been stored directly in and retrieved directly from the
+database. Fields can also be *computed*. In that case, the field's value is not
+retrieved from the database but computed on-the-fly by calling a method of the
+model.
+
+To create a computed field, create a field and set its attribute
+:attr:`~odoo.fields.Field.compute` to the name of a method. The computation
+method should simply set the value of the field to compute on every record in
+``self``.
+
+.. danger:: ``self`` is a collection
+   :class: aphorism
+
+   The object ``self`` is a *recordset*, i.e., an ordered collection of records. It supports the
+   standard Python operations on collections, like ``len(self)`` and ``iter(self)``, plus extra set
+   operations like ``recs1 + recs2``.
+
+   Iterating over ``self`` gives the records one by one, where each record is itself a collection of
+   size 1. You can access/assign fields on single records by using the dot notation, like
+   ``record.name``.
+
+.. code-block:: python
+
+   import random
+   from odoo import models, fields, api
+
+   class ComputedModel(models.Model):
+       _name = 'test.computed'
+
+       name = fields.Char(compute='_compute_name')
+
+       def _compute_name(self):
+           for record in self:
+               record.name = str(random.randint(1, 1e6))
+
+
+Dependencies
+------------
+
+The value of a computed field usually depends on the values of other fields on
+the computed record. The ORM expects the developer to specify those dependencies
+on the compute method with the decorator :func:`~odoo.api.depends`.
+The given dependencies are used by the ORM to trigger the recomputation of the
+field whenever some of its dependencies have been modified::
+
+    from odoo import models, fields, api
+
+    class ComputedModel(models.Model):
+        _name = 'test.computed'
+
+        name = fields.Char(compute='_compute_name')
+        value = fields.Integer()
+
+        @api.depends('value')
+        def _compute_name(self):
+            for record in self:
+                record.name = "Record with value %s" % record.value
+
+.. exercise:: Computed fields
+
+   * Add the percentage of taken seats to the *Session* model
+   * Display that field in the list and form views
+   * Display the field as a progress bar
+
+Default values
+--------------
+
+Any field can be given a default value. In the field definition, add the option
+``default=X`` where ``X`` is either a Python literal value (boolean, integer,
+float, string), or a function taking a recordset and returning a value::
+
+    name = fields.Char(default="Unknown")
+    user_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+
+.. note::
+   The object ``self.env`` gives access to request parameters and other useful things:
+
+    - ``self.env.cr`` or ``self._cr`` is the database *cursor* object; it is
+      used for querying the database
+    - ``self.env.uid`` or ``self._uid`` is the current user's database id
+    - ``self.env.user`` is the current user's record
+    - ``self.env.context`` or ``self._context`` is the context dictionary
+    - ``self.env.ref(xml_id)`` returns the record corresponding to an XML id
+    - ``self.env[model_name]`` returns an instance of the given model
+
+.. exercise:: Active objects – Default values
+
+   * Define the start_date default value as today (see
+     :class:`~odoo.fields.Date`).
+   * Add a field ``active`` in the class Session, and set sessions as active by
+     default.
+
+Onchange
+========
+
+The "onchange" mechanism provides a way for the client interface to update a
+form whenever the user has filled in a value in a field, without saving anything
+to the database.
+
+For instance, suppose a model has three fields ``amount``, ``unit_price`` and
+``price``, and you want to update the price on the form when any of the other
+fields is modified. To achieve this, define a method where ``self`` represents
+the record in the form view, and decorate it with :func:`~odoo.api.onchange`
+to specify on which field it has to be triggered. Any change you make on
+``self`` will be reflected on the form.
+
+.. code-block:: xml
+
+   <!-- content of form view -->
+   <field name="amount"/>
+   <field name="unit_price"/>
+   <field name="price" readonly="1"/>
+
+.. code-block:: python
+
+   # onchange handler
+   @api.onchange('amount', 'unit_price')
+   def _onchange_price(self):
+       # set auto-changing field
+       self.price = self.amount * self.unit_price
+       # Can optionally return a warning and domains
+       return {
+           'warning': {
+               'title': "Something bad happened",
+               'message': "It was very bad indeed",
+           }
+       }
+
+For computed fields, valued ``onchange`` behavior is built-in as can be seen by
+playing with the *Session* form: change the number of seats or participants, and
+the ``taken_seats`` progressbar is automatically updated.
+
+.. exercise:: Warning
+
+   Add an explicit onchange to warn about invalid values, like a negative
+   number of seats, or more participants than seats.
+
+Model constraints
+=================
+
+Odoo provides two ways to set up automatically verified invariants:
+:func:`Python constraints <odoo.api.constrains>` and
+:attr:`SQL constraints <odoo.models.Constraint>`.
+In a similar way, you can add more complex
+:attr:`SQL indexes <odoo.models.Index>`.
+
+A Python constraint is defined as a method decorated with
+:func:`~odoo.api.constrains`, and invoked on a recordset. The decorator
+specifies which fields are involved in the constraint, so that the constraint is
+automatically evaluated when one of them is modified. The method is expected to
+raise an exception if its invariant is not satisfied::
+
+    from odoo.exceptions import ValidationError
+
+    @api.constrains('age')
+    def _check_something(self):
+        for record in self:
+            if record.age > 20:
+                raise ValidationError("Your record is too old: %s" % record.age)
+        # all records passed the test, don't return anything
+
+.. exercise:: Add Python constraints
+
+   Add a constraint that checks that the instructor is not present in the
+   attendees of his/her own session.
+
+Constraints and indexes are defined using:
+:attr:`~odoo.models.Constraint`,
+:attr:`~odoo.models.Index` and :attr:`~odoo.models.UniqueIndex`.
+
+.. exercise:: Add SQL constraints
+
+   With the help of `PostgreSQL's documentation`_ , add the following
+   constraints:
+
+   #. CHECK that the course description and the course title are different
+   #. Make the Course's name UNIQUE
+
+.. exercise:: Exercise 6 - Add a duplicate option
+
+   Since we added a constraint for the Course name uniqueness, it is not
+   possible to use the "duplicate" function anymore (:menuselection:`Form -->
+   Duplicate`).
+
+   Re-implement your own "copy" method which allows to duplicate the Course
+   object, changing the original name into "Copy of [original name]".
+
+Advanced Views
+==============
+
+list views
+----------
+
+list views can take supplementary attributes to further customize their
+behavior:
+
+``decoration-{$name}``
+    allow changing the style of a row's text based on the corresponding
+    record's attributes.
+
+    Values are Python expressions. For each record, the expression is evaluated
+    with the record's attributes as context values and if ``true``, the
+    corresponding style is applied to the row. Here are some of the other values
+    available in the context:
+
+    * ``uid``: the id of the current user,
+    * ``today``: the current local date as a string of the form ``YYYY-MM-DD``,
+    * ``now``: same as ``today`` with the addition of the current time.
+      This value is formatted as ``YYYY-MM-DD hh:mm:ss``.
+
+    ``{$name}`` can be ``bf`` (``font-weight: bold``), ``it``
+    (``font-style: italic``), or any `bootstrap contextual color
+    <https://getbootstrap.com/docs/3.3/components/#available-variations>`_ (``danger``,
+    ``info``, ``muted``, ``primary``, ``success`` or ``warning``).
+
+    .. code-block:: xml
+
+        <list string="Idea Categories" decoration-info="state=='draft'"
+            decoration-danger="state=='trashed'">
+            <field name="name"/>
+            <field name="state"/>
+        </list>
+
+``editable``
+    Either ``"top"`` or ``"bottom"``. Makes the list view editable in-place
+    (rather than having to go through the form view), the value is the
+    position where new rows appear.
+
+.. exercise:: List coloring
+
+    Modify the Session list view in such a way that sessions lasting less than
+    5 days are colored blue, and the ones lasting more than 15 days are
+    colored red.
+
+Calendars
+---------
+
+Displays records as calendar events. Their root element is ``<calendar>`` and
+their most common attributes are:
+
+``color``
+    The name of the field used for *color segmentation*. Colors are
+    automatically distributed to events, but events in the same color segment
+    (records which have the same value for their ``@color`` field) will be
+    given the same color.
+``date_start``
+    record's field holding the start date/time for the event
+``date_stop`` (optional)
+    record's field holding the end date/time for the event
+``string``
+    record's field to define the label for each calendar event
+
+.. code-block:: xml
+
+   <calendar string="Ideas" date_start="invent_date" color="inventor_id">
+       <field name="name"/>
+   </calendar>
+
+.. exercise:: Calendar view
+
+   Add a Calendar view to the *Session* model enabling the user to view the
+   events associated to the Open Academy.
+
+Search views
+------------
+
+Search view ``<field>`` elements can have a ``@filter_domain`` that overrides
+the domain generated for searching on the given field. In the given domain,
+``self`` represents the value entered by the user. In the example below, it is
+used to search on both fields ``name`` and ``description``.
+
+Search views can also contain ``<filter>`` elements, which act as toggles for
+predefined searches. Filters must have one of the following attributes:
+
+``domain``
+    add the given domain to the current search
+``context``
+    add some context to the current search; use the key ``group_by`` to group
+    results on the given field name
+
+.. code-block:: xml
+
+   <search string="Ideas">
+       <field name="name"/>
+       <field name="description" string="Name and description"
+              filter_domain="['|', ('name', 'ilike', self), ('description', 'ilike', self)]"/>
+       <field name="inventor_id"/>
+       <field name="country_id" widget="selection"/>
+
+       <filter name="my_ideas" string="My Ideas"
+               domain="[('inventor_id', '=', uid)]"/>
+       <group string="Group By">
+           <filter name="group_by_inventor" string="Inventor"
+                   context="{'group_by': 'inventor_id'}"/>
+       </group>
+   </search>
+
+To use a non-default search view in an action, it should be linked using the
+``search_view_id`` field of the action record.
+
+The action can also set default values for search fields through its
+``context`` field: context keys of the form
+:samp:`search_default_{field_name}` will initialize *field_name* with the
+provided value. Search filters must have an optional ``@name`` to have a
+default and behave as booleans (they can only be enabled by default).
+
+.. exercise:: Search views
+
+   #. Add a button to filter the courses for which the current user is the
+      responsible in the course search view. Make it selected by default.
+   #. Add a button to group courses by responsible user.
+
+Gantt
+-----
+
+.. warning::
+   The gantt view requires the web_gantt module which is present in the :ref:`enterprise edition
+   <install/editions>` version.
+
+Horizontal bar charts typically used to show project planning and advancement,
+their root element is ``<gantt>``.
+
+.. code-block:: xml
+
+   <gantt string="Ideas"
+          date_start="invent_date"
+          date_stop="date_finished"
+          progress="progress"
+          default_group_by="inventor_id" />
+
+.. exercise:: Gantt charts
+
+   Add a Gantt Chart enabling the user to view the sessions scheduling linked
+   to the Open Academy module. The sessions should be grouped by instructor.
+
+Graph views
+-----------
+
+Graph views allow aggregated overview and analysis of models, their root
+element is ``<graph>``.
+
+.. note::
+   Pivot views (element ``<pivot>``) a multidimensional table, allows the selection of filers and
+   dimensions to get the right aggregated dataset before moving to a more graphical overview. The
+   pivot view shares the same content definition as graph views.
+
+Graph views have 4 display modes, the default mode is selected using the
+``@type`` attribute.
+
+Bar (default)
+    a bar chart, the first dimension is used to define groups on the
+    horizontal axis, other dimensions define aggregated bars within each group.
+
+    By default bars are side-by-side, they can be stacked by using
+    ``@stacked="True"`` on the ``<graph>``
+Line
+    2-dimensional line chart
+Pie
+    2-dimensional pie
+
+Graph views contain ``<field>`` with a mandatory ``@type`` attribute taking
+the values:
+
+``row`` (default)
+    the field should be aggregated by default
+``measure``
+    the field should be aggregated rather than grouped on
+
+.. code-block:: xml
+
+   <graph string="Total idea score by Inventor">
+       <field name="inventor_id"/>
+       <field name="score" type="measure"/>
+   </graph>
+
+.. warning::
+   Graph views perform aggregations on database values, they do not work with non-stored computed
+   fields.
+
+.. exercise:: Graph view
+
+   Add a Graph view in the Session object that displays, for each course, the
+   number of attendees under the form of a bar chart.
+
+Kanban
+------
+
+Used to organize tasks, production processes, etc… their root element is
+``<kanban>``.
+
+A kanban view shows a set of cards possibly grouped in columns. Each card
+represents a record, and each column the values of an aggregation field.
+
+For instance, project tasks may be organized by stage (each column is a
+stage), or by responsible (each column is a user), and so on.
+
+Kanban views define the structure of each card as a mix of form elements
+(including basic HTML) and :ref:`reference/qweb`.
+
+.. exercise:: Kanban view
+
+   Add a Kanban view that displays sessions grouped by course (columns are
+   thus courses).
+
+Security
+========
+
+Access control mechanisms must be configured to achieve a coherent security
+policy.
+
+Group-based access control mechanisms
+-------------------------------------
+
+Groups are created as normal records on the model ``res.groups``, and granted
+menu access via menu definitions. However even without a menu, objects may
+still be accessible indirectly, so actual object-level permissions (read,
+write, create, unlink) must be defined for groups. They are usually inserted
+via CSV files inside modules. It is also possible to restrict access to
+specific fields on a view or object using the field's groups attribute.
+
+Access rights
+-------------
+
+Access rights are defined as records of the model ``ir.model.access``. Each
+access right is associated to a model, a group (or no group for global
+access), and a set of permissions: read, write, create, unlink. Such access
+rights are usually created by a CSV file named after its model:
+``ir.model.access.csv``.
+
+.. code-block:: text
+
+   id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+   access_idea_idea,idea.idea,model_idea_idea,base.group_user,1,1,1,0
+   access_idea_vote,idea.vote,model_idea_vote,base.group_user,1,1,1,0
+
+.. exercise:: Add access control through the Odoo interface
+
+   Create a new user "John Smith". Then create a group
+   "OpenAcademy / Session Read" with read access to the *Session* model.
+
+.. exercise:: Add access control through data files in your module
+
+   Using data files,
+
+   * Create a group *OpenAcademy / Manager* with full access to all
+     OpenAcademy models
+   * Make *Session* and *Course* readable by all users
+
+Record rules
+------------
+
+A record rule restricts the access rights to a subset of records of the given
+model. A rule is a record of the model ``ir.rule``, and is associated to a
+model, a number of groups (many2many field), permissions to which the
+restriction applies, and a domain. The domain specifies to which records the
+access rights are limited.
+
+Here is an example of a rule that prevents the deletion of leads that are not
+in state ``cancel``. Notice that the value of the field ``groups`` must follow
+the same convention as the method :meth:`~odoo.models.Model.write` of the ORM.
+
+.. code-block:: xml
+
+   <record id="delete_cancelled_only" model="ir.rule">
+       <field name="name">Only cancelled leads may be deleted</field>
+       <field name="model_id" ref="crm.model_crm_lead"/>
+       <field name="groups" eval="[(4, ref('sales_team.group_sale_manager'))]"/>
+       <field name="perm_read" eval="0"/>
+       <field name="perm_write" eval="0"/>
+       <field name="perm_create" eval="0"/>
+       <field name="perm_unlink" eval="1" />
+       <field name="domain_force">[('state','=','cancel')]</field>
+   </record>
+
+.. exercise:: Record rule
+
+   Add a record rule for the model Course and the group
+   "OpenAcademy / Manager", that restricts ``write`` and ``unlink`` accesses
+   to the responsible of a course. If a course has no responsible, all users
+   of the group must be able to modify it.
+
+.. _howto/module/wizard:
+
+Wizards
+=======
+
+Wizards describe interactive sessions with the user (or dialog boxes) through
+dynamic forms. A wizard is simply a model that extends the class
+:class:`~odoo.models.TransientModel` instead of
+:class:`~odoo.models.Model`. The class
+:class:`~odoo.models.TransientModel` extends :class:`~odoo.models.Model`
+and reuse all its existing mechanisms, with the following particularities:
+
+- Wizard records are not meant to be persistent; they are automatically deleted
+  from the database after a certain time. This is why they are called
+  *transient*.
+- Wizard records may refer to regular records or wizard records through relational
+  fields(many2one or many2many), but regular records *cannot* refer to wizard records through a
+  many2one field.
+
+We want to create a wizard that allow users to create attendees for a particular
+session, or for a list of sessions at once.
+
+.. exercise:: Define the wizard
+
+   Create a wizard model with a many2one relationship with the *Session*
+   model and a many2many relationship with the *Partner* model.
+
+Launching wizards
+-----------------
+
+Wizards are simply :ref:`window actions <howtos/module/actions>` with a ``target``
+field set to the value ``new``, which opens the view
+(usually :ref:`a form <howtos/module/views/form>`) in a separate dialog. The
+action may be triggered via a menu item, but is more generally triggered by a
+button.
+
+An other way to launch wizards is through the :menuselection:`Action` menu of
+a list or form view. This is done through the ``binding_model_id`` field of the
+action. Setting this field will make the action appear on the views of the model
+the action is "bound" to.
+
+.. code:: xml
+
+   <record id="launch_the_wizard" model="ir.actions.act_window">
+       <field name="name">Launch the Wizard</field>
+       <field name="res_model">wizard.model.name</field>
+       <field name="view_mode">form</field>
+       <field name="target">new</field>
+       <field name="binding_model_id" ref="model_context_model_ref"/>
+   </record>
+
+.. tip::
+   While wizards use regular views and buttons, normally clicking any button in
+   a form would first save the form then close the dialog. Because this is
+   often undesirable in wizards, a special attribute ``special="cancel"`` is
+   available which immediately closes the wizard without saving the form.
+
+.. exercise:: Launch the wizard
+
+   #. Define a form view for the wizard.
+   #. Add the action to launch it in the context of the *Session* model.
+   #. Define a default value for the session field in the wizard; use the
+      context parameter ``self._context`` to retrieve the current session.
+
+.. exercise:: Register attendees
+
+   Add buttons to the wizard, and implement the corresponding method for adding
+   the attendees to the given session.
+
+.. exercise:: Register attendees to multiple sessions
+
+   Modify the wizard model so that attendees can be registered to multiple
+   sessions.
+
+Internationalization
+====================
+
+Each module can provide its own translations within the i18n directory, by
+having files named LANG.po where LANG is the locale code for the language, or
+the language and country combination when they differ (e.g. pt.po or
+pt_BR.po). Translations will be loaded automatically by Odoo for all
+enabled languages. Developers always use English when creating a module, then
+export the module terms using Odoo's gettext POT export feature
+(:menuselection:`Settings --> Translations --> Import/Export --> Export
+Translation` without specifying a language), to create the module template POT
+file, and then derive the translated PO files. Many IDE's have plugins or modes
+for editing and merging PO/POT files.
+
+.. tip::
+   The Portable Object files generated by Odoo are published on `Odoo's Translations Platform
+   <https://translate.odoo.com/>`_, making it easy to translate the software.
+
+.. code-block:: text
+
+  |- idea/ # The module directory
+     |- i18n/ # Translation files
+        | - idea.pot # Translation Template (exported from Odoo)
+        | - fr.po # French translation
+        | - pt_BR.po # Brazilian Portuguese translation
+        | (...)
+
+.. tip::
+   By default Odoo's POT export only extracts labels inside XML files or
+   inside field definitions in Python code, but any Python string can be
+   translated this way by surrounding it with the function :func:`odoo._`
+   (e.g. ``_("Label")``)
+
+.. exercise:: Translate a module
+
+   Choose a second language for your Odoo installation. Translate your
+   module using the facilities provided by Odoo.
+
+Reporting
+=========
+
+Printed reports
+---------------
+
+Odoo uses a report engine based on :ref:`reference/qweb`,
+`Twitter Bootstrap`_ and Wkhtmltopdf_.
+
+A report is a combination two elements:
+
+* an ``ir.actions.report`` which configures various basic parameters for the
+  report (default type, whether the report should be saved to the database
+  after generation,…)
+
+  .. code-block:: xml
+
+     <record id="account_invoices" model="ir.actions.report">
+         <field name="name">Invoices</field>
+         <field name="model">account.invoice</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">account.report_invoice</field>
+         <field name="report_file">account.report_invoice</field>
+         <field name="attachment_use" eval="True"/>
+         <field name="attachment">(object.state in ('open','paid')) and
+             ('INV'+(object.number or '').replace('/','')+'.pdf')</field>
+         <field name="binding_model_id" ref="model_account_invoice"/>
+         <field name="binding_type">report</field>
+     </record>
+
+  .. tip::
+
+     Because it largerly a standard action, as with :ref:`howto/module/wizard`
+     it is generally useful to add the report as a *contextual item* on the
+     list and / or form views of the model being reported on via the
+     ``binding_model_id`` field.
+
+     Here we are also using ``binding_type`` in order for the report to be in
+     the *report* contextual menu rather than the *action* one. There is no
+     technical difference but putting elements in the right place helps users.
+
+* A standard :ref:`QWeb view <reference/view_architectures/qweb>` for the actual report:
+
+  .. code-block:: xml
+
+     <t t-call="web.html_container">
+         <t t-foreach="docs" t-as="o">
+             <t t-call="web.external_layout">
+                 <div class="page">
+                     <h2>Report title</h2>
+                 </div>
+             </t>
+         </t>
+     </t>
+
+  the standard rendering context provides a number of elements, the most
+  important being:
+
+  ``docs``
+      the records for which the report is printed
+  ``user``
+      the user printing the report
+
+Because reports are standard web pages, they are available through a URL and
+output parameters can be manipulated through this URL, for instance the HTML
+version of the *Invoice* report is available through
+http://localhost:8069/report/html/account.report_invoice/1 (if ``account`` is
+installed) and the PDF version through
+http://localhost:8069/report/pdf/account.report_invoice/1.
+
+.. _reference/backend/reporting/printed-reports/pdf-without-styles:
+
+.. danger::
+
+   If it appears that your PDF report is missing the styles (i.e. the text
+   appears but the style/layout is different from the html version), probably
+   your wkhtmltopdf_ process cannot reach your web server to download them.
+
+   If you check your server logs and see that the CSS styles are not being
+   downloaded when generating a PDF report, most surely this is the problem.
+
+   The wkhtmltopdf_ process will use the ``web.base.url`` system parameter as
+   the *root path* to all linked files, but this parameter is automatically
+   updated each time the Administrator is logged in. If your server resides
+   behind some kind of proxy, that could not be reachable. You can fix this by
+   adding one of these system parameters:
+
+   - ``report.url``, pointing to an URL reachable from your server
+     (probably ``http://localhost:8069`` or something similar). It will be
+     used for this particular purpose only.
+
+   - ``web.base.url.freeze``, when set to ``True``, will stop the
+     automatic updates to ``web.base.url``.
+
+.. exercise:: Create a report for the Session model
+
+   For each session, it should display session's name, its start and end,
+   and list the session's attendees.
+
+Dashboards
+----------
+
+.. exercise:: Define a Dashboard
+
+   Define a dashboard containing the graph view you created, the sessions
+   calendar view and a list view of the courses (switchable to a form
+   view). This dashboard should be available through a menuitem in the menu,
+   and automatically displayed in the web client when the OpenAcademy main
+   menu is selected.
+
+.. [#autofields] it is possible to :ref:`disable the automatic creation of some
+                 fields <reference/fields/automatic/log_access>`
+.. [#rawsql] writing raw SQL queries is possible, but requires care as it
+             bypasses all Odoo authentication and security mechanisms.
+
+.. _database index:
+    https://use-the-index-luke.com/sql/preface
+.. _POEdit: https://poedit.net
+.. _PostgreSQL's documentation:
+.. _table_constraint:
+    https://www.postgresql.org/docs/12/static/ddl-constraints.html
+.. _python: https://python.org
+.. _XPath: https://w3.org/TR/xpath
+.. _twitter bootstrap: https://getbootstrap.com
+.. _wkhtmltopdf: https://wkhtmltopdf.org
+
+
+==================================================
+SECTION: define_module_data.rst
+PATH: developer/tutorials/define_module_data.rst
+==================================================
+
+==================
+Define module data
+==================
+
+.. important::
+   This tutorial is an extension of the :doc:`server_framework_101` tutorial. Make sure you have
+   completed it and use the `estate` module you have built as a base for the exercises in this
+   tutorial.
+
+Data Types
+==========
+
+Master Data
+-----------
+
+Master data is usually part of the technical or business requirements for the module. In other
+words, such data is often necessary for the module to work properly. This data will always be
+installed when installing the module.
+
+We already met technical data previously since we have defined :doc:`views
+<../reference/user_interface/view_records>` and :doc:`actions <../reference/backend/actions>`. Those
+are one kind of master data.
+
+On top of technical data, business data can be defined, e.g. countries, currencies, units of measure,
+as well as complete country localization (legal reports, tax definitions, chart of account), and much
+more...
+
+
+.. _tutorials/define_module_data/demo_data:
+
+Demo Data
+---------
+
+In addition to master data, which is required for a module to work properly, we can also provide data for demonstration purposes:
+
+* Help the sales representatives make their demos quickly.
+* Have a set of working data for developers to test new features and see how these new features look
+  with data they might not have added themselves.
+* Test that the data is loaded correctly, without raising an error.
+* Setup most of the features to be used quickly when creating a new database.
+
+The database manager let you create databases with demo data. The same can be achieved via the
+command line with :option:`--with-demo <odoo-bin --with-demo>`.
+
+.. code-block:: console
+
+  $ ./odoo-bin -h
+  Usage: odoo-bin [options]
+
+  Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+
+  Common options:
+    [...]
+    --with-demo         install demo data in new databases
+  [...]
+
+  $ ./odoo-bin --addons-path=... -d new-db -i base --with-demo
+
+Data Declaration
+================
+
+Manifest
+--------
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`Module Manifests<reference/module/manifest>`.
+
+Data is declared either in CSV or in XML.
+Each file containing data must be added in the manifest for them to be loaded.
+
+The keys to use in the manifest to add new data are ``data`` for the master data and ``demo`` for
+the demo data. Both values should be a list of strings representing the relative paths to the files
+declaring the data.
+
+Usually, demo data is in a ``demo`` folder, views and actions are in a ``views``
+folder, security related data is in a ``security`` folder, and other data is in a
+``data`` folder.
+
+If your work tree looks like this:
+
+.. code-block:: bash
+
+  estate
+  ├── data
+  │   └── master_data.xml
+  ├── demo
+  │   └── demo_data.xml
+  ├── models
+  │   ├── *.py
+  │   └── __init__.py
+  ├── security
+  │   └── ir.model.access.csv
+  ├── views
+  │   └── estate_property_offer_views.xml
+  ├── __init__.py
+  └── __manifest__.py
+
+Your manifest should look like this:
+
+.. code-block:: python
+
+  # -*- coding: utf-8 -*-
+
+  {
+      "name": "Real Estate",
+      "depends": [
+          ...
+      ],
+      "data": [
+          "security/ir.model.access.csv",  # CSV and XML files are loaded at the same place
+          "views/estate_property_offer_views.xml",  # Views are data too
+          "data/master_data.xml",  # Split the data in multiple files depending on the model
+      ],
+      "demo": [
+          "demo/demo_data.xml",
+      ]
+      "application": True,
+  }
+
+CSV
+---
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`CSV data files<reference/data/csvdatafiles>`.
+
+The easiest way to declare simple data is by using the CSV format. This is however limited in terms
+of features: use it for long lists of simple models, but prefer XML otherwise.
+
+.. code-block:: text
+
+    id,field_a,field_b,related_id:id
+    id1,valueA1,valueB1,module.relatedid
+    id2,valueA2,valueB2,module.relatedid
+
+.. tip:: Your IDE has probably an extension to have a syntax highlighting of the CSV files
+
+  * `Atom <https://atom.io/packages/rainbow-csv>`__.
+  * `PyCharm/IntelliJ <https://plugins.jetbrains.com/plugin/10037-csv-plugin>`__.
+  * `Vim <https://github.com/mechatroner/rainbow_csv>`__.
+  * `Visual Studio <https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv>`__.
+
+.. exercise:: Add some standard Real Estate Property Types for the `estate` module: Residential,
+  Commercial, Industrial and Land. These should always be installed.
+
+XML
+---
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`Data Files<reference/data>`.
+
+When the data to create is more complex it can be useful, or even necessary, to do it in XML.
+
+.. code-block:: xml
+
+    <odoo>
+      <record id="id1" model="tutorial.example">
+        <field name="field_a">valueA1</field>
+        <field name="field_b">valueB1</field>
+      </record>
+
+      <record id="id2" model="tutorial.example">
+        <field name="field_a">valueA2</field>
+        <field name="field_b">valueB2</field>
+      </record>
+    </odoo>
+
+.. exercise:: Create some demo data for the `estate` module.
+
+  ================== ==================== ======================
+  Field              Values               Values
+  ================== ==================== ======================
+  name               Big Villa            Trailer home
+  state              New                  Cancelled
+  description        A nice and big villa Home in a trailer park
+  postcode           12345                54321
+  date_availability  2020-02-02           1970-01-01
+  expected_price     1,600,000            100,000
+  selling_price                           120,000
+  bedrooms           6                    1
+  living_area        100                  10
+  facades            4                    4
+  garage             True                 False
+  garden             True
+  garden_area        100000
+  garden_orientation South
+  ================== ==================== ======================
+
+Data Extension
+~~~~~~~~~~~~~~
+
+During the Core Training, we saw in the :doc:`server_framework_101/12_inheritance` chapter we
+could inherit (extend) an existing view. This was a special case of data extension: any data can be
+extended in a module.
+
+When you are adding new fields to an existing model in a new module, you might want to populate
+those fields on the records created in the modules you are depending on. This is done by giving the
+`xml_id` of the record you want to extend. It won't replace it, in this case we will set the
+``field_c`` to the given value for both records.
+
+.. code-block:: xml
+
+    <odoo>
+      <record id="id1" model="tutorial.example">
+        <field name="field_c">valueC1</field>
+      </record>
+
+      <record id="id2" model="tutorial.example">
+        <field name="field_c">valueC2</field>
+      </record>
+    </odoo>
+
+
+``ref``
+~~~~~~~
+
+Related fields can be set using the ``ref`` key. The value of that key is the ``xml_id`` of the
+record you want to link. Remember the ``xml_id`` is composed of the name of the module where the
+data is first declared, followed by a dot, followed by the ``id`` of the record (just the ``id``
+works too if you are in the module declaring it).
+
+.. code-block:: xml
+
+    <odoo>
+      <record id="id1" model="tutorial.example">
+        <field name="related_id" ref="module.relatedid"/>
+      </record>
+    </odoo>
+
+.. exercise:: Create some demo data offers for the properties you created.
+
+  Create offers using the partners defined in ``base``
+
+  ============== ========= ======= ========
+  Partner        Estate    Price   Validity
+  ============== ========= ======= ========
+  Azure Interior Big Villa 10000   14
+  Azure Interior Big Villa 1500000 14
+  Deco Addict    Big Villa 1500001 14
+  ============== ========= ======= ========
+
+.. exercise:: Ensure both of your demo properties are created with their Property Type set to Residential.
+
+``eval``
+~~~~~~~~
+
+The value to assign to a field is not always a simple string and you might need to compute it.
+It can also be used to optimize the insertion of related values, or because a constraint forces you
+to add the related values in batch. See ::ref:`Add X2many fields
+<tutorials/define_module_data/x2m>`.
+
+.. code-block:: xml
+
+    <odoo>
+      <record id="id1" model="tutorial.example">
+        <field name="year" eval="datetime.now().year+1"/>
+      </record>
+    </odoo>
+
+.. exercise:: The offers you added should always be in a date relative to the installation of the
+  module.
+
+``search``
+~~~~~~~~~~
+
+Sometimes, you need to call the ORM to do a ``search``. This is not feasible with the CSV format.
+
+.. code-block:: xml
+
+    <odoo>
+      <record id="id1" model="account.move.line">
+        <field name="account_id" search="[
+          ('user_type_id', '=', ref('account.data_account_type_direct_costs')),
+          ('company_id', '=', obj().env.company.id)]
+        "/>
+      </record>
+    </odoo>
+
+In this code snippet, it is needed because the master data depends on the localization
+installed.
+
+``function``
+~~~~~~~~~~~~
+
+You might also need to execute python code when loading data.
+
+.. code-block:: xml
+
+  <function model="tutorial.example" name="action_validate">
+      <value eval="[ref('demo_invoice_1')]"/>
+  </function>
+
+.. exercise:: Validate one of the demo data offers by using the "Accept Offer" button. Refuse the
+  others.
+
+
+.. _tutorials/define_module_data/x2m:
+
+Add X2many fields
+-----------------
+
+**Reference**: the documentation related to this topic can be found in
+:class:`~odoo.fields.Command`.
+
+If you need to add related data in a One2many or a Many2many field, you can do so by using the
+:class:`~odoo.fields.Command` methods.
+
+.. code-block:: xml
+
+    <odoo>
+      <record id="id1" model="tutorial.example">
+        <field name="related_ids" eval="[
+            Command.create({
+                'name': 'My name',
+            }),
+            Command.create({
+                'name': 'Your name',
+            }),
+            Command.link(ref('model.xml_id')),
+        ]"/>
+      </record>
+    </odoo>
+
+.. exercise:: Create one new Property, but this time with some offers created directly inside the
+  One2many field linked to the Offers.
+
+Accessing the data
+==================
+
+.. warning:: You should never access demo data outside of the demo data declaration, not even in
+  tests.
+
+There are multiple ways to access the master/demo data.
+
+In python code, you can use the ``env.ref(self, xml_id, raise_if_not_found=True)`` method. It
+returns the recordset linked to the ``xml_id`` you specify.
+
+In XML, you can use the `ref` key like this
+
+.. code-block:: xml
+
+    <odoo>
+      <record id="id1" model="tutorial.example">
+        <field name="related_id" ref="module.relatedid"/>
+      </record>
+    </odoo>
+
+It will call the ref method, and store the id of the record returned on the field ``related_id`` of
+the record of type ``tutorial.example`` with id ``id1``.
+
+In CSV, the title of the column must be suffixed with ``:id`` or ``/id``.
+
+.. code-block:: text
+
+  id,parent_id:id,name
+  "child1","module.parent","Name1"
+  "child2","module.parent","Name2"
+  "child3","module.parent","Name3"
+
+In SQL, it is more complicated, see :ref:`the advanced section
+<tutorials/define_module_data/xml_id>`.
+
+.. warning:: Data can always be deleted by the user. Always code defensively, taking this into
+  account.
+
+
+
+
+Advanced
+========
+
+.. _tutorials/define_module_data/xml_id:
+
+What is the XML id?
+-------------------
+
+Because we don't want a column ``xml_id`` in every single SQL table of the database, we need a
+mechanism to store it. This is done with the ``ir.model.data`` model.
+
+It contains the name of the record (the ``xml_id``) along with the module in which it is defined,
+the model defining it, and the id of it.
+
+No update
+---------
+
+The records created with the ``noupdate`` flag won't be updated when upgrading the module that
+created them, but it will be created if it didn't exist yet.
+
+.. note:: ``odoo-bin -i module`` will bypass this setting and always load the data. But normally
+  one shouldn't do this on a production database.
+
+.. code-block:: xml
+
+    <odoo noupdate="1">
+      <record id="id1" model="model">
+        <field name="fieldA" eval="True"/>
+      </record>
+    </odoo>
+
+
+Import as SQL
+-------------
+
+In some cases, it makes sense to do the import directly in SQL. This is however discouraged as it
+bypasses all the features of the ORM, computed fields (including metadata) and python constraints.
+
+.. note:: Generally using raw SQL also bypasses ACLs and increases the risks of injections.
+
+  **Reference**: :ref:`Security in Odoo<reference/security>`
+
+* It can help to speed the import time by a lot
+  `with huge files <https://github.com/odoo/enterprise/blob/d46cceef8c594b9056d0115edb7169e207a5986f/product_unspsc/hooks.py#L19>`__.
+* For more complex imports like for the
+  `translations <https://github.com/odoo/odoo/blob/e1f8d549895cd9c459e6350430f30d541d02838a/odoo/addons/base/models/ir_translation.py#L24>`__.
+* It can be necessary to
+  `initialize the database <https://github.com/odoo/odoo/blob/e1f8d549895cd9c459e6350430f30d541d02838a/odoo/addons/base/data/base_data.sql>`__.
+
+
+==================================================
+SECTION: mixins.rst
+PATH: developer/tutorials/mixins.rst
+==================================================
+
+======================
+Reuse code with mixins
+======================
+
+If you need to interface with common Odoo features such as the chatter, you can rely on
+:doc:`mixins <../reference/backend/mixins>`.
+They are Odoo models exposing useful methods through inheritance.
+
+To learn and play with mixins, visit `this repository <https://github.com/tivisse/odoodays-2018/>`_.
+This module for a plant nursery is training material developed for the OXP 2018. You don't need to
+code it on your side. But you can check the presentations in the :file:`/static/pdf` directory and
+play with the module to discover some magic features in Odoo.
+
+
+==================================================
+SECTION: setup_guide.rst
+PATH: developer/tutorials/setup_guide.rst
+==================================================
+
+===========
+Setup guide
+===========
+
+Depending on the intended use case, there are multiple ways to install Odoo. For developers of the
+Odoo community and Odoo employees alike, the preferred way is to perform a source install
+(:dfn:`running Odoo from the source code`).
+
+.. important::
+   Follow the :ref:`contributing/development/setup` section of the contributing guide to prepare
+   your environment for pushing local changes to the Odoo repositories.
+
+Adapt the environment for the tutorials
+=======================================
+
+By now, you should have downloaded the source code into two local repositories, one for `odoo/odoo`
+and one for `odoo/enterprise`. These repositories are set up to push changes to pre-defined
+forks on GitHub. This will prove to be convenient when you start contributing to the codebase, but
+in the scope of following a tutorial, we want to avoid polluting them with training material. Let's
+then push your changes in a third repository: `odoo/tutorials`. Like the first two repositories, it
+will be part of the `addons-path` that references all directories containing Odoo modules.
+
+.. note::
+   Depending on the tutorial that you are following, you might not need to install all the modules
+   that this repository contains.
+
+#. Following the same process as with the `odoo/odoo` and `odoo/enterprise` repositories, clone
+   the `odoo/tutorials` repository on your machine with:
+
+   .. code-block:: console
+
+      $ git clone git@github.com:odoo/tutorials.git
+
+#. Configure your fork and Git to push changes to your fork rather than to the main codebase. If you
+   work at Odoo, configure Git to push changes to the shared fork created on the account **odoo-dev**.
+
+   .. tabs::
+
+      .. tab:: Link Git with your fork
+
+         #. Visit `github.com/odoo/tutorials <https://github.com/odoo/tutorials>`_ and click the
+            :guilabel:`Fork` button to create a fork of the repository on your account.
+
+         #. In the command below, replace `<your_github_account>` with the name of the GitHub account
+            on which you created the fork.
+
+            .. code-block:: console
+
+               $ cd /TutorialsPath
+               $ git remote add dev git@github.com:<your_github_account>/tutorials.git
+
+      .. tab:: Link Git with odoo-dev
+
+         .. code-block:: console
+
+            $ cd /tutorials
+            $ git remote add dev git@github.com:odoo-dev/tutorials.git
+            $ git remote set-url --push origin you_should_not_push_on_this_repository
+
+That's it! Your environment is now prepared to run Odoo from the sources, and you have successfully
+created a repository to serve as an addons directory. This will allow you to push your work to GitHub.
+
+.. important::
+
+   **For Odoo employees only:**
+
+   #. Make sure to read very carefully :ref:`contributing/development/first-contribution`. In particular,
+      your branch name must follow our conventions.
+
+   #. Once you have pushed your first change to the shared fork on **odoo-dev**, create a
+      :abbr:`PR (Pull Request)`. Please put your quadrigram in the PR title (e.g., "abcd - Technical
+      Training").
+
+      This will enable you to share your upcoming work and receive feedback from your coaches. To ensure
+      a continuous feedback loop, we recommend pushing a new commit as soon as you complete a chapter
+      of the tutorial. Note that the PR is automatically updated with commits you push to **odoo-dev**,
+      you don't need to open multiple PRs.
+
+   #. At Odoo we use `Runbot <https://runbot.odoo.com>`_ extensively for our :abbr:`CI (Continuous
+      Integration)` tests. When you push your changes to **odoo-dev**, Runbot creates a new build
+      and test your code. Once logged in, you will be able to see your branches `Tutorials project
+      <https://runbot.odoo.com/runbot/tutorials-12>`_.
+
+.. note::
+
+   The specific location of the repositories on your file system is not crucial. However, for the
+   sake of simplicity, we will assume that you have cloned all the repositories under the same
+   directory. If this is not the case, make sure to adjust the following commands accordingly,
+   providing the appropriate relative path from the `odoo/odoo` repository to the
+   `odoo/tutorials` repository.
+
+Run the server
+==============
+
+Launch with `odoo-bin`
+----------------------
+
+Once all dependencies are set up, Odoo can be launched by running `odoo-bin`, the command-line
+interface of the server.
+
+.. code-block:: console
+
+    $ cd $HOME/src/odoo/
+    $ ./odoo-bin --addons-path="addons/,../enterprise/,../tutorials" -d rd-demo
+
+There are multiple :ref:`command-line arguments <reference/cmdline/server>` that you can use to run
+the server. In this training you will only need some of them.
+
+.. option:: -d <database>
+
+   The database that is going to be used.
+
+.. option:: --addons-path <directories>
+
+   A comma-separated list of directories in which modules are stored. These directories are scanned
+   for modules.
+
+.. option:: --limit-time-cpu <limit>
+
+   Prevent the worker from using more than <limit> CPU seconds for each request.
+
+.. option:: --limit-time-real <limit>
+
+   Prevent the worker from taking longer than <limit> seconds to process a request.
+
+.. tip::
+   - The :option:`--limit-time-cpu` and :option:`--limit-time-real` arguments can be used to prevent
+     the worker from being killed when debugging the source code.
+   - | You may face an error similar to `AttributeError: module '<MODULE_NAME>' has no attribute
+       '<$ATTRIBUTE'>`. In this case, you may need to re-install the module with :command:`$ pip
+       install --upgrade --force-reinstall <MODULE_NAME>`.
+     | If this error occurs with more than one module, you may need to re-install all the
+       requirements with :command:`$ pip install --upgrade --force-reinstall -r requirements.txt`.
+     | You can also clear the python cache to solve the issue:
+
+       .. code-block:: console
+
+          $ cd $HOME/.local/lib/python3.8/site-packages/
+          $ find -name '*.pyc' -type f -delete
+
+   - Other commonly used arguments are:
+
+     - :option:`-i <odoo-bin --init>`: Install some modules before running the server
+       (comma-separated list). This is equivalent to going to :guilabel:`Apps` in the user interface,
+       and installing the module from there.
+     - :option:`-u <odoo-bin --update>`: Update some modules before running the server
+       (comma-separated list). This is equivalent to going to :guilabel:`Apps` in the user interface,
+       selecting a module, and upgrading it from there.
+
+Log in to Odoo
+--------------
+
+Open http://localhost:8069/ on your browser. We recommend using `Chrome
+<https://www.google.com/intl/en/chrome/>`_, `Firefox <https://www.mozilla.org/firefox/new/>`_, or
+any other browser with development tools.
+
+To log in as the administrator user, use the following credentials:
+
+- email: `admin`
+- password: `admin`
+
+Enable the developer mode
+=========================
+
+The developer or debug mode is useful for training as it gives access to additional (advanced)
+tools. :ref:`Enable the developer mode <developer-mode>` now. Choose the method that you prefer;
+they are all equivalent.
+
+Extra tools
+===========
+
+Useful Git commands
+-------------------
+
+Here are some useful Git commands for your day-to-day work.
+
+- | Switch branches:
+  | When you switch branches, both repositories (odoo and enterprise) must be synchronized, i.e.
+    both need to be in the same branch.
+
+  .. code-block:: console
+
+     $ cd $HOME/src/odoo
+     $ git switch {BRANCH}
+
+     $ cd $HOME/src/enterprise
+     $ git switch {BRANCH}
+
+- Fetch and rebase:
+
+  .. code-block:: console
+
+     $ cd $HOME/src/odoo
+     $ git fetch --all --prune
+     $ git rebase --autostash odoo/{BRANCH}
+
+     $ cd $HOME/src/enterprise
+     $ git fetch --all --prune
+     $ git rebase --autostash enterprise/{BRANCH}
+
+Code Editor
+-----------
+
+If you are working at Odoo, many of your colleagues are using `VSCode
+<https://code.visualstudio.com>`_, `VSCodium <https://vscodium.com>`_ (the open source equivalent),
+`PyCharm <https://www.jetbrains.com/pycharm/download/#section=linux>`_, or `Sublime Text
+<https://www.sublimetext.com>`_. However, you are free to choose your preferred editor.
+
+It is important to configure your linters correctly. Using a linter helps you by showing syntax and
+semantic warnings or errors. Odoo source code tries to respect Python's and JavaScript's standards,
+but some of them can be ignored.
+
+For Python, we use PEP8 with these options ignored:
+
+- `E501`: line too long
+- `E301`: expected 1 blank line, found 0
+- `E302`: expected 2 blank lines, found 1
+
+For JavaScript, we use ESLint and you can find a `configuration file example here
+<https://github.com/odoo/odoo/wiki/Javascript-coding-guidelines#use-a-linter>`_.
+
+Administrator tools for PostgreSQL
+----------------------------------
+
+You can manage your PostgreSQL databases using the command line as demonstrated earlier or using
+a GUI application such as `pgAdmin <https://www.pgadmin.org/download/pgadmin-4-apt/>`_ or `DBeaver
+<https://dbeaver.io/>`_.
+
+To connect the GUI application to your database we recommend you connect using the Unix socket.
+
+- Host name/address: `/var/run/postgresql`
+- Port: `5432`
+- Username: `$USER`
+
+Python Debugging
+----------------
+
+When facing a bug or trying to understand how the code works, simply printing things out can go a
+long way, but a proper debugger can save a lot of time.
+
+You can use a classic Python library debugger (`pdb <https://docs.python.org/3/library/pdb.html>`_,
+`pudb <https://pypi.org/project/pudb/>`_ or `ipdb <https://pypi.org/project/ipdb/>`_), or you can
+use your editor's debugger.
+
+In the following example we use ipdb, but the process is similar with other libraries.
+
+#. Install the library:
+
+   .. code-block:: console
+
+      pip install ipdb
+
+#. Place a trigger (breakpoint):
+
+   .. code-block:: python
+
+      import ipdb; ipdb.set_trace()
+
+   .. example::
+
+      .. code-block:: python
+         :emphasize-lines: 2
+
+         def copy(self, default=None):
+             import ipdb; ipdb.set_trace()
+             self.ensure_one()
+             chosen_name = default.get('name') if default else ''
+             new_name = chosen_name or _('%s (copy)') % self.name
+             default = dict(default or {}, name=new_name)
+             return super(Partner, self).copy(default)
+
+Here is a list of commands:
+
+.. option:: h(elp) [command]
+
+   Print the list of available commands if not argument is supplied. With a command as an argument,
+   print the help about that command.
+
+.. option:: pp expression
+
+   The value of the `expression` is pretty-printed using the `pprint` module.
+
+.. option:: w(here)
+
+   Print a stack trace with the most recent frame at the bottom.
+
+.. option:: d(own)
+
+   Move the current frame one level down in the stack trace (to a newer frame).
+
+.. option:: u(p)
+
+   Move the current frame one level up in the stack trace (to an older frame).
+
+.. option:: n(ext)
+
+   Continue the execution until the next line in the current function is reached or it returns.
+
+.. option:: c(ontinue)
+
+   Continue the execution and only stop when a breakpoint is encountered.
+
+.. option:: s(tep)
+
+   Execute the current line. Stop at the first possible occasion (either in a function that is
+   called or on the next line in the current function).
+
+.. option:: q(uit)
+
+   Quit the debugger. The program being executed is aborted.
+
+
+==================================================
+SECTION: unit_tests.rst
+PATH: developer/tutorials/unit_tests.rst
+==================================================
+
+===================================
+Safeguard your code with unit tests
+===================================
+
+.. important::
+   This tutorial is an extension of the :doc:`server_framework_101` tutorial. Make sure you have
+   completed it and use the `estate` module you have built as a base for the exercises in this
+   tutorial.
+
+**Reference**:
+`Odoo's Test Framework: Learn Best Practices <https://www.youtube.com/watch?v=JEIscps0OOQ>`__
+(Odoo Experience 2020) on YouTube.
+
+Writing tests is a necessity for multiple reasons. Here is a non-exhaustive list:
+
+* Ensure code will not be broken in the future
+* Define the scope of your code
+* Give examples of use cases
+* It is one way to technically document the code
+* Help your coding by defining your goal before working towards it
+
+Running Tests
+=============
+
+Before knowing how to write tests, we need to know how to run them.
+
+.. code-block:: console
+
+  $ odoo-bin -h
+  Usage: odoo-bin [options]
+
+  Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+
+  [...]
+
+  Testing Configuration:
+    --test-file=TEST_FILE
+                        Launch a python test file.
+    --test-enable       Enable unit tests.
+    --test-tags=TEST_TAGS
+                        Comma-separated list of specs to filter which tests to
+                        execute. Enable unit tests if set. A filter spec has
+                        the format: [-][tag][/module][:class][.method] The '-'
+                        specifies if we want to include or exclude tests
+                        matching this spec. The tag will match tags added on a
+                        class with a @tagged decorator (all Test classes have
+                        'standard' and 'at_install' tags until explicitly
+                        removed, see the decorator documentation). '*' will
+                        match all tags. If tag is omitted on include mode, its
+                        value is 'standard'. If tag is omitted on exclude
+                        mode, its value is '*'. The module, class, and method
+                        will respectively match the module name, test class
+                        name and test method name. Example: --test-tags
+                        :TestClass.test_func,/test_module,external  Filtering
+                        and executing the tests happens twice: right after
+                        each module installation/update and at the end of the
+                        modules loading. At each stage tests are filtered by
+                        --test-tags specs and additionally by dynamic specs
+                        'at_install' and 'post_install' correspondingly.
+    --screencasts=DIR   Screencasts will go in DIR/{db_name}/screencasts.
+    --screenshots=DIR   Screenshots will go in DIR/{db_name}/screenshots.
+                        Defaults to /tmp/odoo_tests.
+
+  $ # run all the tests of account, and modules installed by account
+  $ # the dependencies already installed are not tested
+  $ # this takes some time because you need to install the modules, but at_install
+  $ # and post_install are respected
+  $ odoo-bin -i account --test-enable
+  $ # run all the tests in this file
+  $ odoo-bin --test-file=addons/account/tests/test_account_move_entry.py
+  $ # test tags can help you filter quite easily
+  $ odoo-bin --test-tags=/account:TestAccountMove.test_custom_currency_on_account_1
+
+Integration Bots
+================
+
+.. note:: This section is only for Odoo employees and people that are contributing to
+  `github.com/odoo`. We highly recommend having your own CI otherwise.
+
+When a test is written, it is important to make sure it always passes when modifications are
+applied to the source code. To automate this task, we use a development practice called
+Continuous Integration (CI). This is why we have some bots running all the tests at different
+moments.
+Whether you are working at Odoo or not, if you are trying to merge something inside `odoo/odoo`,
+`odoo/enterprise`, `odoo/upgrade` or on odoo.sh, you will have to go through the CI. If you are
+working on another project, you should think of adding your own CI.
+
+Runbot
+------
+
+**Reference**: the documentation related to this topic can be found in
+`Runbot FAQ <https://runbot.odoo.com/doc>`__.
+
+Most of the tests are run on `Runbot <https://runbot.odoo.com>`__ every time a commit is pushed on
+GitHub.
+
+You can see the state of a commit/branch by filtering on the runbot dashboard.
+
+A **bundle** is created for each branch. A bundle consists of a configuration and
+batches.
+
+A **batch** is a set of builds, depending on the parameters of the bundle.
+A batch is green (i.e. passes the tests) if all the builds are green.
+
+A **build** is when we launch a server. It can be divided in sub-builds. Usually there are builds
+for the community version, the enterprise version (only if there is an enterprise branch but you
+can force the build), and the migration of the branch.
+A build is green if every sub-build is green.
+
+A **sub-build** only does some parts of what a full build does. It is used to speed up the CI
+process. Generally it is used to split the post install tests in 4 parallel instances.
+A sub-build is green if all the tests are passing and there are no errors/warnings logged.
+
+.. note::
+  * All tests are run regardless of the modifications done. Correcting a typo in an error message or
+    refactoring a whole module triggers the same tests. All modules will be installed as well. This means
+    something might not work even if the Runbot is green, i.e. your changes depend on a module that the
+    module the changes are in doesn't depend on.
+  * The localization modules (i.e. country-specific modules) are not installed on Runbot (except
+    the generic one). Some modules with external dependencies can also be excluded.
+  * There is a nightly build running additional tests: module operations, localization, single
+    module installs, multi-builds for nondeterministic bugs, etc.
+    These are not kept in the standard CI to shorten the time of execution.
+
+You can also login to a build built by Runbot. There are 3 users usable: `admin`, `demo` and
+`portal`. The password is the same as the login. This is useful to quickly test things on different
+versions without having to build it locally. The full logs are also available; these are used for
+monitoring.
+
+Robodoo
+-------
+
+You will most likely have to gain a little bit more experience before having the rights to summon
+robodoo, but here are a few remarks anyways.
+
+Robodoo is the guy spamming the CI status as tags on your PRs, but he is also the guy that kindly
+integrates your commits into the main repositories.
+
+When the last batch is green, the reviewer can ask robodoo to merge your PR (it is more
+a `rebase` than a `merge`). It will then go to the mergebot.
+
+Mergebot
+--------
+
+`Mergebot <https://mergebot.odoo.com>`__ is the last testing phase before merging a PR.
+
+It will take the commits in your branch not yet present on the target, stage it and rerun the tests
+one more time, including the enterprise version even if you are only changing something in
+community.
+
+This step can fail with a `Staging failed` error message. This could be due to
+
+* a nondeterministic bug that is already on the target. If you are an Odoo employee, you can check
+  those here: https://runbot.odoo.com/runbot/errors
+* a nondeterministic bug that you introduced but wasn't detected in the CI before
+* an incompatibility with another commit merged right before and what you are trying to merge
+* an incompatibility with the enterprise repository if you only did changes in the community repo
+
+Always check that the issue does not come from you before asking the merge bot to retry: rebase
+your branch on the target and rerun the tests locally.
+
+Modules
+=======
+
+Because Odoo is modular, the tests need to be also modular. This means tests are defined in
+the module that adds the functionality you are adding in, and tests cannot depend on functionality
+coming from modules your module doesn't depend on.
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`Special Tags<reference/testing/tags>`.
+
+.. code-block:: python
+
+  from odoo.tests.common import TransactionCase
+  from odoo.tests import tagged
+
+  # The CI will run these tests after all the modules are installed,
+  # not right after installing the one defining it.
+  @tagged('post_install', '-at_install')  # add `post_install` and remove `at_install`
+  class PostInstallTestCase(TransactionCase):
+      def test_01(self):
+          ...
+
+  @tagged('at_install')  # this is the default
+  class AtInstallTestCase(TransactionCase):
+      def test_01(self):
+          ...
+
+
+If the behavior you want to test can be changed by the installation of another module, you need to
+ensure that the tag `at_install` is set; otherwise, you can use the tag `post_install` to speed up
+the CI and ensure it is not changed if it shouldn't.
+
+Writing a test
+==============
+
+**Reference**: the documentation related to this topic can be found in
+`Python unittest <https://docs.python.org/3/library/unittest.html>`__
+and :ref:`Testing Odoo<reference/testing>`.
+
+Here are a few things to take into consideration before writing a test
+
+* The tests should be independent of the data currently in the database (including demo data)
+* Tests should not impact the database by leaving/changing residual data. This is usually done by
+  the test framework by doing a rollback. Therefore, you must never call ``cr.commit`` in a test
+  (nor anywhere else in the business code).
+* For a bug fix, the test should fail before applying the fix and pass after.
+* Don't test something that is already tested elsewhere; you can trust the ORM. Most of the tests
+  in business modules should only test the business flows.
+* You shouldn't need to flush data into the database.
+
+.. note:: Remember that ``onchange`` only applies in the Form views, not by changing the attributes
+  in python. This also applies in the tests. If you want to emulate a Form view, you can use
+  ``odoo.tests.Form``.
+
+The tests should be in a ``tests`` folder at the root of your module. Each test file name
+should start with `test_` and be imported in the ``__init__.py`` of the test folder. You shouldn't
+import the test folder/module in the ``__init__.py`` of the module.
+
+.. code-block:: bash
+
+  estate
+  ├── models
+  │   ├── *.py
+  │   └── __init__.py
+  ├── tests
+  │   ├── test_*.py
+  │   └── __init__.py
+  ├── __init__.py
+  └── __manifest__.py
+
+All the tests should extend ``odoo.tests.common.TransactionCase``. You usually define a
+``setUpClass`` and the tests. After writing the `setUpClass`, you have an `env` available in the
+class and can start interacting with the ORM.
+
+These test classes are built on top of the ``unittest`` python module.
+
+.. code-block:: python
+
+  from odoo.tests.common import TransactionCase
+  from odoo.exceptions import UserError
+  from odoo.tests import tagged
+
+  # The CI will run these tests after all the modules are installed,
+  # not right after installing the one defining it.
+  @tagged('post_install', '-at_install')
+  class EstateTestCase(TransactionCase):
+
+      @classmethod
+      def setUpClass(cls):
+          # add env on cls and many other things
+          super(EstateTestCase, cls).setUpClass()
+
+          # create the data for each tests. By doing it in the setUpClass instead
+          # of in a setUp or in each test case, we reduce the testing time and
+          # the duplication of code.
+          cls.properties = cls.env['estate.property'].create([...])
+
+      def test_creation_area(self):
+          """Test that the total_area is computed like it should."""
+          self.properties.living_area = 20
+          self.assertRecordValues(self.properties, [
+             {'name': ..., 'total_area': ...},
+             {'name': ..., 'total_area': ...},
+          ])
+
+
+      def test_action_sell(self):
+          """Test that everything behaves like it should when selling a property."""
+          self.properties.action_sold()
+          self.assertRecordValues(self.properties, [
+             {'name': ..., 'state': ...},
+             {'name': ..., 'state': ...},
+          ])
+
+          with self.assertRaises(UserError):
+              self.properties.forbidden_action_on_sold_property()
+
+.. note:: For better readability, split your tests into multiple files depending on the scope of the
+  tests. You can also have a Common class that most of the tests should inherit from; this common
+  class can define the whole setup for the module. For instance, in
+  `account <{GITHUB_PATH}/addons/account/tests/common.py>`__.
+
+.. exercise:: Update the code so no one can:
+
+  - Create an offer for a sold property
+  - Sell a property with no accepted offers on it
+
+  and create tests for both of these cases. Additionally check that selling a property that can
+  be sold is correctly marked as sold after selling it.
+
+
+.. exercise:: Someone keeps breaking the reset of Garden Area and Orientation when you uncheck the
+  Garden checkbox. Make sure it doesn't happen again.
+
+  .. tip:: Tip: remember the note about `Form` a little bit above.

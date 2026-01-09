@@ -1,0 +1,955 @@
+
+
+==================================================
+SECTION: companies.rst
+PATH: applications/general/companies.rst
+==================================================
+
+:show-content:
+
+=========
+Companies
+=========
+
+In Odoo, a company is an individual business entity that operates independently, with its own legal
+identity, financial records, and specific operational settings.
+
+.. seealso::
+   - :ref:`general/companies/branches`
+   - :doc:`Multi-company <companies/multi_company>`
+
+.. _general/companies/configuration:
+
+Configuration
+=============
+
+To set up a company, follow these steps:
+
+#. :ref:`Configure the company details <general/companies/company>`.
+#. :ref:`Manage users and their access rights <general/companies/users>`.
+#. :ref:`Customize the document layout <general/companies/document-layout>`.
+
+.. _general/companies/company:
+
+Company
+-------
+
+To create a company, open the Settings app, navigate to the :guilabel:`Companies` section, and click
+:icon:`oi-arrow-right` :guilabel:`Manage Companies`. In the :guilabel:`Companies` list view, click
+:guilabel:`New` and configure the following fields:
+
+- :guilabel:`Company Name`
+- :guilabel:`Address`
+- :guilabel:`Tax ID`: tax identification number.
+- :guilabel:`LEI`: legal entity identifier.
+- :guilabel:`Company ID`: company's registry number, if different from :guilabel:`Tax ID`
+- :ref:`Currency <multi-currency/config-main-currency>`
+- :guilabel:`Phone` and :guilabel:`Mobile`
+- :guilabel:`Email`
+- :guilabel:`Website`
+- :guilabel:`Email Domain`
+- :guilabel:`Color`
+
+Upload the company's logo and :guilabel:`Save`.
+
+.. note::
+   - Alternatively, it is possible to create a company by going to :menuselection:`Settings -->
+     Users & Companies --> Companies`.
+   - The company's :guilabel:`General information` may vary based on the :doc:`fiscal localization
+     <../finance/fiscal_localizations>`.
+
+.. _general/companies/users:
+
+Users
+-----
+
+After setting up a company, add :doc:`users <users>` and configure their :ref:`access
+<users/add-individual>` and :doc:`access rights <users/access_rights>`.
+
+.. seealso::
+   :ref:`Users in multi-company environment <users/multi-companies>`
+
+.. _general/companies/document-layout:
+
+Document layout
+---------------
+
+Configure the :ref:`default layout <studio/pdf-reports/default-layout>` for all company documents.
+
+.. _general/companies/branches:
+
+.. _general/branches:
+
+Branches
+========
+
+Branches represent subdivisions within a company, such as regional offices or departments, that
+operate under a common parent company. They support hierarchical company structures through
+:ref:`configurable settings <general/companies/branches/configuration>`, enabling
+:ref:`comprehensive or branch-specific views <general/companies/branches/consolidated-view>` with
+flexible :ref:`access control <general/companies/branches/user-access>`, :ref:`entity-specific or
+shared record visibility <general/companies/branches/shared-records>`, and customizable
+:ref:`reporting <general/companies/branches/reporting>`.
+
+.. note::
+   Independent subsidiaries should be created as additional companies, not branches.
+
+.. seealso::
+   - :doc:`Multi-company </applications/general/companies/multi_company>`
+   - :ref:`Branch accounting <accounting/branches>`
+
+.. _general/companies/branches/configuration:
+
+Configuration
+-------------
+
+Each branch is linked to its parent company but may contain different or specific information, such
+as its address or logo. A branch can be a parent company of branches at a lower level to create a
+multi-level architecture.
+
+.. important::
+   - Clarify the company's structure and hierarchy before creating companies and branches in Odoo. A
+     company defined as a parent cannot be converted into a branch later, as doing so may result in
+     :doc:`access rights <users/access_rights>` issues.
+   - Always create the parent company first.
+
+To create a branch, follow these steps in the Settings app:
+
+#. Navigate to the :guilabel:`Companies` section, click :icon:`oi-arrow-right` :guilabel:`Manage
+   Companies`, or go to :menuselection:`Settings --> Users & Companies --> Companies`.
+#. In the :guilabel:`Companies` list view, open the desired parent company form.
+#. In the :guilabel:`Branches` tab, click :guilabel:`Add a line` and fill in the :ref:`General
+   Information <general/companies/company>` fields in the :guilabel:`Create Branches` window.
+
+To create branches from a branch and create a multi-level architecture, click :guilabel:`Add a line`
+in the new branch's :guilabel:`Branches` tab.
+
+.. tip::
+   Activate the :ref:`developer mode <developer-mode>` to set :doc:`social media accounts
+   <../marketing/social_marketing>` and company-specific :doc:`email <email_communication>` system
+   parameters.
+
+.. warning::
+   Adding a branch to a company enables :doc:`multi-company <companies/multi_company>` functions.
+
+.. _general/companies/branches/consolidated-view:
+
+Comprehensive or branch-specific view
+-------------------------------------
+
+.. note::
+   Selecting the parent company automatically links all its branches, while selecting a branch
+   connects to that branch only. To switch between them, use the :ref:`company selector
+   <general/multi-company/company-selector>`.
+
+All configurations, except for :ref:`accounting <accounting/branches>` settings inherited from the
+parent company, must be set individually per branch. This allows for branch-specific setups such as
+:doc:`loyalty programs <../sales/point_of_sale/pricing/loyalty>`, :doc:`price lists
+<../sales/point_of_sale/pricing/pricelists>`, or :doc:`inventory locations
+<../inventory_and_mrp/inventory/warehouses_storage/inventory_management/use_locations>`.
+
+.. _general/companies/branches/user-access:
+
+User access
+~~~~~~~~~~~
+
+Like in a multi-company environment, parent companies and branches support flexible :ref:`user
+access <users/multi-companies>` control and :doc:`access rights <users/access_rights>`. User access
+can be granted or restricted at the parent company level, the branch level, or both. For example, a
+user can be limited to a specific branch, while an administrator with access to the parent company
+can manage all associated branches.
+
+.. _general/companies/branches/shared-records:
+
+Shared records
+~~~~~~~~~~~~~~
+
+In Odoo, some records are, by default, either specific to a single entity or shared across the
+parent company and all its branches.
+
+When creating a quotation, invoice, or vendor bill, the active company or branch is automatically
+selected and displayed in the :guilabel:`Company` field. If the active company is the parent company
+or one of its branches, then records specifically linked to that entity are accessible only within
+that entity and will only be visible when the company or branch is selected using the :ref:`company
+selector <general/multi-company/company-selector>`.
+
+In contrast, some records, such as :ref:`products or contacts
+<general/multi-company/shared-and-unshared-records>`, are not tied to any particular entity and are
+shared by default across the parent company and all its branches. However, they can be restricted to
+a single entity by setting the appropriate value in the :guilabel:`Company` field, if needed.
+
+.. seealso::
+   :ref:`Branches accounting <accounting/branches>`
+
+.. _general/companies/branches/reporting:
+
+Reporting
+~~~~~~~~~
+
+All :doc:`reports <../finance/accounting/reporting>` can be generated for the parent company alone
+or with its branches, based on :ref:`user access <general/multi-company/user-access>`.
+
+.. toctree::
+   :titlesonly:
+
+   companies/multi_company
+   companies/digest_emails
+   companies/email_template
+
+
+==================================================
+SECTION: digest_emails.rst
+PATH: applications/general/companies/digest_emails.rst
+==================================================
+
+=============
+Digest emails
+=============
+
+*Digest Emails* are periodic snapshots sent via email to users in an organization that include
+high-level information about how the business is performing.
+
+To start sending digest emails, begin by navigating to :menuselection:`Settings app --> Emails
+section`, activate the :guilabel:`Digest Emails` feature, and click :guilabel:`Save`.
+
+.. image:: digest_emails/digest-email-settings-screenshot.png
+   :alt: Digest Emails section inside General Settings.
+
+A variety of settings can be configured for digest emails, such as:
+
+- Deciding which :abbr:`KPIs (key performance indicators)` are shared in the digest emails
+- Determining how often digest emails are sent
+- Choosing who in the organization receives digest emails
+- Creating custom digest email templates
+- Adding additional :abbr:`KPIs (key performance indicators)` (*Studio* app required)
+
+.. note::
+   By default, the :guilabel:`Digest Email` feature is enabled. :guilabel:`Your Odoo Periodic
+   Digest` serves as the primary template, which includes all :abbr:`KPI (key performance
+   indicator)` measurements across the Odoo database, and is sent daily to administrators.
+
+.. warning::
+   When creating duplicates of databases that have sending capabilities (not testing-mode), the
+   digest emails continue to send from the duplicate database, unless deactivated.
+
+   To deactivate the digest email, navigate to :menuselection:`Settings --> Emails section`. Then,
+   deactivate the :guilabel:`Digest Emails` feature, by un-ticking the checkbox, and clicking
+   :guilabel:`Save`. See the section on :ref:`digest-emails/deactivate`.
+
+.. _digest-emails/customize-digest:
+
+Customize default digest email
+==============================
+
+To customize the default digest email (*Your Odoo Periodic Digest*), go to :menuselection:`Settings
+app --> Emails section --> Digest Email field`. Then, select :guilabel:`Your Odoo Periodic Digest`,
+and click on the :guilabel:`↗️ (External link)` icon, next to the drop-down menu selection.
+
+A pop-up window appears, and presents a variety of editable settings, which include:
+
+- :guilabel:`Digest Name`: the name of the digest email.
+- :guilabel:`Periodicity`: control how often digest emails are sent (:guilabel:`Daily`,
+  :guilabel:`Weekly`, :guilabel:`Monthly`, or :guilabel:`Quarterly`).
+- :guilabel:`Next Send Date`: the date on which the digest email will be sent again.
+- :guilabel:`KPIs` tab: check/uncheck each calculated :abbr:`KPI (key performance indicator)` that
+  appears in digest emails. A ticked box indicates an active :abbr:`KPI (key performance indicator)`
+  in the digest email. See the section on :ref:`digest-emails/kpis`.
+- :guilabel:`Recipients` tab: add/remove users who receive the digest emails. See the section on
+  :ref:`digest-emails/recipients`.
+
+.. note::
+   The :abbr:`KPIs (key performance indicators)` can be customized using Odoo *Studio*. Additional
+   costs to the database subscription are incurred should *Studio* need to be installed. See this
+   section on :ref:`digest-emails/custom-kpi`.
+
+.. image:: digest_emails/periodic-digest-screenshot.png
+   :alt: Customize default Digest Email settings and custom KPIs.
+
+.. _digest-emails/deactivate:
+
+Deactivate digest email
+=======================
+
+To manually deactivate an individual digest email, first navigate to :menuselection:`Settings app
+--> Emails section`, and click :guilabel:`Configure Digest Emails`. Then, select the desired digest
+email from the list that should be deactivated. Then, click :guilabel:`Deactivate`.
+
+
+Manually send digest email
+==========================
+
+To manually send a digest email, first navigate to :menuselection:`Settings app --> Emails section`,
+and click :guilabel:`Configure Digest Emails`. Then, select the desired digest email, and click
+:guilabel:`SEND NOW`. This button is located in the top menu, just above the :guilabel:`Digest
+Name`.
+
+.. _digest-emails/kpis:
+
+KPIs
+====
+
+Pre-configured :abbr:`KPIs (key performance indicators)` can be added to the digest email from the
+:guilabel:`KPIs` tab of the digest email template form.
+
+First, navigate to :menuselection:`Settings app --> Emails section`, and click :guilabel:`Configure
+Digest Emails`.
+
+Then, select the desired digest email, and open the :guilabel:`KPIs` tab.
+
+To add a :abbr:`KPI (key performance indicator)` to the digest email, tick the checkbox next to the
+desired :abbr:`KPI (key performance indicator)`. After all :abbr:`KPIs (key performance indicators)`
+are added (or deselected), click :guilabel:`Save`.
+
+The following :abbr:`KPIs (key performance indicators)` are available in the :guilabel:`KPIs` tab on
+a digest email template form out-of-box in Odoo:
+
+:guilabel:`General`
+   - :guilabel:`Connected Users`
+   - :guilabel:`Messages`
+
+:guilabel:`CRM`
+   - :guilabel:`New Leads`
+   - :guilabel:`Opportunities Won`
+
+:guilabel:`Project`
+   - :guilabel:`Open Tasks`
+
+:guilabel:`Helpdesk`
+   - :guilabel:`Tickets Closed`
+
+:guilabel:`Live Chat`
+   - :guilabel:`% of Happiness`
+   - :guilabel:`Conversations handled`
+   - :guilabel:`Time to answer (sec)`
+
+:guilabel:`Sales`
+   - :guilabel:`All Sales`
+   - :guilabel:`eCommerce Sales`
+
+:guilabel:`Sales`
+   - :guilabel:`All Sales`
+   - :guilabel:`eCommerce Sales`
+
+:guilabel:`Invoicing`
+   - :guilabel:`Revenue`
+   - :guilabel:`Banks and Cash Moves`
+
+
+:guilabel:`Point of Sale`
+   - :guilabel:`POS Sales`
+
+:guilabel:`Recruitment`
+   - :guilabel:`Employees`
+
+:guilabel:`Custom`
+
+.. _digest-emails/recipients:
+
+Recipients
+==========
+
+Digest email recipients are added from the :guilabel:`Recipients` tab of the digest email template
+form.
+
+To add a recipient, navigate to :menuselection:`Settings app --> Emails section`, and click
+:guilabel:`Configure Digest Emails`. Then, select the desired digest email, and open the
+:guilabel:`Recipients` tab.
+
+To add a recipient, click :guilabel:`Add a line`, and an :guilabel:`Add: Recipients` pop-up window
+appears, with all available users to add as recipients.
+
+From the pop-up window, tick the checkbox next to the :guilabel:`Name` of the user(s), and click the
+:guilabel:`Select` button.
+
+To remove a user as a recipient, click the :icon:`fa-times` :guilabel:`(cancel)` icon to the
+far-right of the user listed in the :guilabel:`Recipients` tab.
+
+Click :guilabel:`Save` to implement the changes.
+
+.. _digest-emails/custom-emails:
+
+Create digest emails
+====================
+
+To create a new digest email, navigate to :menuselection:`Settings app --> Emails section`, and
+click :guilabel:`Configure Digest Emails`. Then, click :guilabel:`New` to create a new digest email.
+
+A separate page, with a blank digest email template appears, and presents a variety of editable
+settings, including:
+
+- :guilabel:`Digest Name`: the name of the digest email.
+- :guilabel:`Periodicity`: control how often digest emails are sent (:guilabel:`Daily`,
+  :guilabel:`Weekly`, :guilabel:`Monthly`, or :guilabel:`Quarterly`).
+- :guilabel:`Next Send Date`: the date on which the digest email will be sent again.
+- :guilabel:`KPIs` tab: check/uncheck each calculated :abbr:`KPI (key performance indicator)` that
+  appears in digest emails. A ticked box indicates an active :abbr:`KPI (key performance indicator)`
+  in the digest email. See the section on :ref:`digest-emails/kpis`.
+- :guilabel:`Recipients` tab: add/remove users who receive the digest emails. See the section on
+  :ref:`digest-emails/recipients`.
+
+From there, give the digest email a :guilabel:`Digest Name`, specify :guilabel:`Periodicity`, choose
+the desired :abbr:`KPIs (key performance indicators)`, and add :guilabel:`Recipients`, as needed.
+
+After clicking :guilabel:`Save`, the new custom digest email is available as a selection in the
+:guilabel:`Digest Email` field, located in the :menuselection:`Settings app --> Emails section`.
+
+.. _digest-emails/custom-kpi:
+
+Custom KPIs with Odoo Studio
+============================
+
+The :abbr:`KPIs (key performance indicators)` on a digest email template form, in the
+:guilabel:`KPIs` tab, can be customized using Odoo *Studio*.
+
+.. warning::
+   Additional costs to the database subscription are incurred, should Odoo *Studio* need to be
+   installed.
+
+To begin, click the :guilabel:`🛠️ (tools)` icon in the top-right of the screen. This is the link to
+the Odoo *Studio* application.
+
+In order to create additional fields, create two fields on the digest object:
+
+#. Create a boolean field called `kpi_myfield`, and display it in the :guilabel:`KPIs` tab.
+#. Create a computed field called `kpi_myfield_value` that computes the customized :abbr:`KPI (key
+   performance indicator)`.
+#. Select the :abbr:`KPIs (key performance indicators)` in the :guilabel:`KPIs` tab.
+
+.. tip::
+   Here is the `source code
+   <https://github.com/odoo/odoo/blob/15.0/addons/digest/models/digest.py>`_ for the `digest.py`
+   file, which guides the programmer in the coding of the computed field.
+
+Computed values reference table
+-------------------------------
+
++-----------------------+-------------------------------------------+
+| LABEL                 | VALUE                                     |
++=======================+===========================================+
+| Connected Users       | `kpi_res_users_connected_value`           |
++-----------------------+-------------------------------------------+
+| Messages Sent         | `kpi_mail_message_total_value`            |
++-----------------------+-------------------------------------------+
+| New Leads             | `kpi_crm_lead_created_value`              |
++-----------------------+-------------------------------------------+
+| Opportunities Won     | `kpi_crm_opportunities_won_value`         |
++-----------------------+-------------------------------------------+
+| Open Tasks            | `kpi_project_task_opened_value`           |
++-----------------------+-------------------------------------------+
+| Tickets Closed        | `kpi_helpdesk_tickets_closed_value`       |
++-----------------------+-------------------------------------------+
+| % of Happiness        | `kpi_livechat_rating_value`               |
++-----------------------+-------------------------------------------+
+| Conversations handled | `kpi_livechat_conversations_value`        |
++-----------------------+-------------------------------------------+
+| Time to answer (sec)  | `kpi_livechat_response_value`             |
++-----------------------+-------------------------------------------+
+| All Sales             | `kpi_all_sale_total_value`                |
++-----------------------+-------------------------------------------+
+| eCommerce Sales       | `kpi_website_sale_total_value`            |
++-----------------------+-------------------------------------------+
+| Revenue               | `kpi_account_total_revenue_value`         |
++-----------------------+-------------------------------------------+
+| Bank & Cash Moves     | `kpi_account_bank_cash_value`             |
++-----------------------+-------------------------------------------+
+| POS Sales             | `kpi_pos_total_value`                     |
++-----------------------+-------------------------------------------+
+| New Employees         | `kpi_hr_recruitment_new_colleagues_value` |
++-----------------------+-------------------------------------------+
+
+
+==================================================
+SECTION: email_template.rst
+PATH: applications/general/companies/email_template.rst
+==================================================
+
+===============
+Email templates
+===============
+
+Email templates are saved emails that are used repeatedly to send emails from the database. They
+allow users to send quality communications, without having to compose the same text repeatedly.
+
+Creating different templates that are tailored to specific situations lets users choose the right
+message for the right audience. This increases the quality of the message and the overall
+engagement rate with the customer.
+
+.. note::
+   Email templates in Odoo use QWeb or XML, which allows for editing emails in their final
+   rendering, making customizations more robust, without having to edit any code whatsoever. This
+   means that Odoo can use a Graphical User Interface (GUI) to edit emails, which edits the backend
+   code. When the received email is read by the end user's program, different formatting and
+   graphics will appear in the final form of it.
+
+Access email templates in :ref:`developer mode <developer-mode>` by navigating to
+:menuselection:`Settings app --> Technical menu --> Email --> Email Templates`.
+
+Editing email templates
+=======================
+
+The *powerbox* feature can be used when working with email templates. This feature provides the
+ability to directly edit the formatting and text in an email template, as well as the ability to add
+links, buttons, appointment options, or images.
+
+Additionally, the XML/HTML code of the email template can be edited directly, via the
+:guilabel:`</>` icon. Dynamic placeholders (referencing fields within Odoo) are also available for
+use in the email template.
+
+Powerbox
+--------
+
+The *powerbox* feature is an enriched text editor with various formatting, layout, and text options.
+It can also be used to add XML/HTML features in an email template. The powerbox feature is activated
+by typing a forward slash `/` in the body of the email template.
+
+When a forward slash `/` is typed in the body of an email template, a drop-down menu appears with
+the following options:
+
+:guilabel:`Structure`
+
+- :guilabel:`Bulleted list`: Create a simple bulleted list.
+- :guilabel:`Numbered list`: Create a list with numbering.
+- :guilabel:`Checklist`: Track tasks with a checklist.
+- :guilabel:`Table`: Insert a table.
+- :guilabel:`Separator`: Insert a horizontal rule separator.
+- :guilabel:`Quote`: Add a blockquote section.
+- :guilabel:`Code`: Add a code section.
+- :guilabel:`2 columns`: Convert into two columns.
+- :guilabel:`3 columns`: Convert into three columns.
+- :guilabel:`4 columns`: Convert into four columns.
+
+:guilabel:`Format`
+
+- :guilabel:`Heading 1`: Big section heading.
+- :guilabel:`Heading 2`: Medium section heading.
+- :guilabel:`Heading 3`: Small section heading.
+- :guilabel:`Switch direction`: Switch the text's direction.
+- :guilabel:`Text`: Paragraph block.
+
+:guilabel:`Media`
+
+- :guilabel:`Image`: Insert an image.
+- :guilabel:`Article`: Link an article.
+
+:guilabel:`Navigation`
+
+- :guilabel:`Link`: Add a link.
+- :guilabel:`Button`: Add a button.
+- :guilabel:`Appointment`: Add a specific appointment.
+- :guilabel:`Calendar`: Schedule an appointment.
+
+:guilabel:`Widgets`
+
+- :guilabel:`3 Stars`: Insert a rating over three stars.
+- :guilabel:`5 Stars`: Insert a rating over five stars.
+
+:guilabel:`Basic Blocks`
+
+- :guilabel:`Signature`: Insert your signature.
+
+:guilabel:`Marketing Tools`
+
+- :guilabel:`Dynamic Placeholders`: Insert personalized content.
+
+.. tip::
+   To use any of these options, click on the desired feature from the powerbox drop-down menu. To
+   format existing text with a text-related option (e.g. :guilabel:`Heading 1`, :guilabel:`Switch
+   direction`, etc.), highlight the text, then type in the activator key (forward slash) `/`, and
+   select the desired option from the drop-down menu.
+
+   .. image:: email_template/powerbox-feature.png
+      :align: center
+      :alt: Powerbox feature in the email template.
+
+.. seealso::
+   :ref:`Using dynamic placeholders <email_template/dynamic-placeholders>`
+
+XML/HTML code editor
+--------------------
+
+To access the XML/HTML editor for an email template, first enter :ref:`developer mode
+<developer-mode>`. Then, click the :guilabel:`</>` icon in the upper-right corner of the template,
+and proceed to edit the XML/HTML. To return to the standard text editor, click the :guilabel:`</>`
+icon again.
+
+.. image:: email_template/html-code-editor.png
+   :align: center
+   :alt: HTML editor in the email template.
+
+.. warning::
+   The XML/HTML editor should be accessed with caution as this is the backend code of the template.
+   Editing the code can cause the email template to break immediately or when upgrading the
+   database.
+
+.. _email_template/dynamic-placeholders:
+
+Dynamic placeholders
+--------------------
+
+*Dynamic placeholders* reference certain fields within the Odoo database to produce unique data in
+the email template.
+
+.. example::
+   Many companies like to customize their emails with a personalized piece of customer information
+   to grab attention. This can be accomplished in Odoo by referencing a field within a model by
+   inserting a dynamic placeholder. For example, a customer's name can be referenced in the email
+   from the :guilabel:`Customer` field on the :guilabel:`Sales Order` model. The dynamic placeholder
+   for this field is: `{{ object.partner_id }}`.
+
+Dynamic placeholders are encoded to display fields from within the database. Dynamic placeholders
+can be used in the :guilabel:`Body` (:guilabel:`Content` Tab) of the email template. They can also
+be used in the fields present in the :guilabel:`Email Configuration` tab, the :guilabel:`Subject` of
+the email, and the :guilabel:`Language`.
+
+To use the dynamic placeholders in the :guilabel:`Body` of an email open the **powerbox** feature by
+typing in `/` into the body of the email template under the :guilabel:`Content` tab. Scroll to the
+bottom of the options list, to :guilabel:`Marketing Tools`. Next, select :guilabel:`Dynamic
+Placeholder`. Then select the dynamic placeholder from a list of available options and follow the
+prompts to configure it with the desired corresponding Odoo field. Each dynamic placeholder will
+vary in configuration.
+
+.. image:: email_template/dynamic-placeholders.png
+   :align: center
+   :alt: Using dynamic placeholders in an email template.
+
+.. note::
+   Each unique combination of :guilabel:`Fields`, :guilabel:`Sub-models` and :guilabel:`Sub-fields`
+   creates a different dynamic placeholder. Imagine it as a combination to the field that is being
+   created.
+
+   To search the available fields, simply type in the front-end name (on user-interface) of the
+   field in the search. This will find a result from all of the available fields for the model that
+   the email template is created for.
+
+.. warning::
+   Customizing email templates are out of the scope of Odoo Support.
+
+Rich text editor
+----------------
+
+A rich text editor toolbar can be accessed by highlighting text in the email template. This can be
+used to change the heading, font size/style, color, add a list type, or a link.
+
+.. image:: email_template/rich-text-editor.png
+   :align: center
+   :alt: Rich text editor in the email template.
+
+Resetting email templates
+-------------------------
+
+Should the email template not work because the code has been altered it can be reset to restore it
+back to the out-of-box default template. Simply click on the :guilabel:`Reset Template` button in
+the upper left-hand of the screen and the template will be reset.
+
+.. image:: email_template/reset.png
+   :align: center
+   :alt: Resetting the email template.
+
+Default reply on email templates
+--------------------------------
+
+Under the :guilabel:`Email Configuration` tab on an email template, there is a :guilabel:`Reply To`
+field. In this field, add email addresses to which replies are redirected when sending emails en
+masse using this template.
+
+.. tip::
+   Add multiple email addresses by adding a comma `,` between the addresses or dynamic
+   placeholders.
+
+.. image:: email_template/reply-to-template-sales.png
+   :align: center
+   :alt: Reply-to field on template.
+
+The :guilabel:`Reply To` field is **only** used for mass mailing (sending emails in bulk). Bulk
+emails can be sent in almost every Odoo application that has a list view option.
+
+To send mass mails, while in :guilabel:`list` view, check the boxes next to the desired records
+where the emails are to be sent, click the :guilabel:`Action` button (represented by a :guilabel:`⚙️
+(gear)` icon), and select the desired email option from the :guilabel:`Action` drop-down menu. Email
+options can vary by the particular list view and application.
+
+If it is possible to send an email, a mail composer pop-up window appears, with values that can be
+defined and customized. This option will be available on the :guilabel:`Action` button on pages
+where emails can be sent in bulk---for example, on the :guilabel:`Customers` page of the CRM app.
+This action occurs throughout the Odoo database.
+
+.. image:: email_template/composer-mass-mailing.png
+   :align: center
+   :alt: Email composer in mass mailing mode with reply-to highlighted.
+
+Transactional emails and corresponding URLs
+===========================================
+
+In Odoo, multiple events can trigger the sending of automated emails. These emails are known as
+*transactional emails*, and sometimes contain links redirecting to the Odoo database.
+
+By default, links generated by the database use the dynamic `web.base.url` key defined in the system
+parameters. For more information about this, see :ref:`system parameters
+<domain-name/web-base-url>`.
+
+If the *Website* application is not installed, the `web.base.url` key will always be the default
+parameter used to generate all the links.
+
+.. important::
+   The `web.base.url` key can only have a single value, meaning that, in a multi-website or
+   multi-company database environment, even if there is a specific domain name for each website, the
+   links generated to share a document (or the links within a transactional email) may remain the
+   same, regardless of which website/company is related to the sending of the email/document.
+
+   .. example::
+      If the :guilabel:`Value` of the :guilabel:`web.base.url` system parameter is equal to
+      `https://www.mycompany.com` and there are two separate companies in Odoo with different
+      website URLs: `https://www.mycompany2.com` and `https://www.mycompany1.com`, the links created
+      by Odoo to share a document, or send a transactional email, come from the domain:
+      `https://www.mycompany.com`, regardless of which company sends the document or email.
+
+   This is not always the case, as some Odoo applications (*eCommerce*, for example) have a link
+   established in the database with the *Website* application. In that case, if a specific domain is
+   defined for the website, the URL generated in the email template uses the domain defined on the
+   corresponding website of the company.
+
+   .. example::
+      When a customer makes a purchase on an Odoo *eCommerce* website, the order has an established
+      link with that website. As a result, the links in the confirmation email sent to the customer
+      use the domain name for that specific website.
+
+.. note::
+   A document shared using the *Documents* application will **always** use the `web.base.url` key,
+   as the document shared is not associated with any particular website. This means that the URL
+   will always be the same (the `web.base.url` key value), no matter what company it's shared from.
+   This is a known limitation.
+
+For more information about how to configure domains, check out the :doc:`domain name documentation
+</applications/websites/website/configuration/domain_names>`.
+
+Updating translations within email templates
+--------------------------------------------
+
+In Odoo, email templates are automatically translated for all users in the database for all of the
+languages installed. Changing the translations shouldn't be necessary. However, if for a specific
+reason, some of the translations need to be changed, it can be done.
+
+.. warning::
+   Like any modification in the code, if translation changes are not done correctly (for example,
+   modifications leading to bad syntax), it can break the template, and as a result, the template
+   will appear blank.
+
+In order to edit translations, first enter :ref:`developer mode <developer-mode>`. Then, on the
+email template, click on the :guilabel:`Edit` button, and then click on the language button,
+represented by the initials of the language currently being used (e.g. :guilabel:`EN` for English).
+
+.. image:: email_template/edit-language-template.png
+   :align: center
+   :alt: Edit the language of a template.
+
+.. note::
+   If there aren't multiple languages installed and activated in the database, or if the user does
+   not have administration access rights, the language button will not appear.
+
+A pop-up window with the different languages installed on the database appears. From this pop-up,
+editing of translations is possible. When the desired changes have been made, click the
+:guilabel:`Save` button to save the changes.
+
+.. image:: email_template/translation-body.png
+  :align: center
+  :alt: Translation of the body of the Appointment Booked template.
+
+.. note::
+   When editing the translations, the default language set in the database appears in **bold**.
+
+
+==================================================
+SECTION: multi_company.rst
+PATH: applications/general/companies/multi_company.rst
+==================================================
+
+=============
+Multi-company
+=============
+
+.. seealso::
+   :ref:`Branches <general/companies/branches>`
+
+.. |mcd| replace:: multi-company database
+
+In Odoo, multiple companies can be configured under one database. This allows some data to be shared
+among companies while maintaining some separation between entities.
+
+A centralized management environment allows authorized users to select multiple companies
+simultaneously and set their specific warehouses, customers, equipment, and contacts. It also
+generates reports of aggregated figures without switching interfaces, facilitating daily tasks and
+enhancing the overall management process.
+
+.. warning::
+   Enabling multi-company functionality in an Odoo database on a *Standard* plan automatically
+   triggers an upsell to the *Custom* plan. This does not apply to databases on the *One-App Free*
+   plan.
+
+   - **For yearly or multi-year contracts**: An upsell order is created with a 30-day limit.
+   - **For monthly contracts**: The subscription automatically switches to the *Custom* plan and
+     the new rate is applied when the next bill is generated.
+
+   For more information, refer to `Odoo's pricing page <https://www.odoo.com/pricing-plan>`_ or
+   contact your account manager.
+
+.. _general/multi-company/configuration:
+
+Configuration
+=============
+
+Open the Settings app, navigate to the :guilabel:`Companies` section, and click
+:icon:`oi-arrow-right` :guilabel:`Manage Companies`. Then, click :guilabel:`New` and :ref:`fill in
+the form with the company's information <general/companies/company>` or select an existing company
+to edit it.
+
+.. note::
+   Alternatively, it is possible to create a company by going to :menuselection:`Settings --> Users
+   & Companies --> Companies`.
+
+.. tip::
+   To archive a company, follow these steps:
+
+   #. In the Settings app, navigate to the :guilabel:`Companies` section and click
+      :icon:`oi-arrow-right` :guilabel:`Manage Companies`.
+   #. In the :guilabel:`Companies` list view, select the company to be archived.
+   #. Click the :icon:`fa-cog` :guilabel:`Actions` menu and select :guilabel:`Archive`.
+   #. Click :guilabel:`Archive` to confirm.
+
+.. _general/multi-company/multi-company-environment:
+
+Multi-company environment
+=========================
+
+In a multi-company environment, users are granted :ref:`access to one or more companies
+<general/multi-company/user-access>`, and :ref:`data
+<general/multi-company/shared-and-unshared-records>` is created or modified based on its intended
+use within that structure.
+
+.. _general/multi-company/user-access:
+
+User access
+-----------
+
+A multi-company environment allows flexible control over :ref:`user access <users/multi-companies>`
+and :doc:`access rights <../users/access_rights>` that can be granted or restricted as needed.
+
+.. _general/multi-company/company-selector:
+
+Company selector
+----------------
+
+To switch between (or select) multiple companies, follow these steps:
+
+#. Click the company selector in the top-right corner of the header menu.
+#. In the drop-down list, select the checkboxes next to the desired companies.
+#. The highlighted company indicates the current active environment.
+#. To switch to another company, click its name in the list of selected companies.
+
+.. example::
+   In the example below, the user can access six companies, two of which are selected. The current
+   active company is *My Company (San Francisco)*.
+
+   .. image:: multi_company/multi-companies-menu-dashboard.png
+      :alt: View of the companies menu through the main dashboard in Odoo.
+
+.. _general/multi-company/shared-and-unshared-records:
+
+Shared and company-specific records
+-----------------------------------
+
+Data, such as products, contacts, and equipment can either be shared across companies or restricted
+to a specific company by setting the :guilabel:`Company` field on the relevant records:
+
+- either leave the field blank to make it accessible to all companies;
+- or select the company to make it visible to users logged in to that specific company.
+
+Records specifically linked to a particular company are accessible only within that entity. For
+instance, quotations, invoices, and vendor bills associated with a company are visible only when
+logged into that company, and the corresponding company is automatically selected by default and
+displayed in the :guilabel:`Company` field.
+
+In a |mcd|, new products and contacts are shared across companies by default. To restrict them to a
+specific company, set the :guilabel:`Company` field on the record's form.
+
+.. _general/multi-company/inter-company-transactions:
+
+Inter-company transactions
+==========================
+
+The :guilabel:`Inter-Company Transactions` feature allows one company in the database to sell or
+purchase goods and services from another company within the same database. Depending on the
+configuration settings, counterpart documents for orders and invoices can be automatically generated
+and synchronized.
+
+.. warning::
+   To handle inter-company transactions correctly, :doc:`general
+   <../../finance/accounting/get_started>` and specific configurations must be set properly,
+   including :doc:`fiscal positions <../../finance/accounting/taxes/fiscal_positions>` and
+   :doc:`localizations <../../finance/fiscal_localizations>`.
+
+To activate inter-company transactions, select the relevant company in the :ref:`company selector
+<general/multi-company/company-selector>`, open the Settings app, navigate to the
+:guilabel:`Companies` section, enable :guilabel:`Inter-Company Transactions`, and :guilabel:`Save`.
+Then, select the option(s) to create a counterpart for the selected company:
+
+- :guilabel:`Generate Bills and Refunds`: Generate a bill/refund when a company confirms an
+  invoice/credit note for the selected company. To generate a validated bill/refund, select
+  :guilabel:`Create and validate`.
+- :guilabel:`Generate Sales Orders`: Generate a quotation (drafted sales order) when a sales order
+  is confirmed for the selected company. To generate a validated sales order instead of a quotation,
+  select :guilabel:`Create and validate`.
+- :guilabel:`Generate Purchase Orders`: Generate a request for quotation (drafted purchase order)
+  using the selected company warehouse in the :guilabel:`Use Warehouse` field when a purchase order
+  is confirmed for the selected company. To generate a validated purchase order instead of a request
+  for quotation, select :guilabel:`Create and validate`.
+
+.. note::
+   For inter-company transactions, the :ref:`products must be shared
+   <general/multi-company/shared-and-unshared-records>` among the involved companies.
+
+.. example::
+   :guilabel:`Generate Bills and Refunds`: when an invoice for :guilabel:`Customer` `JS Store US` is
+   posted on `JS Store Belgium`, a vendor bill is automatically created in `JS Store US`.
+
+   :guilabel:`Generate Sales Orders`: when a sales order for :guilabel:`Customer` `JS
+   Store US` is confirmed on `JS Store Belgium`, a purchase order on `JS Store US` is automatically
+   created (and confirmed if the :guilabel:`Create and validate` option is selected).
+
+.. seealso::
+   - :doc:`Multi-company Guidelines <../../../developer/howtos/company>`
+   - :doc:`../../finance/accounting/get_started/multi_currency`
+
+.. _general/multi-company/use-cases:
+
+Use cases
+=========
+
+.. _general/multi-company/use-cases-multinational-companies:
+
+Multinational companies
+-----------------------
+
+A multinational retail chain operating in the United States and Canada must manage transactions in
+USD and CAD.
+
+Since each country has its own tax laws and regulations, using Odoo’s multi-company feature is
+highly beneficial.
+
+This setup allows for inter-company transactions, which is essential for managing cross-border
+inventory transfers. It also simplifies the sales process by enabling customers transactions in
+their local currency.
+
+.. _general/multi-company/use-cases-seperate-processes:
+
+Separate processes
+------------------
+
+A small furniture company is launching a new product line that requires separate procurement,
+inventory, and manufacturing workflows. These new products differ significantly from the existing
+catalog. To manage this efficiently, the company is considering using the multi-company feature to
+manage the new line as a separate business entity.
+
+However, creating a completely new company might add unnecessary complexity to the database.
+Instead, the company can leverage existing features such as :doc:`analytic accounting
+<../../finance/accounting/reporting/analytic_accounting>` and multiple warehouses to manage the new
+product line without complicating overall operations.

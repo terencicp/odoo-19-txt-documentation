@@ -1,0 +1,1556 @@
+
+
+==================================================
+SECTION: expenses.rst
+PATH: applications/finance/expenses.rst
+==================================================
+
+:nosearch:
+
+========
+Expenses
+========
+
+.. toctree::
+
+   expenses/expense_categories
+   expenses/expense_cards
+   expenses/log_expenses
+   expenses/expense_reports
+   expenses/approve_expenses
+   expenses/post_expenses
+   expenses/reimburse
+   expenses/reinvoice_expenses
+   expenses/expenses_analysis
+
+
+==================================================
+SECTION: approve_expenses.rst
+PATH: applications/finance/expenses/approve_expenses.rst
+==================================================
+
+================
+Approve expenses
+================
+
+In Odoo, most users cannot approve expense reports; only users with the necessary access rights or
+permissions can. This means that a user **must** have at least *Team Approver* rights for the
+**Expenses** app. Employees with the necessary rights can review expense reports, approve or refuse
+them, and provide feedback with an integrated :ref:`Refuse Expense <expenses/refuse-report>`
+communication tool.
+
+Please refer to the :doc:`access rights documentation </applications/general/users>` to learn more
+about managing users and their access rights.
+
+View expense reports
+====================
+
+Users who are able to approve expense reports (typically managers) have an :guilabel:`Expense
+Reports` main navigation button at the top of the **Expenses** app. This allows managers to view all
+expense reports they have access rights for. Navigate to :menuselection:`Expenses app --> Expense
+Reports`, to view the :guilabel:`All Reports` dashboard.
+
+A list of all expense reports with a status of either :guilabel:`To Submit`, :guilabel:`Submitted`,
+:guilabel:`Approved`, :guilabel:`Posted`, or :guilabel:`Done` appears. Expense reports with a status
+of :guilabel:`Refused` are hidden, by default.
+
+.. image:: approve_expenses/expense-reports-list.png
+   :alt: Reports to validate are found on the Reports to Approve page.
+
+Approve expense reports
+=======================
+
+Expense reports can be approved in two ways: :ref:`individually <expenses/individual>` or :ref:`in
+bulk <expenses/multiple>`.
+
+.. important::
+   Only reports with a status of :guilabel:`Submitted` can be approved.
+
+   It is recommended to display only :guilabel:`Submitted` reports by ticking the checkbox beside
+   the :guilabel:`Submitted` filter, in the left column, under the :guilabel:`Status` section.
+
+   If a report is **not** able to be approved, the :guilabel:`Approve Report` button **does not**
+   appear on the :guilabel:`All Reports` page.
+
+.. _expenses/individual:
+
+Approve individual reports
+--------------------------
+
+To approve an individual report, navigate to :menuselection:`Expenses app --> Expense Reports`, and
+click on an individual report to view the detailed report form.
+
+From here, several options are presented: :guilabel:`Approve`,  :guilabel:`Refuse`, and
+:guilabel:`Reset to draft`. Click :guilabel:`Approve` to approve the report.
+
+   .. image:: approve_expenses/approve-individual.png
+      :alt: An individual expense report that can be approved or refused.
+
+.. _expenses/multiple:
+
+Approve multiple reports
+------------------------
+
+To approve multiple expense reports at once, first navigate to :menuselection:`Expenses app -->
+Expense Reports` to view a list of expense reports. Next, select the reports to approve by ticking
+the checkbox next to each report being approved, or tick the checkbox next to the
+:guilabel:`Employee` column title to select all the reports in the list.
+
+Next, click the :guilabel:`Approve Report` button.
+
+   .. image:: approve_expenses/approve-multiple.png
+      :alt: Select multiple expense reports at once.
+
+.. tip::
+   Team managers can view all the expense reports for their team members only. While on the
+   :guilabel:`All Reports` page, click the :icon:`fa-caret-down` :guilabel:`(down arrow)` to the
+   right of the search bar, then click :guilabel:`My Team` in the :icon:`fa-filter`
+   :guilabel:`Filters` section. This presents all the reports for only the manager's team.
+
+.. _expenses/refuse-report:
+
+Refuse expense reports
+======================
+
+Expense reports can **only** be refused on the individual expense report, and **not** from the
+:guilabel:`All Reports` dashboard. To open an individual expense report, navigate to
+:menuselection:`Expenses app --> Expense Reports`, then click on an individual expense report to
+view the detailed expense report form.
+
+If more information is needed, such as a missing receipt, communicate any necessary information
+requests in the *chatter* of the report form. On the individual expense report, click either
+:guilabel:`Send message` or :guilabel:`Log note` to open a message text box.
+
+Type in a message, tagging the proper people, and post it to the *chatter* by clicking
+:guilabel:`Send` or :guilabel:`Log`, depending on the method of communication. The message is posted
+in the chatter, and the tagged people are notified via email.
+
+.. note::
+   The only people that can be tagged in a message are *followers* of the specific report. To see
+   who is a follower, click the :icon:`fa-user-o` :guilabel:`(Show Followers)` icon to display the
+   followers of the expense report.
+
+   .. image:: approve_expenses/chatter.png
+      :alt: Send messages in the chatter.
+
+To refuse an expense report, click :guilabel:`Refuse`, and a :guilabel:`Refuse Expense` pop-up
+window loads. Enter a brief explanation for the refusal on the :guilabel:`Reason` line, then click
+:guilabel:`Refuse`.
+
+.. image:: approve_expenses/refuse-expense.png
+   :alt: Send messages in the chatter.
+
+Once the expense report is refused, the status changes to :guilabel:`Refused`, and the only button
+that appears is :guilabel:`Reset to Draft`.
+
+
+==================================================
+SECTION: expense_cards.rst
+PATH: applications/finance/expenses/expense_cards.rst
+==================================================
+
+=============
+Expense cards
+=============
+
+Odoo offers physical and virtual expense cards, allowing for better expense tracking and management.
+Using expense cards allows for real time expense management, creating expense records as soon as an
+expense transaction occurs, allowing management greater visibility of expense costs as they are
+incurred.
+
+The elimination of the need to :doc:`actively create expense records <log_expenses>` allows for a
+more streamlined expense workflow, with records automatically created as purchases are made.
+
+To use expense cards, first a :ref:`card is configured <expenses/card-configure>`, then it is
+:ref:`activated <expenses/card-activate>`. Before employees can make purchases with their expense
+card, a :ref:`Stripe account must be created <expenses/create-stripe>` and configured, then
+:ref:`funds must be added <expenses/add-funds>` to the company's Stripe account. Once there is money
+available in the account (this typically takes 2-3 business days for the transfer to Stripe),
+employees can use their expense cards, and the money is pulled from the company's Stripe account.
+
+.. important::
+   To create and use expense cards, both the **Accounting** and **Invoicing** apps **must** be
+   :ref:`installed <general/install>`.
+
+.. note::
+   Expense cards act like pre-paid debit cards, as they can **only** be used with a connected Stripe
+   account, and **only** if funds are added to that account, to be drawn from.
+
+Availability
+============
+
+Expense cards are currently available for the following countries:
+
++-------------+-------------+-------------+-------------+
+| Austria     | Belgium     | Croatia     | Cyprus      |
++-------------+-------------+-------------+-------------+
+| Estonia     | Finland     | France      | Germany     |
++-------------+-------------+-------------+-------------+
+| Greece      | Ireland     | Italy       | Latvia      |
++-------------+-------------+-------------+-------------+
+| Lithuania   | Luxembourg  | Malta       | Netherlands |
++-------------+-------------+-------------+-------------+
+| Portugal    | Slovakia    | Slovenia    | Spain       |
++-------------+-------------+-------------+-------------+
+
+Only companies located in one of these countries are able to create and use expense cards.
+
+Fees
+====
+
+Odoo covers **all fees** associated with creating virtual and physical cards.
+
+.. _expenses/card-settings:
+
+Configuration
+=============
+
+Two settings must be configured to use expense cards. Navigate to :menuselection:`Expenses app -->
+Configuration --> Settings`. Tick the box next to :guilabel:`Expense Card`, then click
+:guilabel:`Save`. The :guilabel:`Settings` page reloads, and two fields now appear beneath the
+:guilabel:`Expense Card` option.
+
+A :guilabel:`Journal` field with :guilabel:`Stripe Issuing` appears, populating the field. This is
+the default journal, and it is **not** recommended to alter this unless instructed by the accounting
+department.
+
+Next, click the text link :guilabel:`terms and conditions` and an :guilabel:`Expense Cards Terms and
+Conditions` pop-up window loads, with all the details of the agreement. After this has been read,
+click :guilabel:`Close`, then tick the checkbox next to :guilabel:`I confirm agreeing to the terms
+and conditions` to accept the terms, then click :guilabel:`Save`.
+
+.. note::
+   The terms and conditions **must** be agreed to use expense cards.
+
+After agreeing to the terms and conditions, :ref:`create a Stripe connected account
+<expenses/create-stripe>`.
+
+.. _expenses/create-stripe:
+
+Create Stripe connected account
+===============================
+
+To create a Stripe connected account, open the **Expenses** app, and ensure the :guilabel:`Expense
+Card` option is enabled. Next, click :icon:`oi-arrow-right` :guilabel:`Connect` to create a new
+Stripe Issuing connect account.
+
+Fill in the KYC questionnaire provided by Stripe. Stripe takes +/-24 hours to approve or refuse
+account creation requests.
+
+A green :guilabel:`Verified` tag now appears next to :icon:`oi-arrow-left` :guilabel:`Refresh`,
+indicating the account is properly configured.
+
+Once the account is verified, the company must :ref:`add funds <expenses/add-funds>` to their Stripe
+balance.
+
+.. _expenses/add-funds:
+
+Add funds to Stripe account
+===========================
+
+For employees to use their expense cards, funds must be available in the company's Stripe account,
+to make purchases against. To add funds to the company's Stripe account, open the **Accounting**
+app. On the :guilabel:`Stripe Issuing` Kanban card, click :guilabel:`Top-up`, and a
+:guilabel:`Top-up` pop-up window loads.
+
+Enter the amount being transferred into the account in the :guilabel:`Amount` field. The
+:guilabel:`IBAN` and :guilabel:`BIC` fields are populated according to the Stripe configuration and
+cannot be changed. When configured, click :guilabel:`Topup`, and the transfer is initiated.
+
+.. note::
+   The user wires money to the IBAN shown using a SEPA Credit Transfer (for the EURO Zone). The
+   Stripe issuing partner bank is `Circle Bank`.
+
+.. important::
+   It typically takes 2-3 business days for transfers to be processed. Funds are **not** available
+   until the transfer is complete.
+
+.. _expenses/card-configure:
+
+Configure expense cards
+=======================
+
+To create and configure a new expense card, click :menuselection:`Cards` in the main **Expenses**
+app menu to view the :guilabel:`Cards` dashboard. Click :guilabel:`New` and a blank
+:guilabel:`Cards` form loads. Enter the following information on the form:
+
+- :guilabel:`Card Name`: The first line on the card form is blank, and displays `Draft`. Enter a
+  name for the card in this field. This does **not** need to be a person's name, it can be something
+  descriptive to explain the use of the card.
+
+  .. example::
+     An employee is going on a week-long business trip to Berlin to visit many clients. The employee
+     needs to pay for meals, transportation, and other business-related expenses. Since this is a
+     short trip, a virtual card is created to capture all the expenses, with the name `Business Trip
+     - Berlin`.
+
+     The marketing department pays for many expenses throughout the year, from email marketing
+     services, venue rentals for events, promotional merchandise, etc. Since the expenses do not
+     have an end date, and it is used for an entire department, a physical card is ordered with the
+     name `Marketing`.
+
+- :guilabel:`Cardholder`: Select the person using the card from the drop-down menu. Once selected,
+  the person's name populates the :guilabel:`Draft` field, above :guilabel:`Cardholder`.
+- :guilabel:`Update info`: Next to the cardholder's name, click :guilabel:`Update info` and a
+  :guilabel:`Cardholder Configuration` pop-up window loads. Update the cardholder's name, birthday,
+  phone number, email, and physical address. All the requested information **must** be populated, as
+  it is used to create the expense card with Stripe, and to verify the cardholder's identity, when
+  needed. If any information is missing from this form, the card **cannot** be created, and an error
+  appears when creating or ordering the card.
+
+  .. important::
+     The phone number listed is used for two-factor authentication. The phone number can be changed
+     in the future. When changing the phone number, an alert is sent to the original phone number,
+     notifying them of the change.
+
+- :guilabel:`Type`: Click the radio button next to the desired *type* of expense card. Options are:
+
+  - :guilabel:`Physical`: A physical card is printed and mailed out to the employee. If selected, a
+    :guilabel:`Delivery Address` field appears. Using the drop-down menu, select the employee or
+    company address the card is mailed to.
+  - :guilabel:`Virtual`: Virtual cards are available instantaneously once the card configuration is
+    completed and the card is activated.
+
+- :guilabel:`Company`: Select the company the expenses are associated with using the drop-down menu.
+  Each card must be associated with a single company, and are **not** available for use between all
+  companies or branches in the database. Ensure the selected company has its own Stripe Connect
+  account configured, or the expense cards will not work.
+- :guilabel:`Stripe Journal`: :guilabel:`Stripe Issuing` populates this field by default, and cannot
+  be modified.
+
+Next, configure the following fields in the :guilabel:`Spending Policy` tab of the card form:
+
+- :guilabel:`Countries`: Using the drop-down menu, select the countries the card is able to be used
+  in. The company's country location populates this field, by default. All other countries the
+  employee may travel to or purchase expensable items from, should be included in this list.
+- :guilabel:`Categories`: If the expense card is limited to purchase items within a specific
+  *category*, select them using the drop-down menu. If this field is left blank, the card may be
+  used for *any* expense category.
+
+  Odoo is able to categorize transactions based on the :abbr:`MCC (Merchant Category Code)` provided
+  by the card network provider (such as Mastercard). Every merchant has a corresponding :abbr:`MCC
+  (Merchant Category Code)` that identifies their business and product types. When a Stripe-issued
+  card is used, the :abbr:`MCC (Merchant Category Code)` is sent with the transaction, allowing
+  Stripe to approve or block it based on the card's configuration.
+
+  .. example::
+     A company issues an expense card that is only authorized for airline, train, and taxi travel
+     expenses.
+
+     To configure this, click into the :guilabel:`Category` field, and click :guilabel:`Search
+     more...` at the bottom. In the :guilabel:`Search: Categories` pop-up window, click into the
+     search bar and click :guilabel:`Transportation services` in the :icon:`fa-filter`
+     :guilabel:`Filters` column.
+
+     Next, tick the checkboxes next to the desired transportation categories. In this example, only
+     :guilabel:`Railroads`, :guilabel:`Passenger Railways`, :guilabel:`Taxicabs Limousines`, and
+     :guilabel:`Airlines Air Carriers` are selected.
+
+     Click :guilabel:`Select` and the selected transportation categories now populate the
+     :guilabel:`Categories` field.
+
+- :guilabel:`Limit`: Configure the two spending limits for the card. The first configuration sets
+  the total expense amount allowed during a specific time period. Using the drop-down menu after the
+  word :guilabel:`per`, select the time period the limit applies to. The available options are:
+  :guilabel:`Day`, :guilabel:`Week`, :guilabel:`Month`, :guilabel:`Year`, or :guilabel:`All Time`.
+  Next, enter the maximum amount allowed for the selected time period.
+
+  Next, set the *per transaction* limit. Enter the maximum amount that can be charged on the expense
+  card in a single transaction in the field.
+
+  .. example::
+     A company allows employees to purchase airline tickets that are less than $1,000.00 total.
+     Additionally, there is a monthly cap of $3,000.00 for all expenses.
+
+     The company would configure the limit as follows: `3,000.00` per :guilabel:`Month` and
+     `1,000.00` per transaction.
+
+.. tip::
+   Card limits can be modified at any point. Once modified, they immediately go into effect.
+
+  .. important::
+     All expense cards pull payments from a single Stripe account. It is recommended to set card
+     limits to avoid large charges or transactions that may prematurely deplete the expense Stripe
+     account.
+
+.. image:: expense_cards/card-form.png
+   :alt: An expense card form filled out for transportation and food only.
+
+.. _expenses/card-activate:
+
+Activate expense cards
+======================
+
+Once an expense card is configured, the next step is to activate the cards. First, navigate to
+:menuselection:`Expenses app --> Cards`, and the :guilabel:`Cards` dashboard loads, displaying all
+expense cards in a Kanban view.
+
+All cards display their status on a banner in the upper-right corner of each card. Statuses are
+either:
+
+- :guilabel:`Draft`: The card form is filled out, but the card has not been requested or activated.
+- :guilabel:`Pending`: A physical card has been ordered, but not activated.
+- :guilabel:`Active`: The card is able to be used. This status does **not** display a status banner
+  on the card.
+- :guilabel:`Paused`: A card has been put *on hold* and no transactions can be processed with this
+  status.
+- :guilabel:`Blocked`: The physical or virtual card is *cancelled* and cannot be used.
+
+Click on a card to activate, and the card form loads. Ensure all the fields are :ref:`configured
+<expenses/card-configure>`, then click either :guilabel:`Order` if requesting a physical card, or
+:guilabel:`Activate` if creating a virtual card.
+
+.. note::
+   Physical cards take 5 to 10 business days to be delivered. Once ordered, delivery information is
+   added to the chatter, and the user who placed the card order receives the information by email.
+
+If a physical card is requested, the card status changes to :guilabel:`Inactive`, while it is being
+printed and mailed to the selected address. Once the card arrives, follow the included instructions
+to activate the card.
+
+If the card is a virtual card, once :guilabel:`Activate` is clicked, the status changes to
+:guilabel:`Active` and it is available for use.
+
+Once the status of an expense card is :guilabel:`Active`, the user can use the card to purchase
+expensable items, as long as the purchases are within the limits set on the card.
+
+Demo expense card
+=================
+
+To test the expense card feature without using a live Stripe account, :ref:`install
+<general/install>` the `Expense Cards: Demo` module. This replaces production functionalities and
+allows for the creation of a demo Stripe account, using virtual cards and fake funds to simulate
+transactions.
+
+.. note::
+   If a production account is already configured, **do not use** the demo module, as it overwrites
+   the existing setup.
+
+Using expense cards
+===================
+
+Using an expense card is almost identical to using any other credit or debit card. The only
+difference is if a :ref:`physical card <expenses/physical>` or a :ref:`virtual card
+<expenses/virtual>` is used.
+
+When a charge is made using an expense card, an expense record is automatically created in the
+**Expenses** app, linked to the specific card. The next step is to attach the corresponding receipt.
+
+.. note::
+   It is best proactive to take a photo of a receipt as soon as it is received, to eliminate the
+   risk of losing the receipt and having an expense reimbursement request denied.
+
+Open the expense record by navigating to :menuselection:`Expenses app --> Cards`, and click on the
+specific card. Next, click the :icon:`fa-usd` :guilabel:`Expenses` smart button, and the
+:guilabel:`Expenses` dashboard loads for that card. Any expense that does *not* have a receipt
+attached to the record displays a :icon:`fa-credit-card` :guilabel:`Please upload the receipt.`
+
+Click on the desired expense record to open the detailed expense form. Click the :guilabel:`Attach
+Receipt` button, and a file explorer loads. Navigate to the receipt, and click :guilabel:`Open` to
+select it and attach it to the expense.
+
+Make any other adjustments to :ref:`the expense record <expenses/manual_expense>`, if necessary.
+Once the record is correct, click :guilabel:`Submit` to submit the receipt, or :guilabel:`Split`, if
+the receipt needs to be split between multiple expenses.
+
+.. important::
+   If a purchase is attempted that either is outside the listed countries, listed categories, or
+   exceeds the transaction limit or total expense limit for the specified time period, the expense
+   is denied and captured in the :guilabel:`Expenses` dashboard for the card, with a status of
+   *Refused*.
+
+   To view the details of why the transaction was refused, click on the :icon:`fa-usd`
+   :guilabel:`Expenses` smart button for the card, and click on the refused transaction. The details
+   explaining why the transaction was refused appears in the chatter, authored by *OdooBot*.
+
+.. _expenses/physical:
+
+Physical card
+=============
+
+When using a physical card, make charges in the same manner as a regular physical pre-paid debit
+card.
+
+Once the user receives the card, the cardholder must activate the card using the instructions
+provided with the card. Next, open the **Expenses** app, and click on the physical card, which has a
+status of :guilabel:`Pending`. Click :guilabel:`Activate`, then when prompted, enter the last four
+digits of the card, confirm the phone number, accept the terms and conditions, and complete the
+activation.
+
+Card PIN
+--------
+
+To view the card's PIN, open the card form in the **Expenses** app, and enter the six-digit code
+sent via SMS to the associated phone number. The card and its PIN appear in a pop-up window. The PIN
+is displayed below the card and **cannot** be changed.
+
+.. _expenses/virtual:
+
+Virtual card
+============
+
+If using a virtual card, there is one additional step to access the card information to use for
+purchases.
+
+To obtain the card information, navigate to :menuselection:`Expenses app --> Cards` and click on the
+virtual card being used. Next, click into the :guilabel:`Card Details` tab, and two items appear:
+the expense card number, with only the last four digits displayed, and the expiration date.
+
+To view the full details, click :icon:`fa-eye` :guilabel:`View Details`, and a :guilabel:`Two-Factor
+Authentication` pop-up window loads. Enter the six-digit authentication code that is texted to the
+cardholder's phone number. The card appears in the pop-up window, with all the information
+displayed: the card number, expiration date, and security code. When done, close the window by
+clicking :guilabel:`X`.
+
+.. tip::
+   Android users can add their virtual expense cards `to a Google wallet
+   <https://support.google.com/wallet/answer/12058983?hl=en>`_.
+
+Lost cards
+==========
+
+When a physical card is lost, or if credentials for a virtual card have been compromised, the cards
+must be updated in the **Expenses** app so they cannot be used. This is referred to in Odoo as
+*blocking*.
+
+To stop any charges on a card, navigate to :menuselection:`Expenses app --> Cards`, and click on the
+specific card being deactivated. On the card form, click the :guilabel:`Block` button, and a
+:guilabel:`Block a Card` pop-up window loads.
+
+Click into the field next to :guilabel:`Reason`, and select the reason the card is being blocked.
+The options are :guilabel:`Lost`, :guilabel:`Stolen`, or :guilabel:`Other`. After making a
+selection, click :guilabel:`Block`, and the card is unable to be used, and a red :guilabel:`Blocked`
+banner appears on the card in the :guilabel:`Cards` dashboard view.
+
+.. example::
+   An employee is given a virtual expense card to use for an upcoming business trip. The employee
+   uses this card to purchase an airline ticket and a hotel room, one month before the scheduled
+   trip.
+
+   A week before the trip, they receive an email from the airline, explaining there has been a data
+   breach, and customer names, contact information, and purchase details including credit card
+   numbers have been leaked.
+
+   The employee reaches out to their manager, explaining the situation. The manager opens the
+   virtual expense card, and blocks the card using the reason :guilabel:`Other`. Then the manager
+   issues another virtual card for the employee to use for their business trip.
+
+Temporary card pauses
+=====================
+
+When an employee is out of office for an extended period of time, such as a vacation, or an illness,
+it is recommended to temporarily deactivate their card to prevent any fraudulent charges. This is
+referred to in Odoo as *pausing* a card.
+
+To pause a card, navigate to :menuselection:`Expenses app --> Cards`, and click on the specific card
+being paused. On the card form, click :guilabel:`Pause`, and the card is unable to be used until it
+is activated.
+
+.. example::
+   An employee in the sales department has a physical expense card to use for client meetings. They
+   recently welcomed a new child, and will be out of office on parental leave for three months.
+
+   On the employee's last day, their manager opens the expense card record, and clicks
+   :guilabel:`Pause`. When the employee returns to work, the manager opens the expense card form and
+   clicks :guilabel:`Active` to reactivate the card.
+
+
+==================================================
+SECTION: expense_categories.rst
+PATH: applications/finance/expenses/expense_categories.rst
+==================================================
+
+==================
+Expense categories
+==================
+
+Odoo **Expenses** streamlines the management of expenses. After an employee :doc:`logs their
+expenses <../expenses/log_expenses>` and :doc:`submits their expense report
+<../expenses/expense_reports>` in Odoo, expenses are reviewed by management and accounting teams.
+Once :doc:`approved <../expenses/approve_expenses>`, payments can be processed and :doc:`disbursed
+back to the employee <../expenses/reimburse>` for reimbursement.
+
+.. seealso::
+   `Odoo Expenses: product page <https://www.odoo.com/app/expenses>`_
+
+View expense categories
+=======================
+
+The first step to track expenses is configuring the different types of expenses for the company
+(managed as *expense categories* in Odoo). Each category can be as specific or generalized as
+needed. Additionally, expense categories can be configured to repay expenses at either a set price
+or allow for specific prices to be reported.
+
+To view the default expense categories, navigate to :menuselection:`Expenses app --> Configuration
+--> Expense Categories`.
+
+The default expense categories allow creating expenses for common expenses, including communication
+costs, meals, gifts, miles driven, and other travel expenses. For expenses outside these default
+categories, the general expenses category, :guilabel:`EXP_GEN`, is used. If a company has specific
+expenses it commonly reimburses, and wants to track them separately, :ref:`new expense categories
+can be made <expenses/new-category>` or existing expense categories can be modified.
+
+.. image:: expense_categories/default-categories.png
+   :alt: Set expense costs on products.
+
+.. _expenses/new-category:
+
+Create new expense categories
+=============================
+
+Some companies require more expense categories than the **Expenses** app includes. For these
+situations, new expense categories can be created.
+
+.. example::
+   A company that trains car mechanics allows its technicians to purchase $500 worth of tools in a
+   year. In this situation, the company creates a new category called `TOOLS` to track all tool
+   expenses.
+
+To create a new expense category, navigate to :menuselection:`Expenses app --> Configuration -->
+Expense Categories`. Click :guilabel:`New`, and a new expense category form loads.
+
+.. note::
+   Expense *categories* are managed like *products* in Odoo. The expense category form follows the
+   standard product form in Odoo, and the information entered is similar. Expense *products* are
+   referred to as expense *categories* throughout this document since the main menu refers to these
+   as :guilabel:`Expense Categories`.
+
+Enter the following fields on the form:
+
+- :guilabel:`Product Name`: Enter a name for the category that is short and informative.
+- :guilabel:`Cost`: If employees can report the actual cost of an expense, and are reimbursed
+  the reported amount, leave the field set to `0.00`. If the expense should **always** be reimbursed
+  for a specific price, enter the amount in this field. If a price is entered, a :guilabel:`per`
+  field appears with :guilabel:`Unit` populated by default. :guilabel:`Unit` covers most expense
+  situations, but if the reimbursement is based on weight, length, volume, etc., choose the
+  corresponding type of unit using the drop-down menu.
+
+  .. example::
+     Here are some examples for when to set a specific :guilabel:`Cost` on a product vs. leaving the
+     :guilabel:`Cost` at `0.00`:
+
+     - **Meals**: If employees are reimbursed for their full meal cost, set the :guilabel:`Cost` to
+       `0.00`. When an employee logs an expense for a meal, they enter the actual amount of the bill
+       and are reimbursed for that amount. An expense for a meal costing $95.23 would equal a
+       reimbursement of $95.23.
+     - **Mileage**: If employees receive a flat rate for each mile they drive, set the
+       :guilabel:`Cost` to `1.00`. When an employee logs an expense for the miles driven, they enter
+       the number of miles driven in the :guilabel:`Quantity` field, and are reimbursed $1.00 per
+       mile they reported. An expense for 100 miles would equal a reimbursement of $100.00.
+     - **Per Diem**: If employees receive a daily flat rate of $125.00 when traveling, set the
+       :guilabel:`Cost` to `125.00`. An expense for three days of per diem costs (meals,
+       incidentals, taxi fare, etc.) would equal a reimbursement of $375.00.
+
+  .. note::
+     The :guilabel:`Cost` field is always visible on the expense category form, but the
+     :guilabel:`Sales Price` field is *only* visible if the :guilabel:`Sales Price` is selected
+     under the :guilabel:`Re-Invoice Expenses` section. Otherwise, the :guilabel:`Sales Price` field
+     is hidden.
+
+- :guilabel:`Reference`: Enter a short reference for the expense, such as `FOOD` or `TRAVEL`. This
+  reference is used when :ref:`emailing expenses <expenses/email_expense>`.
+- :guilabel:`Category`: Using the drop-down menu, select the category the expense falls under. It is
+  recommended to use the default category `All / Expenses`, but another category can be selected if
+  the accounting department requires it.
+- :guilabel:`Company`: If in a multi-company database, select the company the expense category
+  applies to. If the expense category applies to *all* companies, leave this field blank.
+- :guilabel:`Guideline`: Enter some rules or important information for the expense category. This is
+  visible in the :guilabel:`Note` column on the :guilabel:`Expense Category` dashboard.
+
+  .. example::
+     An expense category for expenses related to working from home may have a :guilabel:`Name` of
+     `WFH`, and the :guilabel:`Guideline` may say `Monitors, Chairs, & Other Home Working Costs`.
+
+- :guilabel:`Expense Account`: If using the Odoo **Accounting** app, select the :abbr:`CoA (Chart of
+  Accounts)` the expense should be logged on.
+
+  .. important::
+     Check with the accounting department to determine the correct account to reference in this
+     field as it affects various reports.
+
+- :guilabel:`Purchase Taxes` and :guilabel:`Sales Taxes`: Enter the default taxes that are applied
+  when purchasing or selling this product, if applicable.
+
+  .. note::
+     The :guilabel:`Sales Taxes` field is **only** visible if the **Sales** app is installed, and
+     either the :guilabel:`At cost` or :guilabel:`Sales Price` options are selected in the
+     :ref:`invoicing section <expenses/invoicing>`.
+
+  .. tip::
+     It is considered good practice to use a tax that is configured with :ref:`Tax Included in Price
+     <taxes/included-in-price>`. Taxes are automatically configured if these are set.
+
+.. image:: expense_categories/new-expense-category.png
+   :alt: A new expense category for tools.
+
+.. _expenses/invoicing:
+
+Invoicing section
+-----------------
+
+If the **Sales** app is installed, an invoicing section is visible. This section allows the expense
+to be reinvoiced to customers on sales orders.
+
+If the expense **cannot** be reinvoiced, enable the :guilabel:`No` option. If the expense category
+**can** be reinvoiced, enable either of these options:
+
+- :guilabel:`At cost`: Select this option to have the expense item reinvoiced at the price set in
+  the :guilabel:`Cost` field.
+- :guilabel:`Sales Price`: Select this option to have the expense item reinvoiced at the sales
+  price. When enabled, a :guilabel:`Sales Price` field appears beneath the :guilabel:`Product Name`
+  field. Enter the sales price in the new field.
+
+.. example::
+   A heating and cooling company offers at-home repairs on the furnaces and central air units it
+   sells. Their technicians are sub-contracted, and use their own vans, tools, and parts.
+
+   As part of their contracts, technicians are reimbursed for their travel. They receive $1.00 for
+   every mile they drive. Additionally, the customer must pay for the travel as part of their
+   service contract. The customer pays $1.50 for every mile the technician drives to their location.
+
+   To configure this expense, the :guilabel:`Sales Price` is set to `1.50` and the :guilabel:`Cost`
+   is set to `1.00`.
+
+  .. image:: expense_categories/reimbursement-category.png
+     :alt: An expense category to reinvoice customers and pay technicians.
+
+
+==================================================
+SECTION: expense_reports.rst
+PATH: applications/finance/expenses/expense_reports.rst
+==================================================
+
+===============
+Expense reports
+===============
+
+When expenses are ready to submit (such as at the end of a business trip, or once a month), an
+*expense report* needs to be created. Open the main **Expenses** app dashboard, which displays the
+:guilabel:`My Expenses` dashboard, by default. Alternatively, navigate to :menuselection:`Expenses
+app --> My Expenses --> My Expenses`.
+
+All expenses are color-coded by status. Any expense with a status of :guilabel:`To Report` (expenses
+that still need to be added to an expense report) appears in blue text. For all other statuses
+(:guilabel:`To Submit`, :guilabel:`Submitted`, and :guilabel:`Approved`) the text appears in black.
+
+.. _expenses/create_report:
+
+Create expense reports
+======================
+
+First, select the desired expense to be added to the report on the :guilabel:`My Expenses` dashboard
+by ticking the checkbox next to each entry.
+
+.. image:: expense_reports/create-report.png
+   :alt: Select the expenses to submit, then create the report.
+
+.. note::
+   Any expense can be selected from the :guilabel:`My Expenses` list, except for expenses with a
+   status of :guilabel:`Approved`.
+
+   The :guilabel:`Create Report` button is visible as long as there is a minimum of one expense on
+   the list with a status of either :guilabel:`To Report` or :guilabel:`To Submit`.
+
+   When the :guilabel:`Create Report` button is clicked, all expenses with a status of :guilabel:`To
+   Submit` that are *not* currently on another expense report appear in the newly-created expense
+   report.
+
+   If all expenses on the :guilabel:`My Expenses` report are already associated with another expense
+   report, an :guilabel:`Invalid Operation` pop-up window appears, stating :guilabel:`You have no
+   expenses to report.`
+
+Once the expenses have been selected, click the :guilabel:`Create Report` button.
+
+.. tip::
+  Another way to add *all* expenses that are not currently on an expense report is to click the
+  :guilabel:`Create Report` button, *without* selecting any expenses, and Odoo automatically selects
+  all expenses with a status of :guilabel:`To Submit` that are not already on a report.
+
+The new report loads with all the expenses listed in the :guilabel:`Expense` tab. If there is a
+receipt attached to an individual expense, a :icon:`fa-paperclip` :guilabel:`(paperclip)` icon
+appears on the expense line.
+
+When the report is created, the date range for the expenses appears as the :guilabel:`Expense Report
+Summary`, by default. It is recommended to edit this field with a brief summary for each report to
+help keep expenses organized. Enter a description for the expense report, such as `Client Trip NYC`,
+or `Office Supplies for Presentation`, in the :guilabel:`Expense Report Summary` field.
+
+The :guilabel:`Employee`, :guilabel:`Paid By`, and :guilabel:`Company` fields are populated with the
+information listed on the individual expenses.
+
+.. note::
+   The :guilabel:`Company` field only appears in a multi-company database.
+
+Next, select a :guilabel:`Manager` from the drop-down menu to assign a manager to review the report.
+If needed, update the :guilabel:`Journal` field using the drop-down menu.
+
+.. image:: expense_reports/expense-report-summary.png
+   :alt: Enter a short description and select a manager for the report.
+
+If some expenses are missing from the report, they can still be added from this report form. To do
+so, click :guilabel:`Add a line` at the bottom of the :guilabel:`Expense` tab.
+
+An :guilabel:`Add: Expense Lines` pop-up window appears, displaying all the available expenses (with
+a :guilabel:`To Submit` status) that can be added to the report. If a new expense needs to be added
+that does **not** appear on the list, click :guilabel:`New` to :doc:`create a new expense
+<../expenses/log_expenses>` and add it to the report.
+
+Tick the checkbox next to each expense being added, then click :guilabel:`Select`. Doing so closes
+the pop-up window, and the items now appear on the report.
+
+.. tip::
+   Expense reports can be created in one of two ways:
+
+   #. Navigate to the main :menuselection:`Expenses app` dashboard (also accessible, via
+      :menuselection:`Expenses app --> My Expenses --> My Expenses`) and click :guilabel:`Create
+      Report`.
+   #. Navigate to :menuselection:`Expenses app --> My Expenses --> My Reports` and click
+      :guilabel:`New`.
+
+.. _expenses/submit:
+
+Submit expense reports
+======================
+
+When an expense report is completed, the next step is to submit the report to a manager for
+approval. To view all expense reports, navigate to :menuselection:`Expenses app --> My Expenses -->
+My Reports`. Open the specific report from the list of expense reports.
+
+.. note::
+   Reports must be individually submitted, and **cannot** be submitted in batches.
+
+If the list is large, grouping the results by status may be helpful, since only reports with a
+:guilabel:`To Submit` status need to be submitted; reports with an :guilabel:`Approved` or
+:guilabel:`Submitted` status do not. The :guilabel:`To Submit` expenses are identifiable by the
+:guilabel:`To Submit` status, and by the blue text, while all other expense text appears in black.
+
+.. image:: expense_reports/submit-report.png
+   :alt: Submit the report to the manager.
+
+Click on a report to open it, then click :guilabel:`Submit To Manager`. After submitting a report,
+the next step is for management to review and :doc:`approve it <approve_expenses>`.
+
+.. note::
+   The status of each report is shown in the :guilabel:`Status` column. If the :guilabel:`Status`
+   column is not visible, click the :icon:`oi-settings-adjust` :guilabel:`(additional options)` icon
+   at the end of the row, and tick the checkbox beside :guilabel:`Status` from the resulting
+   drop-down menu.
+
+.. important::
+   :doc:`Approving <../expenses/approve_expenses>` expenses, :doc:`posting
+   <../expenses/post_expenses>` expenses, and :doc:`reimbursing <../expenses/reimburse>` expenses
+   are **only** for users with the appropriate :doc:`access rights </applications/general/users>`.
+
+
+==================================================
+SECTION: expenses_analysis.rst
+PATH: applications/finance/expenses/expenses_analysis.rst
+==================================================
+
+=================
+Expenses analysis
+=================
+
+It is important for companies to track expenses so they have an understanding of their expenses and
+can identify trends. Expense reporting allows for detailed information, such as which expense
+categories are reimbursed the most, which employees incur the most expenses, and if there are any
+periods of time that tend to incur more expenses than others.
+
+View expense analysis report
+============================
+
+To view the default *Expenses Analysis* report, navigate to :menuselection:`Expenses app -->
+Reporting --> Expenses Analysis`. The :guilabel:`Expenses Analysis` report displays all expenses for
+the current year, in a stacked bar chart, grouped by month.
+
+.. image:: expenses_analysis/default-report.png
+   :alt: The default stacked bar chart for annual expenses, grouped by month.
+
+View expenses by employee
+=========================
+
+It is possible to view the data so that the total cost of expenses *by employee* is visible. To view
+the report in this way, navigate to :menuselection:`Expenses app --> Reporting --> Expenses
+Analysis`. Next, click the :icon:`oi-view-pivot` :guilabel:`(Pivot)` icon to view the data in a
+pivot table.
+
+This presents the data with the *employees* populating the rows, and the *total monthly expenses*
+populate the columns. Next, click :icon:`fa-minus-square-o` :guilabel:`Total` at the top of the
+monthly columns to hide the individual monthly totals, and present only the *total* amount for the
+year.
+
+To present the data in either ascending or descending total, click the :guilabel:`Total In Currency`
+box, and the information is organized first in ascending order, starting with the smallest amount.
+Click :guilabel:`Total In Currency` again to reverse the order, and present the highest amount
+first.
+
+.. example::
+   In this example it can be determined that :guilabel:`Mike Smith` has the highest amount of
+   expenses, totaling :guilabel:`4,216.44`. This is almost seven times higher than :guilabel:`Ronnie
+   Hart`, who has the second highest expenses, with a total of :guilabel:`644.74`.
+
+   .. image:: expenses_analysis/by-employee.png
+      :alt: A pivot table with the information shown by employee, in descending order.
+
+View expenses by category
+=========================
+
+It is possible to view the data so that the total cost of expenses *by category* is visible. To view
+the report in this way, navigate to :menuselection:`Expenses app --> Reporting --> Expenses
+Analysis`. Next, click the :icon:`oi-view-pivot` :guilabel:`(Pivot)` icon to view the data in a
+pivot table.
+
+This presents the data with the *employees* populating the rows, and the *total monthly expenses*
+populate the columns. Next, click :icon:`fa-minus-square-o` :guilabel:`Total` at the top of the
+employees column. Click :icon:`fa-plus-square` :guilabel:`Total` that appears in place of
+:icon:`fa-minus-square-o` :guilabel:`Total`, revealing a drop-down menu of options. Click
+:guilabel:`Category`, and the expense categories now populate the rows.
+
+Next, click :icon:`fa-minus-square-o` :guilabel:`Total` at the top of the months column to hide the
+individual months, and only show the annual total for each category.
+
+To present the data in either ascending or descending total, click the :guilabel:`Total In Currency`
+box, and the information is organized first in ascending order, starting with the smallest amount.
+Click :guilabel:`Total In Currency` again to reverse the order, and present the highest amount
+first.
+
+.. example::
+   In this example, it can be determined that the company spent the most on travel expenses, with
+   the expense category :guilabel:`[TRANS & ACC] Travel & Accommodation` incurring
+   :guilabel:`2,940.00` of expenses for the year. The company reimbursed mileage the least, with
+   only :guilabel:`229.69` in :guilabel:`[MIL] Mileage` expenses.
+
+   .. image:: expenses_analysis/by-category.png
+      :alt: A pivot table with the information shown by catrgory in descending order.
+
+
+==================================================
+SECTION: log_expenses.rst
+PATH: applications/finance/expenses/log_expenses.rst
+==================================================
+
+============
+Log expenses
+============
+
+Before expenses can be reimbursed, each individual expense needs to be logged in the database.
+Expense records can be created in four different ways: :ref:`manually enter an expense record
+<expenses/manual_expense>`, :ref:`upload a receipt <expenses/upload_receipt>`, :ref:`drag and drop
+<expenses/drag_and_drop>` a receipt onto the **Expenses** app dashboard, or :ref:`email a receipt
+<expenses/email_expense>` to a preconfigured email address.
+
+.. _expenses/manual_expense:
+
+Manually enter expenses
+=======================
+
+To record a new expense, open the **Expenses** app, which displays the :guilabel:`My Expenses` page,
+by default.
+
+.. tip::
+   This view can also be accessed at any time by navigating to :menuselection:`Expenses app --> My
+   Expenses --> My Expenses`.
+
+Click the :guilabel:`New` button and fill out the following fields on the blank expense form that
+loads:
+
+- :guilabel:`Description`: Enter a short description for the expense. This should be concise and
+  informative, such as `Lunch with client` or `Hotel for trade show`.
+- :guilabel:`Category`: Using the drop-down menu, select the :doc:`expense category
+  <expense_categories>` that most closely corresponds to the expense.
+- :guilabel:`Total`: Enter the total amount paid for the expense in one of two ways:
+
+  #. If the expense is for a single item/expense, and the category selected was for a single item,
+     enter the cost in the :guilabel:`Total` field (the :guilabel:`Quantity` field is hidden).
+  #. If the expense is for multiples of the same item/expense with a fixed price, the
+     :guilabel:`Unit Price` is displayed. Enter the number of units in the :guilabel:`Quantity`
+     field, and the total cost is automatically updated with the correct total. The total cost
+     appears below the :guilabel:`Quantity`.
+
+     .. example::
+        An employee received one dollar for each mile driven for work. The :guilabel:`Category` is
+        :guilabel:`[MIL] Mileage`. The :guilabel:`Unit Price` is automatically populated with
+        `$1.00`, which is the cost *per mile* configured for the expense :guilabel:`Category`
+        :guilabel:`[MIL] Mileage`. The :guilabel:`Quantity` is set to `48`, which is the *number of
+        miles driven*, and the total is calculated to `$48.00`.
+
+- :guilabel:`Included Taxes`: If taxes were configured on the selected expense category, the tax
+  percentage and amount appear automatically after entering either the :guilabel:`Total` or the
+  :guilabel:`Quantity`.
+
+  .. note::
+     When a tax is configured on an expense category, the :guilabel:`Included Taxes` value updates
+     in real time, as the :guilabel:`Total` or :guilabel:`Quantity` is updated.
+
+- :guilabel:`Employee`: Using the drop-down menu, select the employee associated with the expense.
+- :guilabel:`Paid By`: Click the radio button to indicate who paid for the expense and should be
+  reimbursed. Select either :guilabel:`Employee (to reimburse)` or :guilabel:`Company`. Depending on
+  the expense category selected, this field may not appear.
+- :guilabel:`Expense Date`: Using the calendar popover window that appears when this field is
+  clicked, enter the date the expense was incurred.
+- :guilabel:`Account`: If the selected expense :guilabel:`Category` has a specific account linked to
+  it, that account appears in the :guilabel:`Account` field. If no account is specified, the default
+  `600000 Expenses` account populates this field. If a different account is desired, select the
+  account the expense should be logged in.
+- :guilabel:`Customer to Reinvoice`: If the expense should be paid for by a customer and the
+  selected :guilabel:`Category` allows for reinvoicing of expenses, select the :abbr:`SO (Sales
+  Order)` and customer to be invoiced for the expense using the drop-down menu. All sales orders in
+  the drop-down menu list both the :abbr:`SO (Sales Order)`, as well as the company the sales order
+  is written for. After the expense is saved, the customer name disappears, and only the :abbr:`SO
+  (Sales Order)` is visible on the expense.
+
+  .. example::
+     A customer wishes to have an on-site meeting for the design and installation of a custom
+     building, and agrees to pay for all expenses associated with the meeting, including travel,
+     hotel, and meals for the traveling employees. All expenses tied to that meeting would indicate
+     the sales order for the custom building (which also references the customer) as the
+     :guilabel:`Customer to Reinvoice`.
+
+- :guilabel:`Analytic Distribution`: Select the account the expense should be written against from
+  the drop-down menu for either :guilabel:`Projects`, :guilabel:`Departments`, or both. Multiple
+  accounts can be listed for each category, if needed. Adjust the percentage for each analytic
+  account by typing in the percentage value next to each account.
+- :guilabel:`Company`: If in a multi-company database, select the company the expense should be
+  filed for using the drop-down menu. The current company automatically populates this field.
+- :guilabel:`Notes...`: If any notes are needed to clarify the expense, enter them in the notes
+  field.
+
+.. image:: log_expenses/expense-filled-in.png
+   :alt: A filled in expense form for a client lunch.
+
+Attach receipts
+---------------
+
+After the expense record is created, the next step is to attach a receipt. Click the
+:guilabel:`Attach Receipt` button, and a file explorer appears. Navigate to the receipt to be
+attached, and click :guilabel:`Open`.
+
+The new receipt is recorded in the *chatter*, and the number of receipts appears next to the
+:icon:`fa-paperclip` :guilabel:`(paperclip)` icon. Multiple receipts can be attached to an
+individual expense record, as needed.
+
+.. _expenses/upload_receipt:
+
+Upload expenses
+===============
+
+It is possible to have expense records created automatically by :ref:`uploading a PDF receipt
+<expenses/upload>`. To utilize this feature, a setting must be enabled, and :abbr:`IAP (in-app
+purchases)` credits must be purchased.
+
+.. _expenses/digitalization:
+
+Digitalization settings
+-----------------------
+
+To enable receipt scanning, navigate to :menuselection:`Expenses app --> Configuration -->
+Settings`, and tick the checkbox beside the :guilabel:`Expense Digitization (OCR)` option. Then,
+click :guilabel:`Save`. When enabled, additional options appear. Click on the corresponding radio
+button to select one of the following options:
+
+- :guilabel:`Do not digitize`: Disables receipt digitization but does *not* uninstall the related
+  digitization module.
+- :guilabel:`Digitize on demand only`: Only digitizes receipts when requested. A :guilabel:`Digitize
+  document` button appears on expense records. When clicked, the receipt is scanned and the expense
+  record is updated.
+- :guilabel:`Digitize automatically`: Automatically digitizes all receipts when they are uploaded.
+
+Beneath these options are two additional links. Click the :icon:`fa-arrow-right` :guilabel:`Manage
+Service & Buy Credits` link to view account details and settings, and purchase credits for receipt
+digitization. Click the :icon:`fa-arrow-right` :guilabel:`View My Services` link to view a list of
+all current services, and their remaining credit balances.
+
+For more information on document digitization and :abbr:`IAPs (in-app purchases)`, refer to the
+:doc:`In-app purchase (IAP) <../../essentials/in_app_purchase>` documentation.
+
+.. note::
+   When the :guilabel:`Expense Digitization (OCR)` option is enabled, a necessary module is
+   installed, so receipts can be scanned. Disabling this option uninstalls the module.
+
+   If, at some point, there is a desire to temporarily stop digitizing receipts, select the
+   :guilabel:`Do not digitize` option. The reason this option is available is so the module is not
+   uninstalled, allowing for digitization to be enabled in the future by selecting one of the other
+   two options.
+
+.. _expenses/upload:
+
+Upload receipts
+---------------
+
+Open the :guilabel:`Expenses app`, and from the :guilabel:`My Expenses` dashboard, click
+:guilabel:`Upload`, and a file explorer appears. Navigate to the desired receipt, select it, then
+click :guilabel:`Open`.
+
+The receipt is scanned, and a new expense record is created. The :guilabel:`Expense Date` field is
+populated with today's date, along with any other fields based on the scanned data, such as the
+:guilabel:`Total`.
+
+Click on the new entry to open the individual expense form, and make any changes, if needed. The
+scanned receipt appears in the *chatter*.
+
+.. _expenses/drag_and_drop:
+
+Drag and drop an expense
+========================
+
+If :ref:`digitalization is enabled <expenses/digitalization>`, drag and drop a receipt onto the
+**Expenses** app dashboard. The receipt is scanned and appears by itself on the :guilabel:`Generate
+Expenses` dashboard.
+
+Click on the expense record, and modify the details as needed. After changes are made, return to the
+:guilabel:`My Expenses` dashboard, and the expense now appears in the list.
+
+.. _expenses/email_expense:
+
+Email expenses
+==============
+
+Instead of individually creating each expense in the **Expenses** app, expenses can be automatically
+created by sending an email to an email alias.
+
+.. note::
+   For security purposes, only authenticated employee emails are accepted by Odoo when creating an
+   expense from an email. To confirm an authenticated employee email address, go to the employee
+   card in the :menuselection:`Employees app`, and refer to the :guilabel:`Work Email` field.
+
+   .. image:: log_expenses/authenticated-email-address.png
+      :alt: Create the domain alias by clicking the link.
+
+To do so, an email alias must first be configured. Navigate to :menuselection:`Expenses app -->
+Configuration --> Settings`. Ensure the checkbox beside :guilabel:`Incoming Emails` is ticked. The
+default email alias is *expense@(domain).com*. Change the email alias by entering the desired email
+in the field to the right of :guilabel:`Alias`. Then, click :guilabel:`Save`.
+
+.. note::
+   If the domain alias needs to be set up, :icon:`fa-arrow-right` :guilabel:`Setup your domain
+   alias` appears beneath the :guilabel:`Incoming Emails` checkbox, instead of the email address
+   field.
+
+   Refer to the :doc:`/applications/websites/website/configuration/domain_names` documentation for
+   setup instructions and more information.
+
+   Once the domain alias is configured, the email address field is visible beneath the
+   :guilabel:`Incoming Emails` feature on the :guilabel:`Settings` page in the **Expenses** app.
+
+Once the email address has been entered, emails can be sent to that alias to create new expenses,
+without having to be in the Odoo database.
+
+To submit an expense via email, create a new email, and enter the product's *reference* code (if
+available) and the amount of the expense as the subject of the email. Next, attach the receipt to
+the email. Odoo creates the expense by taking the information in the email subject, and combining it
+with the receipt.
+
+.. tip::
+   To check an expense category's reference code, go to :menuselection:`Expenses app -->
+   Configuration --> Expense Categories`. Reference codes are listed in the :guilabel:`Reference`
+   column.
+
+  To add a reference code to an expense category, click on the category to open the expense category
+  form. Enter the reference code in the :guilabel:`Reference` field.
+
+  .. image:: log_expenses/ref.png
+     :alt: Reference categories displayed in the main Expense Categories view.
+
+.. example::
+   If submitting an expense, via email, for a $25.00 meal during a work trip, the email subject
+   would be `FOOD $25.00`.
+
+   Explanation:
+
+   - The :guilabel:`Reference` for the expense category `Meals` is `FOOD`
+   - The :guilabel:`Cost` for the expense is `$25.00`
+
+
+==================================================
+SECTION: post_expenses.rst
+PATH: applications/finance/expenses/post_expenses.rst
+==================================================
+
+=============
+Post expenses
+=============
+
+Once an expense report is :doc:`approved <../expenses/approve_expenses>`, the next step is to post
+the expenses to the proper accounting journal.
+
+.. important::
+   To post expense reports to an accounting journal, the user **must** have the following
+   :doc:`access rights <../../general/users/access_rights>`:
+
+   - Accounting: *Accountant* or *Adviser*
+   - Expenses: *Manager*
+
+Only expense reports with an *Approved* status can post the expenses to a journal. To view all
+expense reports, navigate to :menuselection:`Expenses app --> Expense Reports`. Next, to view
+**only** approved expense reports that need to be posted, adjust the filters on the left side so
+only the :guilabel:`Approved` checkbox is ticked.
+
+.. image:: post_expenses/approved-expenses.png
+   :alt: View reports to post by clicking on expense reports, then reports to post.
+
+.. note::
+   The default :guilabel:`All Reports` dashboard displays all expense reports that are not
+   :guilabel:`Refused`.
+
+Expense reports can be posted to accounting journals in two ways: :ref:`individually
+<expenses/post-individual>` or :ref:`in bulk <expenses/post-multiple>`.
+
+.. _expenses/post-individual:
+
+Post individual reports
+-----------------------
+
+To post an individual report, navigate to :menuselection:`Expenses app --> Expense Reports`, and
+click on an individual report with a :guilabel:`Status` of :guilabel:`Approved`, to view the report
+form. In this view, several options are presented: :guilabel:`Post Journal Entries`,
+:guilabel:`Report In Next Payslip`, :guilabel:`Refuse`, or :guilabel:`Reset to Draft`.
+
+Click :guilabel:`Post Journal Entries` to post the report. The accounting journal the expenses are
+posted to is listed in the :guilabel:`Journal` field of the expense report.
+
+After posting the expenses to an accounting journal, a :guilabel:`Journal Entry` smart button
+appears at the top of the screen. Click the :guilabel:`Journal Entry` smart button, and the details
+for the journal entry appear, with a status of :guilabel:`Posted`.
+
+.. image:: post_expenses/post-one.png
+   :alt: A single expense report to be approved.
+
+.. _expenses/post-multiple:
+
+Post multiple reports
+---------------------
+
+To post multiple expense reports at once, navigate to :menuselection:`Expenses app --> Expense
+Reports` to view a list of expense reports. Next, select the reports to approve by ticking the
+checkbox next to each report being approved.
+
+.. note::
+   Only expense reports with a status of :guilabel:`Approved` are able to post the expenses to an
+   accounting journal. If an expense report is selected that **cannot** be posted, such as an
+   unapproved report, or the report has already been posted to a journal, the :guilabel:`Post
+   Entries` button is **not** visible.
+
+.. tip::
+   To select **only** approved expense reports, adjust the filters on the left side, so that only
+   the :guilabel:`Approved` checkbox is ticked. Next, tick the checkbox next to the
+   :guilabel:`Employee` column title to select **all** the :guilabel:`Approved` reports in the list
+   at once.
+
+Next, click the :guilabel:`Post Entries` button.
+
+.. image:: post_expenses/post-entries.png
+   :alt: Post multiple reports at a time from the Expense Reports view, with the Approved filter.
+
+
+==================================================
+SECTION: reimburse.rst
+PATH: applications/finance/expenses/reimburse.rst
+==================================================
+
+===================
+Reimburse employees
+===================
+
+After an expense report is :doc:`posted to an accounting journal <../expenses/post_expenses>`, the
+next step is to reimburse the employee. Employees can be reimbursed via cash, check, or direct
+deposit in three ways:
+
+- :ref:`Individually <expenses/reimburse-single>`: Each individual expense report is reimbursed
+  separately.
+- :ref:`In bulk <expenses/reimburse-bulk>`: Multiple expense reports are reimbursed in a single
+  payment.
+- :ref:`In the employee's payslip <expenses/reimburse-payslip>`: Expense reports are reimbursed
+  directly in the employee's payslip.
+
+.. _expenses/reimburse-settings:
+
+Reimbursement settings
+======================
+
+Reimbursements can be paid via a paycheck, check, cash, or bank transfer (usually referred to as
+direct deposit). To set up payment options, first configure the various settings by navigating to
+:menuselection:`Expenses app --> Configuration --> Settings`.
+
+To reimburse employees for expenses :ref:`in their paychecks <expenses/reimburse-payslip>`, tick the
+checkbox beside the :guilabel:`Reimburse in Payslip` option in the :guilabel:`Expenses` section.
+
+Next, set how payments are made in the :guilabel:`Accounting` section. Click the drop-down menu
+under :guilabel:`Payment Methods`, and select the desired payment option. The default options
+include paying by :guilabel:`Manual Payment (Cash)`, :guilabel:`Manual Payment (Bank)`,
+:guilabel:`Batch Deposit (Bank)`, and :guilabel:`Checks (Bank)`.
+
+Leaving this field blank allows for **all** available payment options to be used.
+
+When all desired configurations are complete, click :guilabel:`Save` to activate the settings.
+
+.. _expenses/reimburse-payslip:
+
+Reimburse in payslips
+=====================
+
+If the  *Reimburse in Payslip* option is activated on the :ref:`settings
+<expenses/reimburse-settings>` page, payments can be added to the employee's next payslip, instead
+of issuing separate payments.
+
+.. important::
+   Reimbursing expenses on payslips can **only** be done individually for an *approved* expense
+   report. Once an expense report has a status of *Posted*, the option to reimburse in the following
+   payslip **is not available**.
+
+Navigate to :menuselection:`Expenses app --> Expense Reports`, and click on the individual expense
+report to reimburse on the following paycheck. Click the :guilabel:`Report in Next Payslip` button,
+and the expenses are added to the next payslip issued for that employee.
+
+.. image:: reimburse/pay-via-payslip.png
+   :alt: The Report in Next Payslip button, visible with an expense report status of Approved.
+
+Once the expense report is added to the following payslip, a message is logged in the chatter
+stating `Expense report (expense report name) will be added to the next payslip.` The status for the
+expense report remains :guilabel:`Approved`. The status only changes to :guilabel:`Posted` (and then
+:guilabel:`Done`), when the related payslip is processed.
+
+.. seealso::
+   Refer to the :doc:`Payslips <../../hr/payroll/payslips>` documentation for more information about
+   processing paychecks.
+
+.. _expenses/reimburse-single:
+
+Reimburse individually
+======================
+
+To reimburse an individual expense report, first navigate to :menuselection:`Expenses app -->
+Expense Reports`. All expense reports are presented in a default list view. Click on the expense
+report being reimbursed to view the report details.
+
+.. important::
+   **Only** expense reports with a status of :guilabel:`Posted` can be reimbursed directly to the
+   employee (not :ref:`via a payslip <expenses/reimburse-payslip>`).
+
+Click the :guilabel:`Pay` button in the top-left corner of the expense report, and a :guilabel:`Pay`
+pop-up window loads. Enter the following information in the pop-up window:
+
+- :guilabel:`Journal`: Select the accounting journal to post the payment using the drop-down menu.
+  The default options are :guilabel:`Bank` or :guilabel:`Cash`.
+- :guilabel:`Payment Method`: Select how the payment is made using the drop-down menu. If
+  :guilabel:`Cash` is selected for the :guilabel:`Journal`, the only option available is
+  :guilabel:`Manual Payment`. If :guilabel:`Bank` is selected for the :guilabel:`Journal`, the
+  default options are :guilabel:`Manual Payment` or :guilabel:`Checks`.
+- :guilabel:`Recipient Bank Account`: This field only appears if the :guilabel:`Journal` is set to
+  :guilabel:`Bank`. The employee's :ref:`bank account <employees/private-info>` populates this
+  field, by default. If the employee has more than one trusted bank account on their employee
+  profile, use the drop-down menu to select the desired bank account.
+- :guilabel:`Amount`: The total amount being reimbursed populates this field, by default.
+- :guilabel:`Payment Date`: Enter the date the payment is issued in this field. The current date
+  populates this field, by default.
+- :guilabel:`Memo`: The text entered in the :doc:`Expense Report Summary
+  <../expenses/expense_reports>` field of the expense report populates this field, by default.
+
+.. image:: reimburse/payment.png
+   :alt: The Register Payment pop-up window filled out for an individual expense report
+         reimbursement.
+
+When the fields of the pop-up window are completed, click the :guilabel:`Create Payment` button to
+register the payment, and reimburse the employee. A green :guilabel:`In Payment` banner now appears
+on the expense report.
+
+.. _expenses/reimburse-bulk:
+
+Reimburse in bulk
+=================
+
+To reimburse multiple expense reports at once, navigate to :menuselection:`Expenses app --> Expense
+Reports` to view all expense reports in a list view. Next, select the expense reports to be
+reimbursed.
+
+.. important::
+   **Only** expense reports with a status of :guilabel:`Posted` can be reimbursed directly to the
+   employee (not :ref:`via a payslip <expenses/reimburse-payslip>`).
+
+.. tip::
+   Adjust the :guilabel:`STATUS` filter on the left side to only show :guilabel:`Posted` expense
+   reports. This displays **only** expense reports that are able to be reimbursed.
+
+Tick the checkbox next to the expense reports being reimbursed, then click the :guilabel:`Pay`
+button, and a :guilabel:`Pay` pop-up window loads. Enter the following information in the pop-up
+window:
+
+- :guilabel:`Journal`: Select the accounting journal to post the payment using the drop-down menu.
+  The default options are :guilabel:`Bank` or :guilabel:`Cash`.
+- :guilabel:`Payment Method`: Select how the payment is made using the drop-down menu. If
+  :guilabel:`Cash` is selected for the :guilabel:`Journal`, the only option available is
+  :guilabel:`Manual Payment`. If :guilabel:`Bank` is selected for the :guilabel:`Journal`, the
+  default options are :guilabel:`Manual Payment` or :guilabel:`Checks`.
+- :guilabel:`Group Payments`: When multiple expense reports are selected for the same employee, this
+  option appears. Tick the checkbox to have only one payment made per employee, rather than issuing
+  multiple payments to the same employee.
+- :guilabel:`Amount`: The total amount being reimbursed for all the expense reports populates this
+  field, by default.
+- :guilabel:`Payment Date`: Enter the date the payments are issued. The current date populates this
+  field, by default.
+
+When the fields on the :guilabel:`Pay` pop-up window are completed, click the :guilabel:`Create
+Payments` button to register the payments, and reimburse the employees.
+
+.. image:: reimburse/repay-multiple.png
+   :alt: The pay pop-up window filled out for multiple reimbursements via checks.
+
+
+==================================================
+SECTION: reinvoice_expenses.rst
+PATH: applications/finance/expenses/reinvoice_expenses.rst
+==================================================
+
+==================
+Reinvoice expenses
+==================
+
+If expenses are tracked on customer projects, they can be automatically charged back to the
+customer. This is done by :ref:`logging an expense <expenses/reinvoice-create>`, referencing the
+corresponding sales order, and then :ref:`creating an expense report
+<expenses/reinvoice-expense-report>`.
+
+Next, managers :ref:`approve the expense report <expenses/reinvoice-approve>`, then the accounting
+department :ref:`post the journal entries <expenses/reinvoice-approve>`.
+
+Finally, once the expense report is posted to a journal, the expenses appear on the specified
+:abbr:`SO (Sales Order)`. When the :abbr:`SO (Sales Order)` is :ref:`invoiced <expenses/reinvoice>`,
+the customer is charged for the expenses.
+
+.. important::
+   Approving expenses, posting expenses to accounting, and reinvoicing expenses on :abbr:`SOs (Sales
+   Orders)` is **only** possible for users with the appropriate :doc:`access rights
+   <../../general/users/access_rights>`.
+
+.. seealso::
+   This document provides lower-level instructions for the creation, submission, approval, and
+   posting of expenses. For fully-detailed instructions for any of these steps, refer to the
+   following documentation:
+
+   - :doc:`Log expenses <../expenses/log_expenses>`
+   - :doc:`Expense reports <../expenses/expense_reports>`
+   - :doc:`Approve expenses <../expenses/approve_expenses>`
+   - :doc:`Post expenses <../expenses/post_expenses>`
+
+Setup
+=====
+
+First, specify the invoicing policy for each expense category. Navigate to :menuselection:`Expenses
+app --> Configuration --> Expense Categories`. Click on an expense category to view the expense
+category form. Under the :guilabel:`INVOICING` section, click the radio button next to the desired
+selection for :guilabel:`Re-Invoice costs`:
+
+- :guilabel:`No`: The expense category **cannot** be reinvoiced.
+- :guilabel:`At cost`: The expense category invoices expenses at the :guilabel:`Cost` set on the
+  expense category form.
+- :guilabel:`Sales price`: The expense category invoices at the :guilabel:`Sales Price` set on the
+  expense form.
+
+.. _expenses/reinvoice-create:
+
+Log an expense
+==============
+
+First, when :doc:`creating a new expense <../expenses/log_expenses>`, the correct information needs
+to be entered to reinvoice the expense to a customer. Using the drop-down menu, select the :abbr:`SO
+(Sales Order)` to add the expense to in the :guilabel:`Customer to Reinvoice` field.
+
+Next, select the :guilabel:`Analytic Distribution` the expense is posted to. The options available
+are pulled from the **Projects** app.
+
+Multiple projects can be selected, if desired. To add another :guilabel:`Analytic Distribution`,
+click on the line to reveal the :guilabel:`Analytic` pop-over window. Click :guilabel:`Add a line`,
+then select the desired :guilabel:`Analytic Distribution` from the drop-down menu.
+
+.. image:: reinvoice_expenses/reinvoice-expense-form.png
+   :alt: An expense entry to reinvoice a project to the customer, for the gallery seating project.
+
+.. important::
+   If selecting more than one :guilabel:`Analytic Distribution`, the :guilabel:`Percentage` fields
+   **must** be modified. Both fields are populated with `100%`, by default. Adjust the percentages
+   for all the fields, so the total of all selected accounts equals `100%`.
+
+.. example::
+   A furniture company is building seating for two different locations for one client. The client
+   agrees to pay for all travel expenses for site visits related to these two projects. The
+   furniture company plans one trip to visit *both* locations.
+
+   When creating the expenses for travel expenses, **both projects** are listed in the
+   :guilabel:`Analytic Distribution` line, for 50% each.
+
+.. _expenses/reinvoice-expense-report:
+
+Create an expense report
+========================
+
+After the expenses are created, the expense report must be :ref:`created <expenses/create_report>`
+and :ref:`submitted <expenses/submit>`, in the same manner as all other expenses.
+
+Once the expense report is submitted, a :icon:`fa-money` :guilabel:`Sales Orders` smart button
+appears at the top-center of both the expense report, and each individual expense record being
+reinvoiced.
+
+.. important::
+   Selecting the proper :abbr:`SO (Sales Order)` in the :guilabel:`Customer to Reinvoice` field is
+   **critical**, since this is how expenses are automatically invoiced after an expense report is
+   approved.
+
+   The :guilabel:`Customer to Reinvoice` field can be modified *only* until an expense report is
+   **approved**. After an expense report is approved, the :guilabel:`Customer to Reinvoice` field is
+   no longer able to be modified.
+
+.. image:: reinvoice_expenses/reinvoice-approved.png
+   :alt: An expense report with a sales order smart button for reinvoicing.
+
+.. _expenses/reinvoice-approve:
+
+Approve and post expenses
+=========================
+
+Before :doc:`approving an expense report <../expenses/approve_expenses>`, ensure the
+:guilabel:`Analytic Distribution` section is populated for every relevant expense line.
+
+If an :guilabel:`Analytic Distribution` entry is missing, assign the correct accounts from the
+drop-down menu, then click :guilabel:`Approve`.
+
+.. note::
+   The :guilabel:`Approve` button **only** appears after an expense report has been :ref:`submitted
+   <expenses/submit>`.
+
+The accounting department is typically responsible for :doc:`posting journal entries
+<../expenses/post_expenses>`. To post expenses to an accounting journal, click :guilabel:`Post
+Journal Entries`. Once an expense report is approved, it can then be posted.
+
+The :abbr:`SO (Sales Order)` is **only** updated *after* the journal entries are posted. Once the
+journal entries are posted, the expenses now appear on the referenced :abbr:`SO (Sales Order)`.
+
+.. _expenses/reinvoice:
+
+Invoice expenses
+================
+
+After the expense report has been approved, and the journal entries have been posted, the :abbr:`SO
+(Sales Order)` is updated, and the customer can be invoiced.
+
+Navigate to the expense report, and click the :icon:`fa-money` :guilabel:`Sales Orders` smart button
+to open the :abbr:`SO (Sales Order)`. The expenses to be reinvoiced now appear on the :abbr:`SO
+(Sales Order)`.
+
+.. note::
+   More than one :abbr:`SO (Sales Order)` can be referenced on an expense report. If more than one
+   :abbr:`SO (Sales Order)` is referenced, clicking the :guilabel:`Sales Orders` smart button opens
+   a list displaying all the :abbr:`SOs (Sales Order)` associated with that expense report. Click on
+   a :abbr:`SO (Sales Order)` to open the individual :abbr:`SO (Sales Order)` details.
+
+The expenses are listed in the :abbr:`SO (Sales Order)` :guilabel:`Order Lines` tab.
+
+Next, click :guilabel:`Create Invoice`, and a :guilabel:`Create invoices` pop-up window appears.
+Select if the invoice is a :guilabel:`Regular invoice`, a :guilabel:`Down payment (percentage)`, or
+a :guilabel:`Down payment (fixed amount)`. Then, click :guilabel:`Create Draft`. Doing so creates a
+draft invoice for the customer. Click :guilabel:`Confirm` to confirm the invoice, and the customer
+is invoiced for the expenses.
+
+.. image:: reinvoice_expenses/reinvoiced.png
+   :alt: See the expenses listed on the sales order after clicking into it.
+
+.. seealso::
+   :doc:`../../sales/sales/invoicing`

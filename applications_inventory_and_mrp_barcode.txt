@@ -1,0 +1,2695 @@
+
+
+==================================================
+SECTION: barcode.rst
+PATH: applications/inventory_and_mrp/barcode.rst
+==================================================
+
+:nosearch:
+:show-content:
+:hide-page-toc:
+:show-toc:
+
+=======
+Barcode
+=======
+
+**Odoo Barcode** allows users to assign barcodes to individual products and product categories, and
+track inventory movements using those barcodes. By connecting a barcode scanner, certain inventory
+processes can be triggered by scanning barcodes.
+
+.. seealso::
+   `Odoo Tutorials: Barcode <https://www.odoo.com/slides/barcode-30>`_
+
+.. toctree::
+   :titlesonly:
+   :glob:
+
+   barcode/setup
+   barcode/operations
+
+
+==================================================
+SECTION: adjustments.rst
+PATH: applications/inventory_and_mrp/barcode/operations/adjustments.rst
+==================================================
+
+==============================
+Adjust inventory with barcodes
+==============================
+
+An *inventory adjustment*, or inventory audit, is the process of verifying the physical stock of
+products against the quantities recorded in the database. Regular audits ensure accurate inventory
+records, prevent stock discrepancies, and maintain efficient operations. In a warehouse setting,
+managers typically assign inventory counts to employees, who then walk to designated locations, scan
+product barcodes, and adjust quantities as needed.
+
+Inventory adjustments can be completed through the **Barcode** application using a compatible
+scanner, or the Odoo mobile app.
+
+.. note::
+   For a list of Odoo-compatible barcode mobile scanners, and other hardware for the **Inventory**
+   and **Barcode** apps, refer to the `Odoo Inventory • Hardware page
+   <https://www.odoo.com/app/inventory-hardware>`_.
+
+.. seealso::
+   :doc:`../../inventory/warehouses_storage/inventory_management/count_products`
+
+.. tip::
+   Odoo's **Barcode** application provides demo data with barcodes to explore the features of the
+   app. These can be used for testing purposes, and can be printed from the home screen of the app.
+
+   To access this demo data, navigate to the :menuselection:`Barcode app` and click :guilabel:`demo
+   data sheet` or :guilabel:`barcodes` in the banner above the scanner.
+
+   .. image:: adjustments/adjustments-barcode-stock-sheets.png
+      :alt: Demo data prompt pop-up on Barcode app main screen.
+
+Assigning inventory counts
+==========================
+
+Before performing an inventory count, managers can :ref:`assign <inventory/plan-counts>` counting
+tasks to employees. This can be done through :menuselection:`Inventory app --> Operations -->
+Physical Inventory` by selecting specific locations and products for counting, and assigning a
+:guilabel:`User` to them. Once assigned, users will see pending counts when they open the
+**Barcode** app.
+
+To view a requested inventory count, navigate to the :menuselection:`Barcode app` dashboard. If a
+count has been requested, the number of products to be counted is listed on the :guilabel:`Inventory
+count` button.
+
+.. image:: adjustments/assigned-count.png
+   :alt: The Barcode dashboard with an assigned count.
+
+Configuration
+=============
+
+Before an inventory adjustment can be performed with the **Barcode** app, the app has to be
+installed, and configured. Navigate to :menuselection:`Inventory app --> Configuration -->
+Settings`, and scroll to the :guilabel:`Barcode` section. Tick the checkbox next to
+:guilabel:`Barcode Scanner`, and click :guilabel:`Save` to save any changes. If necessary, click
+:guilabel:`Confirm` on the pop-up.
+
+.. danger::
+   Enabling the **Barcode** feature requires installing the **Barcode** application. Installing a
+   new application on a One-App-Free database triggers a fifteen-day trial. At the end of the trial,
+   if a paid subscription has not been added to the database, it will no longer be accessible.
+
+After saving, a new drop-down menu appears under the :guilabel:`Barcode Scanner` option, labeled
+:guilabel:`Barcode Nomenclature`, where either :guilabel:`Default Nomenclature` or
+:guilabel:`Default GS1 Nomenclature` can be selected. Each nomenclature option determines how
+scanners interpret barcodes in Odoo.
+
+To count products using barcodes, ensure that barcodes for products and storage locations are set up
+within Odoo first. Refer to this section for detailed instructions: :ref:`Set Product Barcodes
+<inventory/barcode/set-barcodes>`.
+
+.. image:: adjustments/adjustments-barcode-setting.png
+   :alt: Enabled Barcode feature in Inventory app settings.
+
+.. _inventory/barcode/perform-count:
+
+Performing an inventory count
+=============================
+
+To perform an inventory adjustment, first navigate to the :menuselection:`Barcode app`. If assigned
+counts exist, tap :guilabel:`Inventory Count` to view pending tasks.
+
+.. image:: adjustments/adjustments-barcode-scanner.png
+   :alt: Barcode app start screen with scanner.
+
+Walk to the designated storage location, then scan the location barcode.
+
+.. tip::
+   If the warehouse *multi-location* feature is **not** enabled in the database, a source location
+   does not need to be scanned. Instead, scan the product barcode to start the inventory adjustment.
+
+Doing so highlights the location and displays all of the products stored there. Scan the barcode of
+each product to adjust its count.
+
+.. note::
+   If no counts have been assigned to a user, and the :ref:`Count Entire Locations
+   <inventory/barcode/count-location>` feature is **not** enabled, no products may appear after the
+   location barcode is scanned.
+
+Manually adjust quantities if necessary by tapping the :icon:`fa-pencil` :guilabel:`(edit)` icon.
+Doing so opens a separate window with a keypad. Edit the number in the :guilabel:`Quantity` line to
+change the quantity. Additionally, the :guilabel:`+1` and :guilabel:`-1` buttons can be clicked to
+add or subtract quantity of the product, and the number keys can be used to add quantity, as well.
+
+.. example::
+   In the below inventory adjustment, the source location `WH/Stock/Shelf 1` was scanned, assigning
+   the location. Then, the barcode for the product `[FURN_7888] Desk Stand with Screen` was scanned
+   three times, increasing the units in the adjustment. Additional products can be added to this
+   adjustment by scanning the barcodes for those specific products.
+
+   .. image:: adjustments/adjustments-barcode-inventory-client-action.png
+      :alt: Barcode Inventory Client Action page with inventory adjustment.
+
+.. _inventory/barcode/count-location:
+
+Count entire locations
+----------------------
+
+The :guilabel:`Count Entire Locations` feature assigns a user to count all the products within a
+location once they scan the barcode for that location. This allows for easier cycle counts by
+assigning an entire location to a user by assigning a single product count. During cycle counts,
+users can ensure accurate inventory numbers, see if products that should be in a location are
+missing, or discover products incorrectly stored within a location.
+
+To enable this feature, navigate to :menuselection:`Inventory app --> Configuration --> Settings`,
+and scroll to the :guilabel:`Barcode` section. Tick the :guilabel:`Count Entire Locations` checkbox,
+then click :guilabel:`Save`.
+
+.. important::
+   This setting is only visible if the :guilabel:`Storage Locations` checkbox is ticked.
+
+To perform an inventory count of an entire location, navigate to :menuselection:`Barcode app -->
+Inventory Count`. Scan the desired location barcode. The app then displays all assigned products in
+that location. :ref:`Proceed with the count <inventory/barcode/perform-count>` as normal.
+
+Show quantity to count
+----------------------
+
+When conducting an inventory count, the expected quantity of products is displayed by default, to
+provide the user with a baseline to use when performing the count. However, as this can result in
+users relying on this count instead of performing a new count, this quantity can be hidden.
+
+Navigate to :menuselection:`Inventory app --> Configuration --> Settings`. In the
+:guilabel:`Barcode` section, clear the :guilabel:`Show Quantity to Count` checkbox, then click
+:guilabel:`Save`.
+
+.. image:: adjustments/show-quantity-to-count-disabled.png
+   :alt: An inventory count without the show quantity to count feature enabled.
+
+Manually add products to an inventory count
+===========================================
+
+When barcodes for location or products are not available, Odoo **Barcode** can still be used to
+perform inventory counts.
+
+To do this, navigate to the :menuselection:`Barcode app --> Inventory Count`.
+
+To manually add products to this adjustment, click the white :guilabel:`Add Product` button at the
+bottom of the screen.
+
+This navigates to a new, blank page where the desired product, quantity, and source location must be
+chosen.
+
+.. image:: adjustments/adjustments-keypad.png
+   :alt: Keypad to add products on Barcode Inventory Client Action page.
+
+First, click the :guilabel:`Product` line, and choose the product whose stock count should be
+adjusted. Then, manually enter the quantity of that product, either by changing the `1` in the
+:guilabel:`Quantity` line, or by clicking the :guilabel:`+1` and :guilabel:`-1` buttons to add or
+subtract quantity of the product. The number pad can be used to add quantity, as well.
+
+Below the number pad is the :guilabel:`location` line, which should read `WH/Stock` by default.
+Click this line to reveal a drop-down menu of locations to choose from, and choose the
+:guilabel:`source location` for this inventory adjustment.
+
+Click :guilabel:`Confirm` to confirm the changes.
+
+Finalizing an inventory count
+=============================
+
+After counting all of the products, review the entries to ensure all the counted quantities are
+accurately entered. To complete the inventory adjustment, click :guilabel:`Apply`.
+
+.. tip::
+   The :guilabel:`Validate` barcode can be scanned in place of clicking the :guilabel:`Apply`
+   button.
+
+Odoo then navigates back to the :guilabel:`Barcode Scanning` screen. A small green banner appears in
+the top-right corner, confirming the inventory count has been updated.
+
+
+==================================================
+SECTION: barcode_nomenclature.rst
+PATH: applications/inventory_and_mrp/barcode/operations/barcode_nomenclature.rst
+==================================================
+
+============================
+Default barcode nomenclature
+============================
+
+.. |UPC| replace:: :abbr:`UPC (Universal Product Code)`
+.. |EAN| replace:: :abbr:`EAN (European Article Number)`
+.. |GTIN| replace:: :abbr:`GTIN (Global Trade Item Number)`
+.. |GTINs| replace:: :abbr:`GTINs (Global Trade Item Numbers)`
+
+*Barcode nomenclatures* define how barcodes are recognized and categorized. When a barcode is
+scanned, it is associated to the **first** rule with a matching pattern. The pattern syntax is
+described in Odoo's nomenclature list using a regular expression, and a barcode is successfully read
+by Odoo if its prefix and/or length matches the one defined in the barcode's rule.
+
+For instance, at a :doc:`Point of Sale <../../../sales/point_of_sale>` station, product weight
+barcodes in the European Article Number (EAN) format, which begin with `21` and have five digits
+specifying the weight, are used to weigh products and generate a barcode depicting the weight and
+price. The `21` and five-digit weight is the barcode pattern used to identify the barcode and can be
+customized to ensure Odoo correctly interprets all barcodes for the business.
+
+.. note::
+   Barcodes are also commonly used with Odoo's **Inventory** and **Barcode** apps.
+
+Odoo **Barcode** supports |EAN|, Universal Product Code (UPC), and :doc:`GS1 <gs1_nomenclature>`
+formats. This document exclusively focuses on :ref:`default rules and patterns in Odoo
+<barcode/operations/default-nomenclature-list>`, which use |UPC| and |EAN| encoding.
+
+.. important::
+   To use |UPC| and |EAN| barcodes for uniquely identifying products across the entire supply chain,
+   they **must** be `purchased from GS1 <https://www.gs1.org/standards/get-barcodes>`_.
+
+   In Odoo, custom barcode patterns can be defined to recognize barcodes specific to the company.
+   Barcodes do not need to be purchased if used only within the company, such as in the
+   :ref:`example <barcode/operations/product-weight>` where the barcode is written in the |EAN|
+   format.
+
+Configuration
+=============
+
+To use default nomenclature, navigate to :menuselection:`Inventory app --> Configuration -->
+Settings`. Under the :guilabel:`Barcode` section, tick the :guilabel:`Barcode Scanner` checkbox.
+Doing so installs the **Barcode** app in the database.
+
+Next, in the :guilabel:`Barcode Nomenclature` field, ensure :guilabel:`Default Nomenclature` is
+selected. Then, click :guilabel:`Save`.
+
+.. image:: barcode_nomenclature/enable-nomenclature.png
+   :align: center
+   :alt: Enabled barcode setting with Default Nomenclature selected.
+
+With the **Barcode** module installed, and the :guilabel:`Default Nomenclature` selected, the
+barcode actions using |UPC| and |EAN|, detailed in the :ref:`default nomenclature list
+<barcode/operations/default-nomenclature-list>`, are available for use. And, by default, Odoo
+automatically handles |UPC|/|EAN| conversion.
+
+.. _barcode/operations/product-weight:
+
+Example: product weight barcode
+===============================
+
+To better understand how barcode nomenclature is used to identify products in Odoo, this example
+where product weight barcodes in |EAN| format are used to allow a :doc:`Point of Sale
+<../../../sales/point_of_sale>` business to automatically print barcodes, and calculate the price
+using the weight of the item.
+
+To set up barcodes for weighted products, the following rule is used:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Rule Name
+     - Barcode Pattern
+     - Field in Odoo
+   * - Weighted Barcodes 3 Decimals
+     - (21)....{NNDDD}
+     - :guilabel:`Barcode` field on product form
+
+.. example::
+   To better understand the barcode pattern for weighted products, consider the barcode,
+   `2112345000008`:
+
+   - `21`: code that identifies this a barcode for weighted products.
+   - `12345`: five digits (denoted by `.....` in the table above) that identify the product.
+   - `00000`: five digits (denoted by `{NNDDD}` in the table) representing the weight of the
+     product. On the product form, the five weight values **must** be `00000`. The first two digits
+     are whole number values, and the last three digits are decimal values. For example, "13.5
+     grams" in the `{NNDDD}` format is `13500`.
+   - `8`: `check digit <https://www.gs1.org/services/check-digit-calculator>`_ for `211234500000`.
+
+   Together, these components make up a 13-character |EAN| - 13 barcode.
+
+To configure the product barcode for `Pasta Bolognese`, the |EAN| barcode for weighted products,
+`2112345000008`, is entered in the :guilabel:`Barcode` field on the product form (accessible by
+going to :menuselection:`Inventory app --> Products --> Products`, and selecting the desired
+product). In addition, the :guilabel:`Unit of Measure` is set to :guilabel:`kg`.
+
+.. image:: barcode_nomenclature/barcode.png
+   :align: center
+   :alt: Barcode field on the product form.
+
+Next, a customer's bowl of pasta is weighed to be `1.5` kilograms. This generates a new barcode for
+the pasta, according to the weight: `211234501500`, which has a check digit of `2`. The new barcode
+is `2112345015002`.
+
+.. image:: barcode_nomenclature/weighted-barcode.png
+   :align: center
+   :alt: Generated barcode that includes a weight of 1.5 kg.
+
+Ensure the products scan properly, by navigating to the :menuselection:`Barcode app --> Operations`.
+Next, click any operation type, such as :guilabel:`Receipts`. Then, click the :guilabel:`New` button
+to create a draft stock move. Scan the product weight barcode, such as `2112345015002`, and if the
+intended product appears, the barcode setup is correct.
+
+.. image:: barcode_nomenclature/barcode-scan.png
+   :align: center
+   :alt: Show successfully scanned barcode.
+
+Create rules
+============
+
+.. important::
+   Adding new rules is necessary for |UPC| and |EAN| formats that are **not** in Odoo's default
+   list, since barcodes cannot be read successfully if there are unknown fields.
+
+    While new rules can be created, Odoo fields do **not** auto-populate with information from these
+    rules. `Custom development <https://www.odoo.com/appointment/132>`_ is required for this
+    functionality.
+
+To create a rule, first enable :ref:`developer mode <developer-mode>`. Then, navigate to
+:menuselection:`Inventory app --> Configuration --> Barcode Nomenclatures`, and select
+:guilabel:`Default Nomenclature`.
+
+On this page, configure the following optional fields:
+
+- :guilabel:`UPC/EAN Conversion`: determines if a |UPC|/|EAN| barcode should be automatically
+  converted when matching a rule with another encoding. Options include :guilabel:`Always` (the
+  default option), :guilabel:`Never`, :guilabel:`EAN-13 to UPC-A`, and :guilabel:`UPC-A to EAN-13`.
+- :guilabel:`Is GS1 Nomenclature`: ensure this checkbox is **not** ticked, as the
+  :guilabel:`Default Nomenclature` uses |UPC| and |EAN| encoding, *not* GS1 encoding.
+
+.. image:: barcode_nomenclature/rule-config.png
+   :align: center
+   :alt: Default Nomenclature page setting fields.
+
+On the :guilabel:`Default Nomenclature` page, click :guilabel:`Add a line` at the bottom of the
+table, which opens a :guilabel:`Create Rules` pop-up window to create a new rule.
+
+The :guilabel:`Rule Name` field is used internally to identify what the barcode represents.
+
+The :guilabel:`Sequence` field represents the priority of the rule; meaning the smaller the value,
+the higher the rule appears on the table.
+
+The barcode :guilabel:`Type` field represents different classifications of information that can be
+understood by the system (e.g., :guilabel:`Package`, :guilabel:`Lot`, :guilabel:`Location`,
+:guilabel:`Coupon`, etc.).
+
+The :guilabel:`Encoding` field specifies which encoding the barcode uses. This rule **only** applies
+if the barcode uses this specific encoding. The available :guilabel:`Encoding` options are:
+:guilabel:`EAN-13`, :guilabel:`EAN-8`, :guilabel:`UPC-A`, and :guilabel:`GS1-28`.
+
+The :guilabel:`Barcode Pattern` field represents how the sequence of letters or numbers is
+recognized by the system to contain information about the product. Sometimes, when a certain amount
+of digits are required, the number of `.` is shown. `N` represents whole number digits, and `D`
+represent decimal digits.
+
+.. example::
+   `1...` represents any 4-digit number that starts with 1. `NNDD` represents a two digit number
+   with two decimal points. For example, `14.25` is 1425.
+
+After filling in the information, click the :guilabel:`Save & New` button to save the rule, and
+instantly start creating another rule. Or, click :guilabel:`Save & Close` to save the rule, and
+return to the table of rules.
+
+.. _barcode/operations/default-nomenclature-list:
+
+Default nomenclature list
+=========================
+
+The table below contains Odoo's list of :guilabel:`Default Nomenclature` rules. Barcode patterns are
+written in regular expressions.
+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Rule Name
+     - Type
+     - Encoding
+     - Barcode Pattern
+   * - Price Barcodes 2 Decimals
+     - Priced Product
+     - EAN-13
+     - 23.....{NNNDD}
+   * - Discount Barcodes
+     - Discounted Product
+     - Any
+     - 22{NN}
+   * - Weight Barcodes 3 Decimals
+     - Weighted Product
+     - EAN-13
+     - 21.....{NNDDD}
+   * - Customer Barcodes
+     - Client
+     - Any
+     - 042
+   * - Coupon & Gift Card Barcodes
+     - Coupon
+     - Any
+     - 043|044
+   * - Cashier Barcodes
+     - Cashier
+     - Any
+     - 041
+   * - Location barcodes
+     - Location
+     - Any
+     - 414
+   * - Package barcodes
+     - Package
+     - Any
+     - PACK
+   * - Lot barcodes
+     - Lot
+     - Any
+     - 10
+   * - Magnetic Credit Card
+     - Credit Card
+     - Any
+     - %.*
+   * - Product Barcodes
+     - Unit Product
+     - Any
+     - .*
+
+.. note::
+   When the :guilabel:`Barcode Pattern` contains `.*`, it means it can contain any number or type of
+   characters.
+
+.. seealso::
+   :doc:`gs1_nomenclature`
+
+
+==================================================
+SECTION: barcodelookup.rst
+PATH: applications/inventory_and_mrp/barcode/setup/barcodelookup.rst
+==================================================
+
+:show-content:
+
+==============
+Barcode Lookup
+==============
+
+`Barcode Lookup <https://www.barcodelookup.com/>`_ allows you to scan (or enter) products' barcodes
+(:abbr:`UPC (Universal Product Code)`, :abbr:`EAN (European Article Number)`, or :abbr:`ISBN
+(International Standard Book Number)`) to automatically create them in your Odoo database, complete
+with product names, descriptions, images, categories, etc.
+
+.. _barcodelookup/configuration:
+
+Configuration
+-------------
+
+If your database is hosted on **Odoo Online**, you can use Barcode Lookup without configuration.
+
+If your database is hosted on **Odoo.sh** or **on-premise**, proceed as follows:
+
+#. Visit the `Barcode Lookup website <https://www.barcodelookup.com/api>`_ and click
+   :guilabel:`Sign Up for the API`.
+#. Choose the appropriate plan based on the number of barcodes you need to scan.
+#. Fill in the required details and complete the registration process.
+#. Copy the API key.
+#. In Odoo, open the Settings app, scroll down to the :guilabel:`Integrations` section, and, under
+   :guilabel:`Barcode Database`, paste the Barcode Lookup :guilabel:`API Key`.
+
+Use
+---
+
+To fill in product information using Barcode Lookup, create a new product and fill in the
+:guilabel:`Barcode` field. The product's details are then automatically imported from Barcode
+Lookup, updating the following fields: :guilabel:`Name`, :guilabel:`Price`, :guilabel:`Description`,
+:guilabel:`Tax`, :guilabel:`Image`, :guilabel:`Weight`, :guilabel:`Attributes`, :guilabel:`Product
+category`, and :guilabel:`Volume`. You can then modify any field(s) as needed.
+
+.. seealso::
+   :ref:`Create new products during internal transfers using the Barcode Lookup database
+   <barcode/setup/barcodelookup>`.
+
+
+==================================================
+SECTION: device_troubleshooting.rst
+PATH: applications/inventory_and_mrp/barcode/setup/device_troubleshooting.rst
+==================================================
+
+==============================
+Barcode device troubleshooting
+==============================
+
+Odoo *Barcode* supports three main types of barcode scanners: USB scanners, bluetooth scanners, and
+mobile computer scanners. While configuring each type of scanner, common issues may arise, in which
+the scanners do not work as intended, and Odoo returns errors to the device.
+
+Read the sections below to identify general and unique device issues, related to specific, popular
+types of scanners.
+
+General issues
+==============
+
+Refer to the following sections below for common issues involving popular barcode scanner devices.
+
+For issues related to specific devices, refer to the :ref:`Android scanners
+<barcode/setup/android-scanners>` section for mobile computer scanners, or to the :ref:`Screenless
+scanners <barcode/setup/screenless-scanners>` section for USB and bluetooth scanners.
+
+Barcode cannot be read
+----------------------
+
+One common issue encountered when using barcode scanners is an error resulting from barcodes that
+cannot be read.
+
+This can occur due to any of the following reasons:
+
+- The barcode is damaged.
+- The device cannot read the required barcode type (some scanners can only read 2D barcodes).
+- The barcode being scanned is on a screen. Some scanners don't support this, and the barcodes
+  **must** be printed out to be scanned. This is most common with 1D barcodes.
+- The device has no battery, or is broken. To rule this out, follow the troubleshooting instructions
+  in the following sections.
+
+Odoo returns barcode error
+--------------------------
+
+All types of barcode scanners have their own device "language", which affects how they output
+barcode data to Odoo's *Barcode* app. Sometimes, this can cause Odoo *Barcode* to return a barcode
+error after scanning. This could be due to any of the following reasons:
+
+- The computer is configured with a different keyboard layout than the barcode scanner. To rule this
+  out, ensure that the device is configured with the same keyboard layout.
+
+  For example, if the computer is configured to use an FR-BE keyboard, configure the scanner to send
+  FR-BE keystrokes. The same logic applies if using a tablet instead of a computer.
+
+  For more information on configuring keystrokes, refer to the :doc:`Barcode scanner setup
+  <hardware>` documentation.
+- For mobile computer scanners (such as Zebra devices, for example), the scanner might interpret the
+  barcode differently than intended. To rule this out, scan a test barcode to see how the scanner
+  interprets the barcode.
+
+.. _barcode/setup/android-scanners:
+
+Android scanners
+================
+
+The most recent barcode scanner models using Android and Google Chrome should work with Odoo.
+However, due to the variety of models and configurations, it is recommended to first test a
+scanner's compatibility with Odoo.
+
+The Zebra product line is recommended; specifically, the **Zebra TC21 (WiFi-only)**, and **Zebra
+TC26 (WiFi/cellular)**.
+
+.. seealso::
+   `Odoo Inventory & Barcode compatible hardware <https://www.odoo.com/app/inventory-hardware>`_
+
+Barcode app does not give feedback
+----------------------------------
+
+By default, Android barcode scanners pre-process the barcode, then send a full text. Since Odoo
+*Barcode* does not read this type of output, settings for each type of scanner **must** be
+configured correctly.
+
+Odoo *Barcode* expects that the scanner works like an analogue keyboard, and so, only detects *key
+events*. Refer to the following sections for configuration settings for the most popular devices.
+
+Zebra TC21/TC26
+---------------
+
+When using Zebra scanners, ensure the following keystroke configurations are set to prevent errors.
+
+Begin on the Zebra scanner's home screen, and select the :guilabel:`DataWedge` app (the app is
+represented by a :guilabel:`(light blue barcode)` icon).
+
+On the :guilabel:`DataWedge Profiles` page, select the profile option to access the Zebra scanner's
+settings.
+
+Once the profile is selected, scroll down to the :guilabel:`Keyboard Output` option, and ensure the
+:guilabel:`Enable/disable keystroke output` option is :guilabel:`Enabled`.
+
+.. image:: device_troubleshooting/device-troubleshooting-zebra-settings.png
+   :align: center
+   :alt: Show keystroke option in the Zebra scanner's DataWedge app.
+
+Once that option is enabled, go back to the :guilabel:`Profile` options page, and go to the
+:guilabel:`Keystroke output` section. Then, open the :guilabel:`Key event options` submenu. Under
+:guilabel:`Characters`, ensure the :guilabel:`Send Characters as Events` option is checked.
+
+.. important::
+   The :guilabel:`Send Characters as Events` option **must** be checked on the Zebra scanner, or
+   Odoo **cannot** recognize the barcodes that are scanned.
+
+Once the above steps have been taken, perform a test scan to ensure the Zebra scanner is working as
+intended.
+
+MUNBYN Android devices
+----------------------
+
+When using MUNBYN Android scanners, ensure the following configurations are set to prevent errors.
+
+From the device's home screen, click :menuselection:`AppSettings`. On the resulting page, locate the
+:guilabel:`Process mode` section, and select :guilabel:`Keyboard input`.
+
+.. image:: device_troubleshooting/device-troubleshooting-munbyn-process-mode.png
+   :align: center
+   :alt: Process mode section on MUNBYN scanner's AppSettings page.
+
+.. tip::
+   The selected *Process mode* controls how data is processed after barcode data has been read out.
+
+   *Keyboard input* enters read-out data at the position of the cursor, the same as input data on an
+   analogue keyboard would.
+
+Once the above steps have been taken, perform a test scan to ensure the MUNBYN Android scanner is
+working as intended.
+
+.. admonition:: Why is there no data output in the app after a successful scan?
+
+   When scanning a barcode, the scanner might beep, indicating a successful scan, but there is no
+   data output in the app.
+
+   To fix this issue, adjust the output method to *keyboard analogue* in the *Scanner* app on the
+   device.
+
+   From the device's home screen, click :menuselection:`Scanner App --> Settings`. From the
+   :guilabel:`Settings` page, click :guilabel:`Output Mode`. The resulting pop-up window presents
+   the different output options available to users. Select :guilabel:`Keyboard Mode`, then click
+   :guilabel:`OK`.
+
+   .. image:: device_troubleshooting/device-troubleshooting-output-mode-popup.png
+      :align: center
+      :alt: Output mode pop-up window on MUNBYN scanner.
+
+   Go back to the app that needs to be scanned, and click on the input dialog box first before
+   scanning. Finally, perform a test scan to ensure the MUNBYN Android scanner is working as
+   intended.
+
+Datalogic Android devices
+-------------------------
+
+When using Datalogic Android scanners, ensure the following configurations are set to prevent
+errors.
+
+To view and configure all settings for the scanner, use the *Settings* app on the Datalogic Android
+device. From the applications menu, select :menuselection:`Settings --> System --> Scanner
+Settings`.
+
+From the resulting list of settings, select :guilabel:`Wedge`. From this menu, under the
+:guilabel:`Keyboard wedge` section, ensure that the :guilabel:`Enable keyboard wedge` feature is
+activated.
+
+Then, also under the :guilabel:`Keyboard wedge` section, locate the :guilabel:`Keyboard wedge input
+mode` option. By default, the input mode is set to :guilabel:`Text injection`.
+
+.. image:: device_troubleshooting/device-troubleshooting-wedge-menu.png
+   :align: center
+   :alt: Wedge configuration menu on Datalogic scanner.
+
+Click :guilabel:`Keyboard wedge input mode`, and change the setting to :guilabel:`Key pressure`.
+This ensures that scanned barcodes are translated into keyboard strokes, instead of being injected
+into the text area.
+
+.. image:: device_troubleshooting/device-troubleshooting-keyboard-wedge-input.png
+   :align: center
+   :alt: Keyboard wedge input mode selection on Datalogic scanner.
+
+Once all those steps have been taken, perform a test scan to ensure the Datalogic Android scanner is
+working as intended.
+
+.. _barcode/setup/screenless-scanners:
+
+Screenless scanners
+===================
+
+Screenless scanners are barcode scanning devices that have no screens. These include USB scanners
+and bluetooth scanners.
+
+.. important::
+   Odoo supports most USB and Bluetooth barcode scanners, as they all emulate a keyboard. However,
+   to verify that a scanner is compatible with a specific keyboard layout (or can be configured to
+   do so), refer to Odoo's `Inventory & Barcode compatible hardware
+   <https://www.odoo.com/app/inventory-hardware>`_ documentation.
+
+NETUM devices
+-------------
+
+By default, the NETUM barcode scanner's user manual only shows the French keyboard configuration. To
+use the Belgian keyboard, scan the code below:
+
+.. image:: device_troubleshooting/device-troubleshooting-belgium-fr-key.png
+   :align: center
+   :alt: Belgian FR key barcode.
+
+Once that code has been scanned, ensure the NETUM scanner has the correct keyboard configuration,
+and is working as intended.
+
+.. seealso::
+   - :doc:`../setup/hardware`
+   - :doc:`../setup/software`
+
+
+==================================================
+SECTION: gs1_nomenclature.rst
+PATH: applications/inventory_and_mrp/barcode/operations/gs1_nomenclature.rst
+==================================================
+
+========================
+GS1 barcode nomenclature
+========================
+
+.. _barcode/operations/gs1:
+
+.. |AI| replace:: :abbr:`A.I. (Application Identifier)`
+.. |GTIN| replace:: :abbr:`GTIN (Global Trade Item Number)`
+.. |GTINs| replace:: :abbr:`GTINs (Global Trade Item Numbers)`
+
+
+`GS1 nomenclature <https://www.gs1us.org/>`_ consolidates various product and supply chain data into
+a single barcode. Odoo takes in `unique Global Trade Item Numbers
+<https://www.gs1.org/standards/get-barcodes>`_ (GTIN), purchased by businesses, to enable global
+shipping, sales, and eCommerce product listing.
+
+Configure GS1 nomenclature to scan barcodes of sealed boxes and identify essential product
+information, such as |GTIN|, lot number, quantity information, and more.
+
+.. important::
+   |GTINs| are unique product identification that **must** be `purchased from GS1
+   <https://www.gs1.org/standards/get-barcodes>`_ to use GS1 barcodes.
+
+.. seealso::
+   - `All GS1 barcodes <https://www.gs1.org/standards/barcodes/application-identifiers>`_
+   - :ref:`Odoo's default GS1 rules <barcode/operations/default-gs1-nomenclature-list>`
+   - :ref:`Why's my barcode not working? <barcode/operations/troubleshooting>`
+
+.. _barcode/operations/set-up-barcode-nomenclature:
+
+Set up barcode nomenclature
+===========================
+
+To use GS1 nomenclature, navigate to the :menuselection:`Inventory app --> Configuration -->
+Settings`. Then under the :guilabel:`Barcode` section, check the :guilabel:`Barcode Scanner` box.
+Next, select :menuselection:`Barcode Nomenclature --> Default GS1 Nomenclature` from the default
+barcode nomenclature options.
+
+.. image:: gs1_nomenclature/setup-gs1-nomenclature.png
+   :align: center
+   :alt: Choose GS1 from dropdown and click the external link to see the list of GS1 rules.
+
+The list of GS1 *rules* and *barcode patterns* Odoo supports by default is accessible by clicking
+the :guilabel:`➡️ (arrow)` icon to the right of the :guilabel:`Barcode Nomenclature` selection.
+
+In the :guilabel:`Open: Nomenclature` pop-up table, view and edit the GS1 :guilabel:`Rule Names`
+available in Odoo. The table contains all the information that can be condensed with a GS1 barcode,
+along with the corresponding :guilabel:`Barcode Pattern`.
+
+.. tip::
+   After setting GS1 as the barcode nomenclature, the :menuselection:`Barcode Nomenclatures`
+   settings can also be accessed by a hidden menu that's discoverable after enabling :ref:`developer
+   mode <developer-mode>`. Once enabled, navigate to the :menuselection:`Inventory app -->
+   Configuration --> Barcode Nomenclatures` menu and finally, select :guilabel:`Default GS1
+   Nomenclature`.
+
+.. _barcode/operations/create-GS1-barcode:
+
+Use GS1 barcodes in Odoo
+========================
+
+For product identification using GS1 barcodes in Odoo, businesses obtain a `unique GTIN
+<https://www.gs1.org/standards/get-barcodes>`_ as an internationally distinct product identifier
+purchased from GS1. This |GTIN| is combined with specific product details following GS1's designated
+*barcode pattern*. The barcode pattern's arrangement of numbers and letters must adhere to GS1
+conventions for accurate interpretation by global systems along the supply chain.
+
+Every barcode starts with a 2-4 digit `application identifier
+<https://www.gs1.org/standards/barcodes/application-identifiers>`_ (A.I.). This required prefix
+universally indicates what kind of information the barcode contains. Odoo follows GS1 rules for
+identifying information, as detailed in the :ref:`default GS1 rules list
+<barcode/operations/default-gs1-nomenclature-list>`. Including the relevant |AI| from the list
+enables Odoo to correctly interpret GS1 barcodes. While most barcode patterns have a fixed length
+requirement, certain ones, such as lots and serial numbers, have flexible length.
+
+.. tip::
+   For flexible-length barcode patterns not placed at the end of the GS1 barcode, use the FNC1
+   separator (`\\x1D`) to end the barcode.
+
+   Example: The barcode pattern for lot numbers is 20 characters long. Instead of creating a
+   20-character lot number barcode, like `LOT00000000000000001`, use the FNC1 separator to make it
+   shorter: `LOT001\x1D`.
+
+Refer to the :ref:`GS1 nomenclature list <barcode/operations/default-gs1-nomenclature-list>` to see
+a comprehensive list of all barcode patterns and rules to follow. Otherwise, refer to :ref:`this
+GS1 usage doc <barcode/operations/gs1_usage>` for specific examples of combining |GTIN| to product
+information and configuring the workflow.
+
+.. seealso::
+   - :ref:`Lots workflow <barcode/operations/gs1-lots>`
+   - :ref:`Non-unit quantities workflow <barcode/operations/quantity-ex>`
+
+.. _barcode/operations/create-new-rules:
+
+Create rules
+------------
+
+GS1 rules are a specific format of information contained in the barcode, beginning with an |AI| and
+containing a defined length of characters. Scanning GS1 barcodes from the :ref:`default GS1 list
+<barcode/operations/default-gs1-nomenclature-list>` auto-fills corresponding data in the Odoo
+database.
+
+Adding GS1 barcode rules in Odoo ensures accurate interpretation of unique, non-standard GS1
+formats.
+
+To do so, begin by turning on :ref:`developer mode <developer-mode>` and navigating to the
+:guilabel:`Barcode Nomenclatures` list in :menuselection:`Inventory app --> Configuration -->
+Barcode Nomenclatures`. Then, select the :guilabel:`Default GS1 Nomenclature` list item.
+
+On the :guilabel:`Default GS1 Nomenclature` page, select :guilabel:`Add a line` at the bottom of the
+table, which opens a window to create a new rule. The :guilabel:`Rule Name` field is used internally
+to identify what the barcode represents. The barcode :guilabel:`Types` are different classifications
+of information that can be understood by the system (e.g. product, quantity, best before date,
+package, coupon). The :guilabel:`Sequence` represents the priority of the rule; this means the
+smaller the value, the higher the rule appears on the table. Odoo follows the sequential order of
+this table and will use the first rule it matches based on the sequence. The :guilabel:`Barcode
+Pattern` is how the sequence of letters or numbers is recognized by the system to contain
+information about the product.
+
+After filling in the information, click the :guilabel:`Save & New` button to make another rule or
+click :guilabel:`Save & Close` to save and return to the table of rules.
+
+.. _barcode/operations/troubleshooting:
+
+Barcode troubleshooting
+=======================
+
+Since GS1 barcodes are challenging to work with, here are some checks to try when the barcodes are
+not working as expected:
+
+#. Ensure that the :guilabel:`Barcode Nomenclature` setting is set as :menuselection:`Default GS1
+   Nomenclature`. Jump to the :ref:`nomenclature setup section
+   <barcode/operations/set-up-barcode-nomenclature>` for more details.
+#. Ensure that the fields scanned in the barcode are enabled in Odoo. For example, to scan a barcode
+   containing lots and serial numbers, make sure the :guilabel:`Lots & Serial Numbers` feature is
+   enabled in :ref:`Odoo's settings <barcode/operations/lot-setup>` and :ref:`on the product
+   <barcode/operations/lot-setup-on-product>`.
+#. Omit punctuation such as parentheses `()` or brackets `[]` between the :abbr:`A.I. (Application
+   Identifier)` and the barcode sequence. These are typically used in examples for ease of reading
+   and should **not** be included in the final barcode. For more details on building GS1 barcodes,
+   go to :ref:`this section <barcode/operations/create-GS1-barcode>`.
+#. When a single barcode contains multiple encoded fields, Odoo requires all rules to be listed in
+   the barcode nomenclature for Odoo to read the barcode. :ref:`This section
+   <barcode/operations/create-new-rules>` details how to add new rules in the barcode nomenclature.
+
+#. Test barcodes containing multiple encoded fields, piece by piece, to figure out which field is
+   causing the issue.
+
+   .. example::
+      When testing a barcode containing the |GTIN|, lot number, and quantity, start by scanning the
+      |GTIN| alone. Then, test the |GTIN| with the lot number, and finally, try scanning the whole
+      barcode.
+
+#. After diagnosing the encoded field is unknown, :ref:`add new rules
+   <barcode/operations/create-new-rules>` to Odoo's default list to recognize GS1 barcodes with
+   unique specifications.
+
+   .. important::
+      While the new field will be read, the information won't link to an existing field in Odoo
+      without developer customizations. However, adding new rules is necessary to ensure the rest of
+      the fields in the barcode are interpreted correctly.
+
+.. _barcode/operations/default-gs1-nomenclature-list:
+
+GS1 nomenclature list
+=====================
+
+The table below contains Odoo's default list of GS1 rules. Barcode patterns are written in regular
+expressions. Only the first three rules require a `check digit
+<https://www.gs1.org/services/check-digit-calculator>`_ as the final character.
+
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+|                Rule Name                |    Type     |       Barcode Pattern        |  GS1 Content Type  |      Odoo field       |
++=========================================+=============+==============================+====================+=======================+
+| Serial Shipping Container Code          | Package     | (00)(\\d{18})                | Numeric identifier | Package name          |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Global Trade Item Number (GTIN)         | Unit        | (01)(\\d{14})                | Numeric identifier | :guilabel:`Barcode`   |
+|                                         | Product     |                              |                    | field on product form |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| GTIN of contained trade items           | Unit        | (02)(\\d{14})                | Numeric identifier | Packaging             |
+|                                         | Product     |                              |                    |                       |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Ship to / Deliver to global             | Destination | (410)(\\d{13})               | Numeric identifier | Destination           |
+| location                                | location    |                              |                    | location              |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Ship / Deliver for forward              | Destination | (413)(\\d{13})               | Numeric identifier | Source location       |
+|                                         | location    |                              |                    |                       |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| I.D. of a physical location             | Location    | (414)(\\d{13})               | Numeric identifier | Location              |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Batch or lot number                     | Lot         | (10)                         | Alpha-numeric name | Lot                   |
+|                                         |             | ([!"%-/0-9:-?A-Z_a-z]{0,20}) |                    |                       |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Serial number                           | Lot         | (21)                         | Alpha-numeric name | Serial number         |
+|                                         |             | ([!"%-/0-9:-?A-Z_a-z]{0,20}) |                    |                       |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Packaging date (YYMMDD)                 | Packaging   | (13)(\\d{6})                 | Date               | Pack date             |
+|                                         | Date        |                              |                    |                       |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Best before date (YYMMDD)               | Best before | (15)(\\d{6})                 | Date               | Best before date      |
+|                                         | Date        |                              |                    |                       |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Expiration date (YYMMDD)                | Expiration  | (17)(\\d{6})                 | Date               | Expiry date           |
+|                                         | Date        |                              |                    |                       |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Variable count of items                 | Quantity    | (30)(\\d{0,8})               | Measure            | UoM: Units            |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Count of trade items                    | Quantity    | (37)(\\d{0,8})               | Measure            | Qty in units for      |
+|                                         |             |                              |                    | containers (AI 02)    |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Net weight: kilograms (kg)              | Quantity    | (310[0-5])(\\d{6})           | Measure            | Qty in kg             |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Length in meters (m)                    | Quantity    | (311[0-5])(\\d{6})           | Measure            | Qty in m              |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Net volume: liters (L)                  | Quantity    | (315[0-5])(\\d{6})           | Measure            | Qty in L              |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Net volume: cubic meters (m\ :sup:`3`)  | Quantity    | (316[0-5])(\\d{6})           | Measure            | Qty in m\ :sup:`3`    |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Length in inches (in)                   | Quantity    | (321[0-5])(\\d{6})           | Measure            | Qty in inches         |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Net weight/volume: ounces (oz)          | Quantity    | (357[0-5])(\\d{6})           | Measure            | Qty in oz             |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Net volume: cubic feet (ft\ :sup:`3`)   | Quantity    | (365[0-5])(\\d{6})           | Measure            | Qty in ft\ :sup:`3`   |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+| Packaging type                          | Packaging   | (91)                         | Alpha-numeric name | Package type          |
+|                                         | Type        | ([!"%-/0-9:-?A-Z_a-z]{0,90}) |                    |                       |
++-----------------------------------------+-------------+------------------------------+--------------------+-----------------------+
+
+
+==================================================
+SECTION: gs1_usage.rst
+PATH: applications/inventory_and_mrp/barcode/operations/gs1_usage.rst
+==================================================
+
+=================
+GS1 barcode usage
+=================
+
+.. _barcode/operations/gs1_usage:
+
+.. |AI| replace:: :abbr:`A.I. (Application Identifier)`
+.. |GTIN| replace:: :abbr:`GTIN (Global Trade Item Number)`
+
+GS1 barcodes provide a standardized format that barcode scanners can interpret. They encode
+information in a :ref:`specific structure recognized globally <barcode/operations/gs1>`, allowing
+scanners to understand and process supply chain data consistently.
+
+Odoo *Barcode* interprets and prints GS1 barcodes, automating product identification and tracking
+in warehouse operations such as receiving, picking, and shipping.
+
+The following sections contain examples of how Odoo uses GS1 barcodes provided by the business to
+identify common warehouse items and automate certain warehouse workflows.
+
+.. important::
+   Odoo **does not** create GS1 barcodes. Businesses must purchase a unique Global Trade Item Number
+   (GTIN) from GS1. Then, they can combine their existing GS1 barcodes with product and supply chain
+   information (also provided by GS1) to create barcodes in Odoo.
+
+.. seealso::
+   - `Purchase GTINs <https://www.gs1.org/standards/get-barcodes>`_
+   - :ref:`GS1 nomenclature <barcode/operations/gs1>`
+
+.. _barcode/operations/gs1-lots:
+
+Configure barcodes for product, quantity, and lots
+==================================================
+
+To build a GS1 barcode that contains information about a product, its quantities, and the lot
+number, the following barcode patterns and Application Identifiers (A.I.) are used:
+
++------------+--------------------------+------+----------------------------------+------------------------------------------+
+|    Name    |        Rule Name         | A.I. |       Barcode Pattern            |              Field in Odoo               |
++============+==========================+======+==================================+==========================================+
+| Product    | Global Trade Item Number | 01   | (01)(\\d{14})                    | :guilabel:`Barcode` field on product form|
+|            | (GTIN)                   |      |                                  |                                          |
++------------+--------------------------+------+----------------------------------+------------------------------------------+
+| Quantity   | Variable count of items  | 30   | (30)(\\d{0,8})                   | :guilabel:`Units` field on transfer form |
++------------+--------------------------+------+----------------------------------+------------------------------------------+
+| Lot Number | Batch or lot number      | 10   | (10)([!"%-/0-9:-?A-Z_a-z]{0,20}) | :guilabel:`Lot` on Detailed Operations   |
+|            |                          |      |                                  | pop-up                                   |
++------------+--------------------------+------+----------------------------------+------------------------------------------+
+
+.. _barcode/operations/lot-setup:
+
+Configuration
+-------------
+
+First, :ref:`enable product tracking using lots <inventory/management/track_products_by_lots>` by
+navigating to :menuselection:`Inventory app --> Configuration --> Settings`, and checking the box
+for :guilabel:`Lots & Serial Numbers` under the :guilabel:`Traceability` heading.
+
+Then, set up the product barcode by navigating to the intended product form in
+:menuselection:`Inventory app --> Products --> Products` and selecting the product. On the product
+form, click :guilabel:`Edit`. Then, in the :guilabel:`General Information` tab, fill in the
+:guilabel:`Barcode` field with the unique 14-digit `Global Trade Item Number (GTIN)
+<https://www.gs1.org/standards/get-barcodes>`_, which is a universally recognized identifying number
+that is provided by GS1.
+
+.. important::
+   On the product form, omit the |AI| `01` for |GTIN| product barcode pattern, as it is only used to
+   encode multiple barcodes into a single barcode that contains detailed information about the
+   package contents.
+
+.. example::
+
+   To record the GS1 barcode for the product, `Fuji Apple`, enter the 14-digit |GTIN|
+   `20611628936004` in the :guilabel:`Barcode` field on the product form.
+
+   .. image:: gs1_usage/barcode-field.png
+      :align: center
+      :alt: Enter 14-digit GTIN into the Barcode field on product form.
+
+.. tip::
+   To view a list of *all* products and their corresponding barcodes in the Odoo database, navigate
+   to :menuselection:`Inventory app --> Configuration --> Settings`. Under the :guilabel:`Barcode`
+   heading, click on the :guilabel:`Configure Product Barcodes` button under the :guilabel:`Barcode
+   Scanner` section. Enter the 14-digit |GTIN| into the :guilabel:`Barcode` column, then click
+   :guilabel:`Save`.
+
+   .. image:: gs1_usage/product-barcodes-page.png
+      :align: center
+      :alt: View the Product Barcodes page from inventory settings.
+
+.. _barcode/operations/lot-setup-on-product:
+
+After activating tracking by lots and serial numbers from the settings page, specify that this
+feature is to be applied on each product by navigating to the :guilabel:`Inventory` tab on the
+product form. Under :guilabel:`Tracking`, choose the :guilabel:`By Lots` radio button.
+
+.. image:: gs1_usage/track-by-lots.png
+   :align: center
+   :alt: Enable product tracking by lots in the "Inventory" tab of the product form.
+
+Scan barcode on receipt
+-----------------------
+
+To ensure accurate lot interpretation in Odoo on product barcodes scanned during a receipt
+operation, navigate to the :menuselection:`Barcode` app to manage the :ref:`receipt picking process
+<barcode/operations/scan-received-products>`.
+
+From the :guilabel:`Barcode Scanning` dashboard, click the :guilabel:`Operations` button, then the
+:guilabel:`Receipts` button to view the list of vendor receipts to process. Receipts generated from
+:abbr:`POs (Purchase Orders)` are listed, but new receipt operations can also be created directly
+through the :menuselection:`Barcode` app using the :guilabel:`Create` button.
+
+On the list of receipts, click on the warehouse operation (`WH/IN`) and scan product barcodes and
+lot numbers with a barcode scanner. The scanned product then appears on the list. Use the
+:guilabel:`✏️ (pencil)` button to open a window and manually enter quantities for specific lot
+numbers.
+
+.. example::
+   After placing a :abbr:`PO (Purchase Order)` for fifty apples, navigate to the associated receipt
+   in the *Barcode* app.
+
+   Scan the barcode containing the |GTIN|, quantity, and lot number. For testing with a barcode
+   scanner, below is an example barcode for the fifty Fuji apples in Lot 2.
+
+   .. list-table::
+      :widths: 50 50
+      :header-rows: 1
+      :stub-columns: 1
+
+      * - 50 Fuji apples in Lot0002
+        -
+      * - 2D Matrix
+        - .. image:: gs1_usage/fuji-apples-barcode.png
+             :alt: 2D matrix of GS1 barcode of 50 fuji apples with an assigned lot number.
+      * - |AI| (product)
+        - 01
+      * - GS1 Barcode (product)
+        - 20611628936004
+      * - |AI| (quantity)
+        - 30
+      * - GS1 Barcode (quantity)
+        - 00000050
+      * - |AI| (lot)
+        - 10
+      * - GS1 Barcode (lot #)
+        - LOT0002
+      * - Full GS1 barcode
+        - 0120611628936004 3000000050 10LOT0002
+
+   :ref:`If the configuration is correct <barcode/operations/troubleshooting>`, `50/50`
+   :guilabel:`Units` processed will be displayed and the :guilabel:`Validate` button turns green.
+   Click the :guilabel:`Validate` button to complete the reception.
+
+   .. image:: gs1_usage/receive-50-apples.png
+      :align: center
+      :alt: Scan the barcode for a product on the reception picking page in the *Barcode* app.
+
+.. _barcode/operations/quantity-ex:
+
+Configure barcode for product and non-unit quantity
+===================================================
+
+To build a GS1 barcode that contains products measured in a non-unit quantity, like kilograms, for
+example, the following barcode patterns are used:
+
++-------------+--------------------------+----------+--------------------+----------------------------+
+|    Name     |        Rule Name         |   A.I.   |  Barcode Pattern   |       Field in Odoo        |
++=============+==========================+==========+====================+============================+
+| Product     | Global Trade Item Number | 01       | (01)(\\d{14})      | :guilabel:`Barcode` field  |
+|             | (GTIN)                   |          |                    | on product form            |
++-------------+--------------------------+----------+--------------------+----------------------------+
+| Quantity in | Variable count of items  | 310[0-5] | (310[0-5])(\\d{6}) | :guilabel:`Units` field on |
+| kilograms   |                          |          |                    | transfer form              |
++-------------+--------------------------+----------+--------------------+----------------------------+
+
+Scan barcode on receipt
+-----------------------
+
+To confirm that quantities are correctly interpreted in Odoo, place an order in the *Purchase* app
+using the appropriate unit of measure (:guilabel:`UoM`) for the quantity of products to be
+purchased.
+
+.. seealso::
+   :ref:`Simplify vendor unit conversions with UoMs
+   <inventory/product_replenishment/unit-conversion>`
+
+After the order is placed, navigate to the :menuselection:`Barcode` app to :ref:`receive the vendor
+shipment <barcode/operations/scan-received-products>`.
+
+.. example::
+   On the receipt in the *Barcode* app, receive an order for `52.1 kg` of peaches by scanning the
+   barcode containing the |GTIN| and quantity of peaches in kilograms.
+
+   .. list-table::
+      :widths: 50 50
+      :header-rows: 1
+      :stub-columns: 1
+
+      * - 52.1 kg of Peaches
+        -
+      * - 2D Matrix
+        - .. image:: gs1_usage/peaches-barcode.png
+             :alt: 2D matrix of GS1 barcode of 52.1 kg of peaches.
+      * - |AI| (product)
+        - 01
+      * - GS1 Barcode (product)
+        - 00614141000012
+      * - |AI| (kg, 1 decimal point)
+        - 3101
+      * - GS1 Barcode (quantity)
+        - 000521
+      * - Full GS1 barcode
+        - 0100614141000012 3101000521
+
+   :ref:`If the configuration is correct <barcode/operations/troubleshooting>`, `52.1 / 52.1`
+   :guilabel:`kg` will be displayed and the :guilabel:`Validate` button turns green. Finally, press
+   :guilabel:`Validate` to complete the validation.
+
+   .. image:: gs1_usage/scan-barcode-peaches.png
+      :align: center
+      :alt: Scan barcode screen for a reception operation in the Barcode app.
+
+Verify product moves
+====================
+
+For additional verification, the quantities of received products are also recorded on the
+:guilabel:`Product Moves` report, accessible by navigating to :menuselection:`Inventory app -->
+Reporting --> Product Moves`.
+
+The items on the :guilabel:`Product Moves` report are grouped by product by default. To confirm the
+received quantities, click on a product line to open its collapsible drop-down menu, which displays
+a list of *stock move lines* for the product. The latest stock move matches the warehouse reception
+reference number (e.g. `WH/IN/00013`) and quantity processed in the barcode scan, demonstrating that
+the records processed in the *Barcode* app were properly stored in *Inventory*.
+
+.. image:: gs1_usage/stock-moves-peach.png
+   :align: center
+   :alt: Reception stock move record for 52.1 kg of peaches.
+
+
+==================================================
+SECTION: hardware.rst
+PATH: applications/inventory_and_mrp/barcode/setup/hardware.rst
+==================================================
+
+=====================
+Barcode scanner setup
+=====================
+
+.. _barcode/setup/hardware:
+
+Follow this guide to choose and set up a barcode scanner compatible with Odoo's *Inventory* and
+*Barcode* apps.
+
+.. figure:: hardware/barcode-scanner.png
+   :align: center
+   :alt: An image of an example barcode scanner.
+
+Scanner types
+=============
+
+Before setting up a barcode scanner, it is important to determine which type of scanner best meets
+the needs of the business. There are three main types of scanners that can be used with Odoo, each
+with their own benefits and use cases:
+
+- **USB scanners** are connected to a computer, and are suitable for businesses that scan products
+  at a fixed location, like at the checkout line in a grocery store.
+- **Bluetooth scanners** pair with a smartphone or tablet, making them both a cost-effective and
+  portable barcode scanner option. In this scenario, Odoo is installed on the smartphone, allowing
+  warehouse operators to handle operations, and check stock, directly through their mobile devices.
+- **Mobile computer scanners** are mobile devices with a built-in barcode scanner.
+
+  .. important::
+     If using a USB scanner, ensure the scanner is compatible with the keyboard layout of the
+     computer.
+
+     If using a mobile computer scanner, ensure the device can run the Odoo mobile app properly.
+     Recent models that use Android OS with the Google Chrome browser, or Windows OS with Microsoft
+     Edge, should work. However, testing is crucial due to the variety of available models and
+     configurations.
+
+.. seealso::
+   `Odoo Inventory & Barcode • Compatible Hardware <https://www.odoo.com/app/inventory-hardware>`_
+
+Configuration
+=============
+
+When setting up the barcode scanner, make sure the following configurations are correct so the
+scanner can properly interpret barcodes with Odoo.
+
+Keyboard layout
+---------------
+
+When using a USB barcode scanner, match its keyboard layout with the operating system's layout for
+proper interpretation of characters. Generally, the scanning mode should be set to accept a USB
+keyboard (HID), with the language set based on the keyboard that is in use.
+
+To configure the keyboard layout for a **Zebra** scanner, scan the keyboard wedge barcode for the
+desired language in the scanner's user manual.
+
+.. figure:: hardware/keyboard-barcode.png
+   :align: center
+   :alt: Example of a user manual for keyboard layout.
+
+   Examples of keyboard language settings in the Zebra scanner user manual.
+
+Automatic carriage return
+-------------------------
+
+Odoo has a default 100-millisecond delay between scans to prevent accidental double scanning. To
+synchronize with the barcode scanner, set it to include a *carriage return* (:dfn:`character like
+the "Enter" key on a keyboard`) after each scan. Odoo interprets the carriage return as the end of
+the barcode input; so Odoo accepts the scan, and waits for the next one.
+
+Typically, on the scanner, a carriage return is included by default. Ensure it is set by scanning a
+specific barcode in the user manual, like `CR suffix ON` or `Apply Enter for suffix`.
+
+Zebra scanner
+=============
+
+When using Zebra scanners, ensure the following keystroke configurations are set to prevent errors.
+
+Begin on the Zebra scanner's home screen, and select the :guilabel:`DataWedge` app (the app is
+represented by a :guilabel:`(light blue barcode)` icon).
+
+On the :guilabel:`DataWedge Profiles` page, select the profile option to access the Zebra scanner's
+settings.
+
+.. warning::
+   It is **not** suggested to use the "DWDemo" profile, as it does not work properly in every
+   circumstance.
+
+   Instead, it is recommended to create a new, personal profile. Once a new profile is created, add
+   the *Odoo Mobile* app and *Google Chrome* app in the :guilabel:`Associated Apps` on the scanner's
+   home screen.
+
+Once the profile is selected, scroll down to the :guilabel:`Keyboard Output` option, and ensure the
+:guilabel:`Enable/disable keystroke output` option is :guilabel:`Enabled`.
+
+.. image:: hardware/enable-keystroke.png
+   :align: center
+   :alt: Show keystroke option in the Zebra scanner's DataWedge app.
+
+Once that option is enabled, go back to the :guilabel:`Profile` options page, and go to the
+:guilabel:`Keystroke output` section. Then, open the :guilabel:`Key event options` submenu. Under
+:guilabel:`Characters`, ensure the :guilabel:`Send Characters as Events` option is checked.
+
+.. important::
+   The :guilabel:`Send Characters as Events` option **must** be checked on the Zebra scanner, or
+   Odoo **cannot** recognize the barcodes that are scanned.
+
+Once all those steps have been taken, perform a test scan to ensure the Zebra scanner is working
+properly, as intended.
+
+Honeywell mobile computer scanner
+=================================
+
+When using Honeywell scanners, follow the instructions below to ensure barcodes can be scanned in
+Odoo.
+
+Begin on the Honeywell scanner's home screen, and select :guilabel:`Settings`, represented by a
+:guilabel:`⚙️ (gear)` icon. Then, click :guilabel:`Honeywell Settings`, followed by
+:guilabel:`Scanning`.
+
+From here, click :guilabel:`Internal Scanner`, followed by :guilabel:`Default Profile`. From the
+resulting list of options, select :guilabel:`Data Processing Settings`.
+
+The :guilabel:`Data Processing Settings` specify how barcode data is processed by the computer.
+Locate the :guilabel:`Wedge Method` setting. By default, this is set to :guilabel:`Standard`.
+
+.. image:: hardware/hardware-honeywell-settings.png
+   :align: center
+   :alt: Data processing settings options for Honeywell scanner.
+
+Change the :guilabel:`Wedge Method` setting to :guilabel:`Keyboard`.
+
+After completing the steps, conduct a test scan to verify the Honeywell scanner is working as
+intended.
+
+Cipherlab mobile computer scanner
+=================================
+
+When using Cipherlab scanners, follow the instructions below to ensure barcodes can be scanned in
+Odoo.
+
+Begin on the Cipherlab scanner's home screen, and navigate to the :menuselection:`App Drawer (All
+Applications)`. Then, click the :guilabel:`ReaderConfig` app, represented by an orange
+:guilabel:`⚙️ (gear)` icon over a blue :guilabel:`(barcode)` icon.
+
+Next, select the :guilabel:`Default Profile`, or create a new profile, if needed.
+
+Under the :guilabel:`General Settings`, click :guilabel:`Data Output`, followed by
+:guilabel:`Keyboard Emulation`.
+
+.. image:: hardware/hardware-cipherlab-settings.png
+   :align: center
+   :alt: Cipherlab scanner data output setting page.
+
+By default, the :guilabel:`Input Method`, under :guilabel:`Keyboard Emulation`, is set to
+:guilabel:`Default Mode`. Change this setting to :guilabel:`KeyEvent`.
+
+.. image:: hardware/hardware-cipherlab-emulation.png
+   :align: center
+   :alt: Cipherlab scanner keyboard emulation settings.
+
+After completing the steps, conduct a test scan to verify the Cipherlab scanner is working as
+intended.
+
+.. seealso::
+   :doc:`../setup/software`
+
+
+==================================================
+SECTION: operation_types.rst
+PATH: applications/inventory_and_mrp/barcode/setup/operation_types.rst
+==================================================
+
+============================
+Operation types and commands
+============================
+
+Inventory operations, like :doc:`receipts and delivery orders
+<../../inventory/shipping_receiving/daily_operations/receipts_delivery_one_step>`, as well as
+commands, like validating a transfer or putting products in packages, can be performed by scanning
+barcodes through the **Barcode** app. This allows employees to handle tasks and access menus without
+the need to touch a screen or use the **Inventory** app on a computer, and allows workflow
+streamlining by putting operation barcodes in the appropriate physical location.
+
+.. image:: operation_types/barcode-default-operations.png
+   :alt: Printable barcodes for Receipts, Delivery Orders, and Manufacturing.
+
+.. _inventory/barcode/configure_operations:
+
+Configuring operations
+======================
+
+*Operation types* in the **Inventory** and **Barcode** apps define actions that will change the
+state of products in inventory. Which operation types are available to print will depend on the
+settings of the database. By default, barcodes can be printed for *Receipts (WHIN)*, *Delivery
+Orders (WHOUT)*, and *Manufacturing (WHMANUF)*. The *Internal Transfers (WHINT)* and *Pick (WHPICK)*
+operations can also be enabled.
+
+.. note::
+   Both *Internal Transfers (WHINT)* and *Pick (WHPICK)* operations require :doc:`location barcodes
+   <software>` to scan.
+
+Internal transfers
+------------------
+
+The *Internal Transfers (WHINT)* operation barcode is available if the database is using the
+*Storage Locations* feature to designate where products are located in the inventory. To enable this
+setting, go to :menuselection:`Inventory app --> Configuration --> Settings`, then, in the
+:guilabel:`Warehouse` section, tick the :guilabel:`Storage Locations` option.
+
+Picking
+-------
+
+The *Pick (WHPICK)* operation barcode is available if the database is using the *Multi-Step Routes*
+feature configured with a picking step. To enable this setting, go to :menuselection:`Inventory app
+--> Configuration --> Settings`, then, in the :guilabel:`Warehouse` section, tick the
+:guilabel:`Multi-Step Routes` option and save. From there, click :icon:`fa-arrow-right`
+:guilabel:`Set Warehouse Routes` to open warehouse settings and select the warehouse. In the
+:guilabel:`Outgoing Shipments` section, select either :guilabel:`Pick then Deliver (2 steps)` or
+:guilabel:`Pick, Pack, then Deliver (3 steps)`.
+
+.. seealso::
+   - :doc:`Two-step receipt and delivery
+     <../../inventory/shipping_receiving/daily_operations/receipts_delivery_two_steps>`
+   - :doc:`Three-step delivery
+     <../../inventory/shipping_receiving/daily_operations/delivery_three_steps>`
+
+Print barcodes for inventory commands and operations
+====================================================
+
+Barcodes for operations and commands can be printed at any time. These documents will include all
+the available inventory commands, regardless of whether they are enabled, but only the operations
+that are currently enabled in the database. See :ref:`configuring operations
+<inventory/barcode/configure_operations>` to enable any missing operations.
+
+.. example::
+   The `print_inventory_commands_and_operation_types` document will always show the
+   :guilabel:`PUT IN PACK` command, regardless of whether the *Packages* feature is enabled, but the
+   *Pick (WHPICK)* operation will only be added if *Multi-Step Routes* are configured to have a
+   picking step.
+
+.. important::
+   Printing barcodes, by default, will either directly download a PDF file of the selected barcodes
+   or open a new tab with a downloadable or printable PDF. To turn this into a direct printing
+   operation, :doc:`connect a printer <../../../general/iot/devices/printer>`.
+
+When first opening Barcode
+--------------------------
+
+When first opening the **Barcode** app, there is a prompt with options to print barcodes for
+commands and operations, as well as some sample barcodes to print and use for testing. Clicking
+these links is the easiest way to print command and operation barcodes, but will no longer be
+displayed after the first time it is clicked.
+
+.. image:: operation_types/barcode-initial-print-prompt.png
+   :alt: A prompt to print demo data or barcodes for operations.
+
+From Inventory settings
+-----------------------
+
+If the barcode print prompt is not available, inventory commands and operation types barcodes can
+always be printed from the *Settings* page. Go to :menuselection:`Inventory app --> Configuration
+--> Settings` and in the :guilabel:`Barcode` section under the :guilabel:`Barcode Scanner` setting,
+click :icon:`fa-print` :guilabel:`Print barcode commands and operation types`.
+
+.. image:: operation_types/print-operations-and-commands.png
+   :alt: Link to print inventory operations and commands.
+
+Individual operations
+---------------------
+
+Barcodes for individual operations, like receipts and manufacturing orders, can also be printed from
+the *Operations Types* configuration menu. To select operations to print, go to
+:menuselection:`Inventory app --> Configuration --> Operations Types` and tick the box by each
+operation type required.
+
+.. image:: operation_types/barcode-print-operations.png
+   :alt: Available operations selected making a 'Print' button appear.
+
+Next, click the :icon:`fa-print` :guilabel:`Print` button and select either :guilabel:`Operation
+type (PDF)` to download a PDF with the operation barcodes, or :guilabel:`Operation type (ZPL)` to
+send the print job to a :ref:`ZPL-enabled printer <iot/link-printer>`.
+
+.. note::
+   The :icon:`fa-print` :guilabel:`Print` button does not appear until at least one operation type
+   is selected.
+
+.. _inventory/barcode/print_order:
+
+Print picking operations for specific orders
+============================================
+
+Receipts, manufacturing orders, transfers, and delivery orders can all be printed in advance and are
+referred to in the print options menu as *picking operations* or *picking*.
+
+In Barcode
+----------
+
+From the **Barcode** app, tap the :guilabel:`Operations` button, select the operation type, and then
+the specific order to print. From there, either scan the `PRINT PICKING OPERATION` barcode if there
+is one available, or tap the :icon:`fa-cog` :guilabel:`(gear)` icon to open the **Barcode** actions
+menu and tap the :guilabel:`Print Picking Operation` button.
+
+.. image:: operation_types/print-picking-barcode-cog.png
+   :alt: Menu from a receipt with the 'Print Picking Operation' button.
+
+In Inventory
+------------
+
+To print a picking from the **Inventory** app, click the appropriate operation type (*Receipt*,
+*Delivery Order*, etc.) and select the individual order or the operation.
+
+From the order, click the :icon:`fa-cog` :guilabel:`(Actions)` icon, hover over :icon:`fa-print`
+:guilabel:`Print`, and click :guilabel:`Picking Operations`.
+
+.. note::
+   The type of operation can be inferred from the operation reference to help distinguish picking
+   operations. For example, the "IN" in `WH/IN/00012` indicates that it is a receipt operation.
+   These references are similar to, but do not exactly match the operation type barcodes.
+
+Use barcodes for inventory operations and commands
+==================================================
+
+Operations
+----------
+
+- **Receipts** `WHIN` creates a new order to receive products into inventory.
+
+   .. warning::
+      Scanning a barcode for a receipt will always create a *new* instance of that operation, and
+      will not match an already scheduled order. To scan or a specific scheduled receipt, first
+      :ref:`print a picking for the individual receipt <inventory/barcode/print_order>`.
+
+      For example, scanning **Receipts** `WHIN` will create a brand new receipt, even if the
+      contents match an existing receipt exactly.
+
+- **Delivery Orders** `WHOUT` opens the currently scheduled delivery orders.
+- **Manufacturing** `WHMANUF` creates a new manufacturing order. Scanning a product barcode from
+  here will add it to the *Producing* list.
+- **Internal Transfers** `WHINT` creates a new transfer order. :doc:`Location barcodes <software>`
+  can be scanned to designate the source and destination, or scanned direction to initiate a
+  transfer in **Barcode**.
+- **Pick** `WHPICK` creates a new picking operation. This will *require* a :doc:`location barcode
+  <software>` for the source location.
+
+Commands
+--------
+
+- `MAIN MENU`: Scan to return to the main menu from an inventory adjustment.
+- `VALIDATE`: Scan to confirm that an operation is correct and ready to be completed.
+- `CANCEL`: Scan from an operation to prevent that operation from being validated and set its status
+  to *Cancelled*.
+- `PRINT PICKING OPERATION`: Scan from an existing delivery order, transfer, or receipt to generate
+  a PDF with the name and barcode for that operation's reference number. This can be scanned later
+  to go directly to the operation.
+- `PRINT DELIVERY SLIP`: Scan from an existing receipt or delivery order to generate a PDF of the
+  purchase order or delivery order. This will not include a barcode.
+- `PUT IN PACK`: After scanning products, this command will designate them as all being in one
+  :doc:`package <../../inventory/product_management/configure/package>`. Products scanned *after*
+  this command are placed in a new package if the `PUT IN PACK` command is scanned again.
+- `SCRAP`: Scan this to mark a scanned product as defective, and move it to a virtual location for
+  :doc:`scrap inventory <../../inventory/warehouses_storage/inventory_management/scrap_inventory>`
+
+Print barcodes for manufacturing commands
+=========================================
+
+By default, the :guilabel:`Manufacturing` operation type can scan products and components and tap a
+*Produce* button to produce them. To print barcodes for basic manufacturing operations, go to
+:menuselection:`Manufacturing app --> Configuration --> Settings`, then, in the
+:guilabel:`Operations` section, make sure the :guilabel:`Barcode Scanner` box is ticked and click
+:icon:`fa-print` :guilabel:`Print barcode commands and operation types`.
+
+Work order commands
+-------------------
+
+To enable more granular control of the manufacturing process through **Barcode**, enable the
+:doc:`Work Orders <../../manufacturing/basic_setup/bill_configuration>` feature. To print barcodes
+for work orders, go to :menuselection:`Manufacturing app --> Configuration --> Settings`, then, in
+the :guilabel:`Operations` section, make sure the  :guilabel:`Work Orders` box is ticked and click
+:icon:`fa-print` :guilabel:`Print barcode commands`.
+
+.. image:: operation_types/print-work-order-commands.png
+   :alt: 'Print barcode commands' like in the Work Orders section of Manufacturing settings.
+
+.. seealso::
+   - `Odoo Tutorials: Process and Cancel MOs Using Barcodes
+     <https://www.youtube.com/watch?v=6zBz93AIXBo>`_
+   - `Odoo Tutorials: Consuming Components Using Barcodes
+     <https://www.youtube.com/watch?v=2ojxIbTq41Q>`_
+
+
+==================================================
+SECTION: operations.rst
+PATH: applications/inventory_and_mrp/barcode/operations.rst
+==================================================
+
+:nosearch:
+
+================
+Daily operations
+================
+
+.. toctree::
+   :titlesonly:
+   :glob:
+
+   operations/adjustments
+   operations/receipts_deliveries
+   operations/process_transfers
+   operations/transfers_scratch
+   operations/barcode_nomenclature
+   operations/gs1_nomenclature
+   operations/gs1_usage
+   operations/scan_rfid
+   operations/retrieve_epcs
+
+
+==================================================
+SECTION: process_transfers.rst
+PATH: applications/inventory_and_mrp/barcode/operations/process_transfers.rst
+==================================================
+
+=======================
+Process batch transfers
+=======================
+
+The Odoo **Barcode** app can be used to process *Batch*, *Wave*, and *Cluster* transfers that are
+created in the **Inventory** app.
+
+.. seealso::
+   This document covers the steps to process transfers in the **Barcode** app. Instructions on
+   creating transfers can be found below:
+
+   - :doc:`../../inventory/shipping_receiving/picking_methods/batch`
+   - :doc:`../../inventory/shipping_receiving/picking_methods/wave`
+   - :doc:`../../inventory/shipping_receiving/picking_methods/cluster`
+
+Process the batch
+-----------------
+
+First, navigate to :menuselection:`Barcode app --> Operations` and select an operation type (like
+delivery orders) grouped into batches. From here, select the card for the appropriate batch
+transfer, and click the :guilabel:`BATCH` smart button.
+
+.. image:: process_transfers/batch-transfer.png
+   :alt: The Delivery Orders page.
+
+On the batch transfer screen, the products in the picking are grouped by location, and each line is
+color-coded to associate products in the same picking together.
+
+Then, follow the prompt to :guilabel:`Scan the source location` barcode for the storage location of
+the first product. Scan the barcode for the product and package to process the transfer. To record
+multiple quantities, click the :icon:`fa-pencil` :guilabel:`(edit)` icon, and enter the required
+quantities for the picking.
+
+Repeat this for all products, and click the :guilabel:`Validate` button to mark the transfer as
+:guilabel:`Done`.
+
+.. note::
+   After creating a batch transfer and assigning a package to a picking, Odoo suggests the specified
+   package by displaying the name *in italics* under the product name, ensuring pickers place
+   products into the correct boxes.
+
+   Products from the same order are labeled with the same color on the left. Completed pickings are
+   highlighted in green.
+
+.. example::
+   In a batch transfer for 2 `Cabinet with Doors`, 3 `Acoustic Bloc Screens`, and 4 `Four Person
+   Desks`, the `3/3` and `4/4` :guilabel:`Units` indicate that the last two product pickings are
+   complete.
+
+   `1/2` units of the `Cabinet with Doors` has already been picked, and after scanning the product
+   barcode for the second cabinet, Odoo prompts the user to `Scan a serial number` to record the
+   unique serial number for :ref:`product tracking <inventory/product_management/enable-lots>`.
+
+   .. image:: process_transfers/batch-products.png
+      :alt: Products to be picked in barcode view.
+
+
+==================================================
+SECTION: receipts_deliveries.rst
+PATH: applications/inventory_and_mrp/barcode/operations/receipts_deliveries.rst
+==================================================
+
+=============================================
+Process receipts and deliveries with barcodes
+=============================================
+
+.. _barcode/operations/intro:
+
+The *Barcode* app can be used to process receipts, deliveries, and other types of operations in real
+time using a barcode scanner or the Odoo mobile app.
+
+This makes it possible to process operations on the warehouse floor when they happen, instead of
+having to wait to validate transfers from a computer. Processing operations this way can help to
+properly attribute barcodes to the appropriate products, pickings, locations, and more.
+
+Enable Barcode app
+==================
+
+To use the *Barcode* app to process transfers, it must be installed by enabling the feature from the
+settings of the *Inventory* app.
+
+To do so, go to the :menuselection:`Inventory app --> Configuration --> Settings`. Then, scroll down
+to the :guilabel:`Barcode` section, and click the checkbox next to the :guilabel:`Barcode Scanner`
+feature.
+
+Once the checkbox is ticked, click :guilabel:`Save` at the top of the page to save changes.
+
+Once the page has refreshed, new options will be displayed under the :guilabel:`Barcode Scanner`
+feature: :guilabel:`Barcode Nomenclature` (with a corresponding drop-down menu), where either
+:guilabel:`Default Nomenclature` or :guilabel:`Default GS1 Nomenclature` can be selected.
+
+There is also a :guilabel:`Configure Product Barcodes` internal link arrow, and a set of
+:guilabel:`Print` buttons for printing barcode commands and a barcode demo sheet.
+
+.. image:: receipts_deliveries/receipts-deliveries-barcode-setting.png
+   :align: center
+   :alt: Enabled Barcode feature in Inventory app settings.
+
+For more on setting up and configuring the :guilabel:`Barcode` app, refer to the :doc:`Set up your
+barcode scanner <../setup/hardware>` and :doc:`Activate the Barcodes in Odoo <../setup/software>`
+documentation pages.
+
+.. _barcode/operations/scan-received-products:
+
+Scan barcodes for receipts
+==========================
+
+To process warehouse receipts for incoming products, there first needs to be a purchase order (PO)
+created, and a receipt operation to process.
+
+To create a :abbr:`PO (purchase order)`, navigate to the :menuselection:`Purchase app --> Create` to
+create a new request for quotation (RFQ).
+
+From the blank :abbr:`RFQ (request for quotation)` form, click the drop-down menu next to the
+:guilabel:`Vendor` field to add a vendor. Then, on the :guilabel:`Product` line under the
+:guilabel:`Products` tab, click :guilabel:`Add a product`, and select the desired product(s) to add
+to the quotation.
+
+Once ready, click :guilabel:`Save` at the top of the form, then click :guilabel:`Confirm Order` to
+confirm the :abbr:`RFQ (request for quotation)` to a :abbr:`PO (purchase order)`.
+
+.. image:: receipts_deliveries/receipts-deliveries-purchase-order.png
+   :align: center
+   :alt: Completed purchase order for barcode product.
+
+To process and scan barcodes for warehouse receipts, navigate to the :menuselection:`Barcode app`.
+
+Once inside the :guilabel:`Barcode app`, a :guilabel:`Barcode Scanning` screen displaying different
+options is presented. To process receipts, click on the :guilabel:`Operations` button at the bottom
+of the screen. This navigates to an :menuselection:`Operations` overview page.
+
+.. image:: receipts_deliveries/receipts-deliveries-barcode-scanner.png
+   :align: center
+   :alt: Barcode app start screen with scanner.
+
+From this page, locate the :guilabel:`Receipts` card, and click the :guilabel:`# To Process` button
+to view all outstanding receipts. Then, select the desired receipt operation to process. This
+navigates to the barcode transfer screen.
+
+.. note::
+   If *only* using a barcode scanner or the Odoo mobile app, the barcodes for each transfer of a
+   corresponding operation type can be scanned to be processed easily. Once scanned, the products
+   that are part of an existing transfer can be scanned, and new products can be added to the
+   transfer, as well. Once all products have been scanned, validate the transfer to proceed with the
+   stock moves.
+
+From this screen, an overview of all receipts to process within that transfer (**WH/IN/000XX**) is
+shown. At the bottom of the screen, there are options to :guilabel:`Add Product` or
+:guilabel:`Validate`, depending on if products need to be added to the operation, or if the whole
+operation should be validated at once.
+
+.. image:: receipts_deliveries/receipts-deliveries-scanner-overview.png
+   :align: center
+   :alt: Overview of receipts in transfer to scan.
+
+To process and scan each product individually, choose a specific product line. The :guilabel:`+#`
+button (in this case, :guilabel:`+10`) can be clicked to indicate receipt of that product, or the
+:guilabel:`pencil` icon can be clicked to open a new screen to edit that product line.
+
+From this screen, the product that's being received is listed. Under the product name, the
+:guilabel:`Quantity` line can be edited. Either change the `0` in the line to the desired quantity,
+or click the :guilabel:`/# Units` button (in this case, :guilabel:`/10 Units`) to automatically fill
+the quantity ordered from the :abbr:`PO (purchase order)`.
+
+.. example::
+   In the reception operation `WH/IN/00019`, `10 Units` of the `Barcode Product` is expected to be
+   received. `[BARCODE_PROD]` is the :guilabel:`Internal Reference` set on the product form. Scan
+   the barcode of the `Barcode Product` to receive one unit. Afterwards, click the
+   :guilabel:`pencil` icon to manually enter the received quantities.
+
+   .. image:: receipts_deliveries/receipts-deliveries-product-line-editor.png
+      :align: center
+      :alt: Product line editor for individual transfer in Barcode app.
+
+Additionally, the :guilabel:`+1` and :guilabel:`-1` buttons can be clicked to add or subtract
+quantity of the product, and the :guilabel:`number keys` can be used to add quantity, as well.
+
+Below the :guilabel:`number keys` is the :guilabel:`location` line, which reads `WH/Stock` by
+default, unless another *location* is listed on the product itself. Click this line to reveal a
+drop-down menu of additional locations to choose from.
+
+Once ready, click :guilabel:`Confirm` to confirm the changes made to the product line.
+
+Then, from the overview page with all receipts to process within that transfer (**WH/IN/000XX**),
+click the :guilabel:`+#` button on the product line for the products being received, and click
+:guilabel:`Validate`. The receipt has now been processed, and the :guilabel:`Barcode app` can be
+closed out.
+
+.. image:: receipts_deliveries/receipts-deliveries-validate-transfer.png
+   :align: center
+   :alt: Overview of receipts in transfer to validate.
+
+Scan barcodes for delivery orders
+=================================
+
+To process warehouse deliveries for outgoing products, there first needs to be a sales order (SO)
+created, and a delivery operation to process.
+
+To create a :abbr:`SO (sales order)`, navigate to the :menuselection:`Sales app --> Create` to
+create a new quotation.
+
+From the blank quotation form, click the drop-down menu next to the :guilabel:`Customer` field to
+add a customer. Then, on the :guilabel:`Product` line under the :guilabel:`Order Lines` tab, click
+:guilabel:`Add a product`, and select the desired product(s) to add to the quotation.
+
+Once ready, click :guilabel:`Save` at the top of the form, and click :guilabel:`Confirm Order` to
+confirm the quotation to a :abbr:`SO (sales order)`.
+
+.. image:: receipts_deliveries/receipts-deliveries-sales-order.png
+   :align: center
+   :alt: Completed sales order for barcode product.
+
+To process and scan barcodes for warehouse deliveries, navigate to the :menuselection:`Barcode app`.
+
+Once inside the :guilabel:`Barcode app`, a :guilabel:`Barcode Scanning` screen displaying different
+options is presented. To process deliveries, click on the :guilabel:`Operations` button at the
+bottom of the screen. This navigates to an :guilabel:`Operations` overview page.
+
+From this page, locate the :guilabel:`Delivery Orders` card, and click the :guilabel:`# To Process`
+button to view all outstanding deliveries. Then, select the desired delivery order to process. This
+navigates to the barcode transfer screen.
+
+.. image:: receipts_deliveries/receipts-deliveries-operations-page.png
+   :align: center
+   :alt: Operations overview page in Barcode app dashboard.
+
+From this screen, an overview of all deliveries to process within that transfer (**WH/OUT/000XX**)
+is shown. At the bottom of the screen, there are options to :guilabel:`Add Product` or
+:guilabel:`Validate`, depending on if products need to be added to the operation, or if the whole
+operation should be validated at once.
+
+To process and scan each product individually, choose a specific product line. The :guilabel:`+1`
+button can be clicked to indicate delivery of that product, or the :guilabel:`pencil icon` can be
+clicked to open a new screen to edit that product line.
+
+From this screen, the product that's being delivered is listed. Under the product name, the
+:guilabel:`Quantity` line can be edited. Either change the `0` in the line to the desired quantity,
+or click the :guilabel:`/# Units` button (in this case, :guilabel:`/10 Units`) to automatically fill
+the quantity ordered from the :abbr:`SO (sales order)`.
+
+Additionally, the :guilabel:`+1` and :guilabel:`-1` buttons can be clicked to add or subtract
+quantity of the product, and the :guilabel:`number keys` can be used to add quantity, as well.
+
+Below the :guilabel:`number keys` is the :guilabel:`location` line, which reads `WH/Stock` by
+default, unless another location is listed on the product itself.
+
+This is the location that the product is being pulled from for delivery. Click this line to reveal a
+drop-down menu of additional locations to choose from (if this product is stored in multiple
+locations in the warehouse).
+
+.. tip::
+   For warehouses that have multiple different storage locations, putaway rules, and removal
+   strategies, additional steps can be added for various operation types, while using the *Barcode*
+   app.
+
+Once ready, click :guilabel:`Confirm` to confirm the changes made to the product line.
+
+Then, from the overview page with all receipts to process within that transfer (**WH/OUT/000XX**),
+click the :guilabel:`+#` button on the product line for the products being received, and click
+:guilabel:`Validate`. The delivery has now been processed, and the *Barcode* app can be closed out.
+
+.. image:: receipts_deliveries/receipts-deliveries-validate-delivery.png
+   :align: center
+   :alt: Overview of deliveries in transfer to validate.
+
+
+==================================================
+SECTION: retrieve_epcs.rst
+PATH: applications/inventory_and_mrp/barcode/operations/retrieve_epcs.rst
+==================================================
+
+==================
+Retrieve EPC codes
+==================
+
+.. |EPC| replace:: :abbr:`EPC (electronic product code)`
+.. |RFID| replace:: :abbr:`RFID (radio frequency identification)`
+.. |GS1| replace:: :abbr:`GS1 (Global Standards 1)`
+
+Electronic product codes (|EPC|) are globally unique identifiers assigned to specific products,
+allowing items to be distinguished at the individual level. These identifiers support accurate
+inventory management by enabling faster cycle counts, streamlined adjustments, and more precise
+stock control.
+
+After EPCs are :ref:`obtained <barcode/operations/retrieve_epcs_gs1>` from |GS1|, they are
+:ref:`encoded <barcode/operations/write_epcs>` onto |RFID| tags, which are then applied to products
+and used throughout the inventory process.
+
+.. seealso::
+    Set up :doc:`../setup/rfid`
+
+.. _barcode/operations/retrieve_epcs_gs1:
+
+Retrieving EPCs from GS1
+========================
+
+To retrieve an EPC to encode on a tag, use `GS1's EPC Encoder/Decoder tool
+<https://www.gs1.org/services/epc-encoderdecoder>`__.
+
+#. Enter the GTIN-14 barcode of the product in the application identifier :guilabel:`(01)` field.
+#. Enter the product's serial number in the :guilabel:`(21)` field.
+#. Specify a company prefix length.
+#. Specify the size of the tag and its filter value.
+
+.. image:: retrieve_epcs/retrieve-from-gs1.png
+   :alt: Complete the fields of the EPC Encoder/Decoder tool.
+
+.. _barcode/operations/retrieve_epcs_odoo:
+
+Generating EPCs in Odoo
+=======================
+
+Generate EPCs for tracked products directly in Odoo. Products should be tracked by serial number,
+but this is not a requirement. A GTIN-14-compatible barcode must be set on the product.
+
+To retrieve the EPCs for a receipt of products:
+
+#. On the receipt, click the :icon:`fa-list` :guilabel:`Detailed Operations` button next to the
+   :guilabel:`Quantity` field. The :guilabel:`Detailed Operations` box opens.
+#. From here, specify or generate serial numbers for the products. Be sure to save the serial
+   numbers.
+#. :guilabel:`Validate` the receipt.
+#. Click the :guilabel:`Moves` smart button. Select all received items, then click the
+   :icon:`fa-cog` :guilabel:`Actions` button, then select :guilabel:`Export`.
+#. On the :guilabel:`Export Data` screen, select :guilabel:`Electronic Product Code` from the list
+   of available fields, then click :guilabel:`Export`. The file downloads to the device. All of the
+   EPCs for the receipt are included in that file.
+
+.. note::
+    EPCs can be exported from any :guilabel:`Moves` list, not just receipts.
+
+.. _barcode/operations/write_epcs:
+
+Writing EPCs to RFID tags
+=========================
+
+After retrieving the EPCs, you can use an RFID writer to write the EPCs onto RFID tags. The process
+to write EPCs varies by RFID writer manufacturer. Refer to the RFID writer's documentation for more
+information.
+
+.. seealso::
+    - :doc:`gs1_nomenclature`
+    - :doc:`gs1_usage`
+    - :doc:`adjustments`
+
+
+==================================================
+SECTION: rfid.rst
+PATH: applications/inventory_and_mrp/barcode/setup/rfid.rst
+==================================================
+
+====
+RFID
+====
+
+.. |EPC| replace:: :abbr:`EPC (electronic product code)`
+
+RFID stands for Radio Frequency Identification. RFID enables the tracking of items using radio
+waves: RFID tags are attached to products in inventory, and RFID readers can read those tags to
+transmit information to a computer. RFID helps automate processes by keeping inventory accurate and
+tracking internal and external moves.
+
+RFID tags transmit electronic product codes (|EPC|), which are unique identifiers to distinguish
+individual items. The |EPC| in Odoo is based on GS1 standards to consistently identify products
+worldwide. GS1 nomenclature establishes common rules for encoding information within a barcode to
+facilitate the global exchange of goods.
+
+.. seealso::
+   :doc:`../operations/gs1_nomenclature`
+
+Hardware
+========
+
+The following are required to begin working with RFID in Odoo:
+
+- Zebra TCX Series mobile computer, or
+- Android Smartphone
+
+Paired with:
+
+- Zebra RFD40 (can read and write RFID tags)
+
+Configuration
+=============
+
+Before using RFID tags to manage inventory, the Android Package Kit (APK) with RFID support must be
+installed on the mobile computer or smartphone.
+
+.. important::
+   Before installing the APK on an individual device, first enable the ability to install unknown
+   apps in the device settings. Find this setting in the device's :guilabel:`App` or :guilabel:`App
+   & Notification` settings, under the :guilabel:`Special access` or :guilabel:`Special app access`
+   section.
+
+Then, download the APK. On the :guilabel:`Downloads` page, under the :guilabel:`Mobile Application`
+section, click :guilabel:`Download` next to the :guilabel:`Android` option, then select
+:guilabel:`Download APK (with Zebra RFID support)` from the drop-down menu. Download this file via a
+computer and transfer the APK via USB or Bluetooth, or use the device's web browser to download the
+APK.
+
+.. image:: rfid/download-apk.png
+   :alt: Download the APK from the Download page.
+
+Install the APK. If :guilabel:`Install unknown apps` is enabled for the device's web browser,
+install the APK directly from the browser download notification. If :guilabel:`Install unknown apps`
+is enabled for the device's file manager, open it and navigate to the location where the file is
+stored, then tap it to install the APK.
+
+Then, when reading or writing RFID tags, ensure that the Zebra device and the smart device are
+paired and connected.
+
+Set a compatible barcode
+========================
+
+Before you can manage inventory using RFID tags, a compatible barcode must be assigned to the
+products. Set the product barcode in the product form.
+
+.. seealso::
+   :ref:`Set product barcodes <inventory/barcode/set-barcodes>`
+
+To work with RFID, the product barcode must be GTIN-14-compatible, and inventory tracking must be
+enabled for the product. Product barcodes that are not GTIN-14-compatible must be upgraded to work
+with RFID.
+
+.. note::
+    Tracking by serial number or lots does not need to be enabled for this feature to work properly.
+
+Limitations
+===========
+
+- The serial number that is part of the |EPC| must only be numeric, as SGTIN-96 is the only
+  supported encoding scheme for RFID tags in Odoo. Alphanumeric serial numbers are **not**
+  supported.
+- For products tracked by lot, the lot can be scanned in, but it will be considered as one lot with
+  a quantity of `1`. It does not count individual products in a receipt.
+- Only ultra-high frequency (UHF) RFID tags are supported.
+- Products need to be GS1-registered because barcodes must be unique.
+
+.. seealso::
+   - :doc:`../operations/scan_rfid`
+   - :doc:`../operations/retrieve_epcs`
+
+
+==================================================
+SECTION: scan_rfid.rst
+PATH: applications/inventory_and_mrp/barcode/operations/scan_rfid.rst
+==================================================
+
+==========================
+Manage inventory with RFID
+==========================
+
+Managing inventory with an RFID barcode scanner is possible with the **Barcodes** app and a physical
+RFID scanner.
+
+.. seealso::
+   :doc:`../setup/rfid`
+
+Make sure the RFD40 scanner is paired and connected to the mobile computer or smartphone. Open an
+operation (like a receipt, transfer, delivery order, or manufacturing order), or count inventory
+using the RFID scanner. Scanning an existing operation barcode pulls up the relevant inventory or
+manufacturing documents in Odoo on the mobile device.
+
+Overview of the workflow
+========================
+
+With the RFD40 scanner in hand, open the **Barcode** app on the computer or phone. Open the
+operation record (via the **Barcode** interface or scanning the operation barcode), or open the
+:guilabel:`Inventory count` operation. Scan the RFID barcodes for the product.
+
+.. seealso::
+   :doc:`../setup/operation_types`
+
+To begin managing inventory using RFID tags, open the **Barcode** app on the smart device.
+
+.. _inventory/barcode/rfid_manage:
+
+Manage inventory
+================
+
+From the **Barcode** app, scan the operation barcode or tap the :guilabel:`Operations` button to
+open operations for receipts, internal transfers, delivery orders, or manufacturing orders. If the
+reading device is not connected, Odoo will automatically connect to the device. When the device is
+connected, a toast notification appears on the screen that verifies the connection. Scan the
+products, then validate the scan on the mobile computer or smartphone.
+
+.. image:: scan_rfid/validate-receipt.png
+   :alt: Validate the operation on the mobile device.
+
+.. _inventory/barcode/rfid_count:
+
+Counting inventory
+==================
+
+It is required by many factories and warehouses to keep track of inventory, including regular counts
+of products to ensure all records are correct. To change the amount of a product in stock, or adjust
+inventory, open the :guilabel:`Inventory count` operation. Scan the products to count. If necessary,
+verify the count manually. You can update the count by clicking the :icon:`fa-pencil`
+:guilabel:`(edit)` icon. Click :guilabel:`Apply` to apply the count on the smart device.
+
+.. image:: scan_rfid/apply-count.png
+   :alt: Apply the count on the Inventory Adjustment page.
+
+.. seealso::
+   :doc:`retrieve_epcs`
+
+
+==================================================
+SECTION: serial_numbers_lots.rst
+PATH: applications/inventory_and_mrp/barcode/setup/serial_numbers_lots.rst
+==================================================
+
+===================================
+Barcodes for lot and serial numbers
+===================================
+
+The **Barcode** app saves time and prevents user errors while handling :doc:`lot
+<../../inventory/product_management/product_tracking/lots>` and :doc:`serial numbers
+<../../inventory/product_management/product_tracking/serial_numbers>`. Instead of typing long
+sequences of characters, print and scan barcodes instead.
+
+Configuration
+=============
+
+To use lot or serial numbers:
+
+#. They must be enabled in the database.
+#. Tracking by lot or serial number must be selected for each product.
+
+See the :doc:`serial numbers documentation
+<../../inventory/product_management/product_tracking/serial_numbers>` and :doc:`lots documentation
+<../../inventory/product_management/product_tracking/lots>` to learn how to start using this
+feature.
+
+GS1-compatible QR codes
+-----------------------
+
+:doc:`GS1 <../operations/gs1_nomenclature>` nomenclature can be used for serial numbers and lots.
+
+To enable GS1 barcodes for lots and serial numbers, go to :menuselection:`Inventory app -->
+Configuration --> Settings` and in the :guilabel:`Traceability` section under :guilabel:`Lots &
+Serial Numbers`, tick the box for :guilabel:`Print GS1 Barcodes for Lots & Serial Numbers`.
+
+.. image:: serial_numbers_lots/enable-gs1-barcodes.png
+   :alt: Inventory settings with 'Print GS1 Barcodes for Lots & Serial Numbers' ticked.
+
+.. warning::
+   GS1 lot and serial number barcodes require a 2D-capable scanner to be scanned. See :doc:`hardware
+   configuration <hardware>` to ensure that the feature is compatible with available equipment.
+
+.. _inventory/barcode/mandatory-scan:
+
+Mandatory and optional scanning
+-------------------------------
+
+Operation types, like receipts and delivery orders, :ref:`can be configured individually
+<inventory/product_management/operation-type-setting>` to determine whether they require a serial or
+lot number to process the operation. Additionally, the *Barcode* tab of each operation type
+configures whether scanning the lot or serial number is mandatory. *Mandatory scan* specifies that
+the only way to input a required serial number or lot number is by scanning a barcode, while
+*optional scan* allows users to manually type in a barcode if necessary.
+
+To make it mandatory to scan a barcode for serial numbers and lots, go to :menuselection:`Inventory
+app --> Configuration --> Operations Types` and select the operation type where barcodes should be
+required for serial numbers. Then, click the :guilabel:`Barcode App` tab, and in the
+:guilabel:`MANDATORY SCAN` section set :guilabel:`Lot/Serial` to :guilabel:`Mandatory Scan`.
+
+.. image:: serial_numbers_lots/optional-scan.png
+   :alt: Selecting 'Optional Scan' in the Receipts operation type.
+
+Barcodes for products and lots
+==============================
+
+To print a barcode for one or multiple product lot and serial numbers, go to
+:menuselection:`Inventory app --> Products --> Lots / Serial Numbers`. In the list view, tick the
+checkbox for each the product to print, click the :icon:`fa-print` :guilabel:`Print` button, and
+select either PDF or ZPL depending on printer setup.
+
+.. image:: serial_numbers_lots/select-products-to-print.png
+   :alt: Three selected products and a Print button showing 'Lot/Serial Number (PDF)' highlighted.
+
+Operations
+==========
+
+For any product that is tracked by lot or serial number, performing an operation with barcode can be
+from the main **Barcode** page by tapping :guilabel:`Operations` and tapping the desired operation
+in the interface or scanning the barcode for specific picking order. Once the order is scanned,
+select the product by tapping or scanning a barcode and scan the lot or serial number for each
+quantity.
+
+.. tip::
+   Because vendor lot and serial number barcodes could be damaged in transit and arrive in a state
+   that cannot be scanned, it is a good practice to :ref:`set serial number or lot scanning to
+   optional <inventory/barcode/mandatory-scan>`. Otherwise, a broken barcode would block validation
+   of the receipt.
+
+For products that are starting out without a serial number, there are three options to manage them:
+manually typing in the number, generating them ahead of time, or disabling serial numbers for that
+operation.
+
+Manually input serial and lot numbers
+-------------------------------------
+
+For instances where there are few products or rare shipments, it may be easiest to type lot or
+serial numbers in at the time of receipt. After opening an existing receipt or creating a new one
+and scanning the product bar code, tap the :icon:`fa-pencil` :guilabel:`(pencil)` icon. Tap the
+:guilabel:`Serial/Lot Number` field and enter the serial number and tap :guilabel:`Confirm`.
+
+.. image:: serial_numbers_lots/manual-sn-input.png
+   :alt: Typing in a serial number.
+
+Generate serial numbers before a receipt
+----------------------------------------
+
+Lot and serial numbers can be generated from a scheduled receipt before the products arrive. This
+has the advantage of making it possible to print all the serial numbers with the picking order for
+the receipt.
+
+To generate lot and serial numbers, in the **Inventory** app click :guilabel:`Receipts` and select
+the receipt that requires generated lot or serial numbers. In the :guilabel:`Operations` tab, find
+the line for the product, and click the :icon:`fa-list` :guilabel:`(list)` icon. In the
+:guilabel:`Open: Stock move` pop-up menu, click :guilabel:`Generate Serials/Lots`.
+
+.. image:: serial_numbers_lots/serial-number-generate.png
+   :alt: Generate serial numbers for an incoming shipment.
+
+.. seealso::
+   :ref:`Assign serial numbers <inventory/product_management/assign-sn>`
+
+Disable lot and serial numbers for a receipt
+--------------------------------------------
+
+With lot and serial numbers disabled for an operation, products that are tracked by these methods
+can be received without supplying a serial number or lot number. It is still possible to scan a
+serial number at the receipt stage, but the missing numbers will need to be :ref:`created in the
+Inventory app <inventory/product_management/already-in-stock>`.
+
+To disable the use of serial numbers for a particular operation type, go to
+:menuselection:`Inventory app --> Configuration --> Operations Types` and select the operation type.
+In the :guilabel:`LOTS/SERIAL NUMBERS` section, untick :guilabel:`Create New` and :guilabel:`Use
+Existing ones`.
+
+.. note::
+   The *Create New* option will require the user to supply a serial number or lot number, either by
+   scanning or type (if :ref:`optional scan <inventory/barcode/mandatory-scan>` is enabled), and
+   will not :ref:`automatically generate serial numbers
+   <inventory/product_management/generate-serials>` the way the **Inventory** app can.
+
+
+==================================================
+SECTION: setup.rst
+PATH: applications/inventory_and_mrp/barcode/setup.rst
+==================================================
+
+:nosearch:
+
+=====
+Setup
+=====
+
+.. toctree::
+   :titlesonly:
+   :glob:
+
+   setup/device_troubleshooting
+   setup/hardware
+   setup/software
+   setup/barcodelookup
+   setup/serial_numbers_lots
+   setup/operation_types
+   setup/rfid
+
+
+==================================================
+SECTION: software.rst
+PATH: applications/inventory_and_mrp/barcode/setup/software.rst
+==================================================
+
+=============================
+Product and location barcodes
+=============================
+
+.. |GTIN| replace:: :abbr:`GTIN (Global Trade Item Number)`
+
+Inventory operations like product configuration can be streamlined by taking advantage of barcode
+scanning features. Assigning barcodes to products and locations is a key step in using the
+**Barcode** app, and users can conveniently populate fields with a barcode scanner. This reduces
+manual entry, minimizes errors, and speeds up common tasks like product selection, location
+assignment, and inventory adjustments.
+
+Configuration
+=============
+
+Barcode nomenclature
+--------------------
+
+Most retail products use EAN-13 barcodes, also known as Global Trade Identification Numbers (GTIN).
+To create a new |GTIN| for a product, a company must have a GS1 Company Prefix. See :doc:`GS1
+nomenclature <../operations/gs1_nomenclature>` for more information about using this system.
+
+Odoo supports using any string as a barcode, so users can also create custom internal references to
+use with barcode scanners. See :doc:`Default nomenclature <../operations/barcode_nomenclature>` to
+learn about optional conventions around barcodes and default values in Odoo
+
+To change the barcode nomenclature, go to :menuselection:`Inventory app --> Configuration -->
+Settings` and scroll down to the :guilabel:`Barcode` section to select the nomenclature under
+:guilabel:`Barcode Scanner`.
+
+.. image:: software/barcodes-setup-change-nomenclature.png
+   :alt: Changing barcode nomenclature in Inventory app settings.
+
+.. _barcode/setup/barcodelookup:
+
+Barcode lookup
+--------------
+
+Odoo can automatically add product information using the :guilabel:`Stock Barcode Database` setting
+for any :abbr:`UPC (Universal Product Code)`, :abbr:`EAN (European Article Number)`, or :abbr:`ISBN
+(International Standard Book Number)` barcode.
+
+To enable automatic barcode look up, go to :menuselection:`Inventory app --> Configuration -->
+Settings` and scroll down to the :guilabel:`Barcode` section to tick the box for :guilabel:`Stock
+Barcode Database`.
+
+.. seealso::
+   :doc:`Barcode Lookup <barcodelookup>`
+
+.. _inventory/barcode/set-barcodes:
+
+Set product barcodes
+====================
+
+Barcodes can be assigned to existing products from the *Product Barcodes* configuration page or from
+any product form in the **Inventory**, **Manufacturing** or **Purchase** apps. The barcode field can
+be populated either by typing or using scanner input.
+
+When adding a new product, the :ref:`barcode lookup feature <barcode/setup/barcodelookup>` can be
+used to automatically find information about a product based on its barcode, and new products can be
+added to the database directly from the **Barcode** app by scanning a barcode.
+
+From Barcode app
+----------------
+
+New products definitions can be added to the database product lists as well as having their on-hand
+inventory tracked from the **Barcode** app, if the :ref:`Barcode Lookup feature
+<barcode/setup/barcodelookup>` is enabled. To create a new receipt for scanning new products, choose
+one of two methods:
+
+#. From the **Barcode** front page, tap :guilabel:`Operations`, tap :guilabel:`Receipts`, and then
+   tap the :guilabel:`New` button.
+#. Scan a printed :guilabel:`Receipts (WHIN)` inventory command barcode.
+
+.. image:: software/barcode-new-receipt.png
+   :alt: Empty new receipt form.
+
+Scanning a product that is not currently in inventory prompts a message that the product does not
+exist, with a button option to :guilabel:`Create New Product`. Pressing this button will search the
+`Barcode Lookup <https://www.barcodelookup.com/>`_ database for a product matching the code and
+format, create a new product definition in the Odoo database with the available information, and add
+that product to the receipt to track the quantity on hand in inventory.
+
+.. image:: software/barcode-scan-for-new-product.png
+   :alt: New product confirmation dialog.
+
+.. note::
+   Even if a transfer order with a product created through **Barcode** is cancelled, the product
+   remains available in the products list in the **Inventory** app unless it is deleted.
+
+From a product form
+-------------------
+
+Barcodes can be added to both existing products and new products as they are created through the
+products configuration form. To access a product's form, go to :menuselection:`Inventory app -->
+Products --> Products` and select the product to add a barcode to.
+
+In the :guilabel:`General Information` tab, click the :guilabel:`Barcode` field to either type in
+the barcode or use a scanner to input the barcode value.
+
+.. image:: software/barcode-add-to-product-form.png
+   :alt: The 'Barcode' field on a product form with an active cursor.
+
+.. note::
+   If using :doc:`product variants <../../../sales/sales/products_prices/products/variants>`,
+   configure barcodes on individual variants and not the product template to allow scanning to
+   retrieve the variants.
+
+From Inventory settings
+-----------------------
+
+To access the *Product Barcodes* configuration page, go to :menuselection:`Inventory app -->
+Configuration --> Settings`. In the :guilabel:`Barcode` section, under the :guilabel:`Barcode
+Scanner` feature, click :icon:`fa-arrow-right` :guilabel:`Configure Product Barcodes`. From this
+list view, click the :guilabel:`Barcodes` column for any product to enter its barcode. Barcode
+scanners will populate this field when the product is scanned.
+
+.. image:: software/product-barcodes-configure.png
+   :alt: Selecting the Barcode field in the Product Configuration form.
+
+.. tip::
+   To filter for the products that do not have barcodes yet, click the :icon:`fa-sort-desc`
+   :guilabel:`(Toggle Search Panel)` icon to add a custom filter where the :guilabel:`Barcode`
+   property is :guilabel:`is not set`.
+
+   .. image:: software/barcode-filter-for-no-barcode.png
+      :alt: 'Add Custom Filter' pop-up with 'Barcode is not set' configured.
+
+.. _barcode/setup/location:
+
+Print location barcodes
+=======================
+
+Barcodes can be assigned to locations to track of where products are stored and manage transfers,
+and are automatically available if the :doc:`Storage Locations
+<../../inventory/warehouses_storage/inventory_management/use_locations>` feature is enabled.
+
+To print barcodes for locations, go to :menuselection:`Inventory app --> Configuration -->
+Settings`, scroll down to the :guilabel:`Warehouse` section and click :icon:`fa-arrow-right`
+:guilabel:`Locations`. Tick the boxes for locations and the :guilabel:`Print` button will appear,
+downloading a PDF with barcodes for all selected locations.
+
+.. image:: software/print-storage-location-barcodes.png
+   :alt: Multiple storage locations selected with 'Print' button at the top of the view.
+
+
+==================================================
+SECTION: transfers_scratch.rst
+PATH: applications/inventory_and_mrp/barcode/operations/transfers_scratch.rst
+==================================================
+
+==========================================
+Create and process transfers with barcodes
+==========================================
+
+The *Barcode* app can be used to process internal transfers for all types of products, including
+transfers for products tracked using lots or serial numbers. Transfers can be created from scratch
+in real time using an Odoo-compatible barcode scanner or the Odoo mobile app.
+
+For a list of Odoo-compatible barcode mobile scanners, and other hardware for the *Inventory* app,
+refer to the `Odoo Inventory • Hardware page <https://www.odoo.com/app/inventory-hardware>`_.
+
+Enable Barcode app
+==================
+
+To use the *Barcode* app to process transfers, it must be installed by enabling the feature from the
+settings of the *Inventory* app.
+
+To do so, go to the :menuselection:`Inventory app --> Configuration --> Settings`. Then, scroll down
+to the :guilabel:`Barcode` section, and click the checkbox next to the :guilabel:`Barcode Scanner`
+feature.
+
+Once the checkbox is ticked, click :guilabel:`Save` at the top of the page to save changes.
+
+When the page has refreshed, new options are displayed under the :guilabel:`Barcode Scanner`
+feature: :guilabel:`Barcode Nomenclature` (with a corresponding drop-down menu), where either
+:guilabel:`Default Nomenclature` or :guilabel:`Default GS1 Nomenclature` can be selected. The
+nomenclature selected changes how scanners interpret barcodes in Odoo.
+
+There is also a :guilabel:`Configure Product Barcodes` internal link arrow, and a set of
+:guilabel:`Print` buttons for printing barcode commands and a barcode demo sheet.
+
+.. image:: transfers_scratch/transfers-scratch-enabled-barcode-setting.png
+   :align: center
+   :alt: Enabled Barcode feature in Inventory app settings.
+
+For more on setting up and configuring the :guilabel:`Barcode` app, refer to the :doc:`Set up your
+barcode scanner <../setup/hardware>` and :doc:`Activate the Barcodes in Odoo <../setup/software>`
+documentation pages.
+
+Scan barcodes for internal transfers
+====================================
+
+To create and process internal transfers for products in a warehouse, the :guilabel:`Storage
+Locations` and :guilabel:`Multi-Step Routes` features **must** be enabled.
+
+To do so, go to the :menuselection:`Inventory app --> Configuration --> Settings`. Then, scroll down
+to the :guilabel:`Warehouse` section, and click the checkboxes next to :guilabel:`Storage Locations`
+and :guilabel:`Multi-Step Routes`.
+
+Then, click :guilabel:`Save` at the top of the page to save changes.
+
+Create an internal transfer
+---------------------------
+
+To process existing internal transfers, there first needs to be an internal transfer created, and an
+operation to process.
+
+To create an internal transfer, navigate to the :menuselection:`Inventory app`. From the
+:guilabel:`Inventory Overview` dashboard, locate the :guilabel:`Internal Transfers` card, and click
+on the :guilabel:`0 To Process` button.
+
+Then, click :guilabel:`Create` in the top left of the resulting page. This navigates to a new
+:guilabel:`Internal Transfer` form.
+
+On this blank form, the :guilabel:`Operation Type` is automatically listed as :guilabel:`Internal
+Transfers`. Under that field, the :guilabel:`Source Location` and :guilabel:`Destination Location`
+are set as :guilabel:`WH/Stock` by default, but can be changed to whichever locations the products
+are being moved from, and moved to.
+
+.. image:: transfers_scratch/transfers-scratch-internal-transfer-form.png
+   :align: center
+   :alt: Blank internal transfer form with source location and destination location.
+
+Once the desired locations have been selected, products can be added to the transfer. On the
+:guilabel:`Product` line under the :guilabel:`Products` tab, click :guilabel:`Add a product`, and
+select the desired product(s) to add to the transfer.
+
+Once ready, click :guilabel:`Save` at the top of the form to save the new internal transfer. Once
+saved, click the :guilabel:`Detailed Operations` icon (four lines, at the far right of the
+:guilabel:`Product` line) to open the :guilabel:`Detailed Operations` pop-up window.
+
+.. image:: transfers_scratch/transfers-scratch-detailed-operations-popup.png
+   :align: center
+   :alt: Internal transfer detailed operations pop-up window.
+
+From the pop-up, click :guilabel:`Add a line`.
+
+Then, in the :guilabel:`To` column, change the location from :guilabel:`WH/Stock` to a different
+location, where the products should be moved.
+
+Next, in the :guilabel:`Done` column, change the quantity to the desired quantity to transfer. Once
+ready, click :guilabel:`Confirm` to close out the pop-up window.
+
+Scan barcodes for internal transfer
+-----------------------------------
+
+To process and scan barcodes for internal transfers, navigate to the :menuselection:`Barcode app`.
+
+Once inside the :guilabel:`Barcode app`, a :guilabel:`Barcode Scanning` screen displaying different
+options is presented.
+
+To process internal transfers, click on the :guilabel:`Operations` button at the bottom of the
+screen. This navigates to an :menuselection:`Operations` overview page.
+
+.. image:: transfers_scratch/transfers-scratch-barcode-app.png
+   :align: center
+   :alt: Barcode app start screen with scanner.
+
+From this page, locate the :guilabel:`Internal Transfers` card, and click the :guilabel:`# To
+Process` button to view all outstanding internal transfers. Then, select the desired operation to
+process. This navigates to the barcode transfer screen.
+
+.. note::
+   When using the *Barcode* app without the *Inventory* app (**only** if using a barcode scanner or
+   the Odoo mobile app), the barcodes for each transfer of a corresponding operation type can be
+   scanned to be processed easily.
+
+   Once scanned, the products that are part of an existing transfer can be scanned, and new products
+   can be added to the transfer, as well. Once all products have been scanned, validate the transfer
+   to proceed with the stock moves.
+
+From this screen, an overview of all products to process within that specific internal transfer
+(**WH/INT/000XX**) is shown. At the bottom of the screen, there are options to :guilabel:`Add
+Product` or :guilabel:`Validate`, depending on if products need to be added to the operation, or if
+the whole operation should be validated at once.
+
+.. image:: transfers_scratch/transfers-scratch-receipts-overview.png
+   :align: center
+   :alt: Overview of receipts in transfer to scan.
+
+Then, scan the barcode of the product to process the internal transfer.
+
+Or, to process and scan each product individually, choose a specific product line. The
+:guilabel:`+ 1` button can be clicked to add additional quantity of that product to the transfer, or
+the :guilabel:`pencil icon` can be clicked to open a new screen to edit that product line.
+
+In the product's pop-up window, the product and the units to process is displayed with a number pad.
+Under the product name, the :guilabel:`Quantity` line can be edited. Change the number in the line
+to the quantity listed to be transferred on the internal transfer form.
+
+.. example::
+   In the internal transfer operation `WH/INT/000XX`, `50 Units` of the `Transfer Product` is
+   moved from `WH/Stock` to `WH/Stock/Shelf 1`. `[TRANSFER_PROD]` is the :guilabel:`Internal
+   Reference` set on the product form. Scan the barcode of the `Transfer Product` to receive one
+   unit. Afterwards, click the :guilabel:`pencil icon` to manually enter the transferred quantities.
+
+   .. image:: transfers_scratch/transfers-scratch-product-line-editor.png
+      :align: center
+      :alt: Product line editor for individual transfer in Barcode app.
+
+Additionally, the :guilabel:`+1` and :guilabel:`-1` buttons can be clicked to add or subtract
+quantity of the product, and the number keys can be used to add quantity, as well.
+
+Below the number keys are the two :guilabel:`location` lines, which read whichever locations were
+previously specified on the internal transfer form, in this case `WH/Stock` and `WH/Stock/Shelf 1`.
+Click these lines to reveal a drop-down menu of additional locations to choose from.
+
+Once ready, click :guilabel:`Confirm` to confirm the changes made to the product line.
+
+Then, from the overview page with all products to process within that transfer (**WH/INT/000XX**),
+click :guilabel:`Validate`. The receipt has now been processed, and the *Barcode* app can be closed
+out.
+
+.. tip::
+   The *Barcode* app can also be used to scan products in internal transfers containing unique lot
+   numbers and serial numbers.
+
+   From the barcode transfer screen, scan the barcode of a lot or serial number, and Odoo
+   automatically increases the quantity of the product to the quantity recorded in the database. If
+   the same lot or serial number is shared between different products, scan the product barcode
+   first, then the barcode of the lot/serial number.
+
+.. seealso::
+   :ref:`Connect to the Barcode Lookup database <barcode/setup/barcodelookup>` to quickly create new
+   products by scanning their barcodes during internal transfers.
+
+Create a transfer from scratch
+==============================
+
+In addition to processing and scanning barcodes for existing, previously-created internal transfers,
+the *Barcode* app can also be used to create transfers from scratch, simply by scanning a printed
+operation type barcode.
+
+.. admonition:: Did you know?
+
+   Odoo's *Barcode* application provides demo data with barcodes to explore the features of the app.
+   These can be used for testing purposes, and can be printed from the home screen of the app. To
+   access this demo data, navigate to the :menuselection:`Barcode app` and click :guilabel:`stock
+   barcodes sheet` (bolded and highlighted in blue) in the information pop-up above the scanner.
+
+   .. image:: transfers_scratch/transfers-scratch-demo-data.png
+      :align: center
+      :alt: Demo data prompt pop-up on Barcode app main screen.
+
+To do this, first navigate to the :menuselection:`Barcode app`. Once inside the *Barcode* app, a
+:guilabel:`Barcode Scanning` screen displaying different options is presented.
+
+From this screen, when using a USB or bluetooth barcode scanner, directly scan the product barcode.
+
+When using a smartphone as the barcode scanner, click the :guilabel:`Tap to Scan` button (next to
+the camera icon, at the center of the screen). This opens a :guilabel:`Barcode Scanner` pop-up
+screen that enables the camera of the device being used.
+
+Face the camera toward the printed operation type barcode to scan it. Doing so processes the
+barcode, and navigates to a barcode transfer screen.
+
+From this screen, an overview of all products to process within that specific internal transfer
+(**WH/INT/000XX**) is shown. Since this is a new transfer created from scratch, however, there
+should not be any products listed on the page.
+
+To add products, scan the product barcode. If the barcode is not available, manually enter the
+product into the system by clicking the :guilabel:`Add Product` button at the bottom of the screen,
+and add the products and product quantities that should be transferred.
+
+Once ready, click :guilabel:`Confirm` to confirm the changes made to the product line.
+
+.. image:: transfers_scratch/transfers-scratch-blank-product-editor.png
+   :align: center
+   :alt: Blank product editor in scratch internal transfer.
+
+Then, from the overview page with all products to process within that transfer (**WH/INT/000XX**),
+click :guilabel:`Validate`. The internal transfer has now been processed, and the *Barcode* app can
+be closed out.

@@ -1,0 +1,830 @@
+
+
+==================================================
+SECTION: plm.rst
+PATH: applications/inventory_and_mrp/plm.rst
+==================================================
+
+:nosearch:
+:show-content:
+:hide-page-toc:
+:show-toc:
+
+============================
+Product lifecycle management
+============================
+
+Odoo *Product Lifecycle Management* (*PLM*) offers a systematic approach for testing, collaboration,
+and iteration of products across concept development, design, manufacturing, marketing, and
+post-launch support stages.
+
+With approvals, key stakeholders can review changes before implementation.
+
+.. toctree::
+   :titlesonly:
+
+   plm/manage_changes
+   plm/management
+
+
+==================================================
+SECTION: approvals.rst
+PATH: applications/inventory_and_mrp/plm/management/approvals.rst
+==================================================
+
+=========
+Approvals
+=========
+
+.. |ECO| replace:: :abbr:`ECO (Engineering Change Order)`
+.. |ECOs| replace:: :abbr:`ECOs (Engineering Change Orders)`
+
+.. _plm/approvals:
+
+Notify stakeholders and managers automatically by assigning approvers to stages of :ref:`engineering
+change orders <plm/eco>` (ECOs) under review. Changes can only be applied after the assigned
+approver accepts them. Approvals ensure reviews by team members, which prevents mistakes and
+premature actions.
+
+.. seealso::
+   :ref:`Stage configuration <plm/eco/stage-config>`
+
+Add approvers
+=============
+
+To add an approver, first go to the :menuselection:`PLM app`, and click on the project card of an
+|ECO| type to open the Gantt view of the |ECOs|.
+
+On the :guilabel:`Engineering Change Orders` page, hover over the intended stage, and select the
+:icon:`fa-gear` :guilabel:`(Actions)` icon. Then, click :guilabel:`Edit` to open a pop-up window.
+
+.. note::
+   Approvers can be added to any stage, but they are most essential in the *verification* stage,
+   before the final *closing* stage which applies the |ECO| and updates the :abbr:`BoM (Bill of
+   Materials)`. This allows stakeholders to control how and when changes are made.
+
+   See the documentation about :ref:`stage types <plm/eco/stage-config>` for more information.
+
+In the :guilabel:`Edit` stage pop-up window, click the :guilabel:`Add a line` button, located under
+:guilabel:`Approvals`. Then, type in the position or title of the approver under :guilabel:`Role`
+(e.g. `Engineering Manager`, `Quality Team`, etc.), and select the relevant :guilabel:`User` from
+the drop-down menu.
+
+.. _plm/approvals/approval-type:
+
+Approval types
+--------------
+
+Next, set the :guilabel:`Approval Type` to :guilabel:`Is required to approve`, :guilabel:`Approves,
+but the approval is optional`, or :guilabel:`Comments only`.
+
+.. example::
+   Assign the `CTO`, "Mitchell Admin," as a required approver for |ECOs| in the `Validated` stage in
+   the `New Product Introduction` |ECO| type.
+
+   Approvals from the quality and marketing teams are **not** required to apply changes to the |ECO|
+   because their :guilabel:`Approval Type` is set to :guilabel:`Approves, but the approval is
+   optional` and :guilabel:`Comments only`, respectively.
+
+   .. image:: approvals/approvers.png
+      :alt: Set an approver that "Is required to approve" ECOs in the "Validated" stage.
+
+Manage approvals
+================
+
+Approvers can track their to-do approvals by navigating to the :menuselection:`PLM app`, and
+selecting the card for an |ECO| type, which shows the count of open tasks assigned to them.
+
+.. image:: approvals/validation-overview.png
+   :alt: Display count of validations to-do and buttons to open filtered list of ECOs.
+
+Here's what each button on an |ECO| project card does:
+
+#. The :guilabel:`# Engineering Changes` button displays a count of in-progress |ECOs| of this ECO
+   type. Clicking the button opens the Gantt view of the :guilabel:`Engineering Change Orders` page.
+#. :guilabel:`My Validations` displays a count of |ECOs| the approver must accept or reject.
+   Clicking on this button displays |ECOs| pending approval or rejected (marked with the red
+   :guilabel:`Blocked` state).
+#. The :guilabel:`All Validations` button shows the count of |ECOs| awaiting approval or rejected by
+   any approver. Clicking it reveals these pending |ECOs|.
+#. :guilabel:`To Apply` displays a count of |ECOs| to which the user needs to apply changes.
+   Clicking on the button displays all the |ECOs| to approve, and apply changes to, in the
+   verification stage.
+
+|ECOs| marked with the green :guilabel:`Done` stage have already been approved, and the user needs
+to click on the |ECO| to enter the form view, and click the :guilabel:`Apply Changes` button.
+
+.. tip::
+   |ECO| approvals can be accessed, managed, and follow-up actions scheduled through *Activities*.
+   See the :doc:`Activities documentation <../../../essentials/activities>` to learn more about
+   integrating management workflows.
+
+Approve ECOs
+------------
+
+Navigate to an |ECO| in a verification stage, while logged in as the assigned approver, to see the
+:guilabel:`Approve`, :guilabel:`Reject`, and :guilabel:`Apply Changes` buttons.
+
+To approve the |ECO|, and apply the changes onto the production :abbr:`BoM (Bill of Materials)`,
+click :guilabel:`Approve`, and then :guilabel:`Apply Changes`.
+
+Note that the :guilabel:`Apply Changes` button will **not** work unless the :guilabel:`Approve`
+button was clicked first. Additionally, the chatter logs the history of the clicked buttons.
+
+.. warning::
+   If no approver has the :guilabel:`Is required to approve` approval type, the :guilabel:`Apply
+   Changes` button **will work** without requiring the :guilabel:`Approve` button to be clicked
+   first.
+
+
+==================================================
+SECTION: eco_type.rst
+PATH: applications/inventory_and_mrp/plm/manage_changes/eco_type.rst
+==================================================
+
+.. _plm/eco/eco-type:
+
+.. |BOM| replace:: :abbr:`BoM (Bill of Materials)`
+.. |BOMs| replace:: :abbr:`BoMs (Bills of Materials)`
+.. |ECO| replace:: :abbr:`ECO (Engineering Change Order)`
+.. |ECOs| replace:: :abbr:`ECOs (Engineering Change Orders)`
+
+====================
+ECO types and stages
+====================
+
+Engineering change orders (ECOs) are categorized by the type of change they represent and their
+statuses are tracked via stages. Both |ECO| types and stages are defined by the user and can be
+customized to the specific needs of a business or industry.
+
+ECO types
+=========
+
+Each |ECO| type separates |ECOs| into different projects in the :guilabel:`PLM Overview`, ensuring
+collaborators and stakeholders only view and assist with relevant |BOM| improvements.
+
+.. example::
+   An electronic chip manufacturer uses five |ECO| types: `New Product Introduction`, `BOM Updates`,
+   `Component Change`, `Product Improvement`, and `Firmware Update`. In their configuration,
+   engineers can spend time exclusively on |ECOs| in the `Component Change` and `Firmware Update`
+   types, while designers see |ECOs| in the `New Product Introduction` type, allowing each
+   discipline to focus only on those changes that require their domain expertise.
+
+   .. image:: eco_type/eco-type-example.png
+      :alt: Example of several custom ECO types.
+
+Create an ECO type
+------------------
+
+To access and manage ECO types, navigate to :menuselection:`PLM app --> Configuration --> ECO
+Types`.
+
+Create a new ECO type by clicking :guilabel:`New`. On the new :guilabel:`ECO Types` form, fill in
+the following information:
+
+- :guilabel:`Name`: the name of the |ECO| type, which will organize all of the |ECOs| of this *type*
+  in a project.
+- :guilabel:`Email Alias`: if this optional field is filled, emails submitted to this email address
+  automatically generate |ECOs| in the left-most stage of this |ECO| type.
+
+.. example::
+   The `Formulation change` |ECO| type is used to organize and track related |ECOs| in a single
+   project. Configuring the :guilabel:`Email Alias` field generates |ECOs| in the `Formulation
+   change` project sent to the email address, `pawlish-change@pawlished-glam.odoo.com`.
+
+   .. image:: eco_type/create-eco-type.png
+      :alt: Example of an ECO type.
+
+Edit ECO types
+--------------
+
+Modify existing |ECO| type names and email aliases by navigating to the :menuselection:`PLM app -->
+Configuration --> ECO Types` page. There, click on the desired |ECO| type from the list.
+
+On the form for each |ECO| type, edit the :guilabel:`Name` or :guilabel:`Email Alias` fields.
+
+.. _plm/eco/stage-config:
+
+Stages
+======
+
+Within the :guilabel:`Engineering Change Orders` Kanban view for a specific |ECO| type, *stages* are
+milestones used to identify the progress of the |ECO| before the changes are ready to be applied. By
+default, Odoo uses `New`, `In Progress`, `Validated`, and `Effective`, but these are fully
+customizable to the specific life cycle of an |ECO| type.
+
+.. image:: eco_type/eco-stage-defaults.png
+   :alt: Default stages for an ECO type.
+
+.. note::
+   The `Effective` stage is folded by default to avoid listing every single |ECO| that has gone into
+   effect. See :ref:`Closing stage <plm/eco/closing-stage>` for more on this configuration.
+
+:ref:`Verification stages <plm/eco/verification-stage>` require a designated user to approve,
+ensuring that changes do not proceed until the |ECO| changes have been reviewed by the appropriate
+stake holders. :ref:`Closing stages<plm/eco/closing-stage>` that can apply changes put |BOM| and
+operations changes into immediate effect, changing all pending and future :abbr:`MO (Manufacturing
+orders)` to the latest |BOM| version.
+
+.. tip::
+   The most common practice is to have at least one *verification* stage, which is a stage with a
+   required approver, and one *closing* stage, which stores |ECOs| that have been either cancelled
+   or approved for use as the next production |BOM|.
+
+.. seealso::
+   :doc:`Approvals<../management/approvals>`
+
+.. _plm/eco/verification-stage:
+
+Verification stages
+-------------------
+
+To configure a verification stage, hover over the intended stage, and select the :icon:`fa-gear`
+:guilabel:`(Actions)`. Then, click :guilabel:`Edit` to open a pop-up window and check the box for
+:guilabel:`Allow to apply changes`.
+
+Next, add an approver in the :guilabel:`Approvers` section, by clicking :guilabel:`Add a line`, and
+specifying the :guilabel:`Role` of the reviewer, the :guilabel:`User`, and an :guilabel:`Approval
+Type` of :guilabel:`Is required to approve`. See :ref:`more about approval types.
+<plm/approvals/approval-type>`
+
+The approver listed is automatically notified when |ECOs| are dropped in the stage specified in the
+pop-up window. Once finished, click :guilabel:`Save & Close`.
+
+.. seealso::
+   :doc:`../management/approvals`
+
+.. _plm/eco/closing-stage:
+
+Closing stages
+--------------
+
+Click an |ECO| type from :menuselection:`PLM app --> Overview` to open the Kanban view of |ECOs| of
+this type.
+
+To configure a closing stage that applies |BOM|, edit the stage and tick the boxes for
+:guilabel:`Folded in kanban view`, :guilabel:`Allow to apply changes`, and :guilabel:`Final Stage`.
+When ECO cards are placed in a stage that will *Allow to apply changes*, then any |BOM| and
+operations changes validated in the |ECOs| will immediately be put into effect. To create a
+cancelled stage, create or edit a stage and tick the boxes for :guilabel:`Folded in kanban view` and
+:guilabel:`Final Stage`. |ECOs| in this stage are removed from the pipeline, but will not make
+changes.
+
+.. example::
+   The closing stage, `Effective` is configured by checking the :guilabel:`Folded in kanban view`,
+   :guilabel:`Allow to apply changes`, and :guilabel:`Final Stage` options
+
+   .. image:: eco_type/closing-stage.png
+      :alt: Configuration of the closing stage.
+
+
+==================================================
+SECTION: engineering_change_orders.rst
+PATH: applications/inventory_and_mrp/plm/manage_changes/engineering_change_orders.rst
+==================================================
+
+=========================
+Engineering change orders
+=========================
+
+.. |BOM| replace:: :abbr:`BoM (Bill of Materials)`
+.. |BOMs| replace:: :abbr:`BoMs (Bills of Materials)`
+.. |ECO| replace:: :abbr:`ECO (Engineering Change Order)`
+.. |ECOs| replace:: :abbr:`ECOs (Engineering Change Orders)`
+
+.. _plm/eco:
+
+Utilize *engineering change orders* (*ECOs*) to track, implement, and revert change versions made to
+products, and :doc:`bills of materials <../../manufacturing/basic_setup/bill_configuration>`.
+
+Engineering change orders can be created:
+
+#. :ref:`directly in the ECO type <plm/eco/create-eco>`.
+#. automatically from feedback submitted to the :ref:`ECO type's email alias <plm/eco/eco-type>`.
+
+.. _plm/eco/create-eco:
+
+Create ECO
+==========
+
+To create a new |ECO|, begin by navigating to the **PLM** app. Then, select the |ECO| type that
+should be used to track the progress of the change. On the :guilabel:`Engineering Change Orders`
+page, click the :guilabel:`New` button in the top-left corner.
+
+.. note::
+   :doc:`ECO types <eco_type>` categorize and organize change orders. Doing so can ensure that
+   employees only view the |ECOs| related to their responsibilities, whether it involves new product
+   introductions, targeted product line updates, or regulatory compliance fulfillment.
+
+On the |ECO| form, fill in the following fields accordingly:
+
+- :guilabel:`Description` is a brief summary of the improvement.
+- :guilabel:`Type`: specifies the |ECO| type project for organizing the |ECOs|.
+- :guilabel:`Apply on` determines if the |ECO| changes the :guilabel:`Bill of Materials` or the
+  :guilabel:`Product Only`.
+- :guilabel:`Product` indicates the product being improved.
+- :guilabel:`Bill of Materials` specifies the changed |BOM|. It auto-populates if the product in
+  :guilabel:`Product` field has an existing |BOM|. If multiple |BOMs| exist, select the intended
+  radio options from the drop-down menu.
+
+   .. important::
+      A :guilabel:`Product` must be selected before :guilabel:`Bill of Materials` options is
+      available.
+
+- :guilabel:`Company` field is used in multi-company databases. Specify if the change applies to
+  products in a specific company, or leave blank if the change applies to all companies.
+
+   .. note::
+      :guilabel:`Company` is only available to specify with multiple companies enabled. See
+      :doc:`../../../general/companies/multi_company`.
+
+- :guilabel:`Responsible` represents the assignee in charge of this |ECO|. (Optional)
+- :guilabel:`Effective` specifies when the |ECO| becomes live. Choosing :guilabel:`As soon as
+  possible` means the |ECO| applies to the production |BOM| as soon as an authorized user
+  :ref:`applies the changes <plm/eco/apply-changes>`. :guilabel:`At Date` with a specific date
+  selected will only apply the |BOM| at that date, making it easier to track the version history of
+  the |BOM| in production.
+- :guilabel:`Tags` are assigned to |ECOs| for prioritization and organization. Create a new tag by
+  typing the name in the field and selecting :guilabel:`Create` from the drop-down menu. (Optional)
+
+After filling out the |ECO| form, click the :guilabel:`Start Revision` button to begin implementing
+the changes.
+
+By pressing :guilabel:`Start Revision`, three actions occur:
+
+#. The :guilabel:`Documents` smart button appears, storing the relevant files of the |BOM|.
+#. A copy of the production |BOM| is stored in the newly-appeared :guilabel:`Revision` smart button
+   of the |ECO|. The next available version number (e.g., `V2`, `V3`, ...) is also assigned to keep
+   track of all |BOM| versions.
+#. The stages of the |ECO| :guilabel:`Type` are displayed in the top-right corner of the |ECO|.
+
+.. note::
+   The :guilabel:`Revision` smart button is available **only** when the :guilabel:`Bill of
+   Materials` radio button is selected in the :guilabel:`Apply on` field, and the :guilabel:`Start
+   Revision` button has been pressed.
+
+.. image:: engineering_change_orders/eco-form.png
+   :alt: ECO with overview of stages in the top-right corner, and Revision smart button.
+
+Change components
+=================
+
+To modify the components in a |BOM|, click the :guilabel:`Revision` smart button on an |ECO| to
+access the new version of the |BOM|. Odoo distinguishes the non-production version of the |BOM| from
+the current version, by flagging the test |BOM| with a large :guilabel:`Archived` tag.
+
+.. example::
+   After clicking the :guilabel:`Start Revision` button for an |ECO| for the product, `[D_0045
+   Stool]`, make changes to the product's |BOM| by clicking the :guilabel:`Revision` smart button.
+   Doing so opens the archived |BOM|, marked with a large red :guilabel:`Archived` flag.
+
+   .. image:: engineering_change_orders/archived-bom.png
+      :alt: Show the archived Bill of Materials.
+
+On the new |BOM|, in the :guilabel:`Components` tab, proceed to modify the components list, by
+changing the :guilabel:`Quantity` of existing components, adding new components using the
+:guilabel:`Add a line` button, and removing components with the :guilabel:`🗑️ (trash)` icon.
+
+.. _plm/eco/example-keyboard:
+
+.. example::
+   In version two of the |BOM| for a keyboard, the component quantities are reduced, and an
+   additional component, `Stabilizers`, is added.
+
+   .. image:: engineering_change_orders/version-2-bom.png
+      :alt: A revised BOM
+
+Compare changes
+---------------
+
+To compare a revised |BOM| to the previous version, navigate to the |ECO| for that |BOM| in either
+of these ways:
+
+#. From the revised |BOM|, click the |ECO| name (for example, `ECO005: Improve...`) in the
+   breadcrumbs located in the top-left corner.
+#. From the :guilabel:`PLM Overview`, click the :guilabel:`Engineering Changes` button on the
+   :guilabel:`BOM Updates` Kanban card. Click the Kanban card for the appropriate |ECO| to open it.
+
+On the |ECO| form, a new :guilabel:`BoM Changes` tab displays the differences between the current
+|BOM| and the new version.
+
+Blue text indicates new components added to the revised |BOM| that are not in the production |BOM|.
+Black text represents updates shared by both |BOMs|, while red text indicates components removed in
+the revised |BOM|.
+
+Changes and tests are encapsulated in the revised |BOM|, and do **not** affect the |BOM| currently
+used in production. That is, until the :ref:`changes are applied <plm/eco/apply-changes>`.
+
+.. example::
+   View the summary of the differences between the current and revised keyboard |BOMs| in the
+   :guilabel:`BoM Changes` tab of the |ECO|.
+
+   .. image:: engineering_change_orders/bom-changes.png
+      :alt: View summary of component changes in the BoM Changes tab.
+
+Change operations
+=================
+
+To modify the operations in a |BOM|, click the :guilabel:`Revision` smart button on an |ECO| to
+access the archived, new version of the |BOM|.
+
+In the new |BOM| version, switch to the :guilabel:`Operations` tab to view and edit |BOM|
+operations. To make changes, select each operation, which opens the corresponding :guilabel:`Open:
+Operations` pop-up window.
+
+.. note::
+   The :guilabel:`Operations` tab is *not* available by default. To enable it, navigate to
+   :menuselection:`Manufacturing app --> Configuration --> Settings`, and check the :guilabel:`Work
+   Orders` box.
+
+Make changes to any of the fields in the :guilabel:`Open: Operations` pop-up window, then click
+:guilabel:`Save` once completed.
+
+Create new operations by clicking the :guilabel:`Add a line` button, and remove new operations by
+clicking the :guilabel:`Archive Operation` button.
+
+Compare changes
+---------------
+
+To compare a revised operations to the previous version, navigate to the |ECO| for the |BOM| in
+either of these ways:
+
+#. From the revised |BOM|, click the |ECO| name (for example, `ECO005: Improve...`) in the
+   breadcrumbs located in the top-left corner
+#. From the :guilabel:`PLM Overview`,  select the |ECO| type card, and then the correct |ECO| from
+   the Kanban view.
+
+On the |ECO| form, a new :guilabel:`Operation Changes` tab displays the differences between the
+current production |BOM| and the new version.
+
+Blue text indicates new operations added to the revised |BOM| that do not yet exist in the
+production |BOM|. Black text represents updates shared by both |BOMs|, while red text indicates
+operations removed in the revised |BOM|.
+
+Modifications to the |BOM| in an |ECO| will **not** affect the |BOM| used in production. That is,
+until the :ref:`changes are applied <plm/eco/apply-changes>`.
+
+In the :guilabel:`Operation Changes` tab, each row of details, beneath the columns in the table,
+reflect the following information:
+
+- :guilabel:`Operation`: Name of the operation that was modified.
+- :guilabel:`Step`: specifies the quality control point, visible when the operation includes
+  detailed instructions.
+
+.. note::
+   To check for instructions, click the operation line item in the :guilabel:`Operations` tab of a
+   |BOM|. Then, in the :guilabel:`Open: Operations` pop-up window, look for the
+   :guilabel:`Instructions` smart button displayed at the top.
+
+.. example::
+   The `Assembly` :guilabel:`Operation` includes `10` detailed :guilabel:`Instructions` to complete
+   it.
+
+   .. image:: engineering_change_orders/instructions-smart-button.png
+      :alt: Show Instructions smart button to check whether an operation has additional
+            instructions.
+
+- :guilabel:`Step Type` details the type of quality control for further instructions in the
+  operation.
+- :guilabel:`Type` corresponds with the colored text to specify how the revised |BOM| differs from
+  the production |BOM|. Operation change types can be :guilabel:`Add`, :guilabel:`Remove`, or
+  :guilabel:`Update`.
+- :guilabel:`Work Center` specifies the work center at which the operation is performed.
+- :guilabel:`Manual Duration Change` refers to the change in the :guilabel:`Default Duration` field
+  in the :guilabel:`Open: Operations` pop-up window, which specifies the expected time for
+  completing the operation.
+
+.. example::
+   The :guilabel:`Operation Changes` tab compares the production |BOM| with the revised |BOM| in the
+   |ECO|.
+
+   In the revised |BOM|, a new `Assembly` :guilabel:`Operation` at the :guilabel:`Work Center`
+   `Assembly Line 1` is added. In addition, the expected duration of the operation is `20.00`
+   minutes, as specified by the :guilabel:`Manual Duration Change`.
+
+   To supplement the `Assembly` operation, two quality control point instructions are added:
+
+   #. The first is the :guilabel:`Step` `QCP00039`, a :guilabel:`Step Type` to :guilabel:`Register
+      Production` of components.
+   #. The second :guilabel:`Step` is `QCP00034`, an `Instructions` :guilabel:`Step Type` that
+      provides additional assembly details.
+
+   .. image:: engineering_change_orders/operation-changes.png
+      :alt: Operation Changes tab in an |ECO|.
+
+.. _plm/eco/apply-changes:
+
+Apply changes
+=============
+
+After verifying the changes, move the |ECO| to a :ref:`verification stage <plm/eco/stage-config>`,
+which are stages that require approval before the revised changes can be applied to the production
+|BOM|.
+
+Once the approvers accept the changes, the :guilabel:`Apply Changes` button becomes available. Click
+this button, and the |ECO| is automatically moved to a closing stage. The changes are applied, which
+archives the original production |BOM|, and the revised |BOM| becomes the new production |BOM|.
+
+Verify changes
+--------------
+
+To ensure the changes are live, from the |ECO| where the :guilabel:`Apply Changes` button was
+pressed, return to the revised |BOM| by clicking the :guilabel:`Revision` smart button.
+
+On the revised |BOM|, the large red :guilabel:`Archived` flag is removed.
+
+To further verify the changes, check the production |BOM| by going to :menuselection:`Manufacturing
+app --> Products --> Products` and select the product.
+
+Then, on the product form, click the :guilabel:`Bill of Materials` smart button, and select the
+|BOM| from the list. In the :guilabel:`Miscellaneous` tab of the |BOM|, the :guilabel:`Version`
+field is updated to match the version number shown on the :guilabel:`Revision` smart button of the
+latest |ECO|.
+
+.. example::
+   After applying the changes of the |ECO| for the :ref:`keyboard <plm/eco/example-keyboard>`, view
+   the version of the current keyboard |BOM| in the :guilabel:`Miscellaneous` tab. Here, the
+   :guilabel:`Version` number has been updated to `2`, matching the `V2` that appears in the
+   :guilabel:`Revision` smart button of the |ECO|.
+
+   .. image:: engineering_change_orders/bom-version.png
+      :alt: View current BOM version in the Miscellaneous tab.
+
+View changes
+============
+
+To review proposed changes, navigate to the :menuselection:`PLM app --> Overview`. In the `BOM
+Updates` |ECO| type card, the :guilabel:`# Engineering Changes` button represents the number of
+operational changes created.
+
+Click on the :guilabel:`# Engineering Changes` button to open the Kanban view of the |ECO| type. To
+view the suggestion, select an |ECO| in the `New` stage.
+
+On the |ECO|, view a summary of the proposed changes in the :guilabel:`Operation Changes` tab. Click
+the :guilabel:`Revision` smart button to navigate to the revised |BOM| and look into the proposed
+changes in greater detail.
+
+.. example::
+   An operator suggested another check for broken components by adding a step while performing the
+   `Assemble switches` operation for the :abbr:`MO (Manufacturing Order)` `WH/MO/00010` for the
+   product, `Keyboard`.
+
+   Then, this created |ECO| can be viewed by navigating to the `BOM Changes` ECO type found in
+   :menuselection:`PLM app --> Overview`.
+
+   The :guilabel:`Responsible` field is assigned to the operator who made the suggestion, allowing
+   the employee revising the |BOM| to seek further clarification from the person who proposed the
+   changes.
+
+
+   .. image:: engineering_change_orders/view-bom-change.png
+      :alt: Find the new ECO in the "BOM Changes" ECO type, in the "New" stage.
+
+On the revised |BOM|, switch to the :guilabel:`Operations` tab, and select the :icon:`fa-list-ul`
+:guilabel:`(Show Instructions)` icon. Doing so opens a list of :guilabel:`Steps` to perform the
+operation, with the newest instruction titled `New Step Suggestion:`, followed by the user-entered
+title. Click the line item to view the suggested changes.
+
+.. image:: engineering_change_orders/show-instructions.png
+   :alt: "Show Instructions" icon in the *Operations* tab of a BoM.
+
+Quality control points
+----------------------
+
+.. important::
+   The :doc:`Quality <../../quality>` app is required to configure quality control points.
+
+On the :ref:`quality control point <quality/quality_management/quality-control-points>` form, ensure
+the following form fields are accurately filled out to give detailed instructions for operators:
+
+- :guilabel:`Title`: rename to give a concise description of the new instruction.
+- :guilabel:`Control per`: using the drop-down menu, determine whether this instruction applies
+  broadly for the :guilabel:`Product`, specifically for this :guilabel:`Operation` *only*, or a
+  particular :guilabel:`Quantity` of the product.
+- :guilabel:`Type`: categorizes the control point type. From the drop-down menu, select
+  :guilabel:`Instructions` to detail an instruction for the worker. To receive input from the
+  workers, select the :guilabel:`Take a Picture`, :guilabel:`Register Consumed Materials`,
+  :guilabel:`Print Label`, or other :ref:`quality check options
+  <quality/quality_management/quality-control-points>`.
+
+.. seealso::
+   :ref:`Configure quality control points <quality/quality_management/quality-control-points>`
+
+Once the quality control point is configured, return to the :guilabel:`Steps` list using the
+breadcrumbs. Finally, drag the last quality control line item to its intended order of instructions.
+
+.. example::
+   Drag and reorder the `Check for broken switches` instruction, by clicking and dragging its
+   :icon:`oi-draggable` :guilabel:`(draggable)` icon to move it from the bottom to the second
+   position.
+
+   .. image:: engineering_change_orders/reorder.png
+      :alt: Drag and reorder instructions by selecting the "draggable" icon on the far left.
+
+
+==================================================
+SECTION: manage_changes.rst
+PATH: applications/inventory_and_mrp/plm/manage_changes.rst
+==================================================
+
+=================
+Change management
+=================
+
+.. toctree::
+   :titlesonly:
+
+   manage_changes/engineering_change_orders
+   manage_changes/eco_type
+   manage_changes/version_control
+
+
+==================================================
+SECTION: management.rst
+PATH: applications/inventory_and_mrp/plm/management.rst
+==================================================
+
+==================
+Project management
+==================
+
+.. toctree::
+   :titlesonly:
+
+   management/approvals
+
+
+==================================================
+SECTION: version_control.rst
+PATH: applications/inventory_and_mrp/plm/manage_changes/version_control.rst
+==================================================
+
+===============
+Version control
+===============
+
+.. |BOM| replace:: :abbr:`BoM (Bill of Materials)`
+.. |BOMs| replace:: :abbr:`BoMs (Bills of Materials)`
+.. |ECO| replace:: :abbr:`ECO (Engineering Change Order)`
+.. |ECOs| replace:: :abbr:`ECOs (Engineering Change Orders)`
+
+Use Odoo's *Product Lifecycle Management (PLM)* to manage previous versions of bills of materials
+(BoMs). Store former assembly instructions, component details, and past product design files while
+keeping the past details out of the production |BOM|.
+
+Easily revert to previous |BOM| versions, when needed. Additionally, use *PLM* to trace which |BOM|
+version was active on specific dates for recalls or customer complaints.
+
+Every |BOM| version is stored in an *engineering change order* (ECO) for organized testing and
+improvements without disrupting normal manufacturing operations.
+
+.. seealso::
+   :ref:`Engineering change order <plm/eco>`
+
+Current BoM version
+===================
+
+To see the current version of the |BOM| used in production, go to :menuselection:`PLM app --> Master
+Data --> Bill of Materials`, and select the desired |BOM| from the list. Then, switch to the
+:guilabel:`Miscellaneous` tab, where the currently live :guilabel:`Version` of the |BOM| is
+displayed.
+
+.. note::
+   |BOMs| can also be accessed from :menuselection:`Manufacturing app --> Products --> Bill of
+   Materials`.
+
+.. image:: version_control/current-version.png
+   :align: center
+   :alt: Show the current version BOM in the Misc tab.
+
+Version history
+===============
+
+To manage all former, current, and future versions of a |BOM|, begin by navigating to
+:menuselection:`Manufacturing app --> Products --> Bills of Materials` and click the desired |BOM|.
+
+From the |BOM| page, click the :guilabel:`ECO` smart button, and switch to list view by selecting
+the :guilabel:`≣ (four horizontal lines)` icon on the top right corner.
+
+.. note::
+   The :guilabel:`ECO` smart button is visible on the |BOM| **only** if the *PLM* app is installed.
+
+.. image:: version_control/eco-smart-button.png
+   :align: center
+   :alt: Show ECO smart button on a BoM.
+
+In the list of |ECOs| for the product, navigate to the search bar at the top, and click the
+:guilabel:`▼ (down arrow)` icon on the right to access a drop-down menu of :guilabel:`Filters`.
+
+Next, filter by :guilabel:`Done` |ECOs| to view: the revision history of the |BOM|, the
+:guilabel:`Responsible` user who applied the change, and the :guilabel:`Effective Date` of the
+|BOM|.
+
+Click each |ECO| to view the past components, operations, and design files associated with the
+|BOM|.
+
+.. image:: version_control/eco-list.png
+   :align: center
+   :alt: Display ECO revision history for a BoM for a product.
+
+.. note::
+   If the :guilabel:`Effective Date` field is empty, the :guilabel:`Effective` date of the |ECO| is
+   automatically set to :guilabel:`As soon as possible` and no dates are recorded in the revision
+   history of the |BOM|.
+
+   .. image:: version_control/no-effective-date.png
+      :align: center
+      :alt: List of BOM effective dates.
+
+.. tip::
+   A workaround for checking when the |BOM| went live is by navigating to the chatter, and hovering
+   over the time the |ECO| was moved to the :ref:`closing stage <plm/eco/stage-config>`.
+
+Design files
+============
+
+Attach computer-aided design (CAD) files, PDFs, images, or other design material to the |BOM|
+itself.
+
+To do so, navigate to :menuselection:`PLM app --> Master Data --> Bill of Materials`, and select the
+desired |BOM|. On the |BOM|, navigate to the *chatter*, and click the :guilabel:`📎 (paperclip)`
+icon.
+
+The files associated with the |BOM| are displayed in the :guilabel:`Files` section. To add more
+design files, select the :guilabel:`Attach files` button.
+
+.. image:: version_control/attach-files.png
+    :align: center
+    :alt: Show paperclip icon in the chatter to attach files to a BoM.
+
+Manage design files in an ECO
+-----------------------------
+
+Add, modify, and remove files in an |ECO|. Once the |ECO| is approved and applied, the new files are
+automatically linked to the production |BOM|. Archived files are removed from the |BOM|, but are
+still accessible in the |ECO|.
+
+To manage the design files in the |ECO|, begin by navigating to :menuselection:`PLM app --> Changes`
+and choose the desired |ECO|. Next, open the :guilabel:`Attachments` page by clicking the
+:guilabel:`Documents` smart button.
+
+Hover over each attachment to reveal the :guilabel:`︙ (three vertical dots)` icon. From there,
+choose whether to :guilabel:`Edit`, :guilabel:`Remove`, or :guilabel:`Download` the file. Any
+changes made to these files are contained within the |ECO|, and will only apply to the production
+|BOM| once the :ref:`changes are applied <plm/eco/apply-changes>`.
+
+.. example::
+   In the `Create 60% keyboard` |ECO|, the design files are from the original `100% keyboard` |BOM|.
+   To replace the keyboard PDF, begin by selecting the :guilabel:`Documents` smart button.
+
+   .. image:: version_control/documents-smart-button.png
+      :align: center
+      :alt: Show *Documents* smart button from an active ECO.
+
+   On the :guilabel:`Attachments` page, hover over the `100% keyboard manual.pdf` design file, and
+   click the :guilabel:`︙ (three vertical dots)` icon. Then, click the :guilabel:`Remove` option to
+   archive the file.
+
+   Next, on the same :guilabel:`Attachments` page, click the :guilabel:`Upload` button to upload the
+   new design file, named `60% keyboard manual`.
+
+   .. image:: version_control/attachments.png
+      :align: center
+      :alt: View of *Attachments* page from the *Documents* smart button. Displays one archived and
+            one newly added attachment.
+
+.. note::
+   Archived files are **not** permanently deleted — they can still be accessed in the previous
+   |ECO|, or as an archived file in the latest |ECO|, where the archival occurred.
+
+Apply rebase
+============
+
+Odoo simplifies merge conflict resolution for concurrent |ECOs| on the same product.
+
+Conflicts can occur when the production |BOM| is updated while other |ECOs| are modifying the
+previous version. Differences between the new and previous production |BOMs| are displayed in the
+:guilabel:`Previous Eco Bom Changes` tab, visible only in this scenario.
+
+To resolve conflicts and retain |ECO| changes, click the :guilabel:`Apply Rebase` button.
+
+.. example::
+   Two |ECOs|, `ECO0011` and `ECO0012`, are created when the current |BOM| version is `5`. In
+   `ECO0011`, a new component, `Space stabilizer`, is added, and the changes are applied. This means
+   the current |BOM| version has become `6`.
+
+   .. image:: version_control/branch-change.png
+      :align: center
+      :alt: Apply changes to an ECO to update the production BOM.
+
+   This means `ECO0012` is modifying an outdated |BOM|. As shown in the :guilabel:`Previous Eco Bom
+   Changes` tab, the |BOM| is missing the `Space stabilizer`.
+
+   To ensure the changes applied by `ECO0011` are kept when the changes occur in `ECO0012`, click
+   the :guilabel:`Apply Rebase` button to apply the previous |ECO| changes, without affecting the
+   changes already made to `ECO0012`.
+
+   .. image:: version_control/merge-change.png
+      :align: center
+      :alt: Click the *Apply Rebase* button to update the BOM to match the production BOM.
+

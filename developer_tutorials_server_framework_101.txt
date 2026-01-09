@@ -1,0 +1,3281 @@
+
+
+==================================================
+SECTION: 01_architecture.rst
+PATH: developer/tutorials/server_framework_101/01_architecture.rst
+==================================================
+
+.. _tutorials/server_framework_101/01_architecture:
+
+================================
+Chapter 1: Architecture Overview
+================================
+
+Multitier application
+=====================
+
+Odoo follows a `multitier architecture`_, meaning that the presentation, the business
+logic and the data storage are separated. More specifically, it uses a three-tier architecture
+(image from Wikipedia):
+
+.. image:: 01_architecture/three_tier.svg
+    :align: center
+    :alt: Three-tier architecture
+
+The presentation tier is a combination of HTML5, JavaScript and CSS. The logic tier is exclusively
+written in Python, while the data tier only supports PostgreSQL as an RDBMS.
+
+Depending on the scope of your module, Odoo development can be done in any of these tiers.
+Therefore, before going any further, it may be a good idea to refresh your memory if you don't have
+an intermediate level in these topics.
+
+In order to go through this tutorial, you will need a very basic knowledge of HTML and an intermediate
+level of Python. Advanced topics will require more knowledge in the other subjects. There are
+plenty of tutorials freely accessible, so we cannot recommend one over another since it depends
+on your background.
+
+For reference this is the official `Python tutorial`_.
+
+.. note::
+  Since version 15.0, Odoo is actively transitioning to using its own in-house developed `OWL
+  framework <https://odoo.github.io/owl/>`_ as part of its presentation tier. The legacy JavaScript
+  framework is still supported but will be deprecated over time. This will be discussed further in
+  advanced topics.
+
+Odoo modules
+============
+
+Both server and client extensions are packaged as *modules* which are
+optionally loaded in a *database*. A module is a collection of functions and data that target a
+single purpose.
+
+Odoo modules can either add brand new business logic to an Odoo system or
+alter and extend existing business logic. One module can be created to add your
+country's accounting rules to Odoo's generic accounting support, while
+a different module can add support for real-time visualisation of a bus fleet.
+
+Everything in Odoo starts and ends with modules.
+
+Terminology: developers group their business features in Odoo *modules*. The main user-facing
+modules are flagged and exposed as *Apps*, but a majority of the modules aren't Apps. *Modules*
+may also be referred to as *addons* and the directories where the Odoo server finds them
+form the ``addons_path``.
+
+Composition of a module
+-----------------------
+
+An Odoo module **can** contain a number of elements:
+
+:ref:`Business objects <reference/orm>`
+    A business object (e.g. an invoice) is declared as a Python class. The fields defined in
+    these classes are automatically mapped to database columns thanks to the
+    :abbr:`ORM (Object-Relational Mapping)` layer.
+
+:doc:`Object views <../../reference/user_interface/view_architectures>`
+    Define UI display
+
+:ref:`Data files <reference/data>`
+    XML or CSV files declaring the model data:
+
+    * :doc:`views <../../reference/user_interface/view_architectures>` or
+      :ref:`reports <reference/reports>`,
+    * configuration data (modules parametrization, :ref:`security rules <reference/security>`),
+    * demonstration data
+    * and more
+
+:ref:`Web controllers <reference/controllers>`
+    Handle requests from web browsers
+
+Static web data
+    Images, CSS or JavaScript files used by the web interface or website
+
+None of these elements are mandatory. Some modules may only add data files (e.g. country-specific
+accounting configuration), while others may only add business objects. During this training, we will
+create business objects, object views and data files.
+
+Module structure
+----------------
+
+Each module is a directory within a *module directory*. Module directories
+are specified by using the :option:`--addons-path <odoo-bin --addons-path>`
+option.
+
+An Odoo module is declared by its :ref:`manifest <reference/module/manifest>`.
+
+When an Odoo module includes business objects (i.e. Python files), they are organized as a
+`Python package <https://docs.python.org/3/tutorial/modules.html#packages>`_
+with a ``__init__.py`` file. This file contains import instructions for various Python
+files in the module.
+
+Here is a simplified module directory:
+
+.. code-block:: bash
+
+    module
+    ├── models
+    │   ├── *.py
+    │   └── __init__.py
+    ├── data
+    │   └── *.xml
+    ├── __init__.py
+    └── __manifest__.py
+
+Odoo Editions
+=============
+
+Odoo is available in `two versions`_: Odoo Enterprise (licensed & shared sources) and Odoo Community
+(open-source). In addition to services such as support or upgrades, the Enterprise version provides extra
+functionalities to Odoo. From a technical point-of-view, these functionalities are simply
+new modules installed on top of the modules provided by the Community version.
+
+Ready to start? It is now time to :doc:`write your own application <02_newapp>`!
+
+.. _multitier architecture:
+    https://en.wikipedia.org/wiki/Multitier_architecture
+
+.. _Python tutorial:
+    https://docs.python.org/3.7/tutorial/
+
+.. _two versions:
+    https://www.odoo.com/page/editions
+
+
+==================================================
+SECTION: 02_newapp.rst
+PATH: developer/tutorials/server_framework_101/02_newapp.rst
+==================================================
+
+============================
+Chapter 2: A New Application
+============================
+
+The purpose of this chapter is to lay the foundation for the creation of a completely new Odoo module.
+We will start from scratch with the minimum needed to have our module recognized by Odoo.
+In the upcoming chapters, we will progressively add features to build a realistic business case.
+
+The Real Estate Advertisement module
+====================================
+
+Our new module will cover a business area which is very specific and therefore not included in the
+standard set of modules: real estate. It is worth noting that before
+developing a new module, it is good practice to verify that Odoo doesn't already provide a way
+to answer the specific business case.
+
+Here is an overview of the main list view containing some advertisements:
+
+.. image:: 02_newapp/overview_list_view_01.png
+   :align: center
+   :alt: List view 01
+
+The top area of the form view summarizes important information for the property, such as the name,
+the property type, the postcode and so on. The first tab contains information describing the
+property: bedrooms, living area, garage, garden...
+
+.. image:: 02_newapp/overview_form_view_01.png
+   :align: center
+   :alt: Form view 01
+
+The second tab lists the offers for the property. We can see here that potential buyers can make
+offers above or below the expected selling price. It is up to the seller to accept an offer.
+
+.. image:: 02_newapp/overview_form_view_02.png
+   :align: center
+   :alt: Form view 02
+
+Here is a quick video showing the workflow of the module.
+
+Hopefully, this video will be recorded soon :-)
+
+Prepare the addon directory
+===========================
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`manifest <reference/module/manifest>`.
+
+.. note::
+
+   **Goal**: the goal of this section is to have Odoo recognize our new module, which will
+   be an empty shell for now. It will be listed in the Apps:
+
+   .. image:: 02_newapp/app_in_list.png
+      :align: center
+      :alt: The new module appears in the list
+
+The first step of module creation is to create its directory. In the `tutorials`
+directory, add a new directory :file:`estate`.
+
+A module must contain at least 2 files: the ``__manifest__.py`` file and a ``__init__.py`` file.
+The ``__init__.py`` file can remain empty for now and we'll come back to it in the next chapter.
+On the other hand, the ``__manifest__.py`` file must describe our module and cannot remain empty.
+Its only required field is the ``name``, but it usually contains much more information.
+
+Take a look at the
+`CRM file <https://github.com/odoo/odoo/blob/67a952f30731fc00941587ae165b7a885da0e77e/addons/crm/__manifest__.py>`__
+as an example. In addition to providing the description of the module (``name``, ``category``,
+``summary``, ``website``...), it lists its dependencies (``depends``). A dependency means that the
+Odoo framework will ensure that these modules are installed before our module is installed. Moreover, if
+one of these dependencies is uninstalled, then our module and **any other that depends on it will also
+be uninstalled**. Think about your favorite Linux distribution package manager
+(``apt``, ``dnf``, ``pacman``...): Odoo works in the same way.
+
+.. exercise:: Create the required addon files.
+
+    Create the following folders and files:
+
+    - ``/home/$USER/src/tutorials/estate/__init__.py``
+    - ``/home/$USER/src/tutorials/estate/__manifest__.py``
+
+    The ``__manifest__.py`` file should only define the name and the dependencies of our modules.
+    The only necessary framework module for now is ``base``.
+
+
+Restart the Odoo server and go to Apps. Click on Update Apps List, search for ``estate`` and...
+tadaaa, your module appears! Did it not appear? Maybe try removing the default 'Apps' filter ;-)
+
+.. warning::
+   Remember to enable the :ref:`developer mode <developer-mode>` as explained in the previous
+   chapter. You won't see the :guilabel:`Update Apps List` button otherwise.
+
+.. exercise:: Make your module an 'App'.
+
+    Add the appropriate key to your ``__manifest__.py`` so that the module appears when the 'Apps'
+    filter is on.
+
+You can even install the module! But obviously it's an empty shell, so no menu will appear.
+
+All good? If yes, then let's :doc:`create our first model <03_basicmodel>`!
+
+
+==================================================
+SECTION: 03_basicmodel.rst
+PATH: developer/tutorials/server_framework_101/03_basicmodel.rst
+==================================================
+
+==================================
+Chapter 3: Models And Basic Fields
+==================================
+
+At the end of the :doc:`previous chapter <02_newapp>`, we were able to
+create an Odoo module. However, at this point it is still an empty shell which doesn't allow us to
+store any data. In our real estate module, we want to store the information related to the
+properties (name, description, price, living area...) in a database. The Odoo framework provides
+tools to facilitate database interactions.
+
+Before moving forward in the exercise, make sure the ``estate`` module is installed, i.e. it
+must appear as 'Installed' in the Apps list.
+
+.. warning::
+
+   Do not use mutable global variables.
+
+   A single Odoo instance can run several databases in parallel within the same python process.
+   Distinct modules might be installed on each of these databases, therefore we cannot rely on
+   global variables that would be updated depending on installed modules.
+
+Object-Relational Mapping
+=========================
+
+**Reference**: the documentation related to this topic can be found in the
+:ref:`reference/orm/model` API.
+
+.. note::
+
+    **Goal**: at the end of this section, the table ``estate_property`` should be created:
+
+    .. code-block:: text
+
+        $ psql -d rd-demo
+        rd-demo=# SELECT COUNT(*) FROM estate_property;
+        count
+        -------
+            0
+        (1 row)
+
+A key component of Odoo is the `ORM`_ layer.
+This layer avoids having to manually write most `SQL`_
+and provides extensibility and security services\ [#rawsql]_.
+
+Business objects are declared as Python classes extending
+:class:`~odoo.models.Model`, which integrates them into the automated
+persistence system.
+
+Models can be configured by setting attributes in their
+definition. The most important attribute is
+:attr:`~odoo.models.Model._name`, which is required and defines the name for
+the model in the Odoo system. Here is a minimum definition of a
+model::
+
+    from odoo import models
+
+    class TestModel(models.Model):
+        _name = "test_model"
+
+This definition is enough for the ORM to generate a database table named `test_model`. By
+convention all models are located in a `models` directory and each model is defined in its own
+Python file.
+
+Take a look at how the ``crm_recurring_plan`` table is defined and how the corresponding Python
+file is imported:
+
+1. The model is defined in the file ``crm/models/crm_recurring_plan.py``
+   (see `here <https://github.com/odoo/odoo/blob/e80911aaead031e7523173789e946ac1fd27c7dc/addons/crm/models/crm_recurring_plan.py#L1-L9>`__)
+2. The file ``crm_recurring_plan.py`` is imported in ``crm/models/__init__.py``
+   (see `here <https://github.com/odoo/odoo/blob/e80911aaead031e7523173789e946ac1fd27c7dc/addons/crm/models/__init__.py#L15>`__)
+3. The folder ``models`` is imported in ``crm/__init__.py``
+   (see `here <https://github.com/odoo/odoo/blob/e80911aaead031e7523173789e946ac1fd27c7dc/addons/crm/__init__.py#L5>`__)
+
+.. exercise:: Define the real estate properties model.
+
+    Based on example given in the CRM module, create the appropriate files and folder for the
+    ``estate_property`` table.
+
+    When the files are created, add a minimum definition for the
+    ``estate.property`` model.
+
+Any modification of the Python files requires a restart of the Odoo server. When we restart
+the server, we will add the parameters ``-d`` and ``-u``:
+
+.. code-block:: console
+
+    $ ./odoo-bin --addons-path=addons,../enterprise/,../tutorials/ -d rd-demo -u estate
+
+``-u estate`` means we want to upgrade the ``estate`` module, i.e. the ORM will
+apply database schema changes. In this case it creates a new table. ``-d rd-demo`` means
+that the upgrade should be performed on the ``rd-demo`` database. ``-u`` should always be used in
+combination with ``-d``.
+
+During the startup you should see the following warnings:
+
+.. code-block:: text
+
+    ...
+    WARNING rd-demo odoo.models: The model estate.property has no _description
+    ...
+    WARNING rd-demo odoo.modules.loading: The model estate.property has no access rules, consider adding one...
+    ...
+
+If this is the case, then you should be good! To be sure, double check with ``psql`` as demonstrated in
+the **Goal**.
+
+.. exercise:: Add a description.
+
+    Add a ``_description`` to your model to get rid of one of the warnings.
+
+Model fields
+============
+
+**Reference**: the documentation related to this topic can be found in the
+:ref:`reference/orm/fields` API.
+
+Fields are used to define what the model can store and where they are stored. Fields are
+defined as attributes in the model class::
+
+    from odoo import fields, models
+
+    class TestModel(models.Model):
+        _name = "test_model"
+        _description = "Test Model"
+
+        name = fields.Char()
+
+The ``name`` field is a :class:`~odoo.fields.Char` which will be represented as a Python
+unicode ``str`` and a SQL ``VARCHAR``.
+
+Types
+-----
+
+.. note::
+
+    **Goal**: at the end of this section, several basic fields should have been added to the table
+    ``estate_property``:
+
+    .. code-block:: text
+
+        $ psql -d rd-demo
+
+        rd-demo=# \d estate_property;
+                                                    Table "public.estate_property"
+            Column       |            Type             | Collation | Nullable |                   Default
+        --------------------+-----------------------------+-----------+----------+---------------------------------------------
+        id                 | integer                     |           | not null | nextval('estate_property_id_seq'::regclass)
+        create_uid         | integer                     |           |          |
+        create_date        | timestamp without time zone |           |          |
+        write_uid          | integer                     |           |          |
+        write_date         | timestamp without time zone |           |          |
+        name               | character varying           |           |          |
+        description        | text                        |           |          |
+        postcode           | character varying           |           |          |
+        date_availability  | date                        |           |          |
+        expected_price     | double precision            |           |          |
+        selling_price      | double precision            |           |          |
+        bedrooms           | integer                     |           |          |
+        living_area        | integer                     |           |          |
+        facades            | integer                     |           |          |
+        garage             | boolean                     |           |          |
+        garden             | boolean                     |           |          |
+        garden_area        | integer                     |           |          |
+        garden_orientation | character varying           |           |          |
+        Indexes:
+            "estate_property_pkey" PRIMARY KEY, btree (id)
+        Foreign-key constraints:
+            "estate_property_create_uid_fkey" FOREIGN KEY (create_uid) REFERENCES res_users(id) ON DELETE SET NULL
+            "estate_property_write_uid_fkey" FOREIGN KEY (write_uid) REFERENCES res_users(id) ON DELETE SET NULL
+
+
+There are two broad categories of fields: 'simple' fields, which are atomic
+values stored directly in the model's table, and 'relational' fields, which link
+records (of the same or different models).
+
+Simple field examples are :class:`~odoo.fields.Boolean`, :class:`~odoo.fields.Float`,
+:class:`~odoo.fields.Char`, :class:`~odoo.fields.Text`, :class:`~odoo.fields.Date`
+and :class:`~odoo.fields.Selection`.
+
+.. exercise:: Add basic fields to the Real Estate Property table.
+
+    Add the following basic fields to the table:
+
+    ========================= =========================
+    Field                     Type
+    ========================= =========================
+    name                      Char
+    description               Text
+    postcode                  Char
+    date_availability         Date
+    expected_price            Float
+    selling_price             Float
+    bedrooms                  Integer
+    living_area               Integer
+    facades                   Integer
+    garage                    Boolean
+    garden                    Boolean
+    garden_area               Integer
+    garden_orientation        Selection
+    ========================= =========================
+
+    The ``garden_orientation`` field must have 4 possible values: 'North', 'South', 'East'
+    and 'West'. The selection list is defined as a list of tuples, see
+    `here <https://github.com/odoo/odoo/blob/b0e0035b585f976e912e97e7f95f66b525bc8e43/addons/crm/report/crm_activity_report.py#L31-L34>`__
+    for an example.
+
+When the fields are added to the model, restart the server with ``-u estate``
+
+.. code-block:: console
+
+    $ ./odoo-bin --addons-path=addons,../enterprise/,../tutorials/ -d rd-demo -u estate
+
+Connect to ``psql`` and check the structure of the table ``estate_property``. You'll notice that
+a couple of extra fields were also added to the table. We will revisit them later.
+
+Common Attributes
+-----------------
+
+.. note::
+
+    **Goal**: at the end of this section, the columns ``name`` and ``expected_price`` should be
+    not nullable in the table ``estate_property``:
+
+    .. code-block:: console
+
+        rd-demo=# \d estate_property;
+                                                    Table "public.estate_property"
+            Column       |            Type             | Collation | Nullable |                   Default
+        --------------------+-----------------------------+-----------+----------+---------------------------------------------
+        ...
+        name               | character varying           |           | not null |
+        ...
+        expected_price     | double precision            |           | not null |
+        ...
+
+Much like the model itself, fields can be configured by passing
+configuration attributes as parameters::
+
+    name = fields.Char(required=True)
+
+Some attributes are available on all fields, here are the most common ones:
+
+:attr:`~odoo.fields.Field.string` (``str``, default: field's name)
+    The label of the field in UI (visible by users).
+:attr:`~odoo.fields.Field.required` (``bool``, default: ``False``)
+    If ``True``, the field can not be empty. It must either have a default
+    value or always be given a value when creating a record.
+:attr:`~odoo.fields.Field.help` (``str``, default: ``''``)
+    Provides long-form help tooltip for users in the UI.
+:attr:`~odoo.fields.Field.index` (``bool``, default: ``False``)
+    Requests that Odoo create a `database index`_ on the column.
+
+.. exercise:: Set attributes for existing fields.
+
+    Add the following attributes:
+
+    ========================= =========================
+    Field                     Attribute
+    ========================= =========================
+    name                      required
+    expected_price            required
+    ========================= =========================
+
+    After restarting the server, both fields should be not nullable.
+
+Automatic Fields
+----------------
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/fields/automatic`.
+
+You may have noticed your model has a few fields you never defined.
+Odoo creates a few fields in all models\ [#autofields]_. These fields are
+managed by the system and can't be written to, but they can be read if
+useful or necessary:
+
+:attr:`~odoo.fields.Model.id` (:class:`~odoo.fields.Id`)
+    The unique identifier for a record of the model.
+:attr:`~odoo.fields.Model.create_date` (:class:`~odoo.fields.Datetime`)
+    Creation date of the record.
+:attr:`~odoo.fields.Model.create_uid` (:class:`~odoo.fields.Many2one`)
+    User who created the record.
+:attr:`~odoo.fields.Model.write_date` (:class:`~odoo.fields.Datetime`)
+    Last modification date of the record.
+:attr:`~odoo.fields.Model.write_uid` (:class:`~odoo.fields.Many2one`)
+    User who last modified the record.
+
+
+Now that we have created our first model, let's
+:doc:`add some security <04_securityintro>`!
+
+
+.. [#autofields] it is possible to :ref:`disable the automatic creation of some
+                 fields <reference/fields/automatic/log_access>`
+.. [#rawsql] writing raw SQL queries is possible, but requires caution as this
+             bypasses all Odoo authentication and security mechanisms.
+
+.. _database index:
+    https://use-the-index-luke.com/sql/preface
+.. _ORM:
+    https://en.wikipedia.org/wiki/Object-relational_mapping
+.. _SQL:
+    https://en.wikipedia.org/wiki/SQL
+
+
+==================================================
+SECTION: 04_securityintro.rst
+PATH: developer/tutorials/server_framework_101/04_securityintro.rst
+==================================================
+
+==========================================
+Chapter 4: Security - A Brief Introduction
+==========================================
+
+In the :doc:`previous chapter <03_basicmodel>`, we created our first table
+intended to store business data. In a business application such as Odoo, one of the first questions
+to consider is who\ [#who]_ can access the data. Odoo provides a security mechanism to allow access
+to the data for specific groups of users.
+
+The topic of security is covered in more detail in :doc:`../restrict_data_access`. This chapter aims
+to cover the minimum required for our new module.
+
+Data Files (CSV)
+================
+
+Odoo is a highly data driven system. Although behavior is customized using Python code, part of a
+module's value is in the data it sets up when loaded. One way to load data is through a CSV
+file. One example is the `list of country states
+<{GITHUB_PATH}/odoo/addons/base/data/res.country.state.csv>`_ which is loaded at installation of the
+`base` module.
+
+.. code-block:: text
+
+    "id","country_id:id","name","code"
+    state_au_1,au,"Australian Capital Territory","ACT"
+    state_au_2,au,"New South Wales","NSW"
+    state_au_3,au,"Northern Territory","NT"
+    state_au_4,au,"Queensland","QLD"
+    ...
+
+- ``id`` is an :term:`external identifier`. It can be used to refer to the record
+  (without knowing its in-database identifier).
+- ``country_id:id`` refers to the country by using its :term:`external identifier`.
+- ``name`` is the name of the state.
+- ``code`` is the code of the state.
+
+These three fields are
+`defined <https://github.com/odoo/odoo/blob/2ad2f3d6567b6266fc42c6d2999d11f3066b282c/odoo/addons/base/models/res_country.py#L108-L111>`__
+in the ``res.country.state`` model.
+
+By convention, a file importing data is located in the ``data`` folder of a module. When the data
+is related to security, it is located in the ``security`` folder. When the data is related to
+views and actions (we will cover this later), it is located in the ``views`` folder.
+Additionally, all of these files must be declared in the ``data``
+list within the ``__manifest__.py`` file. Our example file is defined
+`in the manifest of the base module <https://github.com/odoo/odoo/blob/e8697f609372cd61b045c4ee2c7f0fcfb496f58a/odoo/addons/base/__manifest__.py#L29>`__.
+
+Also note that the content of the data files is only loaded when a module is installed or
+updated.
+
+.. warning::
+
+    The data files are sequentially loaded following their order in the ``__manifest__.py`` file.
+    This means that if data ``A`` refers to data ``B``, you must make sure that ``B``
+    is loaded before ``A``.
+
+    In the case of the country states, you will note that the
+    `list of countries <https://github.com/odoo/odoo/blob/e8697f609372cd61b045c4ee2c7f0fcfb496f58a/odoo/addons/base/__manifest__.py#L22>`__
+    is loaded **before** the
+    `list of country states <https://github.com/odoo/odoo/blob/e8697f609372cd61b045c4ee2c7f0fcfb496f58a/odoo/addons/base/__manifest__.py#L29>`__.
+    This is because the states refer to the countries.
+
+Why is all this important for security? Because all the security configuration of a model is loaded through
+data files, as we'll see in the next section.
+
+Access Rights
+=============
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/security/acl`.
+
+.. note::
+
+    **Goal**: at the end of this section, the following warning should not appear anymore:
+
+    .. code-block:: text
+
+        WARNING rd-demo odoo.modules.loading: The models ['estate.property'] have no access rules...
+
+When no access rights are defined on a model, Odoo determines that no users can access the data.
+It is even notified in the log:
+
+.. code-block:: text
+
+    WARNING rd-demo odoo.modules.loading: The models ['estate.property'] have no access rules in module estate, consider adding some, like:
+    id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+Access rights are defined as records of the model ``ir.model.access``. Each
+access right is associated with a model, a group (or no group for global
+access) and a set of permissions: create, read, write and unlink\ [#unlink]_. Such access
+rights are usually defined in a CSV file named
+``ir.model.access.csv``.
+
+Here is an example for our previous `test_model`:
+
+.. code-block:: text
+
+    id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+    access_test_model,access_test_model,model_test_model,base.group_user,1,0,0,0
+
+- ``id`` is an :term:`external identifier`.
+- ``name`` is the name of the ``ir.model.access``.
+- ``model_id/id`` refers to the model which the access right applies to. The standard way to refer
+  to the model is ``model_<model_name>``, where ``<model_name>`` is the ``_name`` of the model
+  with the ``.`` replaced by ``_``. Seems cumbersome? Indeed it is...
+- ``group_id/id`` refers to the group which the access right applies to.
+- ``perm_read,perm_write,perm_create,perm_unlink``: read, write, create and unlink permissions
+
+.. exercise:: Add access rights.
+
+    Create the ``ir.model.access.csv`` file in the appropriate folder and define it in the
+    ``__manifest__.py`` file.
+
+    Give the read, write, create and unlink permissions to the group ``base.group_user``.
+
+    Tip: the warning message in the log gives you most of the solution ;-)
+
+Restart the server and the warning message should have disappeared!
+
+It's now time to finally :doc:`interact with the UI <05_firstui>`!
+
+.. [#who] meaning which Odoo user (or group of users)
+
+.. [#unlink] 'unlink' is the equivalent of 'delete'
+
+
+==================================================
+SECTION: 05_firstui.rst
+PATH: developer/tutorials/server_framework_101/05_firstui.rst
+==================================================
+
+========================================
+Chapter 5: Finally, Some UI To Play With
+========================================
+
+Now that we've created our new :doc:`model <03_basicmodel>` and its
+corresponding :doc:`access rights <04_securityintro>`, it is time to
+interact with the user interface.
+
+At the end of this chapter, we will have created a couple of menus in order to access a default list
+and form view.
+
+Data Files (XML)
+================
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/data`.
+
+In :doc:`04_securityintro`, we added data through a CSV file. The CSV
+format is convenient when the data to load has a simple format. When the format is more complex
+(e.g. load the structure of a view or an email template), we use the XML format. For example,
+this
+`help field <https://github.com/odoo/odoo/blob/09c59012bf80d2ccbafe21c39e604d6cfda72924/addons/crm/views/crm_lost_reason_views.xml#L61-L69>`__
+contains HTML tags. While it would be possible to load such data through a CSV file, it is more
+convenient to use an XML file.
+
+The XML files must be added to the same folders as the CSV files and defined similarly in the
+``__manifest__.py``. The content of the data files is also sequentially loaded when a module is installed or
+updated, therefore all remarks made for CSV files hold true for XML files.
+When the data is linked to views, we add them to the ``views`` folder.
+
+In this chapter, we will load our first action and menus through an XML file. Actions and menus are
+standard records in the database.
+
+.. note::
+
+    When performance is important, the CSV format is preferred over the XML format. This is the case in Odoo
+    where loading a CSV file is faster than loading an XML file.
+
+In Odoo, the user interface (actions, menus and views) is largely defined by creating
+and composing records defined in an XML file. A common pattern is Menu > Action > View.
+To access records the user navigates through several menu levels; the deepest level is an
+action which triggers the opening of a list of the records.
+
+Actions
+=======
+
+**Reference**: the documentation related to this topic can be found in
+:doc:`../../reference/backend/actions`.
+
+.. note::
+
+    **Goal**: at the end of this section, an action should be loaded in the system. We won't see
+    anything yet in the UI, but the file should be loaded in the log:
+
+    .. code-block:: text
+
+        INFO rd-demo odoo.modules.loading: loading estate/views/estate_property_views.xml
+
+Actions can be triggered in three ways:
+
+1. by clicking on menu items (linked to specific actions)
+2. by clicking on buttons in views (if these are connected to actions)
+3. as contextual actions on object
+
+We will only cover the first case in this chapter. The second case will be covered in a
+:doc:`later chapter <09_actions>` while the last is the focus of an
+advanced topic. In our Real Estate example, we would like to link a menu to the ``estate.property``
+model, so we are able to create a new record. The action can be viewed as the link between the menu
+and the model.
+
+A basic action for our `test_model` is:
+
+.. code-block:: xml
+
+    <record id="test_model_action" model="ir.actions.act_window">
+        <field name="name">Test action</field>
+        <field name="res_model">test_model</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+- ``id`` is an :term:`external identifier`. It can be used to refer to the record
+  (without knowing its in-database identifier).
+- ``model`` has a fixed value of ``ir.actions.act_window`` (:ref:`reference/actions/window`).
+- ``name`` is the name of the action.
+- ``res_model`` is the model which the action applies to.
+- ``view_mode`` are the views that will be available; in this case they are the list and form views.
+  We'll see :doc:`later <14_qwebintro>` that there can be other view modes.
+
+Examples can be found everywhere in Odoo, but
+`this <https://github.com/odoo/odoo/blob/09c59012bf80d2ccbafe21c39e604d6cfda72924/addons/crm/views/crm_lost_reason_views.xml#L57-L70>`__
+is a good example of a simple action. Pay attention to the structure of the XML data file since you will
+need it in the following exercise.
+
+.. exercise:: Add an action.
+
+    Create the ``estate_property_views.xml`` file in the appropriate folder and define it in the
+    ``__manifest__.py`` file.
+
+    Create an action for the model ``estate.property``.
+
+Restart the server and you should see the file loaded in the log.
+
+Menus
+=====
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/data/shortcuts`.
+
+.. note::
+
+    **Goal**: at the end of this section, three menus should be created and the default view is
+    displayed:
+
+    .. image:: 05_firstui/estate_menu_root.png
+      :align: center
+      :alt: Root menus
+
+    .. image:: 05_firstui/estate_menu_action.png
+      :align: center
+      :alt: First level and action menus
+
+    .. image:: 05_firstui/estate_form_default.png
+      :align: center
+      :alt: Default form view
+
+To reduce the complexity in declaring a menu (``ir.ui.menu``) and connecting it to the corresponding action,
+we can use the ``<menuitem>`` shortcut .
+
+A basic menu for our ``test_model_action`` is:
+
+.. code-block:: xml
+
+    <menuitem id="test_model_menu_action" action="test_model_action"/>
+
+The menu ``test_model_menu_action`` is linked to the action ``test_model_action``, and the action
+is linked to the model `test_model`. As previously mentioned, the action can be seen as the link
+between the menu and the model.
+
+However, menus always follow an architecture, and in practice there are three levels of menus:
+
+1. The root menu, which is displayed in the App switcher (the Odoo Community App switcher is a
+   dropdown menu)
+2. The first level menu, displayed in the top bar
+3. The action menus
+
+   .. image:: 05_firstui/menu_01.png
+      :align: center
+      :alt: Root menus
+
+   .. image:: 05_firstui/menu_02.png
+      :align: center
+      :alt: First level and action menus
+
+The easiest way to define the structure is to create it in the XML file. A basic
+structure for our ``test_model_action`` is:
+
+.. code-block:: xml
+
+    <menuitem id="test_menu_root" name="Test">
+        <menuitem id="test_first_level_menu" name="First Level">
+            <menuitem id="test_model_menu_action" action="test_model_action"/>
+        </menuitem>
+    </menuitem>
+
+The name for the third menu is taken from the name of the ``action``.
+
+.. exercise:: Add menus.
+
+    Create the ``estate_menus.xml`` file in the appropriate folder and define it in the
+    ``__manifest__.py`` file. Remember the sequential loading of the data files ;-)
+
+    Create the three levels of menus for the ``estate.property`` action created in the previous
+    exercise. Refer to the **Goal** of this section for the expected result.
+
+Restart the server and **refresh the browser**\ [#refresh]_. You should now see the menus,
+and you'll even be able to create your first real estate property advertisement!
+
+Fields, Attributes And View
+===========================
+
+.. note::
+
+    **Goal**: at the end of this section, the selling price should be read-only and the number
+    of bedrooms and the availability date should have default values. Additionally the selling price
+    and availability date values won't be copied when the record is duplicated.
+
+    .. image:: 05_firstui/attribute_and_default.gif
+      :align: center
+      :alt: Interaction between model and view
+
+    The reserved fields ``active`` and ``state`` are added to the ``estate.property`` model.
+
+So far we have only used the generic view for our real estate property advertisements, but
+in most cases we want to fine tune the view. There are many fine-tunings possible in Odoo, but
+usually the first step is to make sure that:
+
+- some fields have a default value
+- some fields are read-only
+- some fields are not copied when duplicating the record
+
+In our real estate business case, we would like the following:
+
+- The selling price should be read-only (it will be automatically filled in later)
+- The availability date and the selling price should not be copied when duplicating a record
+- The default number of bedrooms should be 2
+- The default availability date should be in 3 months
+
+Some New Attributes
+-------------------
+
+Before moving further with the view design, let's step back to our model definition. We saw that some
+attributes, such as ``required=True``, impact the table schema in the database. Other attributes
+will impact the view or provide default values.
+
+.. exercise:: Add new attributes to the fields.
+
+  Find the appropriate attributes (see :class:`~odoo.fields.Field`) to:
+
+  - set the selling price as read-only
+  - prevent copying of the availability date and the selling price values
+
+Restart the server and refresh the browser. You should not be able to set any selling prices. When
+duplicating a record, the availability date should be empty.
+
+Default Values
+--------------
+
+Any field can be given a default value. In the field definition, add the option
+``default=X`` where ``X`` is either a Python literal value (boolean, integer,
+float, string) or a function taking a model and returning a value::
+
+    name = fields.Char(default="Unknown")
+    last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
+
+The ``name`` field will have the value 'Unknown' by default while the ``last_seen`` field will be
+set as the current time.
+
+.. exercise:: Set default values.
+
+    Add the appropriate default attributes so that:
+
+    - the default number of bedrooms is 2
+    - the default availability date is in 3 months
+
+    Tip: this might help you: :meth:`~odoo.fields.Date.today`
+
+Check that the default values are set as expected.
+
+Reserved Fields
+---------------
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/orm/fields/reserved`.
+
+A few field names are reserved for pre-defined behaviors. They should be defined on a
+model when the related behavior is desired.
+
+.. exercise:: Add active field.
+
+    Add the ``active`` field to the ``estate.property`` model.
+
+Restart the server, create a new property, then come back to the list view... The property will
+not be listed! ``active`` is an example of a reserved field with a specific behavior: when
+a record has ``active=False``, it is automatically removed from any search. To display the
+created property, you will need to specifically search for inactive records.
+
+.. image:: 05_firstui/inactive.gif
+  :align: center
+  :alt: Inactive records
+
+.. exercise:: Set a default value for active field.
+
+    Set the appropriate default value for the ``active`` field so it doesn't disappear anymore.
+
+Note that the default ``active=False`` value was assigned to all existing records.
+
+.. exercise:: Add state field.
+
+    Add a ``state`` field to the ``estate.property`` model. Five values are possible: New,
+    Offer Received, Offer Accepted, Sold and Cancelled. It must be required, should not be copied
+    and should have its default value set to 'New'.
+
+    Make sure to use the correct type!
+
+The ``state`` will be used later on for several UI enhancements.
+
+Now that we are able to interact with the UI thanks to the default views, the next step is
+obvious: we want to define :doc:`our own views <06_basicviews>`.
+
+.. [#refresh] A refresh is needed since the web client keeps a cache of the various menus
+              and views for performance reasons.
+
+
+==================================================
+SECTION: 06_basicviews.rst
+PATH: developer/tutorials/server_framework_101/06_basicviews.rst
+==================================================
+
+======================
+Chapter 6: Basic Views
+======================
+
+We have seen in the :doc:`previous chapter <05_firstui>` that Odoo is able
+to generate default views for a given model. In practice, the default view is **never** acceptable
+for a business application. Instead, we should at least organize the various fields in a logical
+manner.
+
+Views are defined in XML files with actions and menus. They are instances of the
+``ir.ui.view`` model.
+
+In our real estate module, we need to organize the fields in a logical way:
+
+- in the list view, we want to display more than just the name.
+- in the form view, the fields should be grouped.
+- in the search view, we must be able to search on more than just the name. Specifically, we want a
+  filter for the 'Available' properties and a shortcut to group by postcode.
+
+List
+====
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/view_architectures/list`.
+
+.. note::
+
+    **Goal**: at the end of this section, the list view should look like this:
+
+    .. image:: 06_basicviews/list.png
+      :align: center
+      :alt: List view
+
+List views, also called list views, display records in a tabular form.
+
+Their root element is ``<list>``. The most basic version of this view simply
+lists all the fields to display in the table (where each field is a column):
+
+.. code-block:: xml
+
+    <list string="Tests">
+        <field name="name"/>
+        <field name="last_seen"/>
+    </list>
+
+A simple example can be found
+`here <https://github.com/odoo/odoo/blob/18.0/addons/crm/views/crm_lost_reason_views.xml#L45-L53>`__.
+
+.. exercise:: Add a custom list view.
+
+    Define a list view for the ``estate.property`` model in the appropriate XML file. Check the
+    **Goal** of this section for the fields to display.
+
+    Tips:
+
+    - do not add the ``editable="bottom"`` attribute that you can find in the example above. We'll
+      come back to it later.
+    - some field labels may need to be adapted to match the reference.
+
+
+As always, you need to restart the server (do not forget the ``-u`` option) and refresh the browser
+to see the result.
+
+.. warning::
+
+    You will probably use some copy-paste in this chapter, therefore always make sure that the ``id``
+    remains unique for each view!
+
+
+.. warning::
+   Remember to set the correct access rights to the user as explained in the :doc:`security intro <04_securityintro>`!
+
+   The :guilabel:`Create` button is not shown if the user has only read permission.
+
+Form
+====
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/view_architectures/form`.
+
+.. note::
+
+    **Goal**: at the end of this section, the form view should look like this:
+
+    .. image:: 06_basicviews/form.png
+      :align: center
+      :alt: Form view
+
+Forms are used to create and edit single records.
+
+Their root element is ``<form>``. They are composed of high-level structure
+elements (groups and notebooks) and interactive elements (buttons and fields):
+
+.. code-block:: xml
+
+    <form string="Test">
+        <sheet>
+            <group>
+                <group>
+                    <field name="name"/>
+                </group>
+                <group>
+                    <field name="last_seen"/>
+                </group>
+            </group>
+            <notebook>
+                <page string="Description">
+                    <field name="description"/>
+                </page>
+            </notebook>
+        </sheet>
+    </form>
+
+It is possible to use regular HTML tags such as ``div`` and ``h1`` as well as the the ``class`` attribute
+(Odoo provides some built-in classes) to fine-tune the look.
+
+A simple example can be found
+`here <https://github.com/odoo/odoo/blob/6da14a3aadeb3efc40f145f6c11fc33314b2f15e/addons/crm/views/crm_lost_reason_views.xml#L16-L44>`__.
+
+.. exercise:: Add a custom form view.
+
+    Define a form view for the ``estate.property`` model in the appropriate XML file. Check the
+    **Goal** of this section for the expected final design of the page.
+
+This might require some trial and error before you get to the expected result ;-) It is advised
+that you add the fields and the tags one at a time to help understand how it works.
+
+In order to avoid relaunching the server every time you do a modification to the view, it can
+be convenient to use the ``--dev xml`` parameter when launching the server:
+
+.. code-block:: console
+
+    $ ./odoo-bin --addons-path=addons,../enterprise/,../tutorials/ -d rd-demo -u estate --dev xml
+
+This parameter allows you to just refresh the page to view your view modifications.
+
+Search
+======
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/view_architectures/search`.
+
+.. note::
+
+    **Goal**: at the end of this section, the search view should look like this:
+
+    .. image:: 06_basicviews/search_01.png
+      :align: center
+      :alt: Search fields
+
+    .. image:: 06_basicviews/search_02.png
+      :align: center
+      :alt: Filter
+
+    .. image:: 06_basicviews/search_03.png
+      :align: center
+      :alt: Group By
+
+Search views are slightly different from the list and form views since they don't display
+*content*. Although they apply to a specific model, they are used to filter
+other views' content (generally aggregated views such as
+:ref:`reference/view_architectures/list`). Beyond the difference in use case, they are
+defined the same way.
+
+Their root element is ``<search>``. The most basic version of this view simply
+lists all the fields for which a shortcut is desired:
+
+.. code-block:: xml
+
+    <search string="Tests">
+        <field name="name"/>
+        <field name="last_seen"/>
+    </search>
+
+The default search view generated by Odoo provides a shortcut to filter by ``name``. It is very
+common to add the fields which the user is likely to filter on in a customized search view.
+
+.. exercise:: Add a custom search view.
+
+    Define a search view for the ``estate.property`` model in the appropriate XML file. Check the
+    first image of this section's **Goal** for the list of fields.
+
+After restarting the server, it should be possible to filter on the given fields.
+
+Search views can also contain ``<filter>`` elements, which act as toggles for
+predefined searches. Filters must have one of the following attributes:
+
+- ``domain``: adds the given domain to the current search
+- ``context``: adds some context to the current search; uses the key ``group_by`` to group
+  results on the given field name
+
+A simple example can be found
+`here <https://github.com/odoo/odoo/blob/715a24333bf000d5d98b9ede5155d3af32de067c/addons/delivery/views/delivery_view.xml#L30-L44>`__.
+
+Before going further in the exercise, it is necessary to introduce the 'domain' concept.
+
+Domains
+-------
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/orm/domains`.
+
+In Odoo, a domain encodes conditions on
+records: a domain is a list of criteria used to select a subset of a model's
+records. Each criterion is a triplet with a *field name*, an *operator* and a *value*.
+A record satisfies a criterion if the specified field meets the condition of the operator applied to the value.
+
+For instance, when used on the *Product* model the following domain selects
+all *services* with a unit price greater than *1000*::
+
+    [('product_type', '=', 'service'), ('unit_price', '>', 1000)]
+
+By default criteria are combined with an implicit AND, meaning *every* criterion
+needs to be satisfied for a record to match a domain. The logical operators
+``&`` (AND), ``|`` (OR) and ``!`` (NOT) can be used to explicitly combine
+criteria. They are used in prefix position (the operator is inserted before
+its arguments rather than between). For instance, to select products 'which are
+services *OR* have a unit price which is *NOT* between 1000 and 2000'::
+
+    ['|',
+        ('product_type', '=', 'service'),
+        '!', '&',
+            ('unit_price', '>=', 1000),
+            ('unit_price', '<', 2000)]
+
+.. note:: XML does not allow ``<`` and ``&`` to be used inside XML
+    elements. To avoid parsing errors, entity references should be used:
+    ``&lt;`` for ``<`` and ``&amp;`` for ``&``. Other entity references
+    (``&gt;``, ``&apos;`` & ``&quot;``) are optional.
+
+    .. example::
+        .. code-block:: xml
+
+            <filter name="negative" domain="[('test_val', '&lt;', 0)]"/>
+
+.. exercise:: Add filter and Group By.
+
+    The following should be added to the previously created search view:
+
+    - a filter which displays available properties, i.e. the state should be 'New' or
+      'Offer Received'.
+    - the ability to group results by postcode.
+
+Looking good? At this point we are already able to create models and design a user interface which
+makes sense business-wise. However, a key component is still missing: the
+:doc:`link between models <07_relations>`.
+
+
+==================================================
+SECTION: 07_relations.rst
+PATH: developer/tutorials/server_framework_101/07_relations.rst
+==================================================
+
+===================================
+Chapter 7: Relations Between Models
+===================================
+
+The :doc:`previous chapter <06_basicviews>` covered the creation of custom
+views for a model containing basic fields. However, in any real business scenario we need more than
+one model. Moreover, links between models are necessary. One can easily imagine one model containing
+the customers and another one containing the list of users. You might need to refer to a customer
+or a user on any existing business model.
+
+In our real estate module, we want the following information for a property:
+
+- the customer who bought the property
+- the real estate agent who sold the property
+- the property type: house, apartment, penthouse, castle...
+- a list of tags characterizing the property: cozy, renovated...
+- a list of the offers received
+
+Many2one
+========
+
+**Reference**: the documentation related to this topic can be found in
+:class:`~odoo.fields.Many2one`.
+
+.. note::
+
+    **Goal**: at the end of this section:
+
+    - a new ``estate.property.type`` model should be created with the corresponding menu, action and views.
+
+    .. image:: 07_relations/property_type.png
+        :align: center
+        :alt: Property type
+
+    - three Many2one fields should be added to the ``estate.property`` model: property type, buyer and seller.
+
+    .. image:: 07_relations/property_many2one.png
+        :align: center
+        :alt: Property
+
+In our real estate module, we want to define the concept of property type. A property type
+is, for example, a house or an apartment. It is a standard business need to categorize
+properties according to their type, especially to refine filtering.
+
+A property can have **one** type, but the same type can be assigned to **many** properties.
+This is supported by the **many2one** concept.
+
+A many2one is a simple link to another object. For example, in order to define a link to the
+``res.partner`` in our test model, we can write::
+
+    partner_id = fields.Many2one("res.partner", string="Partner")
+
+By convention, many2one fields have the ``_id`` suffix. Accessing the data in the partner
+can then be easily done with::
+
+    print(my_test_object.partner_id.name)
+
+.. seealso::
+
+    `foreign keys <https://www.postgresql.org/docs/12/tutorial-fk.html>`_
+
+In practice a many2one can be seen as a dropdown list in a form view.
+
+.. exercise:: Add the Real Estate Property Type table.
+
+    - Create the ``estate.property.type`` model and add the following field:
+
+    ========================= ========================= =========================
+    Field                     Type                      Attributes
+    ========================= ========================= =========================
+    name                      Char                      required
+    ========================= ========================= =========================
+
+    - Add the menus as displayed in this section's **Goal**
+    - Add the field ``property_type_id`` into your ``estate.property`` model and its form, list
+      and search views
+
+    This exercise is a good recap of the previous chapters: you need to create a
+    :doc:`model <03_basicmodel>`, set the
+    :doc:`model <04_securityintro>`, add an
+    :doc:`action and a menu <05_firstui>`, and
+    :doc:`create a view <06_basicviews>`.
+
+    Tip: do not forget to import any new Python files in ``__init__.py``, add new data files in
+    ``__manifest.py__``  or add the access rights ;-)
+
+Once again, restart the server and refresh to see the results!
+
+In the real estate module, there are still two missing pieces of information we want on a property:
+the buyer and the salesperson. The buyer can be any individual, but on the other hand the
+salesperson must be an employee of the real estate agency (i.e. an Odoo user).
+
+In Odoo, there are two models which we commonly refer to:
+
+- ``res.partner``: a partner is a physical or legal entity. It can be a company, an individual or
+  even a contact address.
+- ``res.users``: the users of the system. Users can be 'internal', i.e. they have
+  access to the Odoo backend. Or they can be 'portal', i.e. they cannot access the backend, only the
+  frontend (e.g. to access their previous orders in eCommerce).
+
+.. exercise:: Add the buyer and the salesperson.
+
+    Add a buyer and a salesperson to the ``estate.property`` model using the two common models
+    mentioned above. They should be added in a new tab of the form view, as depicted in this section's **Goal**.
+
+    The default value for the salesperson must be the current user. The buyer should not be copied.
+
+    Tip: to get the default value, check the note below or look at an example
+    `here <https://github.com/odoo/odoo/blob/5bb8b927524d062be32f92eb326ef64091301de1/addons/crm/models/crm_lead.py#L92>`__.
+
+.. note::
+
+    The object ``self.env`` gives access to request parameters and other useful
+    things:
+
+    - ``self.env.cr`` or ``self._cr`` is the database *cursor* object; it is
+      used for querying the database
+    - ``self.env.uid`` or ``self._uid`` is the current user's database id
+    - ``self.env.user`` is the current user's record
+    - ``self.env.context`` or ``self._context`` is the context dictionary
+    - ``self.env.ref(xml_id)`` returns the record corresponding to an XML id
+    - ``self.env[model_name]`` returns an instance of the given model
+
+Now let's have a look at other types of links.
+
+Many2many
+=========
+
+**Reference**: the documentation related to this topic can be found in
+:class:`~odoo.fields.Many2many`.
+
+.. note::
+
+    **Goal**: at the end of this section:
+
+    - a new ``estate.property.tag`` model should be created with the corresponding menu and action.
+
+    .. image:: 07_relations/property_tag.png
+        :align: center
+        :alt: Property tag
+
+    - tags should be added to the ``estate.property`` model:
+
+    .. image:: 07_relations/property_many2many.png
+        :align: center
+        :alt: Property
+
+In our real estate module, we want to define the concept of property tags. A property tag
+is, for example, a property which is 'cozy' or 'renovated'.
+
+A property can have **many** tags and a tag can be assigned to **many** properties.
+This is supported by the **many2many** concept.
+
+A many2many is a bidirectional multiple relationship: any record on one side can be related to any
+number of records on the other side. For example, in order to define a link to the
+``account.tax`` model on our test model, we can write::
+
+    tax_ids = fields.Many2many("account.tax", string="Taxes")
+
+By convention, many2many fields have the ``_ids`` suffix. This means that several taxes can be
+added to our test model. It behaves as a list of records, meaning that accessing the data must be
+done in a loop::
+
+    for tax in my_test_object.tax_ids:
+        print(tax.name)
+
+A list of records is known as a *recordset*, i.e. an ordered collection of records. It supports
+standard Python operations on collections, such as ``len()`` and ``iter()``, plus extra set
+operations like ``recs1 | recs2``.
+
+.. exercise:: Add the Real Estate Property Tag table.
+
+    - Create the ``estate.property.tag`` model and add the following field:
+
+    ========================= ========================= =========================
+    Field                     Type                      Attributes
+    ========================= ========================= =========================
+    name                      Char                      required
+    ========================= ========================= =========================
+
+    - Add the menus as displayed in this section's **Goal**
+    - Add the field ``tag_ids`` to your ``estate.property`` model and in its form and list views
+
+    Tip: in the view, use the ``widget="many2many_tags"`` attribute as demonstrated
+    `here <https://github.com/odoo/odoo/blob/5bb8b927524d062be32f92eb326ef64091301de1/addons/crm_iap_lead_website/views/crm_reveal_views.xml#L36>`__.
+    The ``widget`` attribute will be explained in detail in :doc:`a later chapter of the training <11_sprinkles>`.
+    For now, you can try adding and removing it and see the result ;-)
+
+One2many
+========
+
+**Reference**: the documentation related to this topic can be found in
+:class:`~odoo.fields.One2many`.
+
+.. note::
+
+    **Goal**: at the end of this section:
+
+    - a new ``estate.property.offer`` model should be created with the corresponding form and list view.
+    - offers should be added to the ``estate.property`` model:
+
+    .. image:: 07_relations/property_offer.png
+        :align: center
+        :alt: Property offers
+
+In our real estate module, we want to define the concept of property offers. A property offer
+is an amount a potential buyer offers to the seller. The offer can be lower or higher than the
+expected price.
+
+An offer applies to **one** property, but the same property can have **many** offers.
+The concept of **many2one** appears once again. However, in this case we want to display the list
+of offers for a given property so we will use the **one2many** concept.
+
+A one2many is the inverse of a many2one. For example, we defined
+on our test model a link to the ``res.partner`` model thanks to the field ``partner_id``.
+We can define the inverse relation, i.e. the list of test models linked to our partner::
+
+    test_ids = fields.One2many("test_model", "partner_id", string="Tests")
+
+The first parameter is called the ``comodel`` and the second parameter is the field we want to
+inverse.
+
+By convention, one2many fields have the ``_ids`` suffix. They behave as a list of records, meaning
+that accessing the data must be done in a loop::
+
+    for test in partner.test_ids:
+        print(test.name)
+
+.. danger::
+
+    Because a :class:`~odoo.fields.One2many` is a virtual relationship,
+    there *must* be a :class:`~odoo.fields.Many2one` field defined in the comodel.
+
+.. exercise:: Add the Real Estate Property Offer table.
+
+    - Create the ``estate.property.offer`` model and add the following fields:
+
+    ========================= ================================ ============= =================
+    Field                     Type                             Attributes    Values
+    ========================= ================================ ============= =================
+    price                     Float
+    status                    Selection                        no copy       Accepted, Refused
+    partner_id                Many2one (``res.partner``)       required
+    property_id               Many2one (``estate.property``)   required
+    ========================= ================================ ============= =================
+
+    - Create a list view and a form view with the ``price``, ``partner_id`` and ``status`` fields. No
+      need to create an action or a menu.
+    - Add the field ``offer_ids`` to your ``estate.property`` model and in its form view as
+      depicted in this section's **Goal**.
+
+There are several important things to notice here. First, we don't need an action or a menu for all
+models. Some models are intended to be accessed only through another model. This is the case in our
+exercise: an offer is always accessed through a property.
+
+Second, despite the fact that the ``property_id`` field is required, we did not include it in the
+views. How does Odoo know which property our offer is linked to? Well that's part of the
+magic of using the Odoo framework: sometimes things are defined implicitly. When we create
+a record through a one2many field, the corresponding many2one is populated automatically
+for convenience.
+
+Still alive? This chapter is definitely not the easiest one. It introduced a couple of new concepts
+while relying on everything that was introduced before. The
+:doc:`next chapter <08_compute_onchange>` will be lighter, don't worry ;-)
+
+
+==================================================
+SECTION: 08_compute_onchange.rst
+PATH: developer/tutorials/server_framework_101/08_compute_onchange.rst
+==================================================
+
+========================================
+Chapter 8: Computed Fields And Onchanges
+========================================
+
+The :doc:`relations between models <07_relations>` are a key component of
+any Odoo module. They are necessary for the modelization of any business case. However, we may want
+links between the fields within a given model. Sometimes the value of one field is determined from
+the values of other fields and other times we want to help the user with data entry.
+
+These cases are supported by the concepts of computed fields and onchanges. Although this chapter is
+not technically complex, the semantics of both concepts is very important.
+This is also the first time we will write Python logic. Until now we haven't written anything
+other than class definitions and field declarations.
+
+Computed Fields
+===============
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/fields/compute`.
+
+.. note::
+
+    **Goal**: at the end of this section:
+
+    - In the property model, the total area and the best offer should be computed:
+
+    .. image:: 08_compute_onchange/compute.gif
+        :align: center
+        :alt: Compute fields
+
+    - In the property offer model, the validity date should be computed and can be updated:
+
+    .. image:: 08_compute_onchange/compute_inverse.gif
+        :align: center
+        :alt: Compute field with inverse
+
+In our real estate module, we have defined the living area as well as the garden area. It is then
+natural to define the total area as the sum of both fields. We will use the concept of a computed
+field for this, i.e. the value of a given field will be computed from the value of other fields.
+
+So far fields have been stored directly in and retrieved directly from the
+database. Fields can also be *computed*. In this case, the field's value is not
+retrieved from the database but computed on-the-fly by calling a method of the
+model.
+
+To create a computed field, create a field and set its attribute
+:attr:`~odoo.fields.Field.compute` to the name of a method. The computation
+method should set the value of the computed field for every record in
+``self``.
+
+By convention, :attr:`~odoo.fields.Field.compute` methods are private, meaning that they cannot
+be called from the presentation tier, only from the business tier (see
+:ref:`tutorials/server_framework_101/01_architecture`). Private methods have a name starting with an
+underscore ``_``.
+
+Dependencies
+------------
+
+The value of a computed field usually depends on the values of other fields in
+the computed record. The ORM expects the developer to specify those dependencies
+on the compute method with the decorator :func:`~odoo.api.depends`.
+The given dependencies are used by the ORM to trigger the recomputation of the
+field whenever some of its dependencies have been modified::
+
+    from odoo import api, fields, models
+
+    class TestComputed(models.Model):
+        _name = "test.computed"
+
+        total = fields.Float(compute="_compute_total")
+        amount = fields.Float()
+
+        @api.depends("amount")
+        def _compute_total(self):
+            for record in self:
+                record.total = 2.0 * record.amount
+
+.. note:: ``self`` is a collection.
+    :class: aphorism
+
+    The object ``self`` is a *recordset*, i.e. an ordered collection of
+    records. It supports the standard Python operations on collections, e.g.
+    ``len(self)`` and ``iter(self)``, plus extra set operations such as ``recs1 |
+    recs2``.
+
+    Iterating over ``self`` gives the records one by one, where each record is
+    itself a collection of size 1. You can access/assign fields on single
+    records by using the dot notation, e.g. ``record.name``.
+
+Many examples of computed fields can be found in Odoo.
+`Here <https://github.com/odoo/odoo/blob/713dd3777ca0ce9d121d5162a3d63de3237509f4/addons/account/models/account_move.py#L3420-L3423>`__
+is a simple one.
+
+.. exercise:: Compute the total area.
+
+    - Add the ``total_area`` field to ``estate.property``. It is defined as the sum of the
+      ``living_area`` and the ``garden_area``.
+
+    - Add the field in the form view as depicted on the first image of this section's **Goal**.
+
+For relational fields it's possible to use paths through a field as a dependency::
+
+    description = fields.Char(compute="_compute_description")
+    partner_id = fields.Many2one("res.partner")
+
+    @api.depends("partner_id.name")
+    def _compute_description(self):
+        for record in self:
+            record.description = "Test for partner %s" % record.partner_id.name
+
+The example is given with a :class:`~odoo.fields.Many2one`, but it is valid for
+:class:`~odoo.fields.Many2many` or a :class:`~odoo.fields.One2many`. An example can be found
+`here <https://github.com/odoo/odoo/blob/713dd3777ca0ce9d121d5162a3d63de3237509f4/addons/account/models/account_reconcile_model.py#L248-L251>`__.
+
+Let's try it in our module with the following exercise!
+
+.. exercise:: Compute the best offer.
+
+    - Add the ``best_price`` field to ``estate.property``. It is defined as the highest (i.e. maximum) of the
+      offers' ``price``.
+
+    - Add the field to the form view as depicted in the first image of this section's **Goal**.
+
+    Tip: you might want to try using the :meth:`~odoo.models.BaseModel.mapped` method. See
+    `here <https://github.com/odoo/odoo/blob/f011c9aacf3a3010c436d4e4f408cd9ae265de1b/addons/account/models/account_payment.py#L686>`__
+    for a simple example.
+
+Inverse Function
+----------------
+
+You might have noticed that computed fields are read-only by default. This is expected since the
+user is not supposed to set a value.
+
+In some cases, it might be useful to still be able to set a value directly. In our real estate example,
+we can define a validity duration for an offer and set a validity date. We would like to be able
+to set either the duration or the date with one impacting the other.
+
+To support this Odoo provides the ability to use an ``inverse`` function::
+
+    from odoo import api, fields, models
+
+    class TestComputed(models.Model):
+        _name = "test.computed"
+
+        total = fields.Float(compute="_compute_total", inverse="_inverse_total")
+        amount = fields.Float()
+
+        @api.depends("amount")
+        def _compute_total(self):
+            for record in self:
+                record.total = 2.0 * record.amount
+
+        def _inverse_total(self):
+            for record in self:
+                record.amount = record.total / 2.0
+
+An example can be found
+`here <https://github.com/odoo/odoo/blob/2ccf0bd0dcb2e232ee894f07f24fdc26c51835f7/addons/crm/models/crm_lead.py#L308-L317>`__.
+
+A compute method sets the field while an inverse method sets the field's
+dependencies.
+
+Note that the ``inverse`` method is called when saving the record, while the
+``compute`` method is called at each change of its dependencies.
+
+.. exercise:: Compute a validity date for offers.
+
+    - Add the following fields to the ``estate.property.offer`` model:
+
+    ========================= ========================= =========================
+    Field                     Type                      Default
+    ========================= ========================= =========================
+    validity                  Integer                   7
+    date_deadline             Date
+    ========================= ========================= =========================
+
+    Where ``date_deadline`` is a computed field which is defined as the sum of two fields from
+    the offer: the ``create_date`` and the ``validity``. Define an appropriate inverse function
+    so that the user can set either the date or the validity.
+
+    Tip: the ``create_date`` is only filled in when the record is created, therefore you will
+    need a fallback to prevent crashing at time of creation.
+
+    - Add the fields in the form view and the list view as depicted on the second image of this section's **Goal**.
+
+Additional Information
+----------------------
+
+Computed fields are **not stored** in the database by default. Therefore it is **not
+possible** to search on a computed field unless a ``search`` method is defined. This topic is beyond the scope
+of this training, so we won't cover it. An example can be found
+`here <https://github.com/odoo/odoo/blob/f011c9aacf3a3010c436d4e4f408cd9ae265de1b/addons/event/models/event_event.py#L188>`__.
+
+Another solution is to store the field with the ``store=True`` attribute. While this is
+usually convenient, pay attention to the potential computation load added to your model. Lets re-use
+our example::
+
+    description = fields.Char(compute="_compute_description", store=True)
+    partner_id = fields.Many2one("res.partner")
+
+    @api.depends("partner_id.name")
+    def _compute_description(self):
+        for record in self:
+            record.description = "Test for partner %s" % record.partner_id.name
+
+Every time the partner ``name`` is changed, the ``description`` is automatically recomputed for
+**all the records** referring to it! This can quickly become prohibitive to recompute when
+millions of records need recomputation.
+
+It is also worth noting that a computed field can depend on another computed field. The ORM is
+smart enough to correctly recompute all the dependencies in the right order... but sometimes at the
+cost of degraded performance.
+
+In general performance must always be kept in mind when defining computed fields. The more
+complex is your field to compute (e.g. with a lot of dependencies or when a computed field
+depends on other computed fields), the more time it will take to compute. Always take some time to
+evaluate the cost of a computed field beforehand. Most of the time it is only when your code
+reaches a production server that you realize it slows down a whole process. Not cool :-(
+
+Onchanges
+=========
+
+**Reference**: the documentation related to this topic can be found in
+:func:`~odoo.api.onchange`:
+
+.. note::
+
+    **Goal**: at the end of this section, enabling the garden will set a default area of 10 and
+    an orientation to North.
+
+    .. image:: 08_compute_onchange/onchange.gif
+        :align: center
+        :alt: Onchange
+
+In our real estate module, we also want to help the user with data entry. When the 'garden'
+field is set, we want to give a default value for the garden area as well as the orientation.
+Additionally, when the 'garden' field is unset we want the garden area to reset to zero and the
+orientation to be removed. In this case, the value of a given field modifies the value of
+other fields.
+
+The 'onchange' mechanism provides a way for the client interface to update a
+form without saving anything to the database whenever the user has filled in
+a field value. To achieve this, we define a method where ``self`` represents
+the record in the form view and decorate it with :func:`~odoo.api.onchange`
+to specify which field it is triggered by. Any change you make on
+``self`` will be reflected on the form::
+
+    from odoo import api, fields, models
+
+    class TestOnchange(models.Model):
+        _name = "test.onchange"
+
+        name = fields.Char(string="Name")
+        description = fields.Char(string="Description")
+        partner_id = fields.Many2one("res.partner", string="Partner")
+
+        @api.onchange("partner_id")
+        def _onchange_partner_id(self):
+            self.name = "Document for %s" % (self.partner_id.name)
+            self.description = "Default description for %s" % (self.partner_id.name)
+
+In this example, changing the partner will also change the name and the description values. It is up to
+the user whether or not to change the name and description values afterwards. Also note that we do not
+loop on ``self``, this is because the method is only triggered in a form view, where ``self`` is always
+a single record.
+
+.. exercise:: Set values for garden area and orientation.
+
+    Create an ``onchange`` in the ``estate.property`` model in order to set values for the
+    garden area (10) and orientation (North) when garden is set to True. When unset, clear the fields.
+
+Additional Information
+----------------------
+
+Onchanges methods can also return a non-blocking warning message
+(`example <https://github.com/odoo/odoo/blob/cd9af815ba591935cda367d33a1d090f248dd18d/addons/payment_authorize/models/payment.py#L34-L36>`__).
+
+How to use them?
+================
+
+There is no strict rule for the use of computed fields and onchanges.
+
+In many cases, both computed fields and onchanges may be used to achieve the same result. Always
+prefer computed fields since they are also triggered outside of the context of a form view. Never
+ever use an onchange to add business logic to your model. This is a **very bad** idea since
+onchanges are not automatically triggered when creating a record programmatically; they are only
+triggered in the form view.
+
+The usual pitfall of computed fields and onchanges is trying to be 'too smart' by adding too much
+logic. This can have the opposite result of what was expected: the end user is confused from
+all the automation.
+
+Computed fields tend to be easier to debug: such a field is set by a given method, so it's easy to
+track when the value is set. Onchanges, on the other hand, may be confusing: it is very difficult to
+know the extent of an onchange. Since several onchange methods may set the same fields, it
+easily becomes difficult to track where a value is coming from.
+
+When using stored computed fields, pay close attention to the dependencies. When computed fields
+depend on other computed fields, changing a value can trigger a large number of recomputations.
+This leads to poor performance.
+
+In the :doc:`next chapter <09_actions>`, we'll see how we can trigger some
+business logic when buttons are clicked.
+
+
+==================================================
+SECTION: 09_actions.rst
+PATH: developer/tutorials/server_framework_101/09_actions.rst
+==================================================
+
+=================================
+Chapter 9: Ready For Some Action?
+=================================
+
+So far we have mostly built our module by declaring fields and views. We just introduced business
+logic in the :doc:`previous chapter <08_compute_onchange>` thanks to
+computed fields and onchanges. In any real business scenario, we would want to link some business
+logic to action buttons. In our real estate example, we would like to be able to:
+
+- cancel or set a property as sold
+- accept or refuse an offer
+
+One could argue that we can already do these things by changing the state manually, but
+this is not really convenient. Moreover, we want to add some extra processing: when an offer is
+accepted we want to set the selling price and the buyer for the property.
+
+Object Type
+===========
+
+**Reference**: the documentation related to this topic can be found in
+:doc:`../../reference/backend/actions` and :ref:`reference/exceptions`.
+
+.. note::
+
+    **Goal**: at the end of this section:
+
+    - You should be able to cancel or set a property as sold:
+
+    .. image:: 09_actions/property.gif
+        :align: center
+        :alt: Cancel and set to sold
+
+    A cancelled property cannot be sold and a sold property cannot be cancelled. For the sake of
+    clarity, the ``state`` field has been added on the view.
+
+    - You should be able to accept or refuse an offer:
+
+    .. image:: 09_actions/offer_01.gif
+        :align: center
+        :alt: Accept or refuse an offer
+
+    - Once an offer is accepted, the selling price and the buyer should be set:
+
+    .. image:: 09_actions/offer_02.gif
+        :align: center
+        :alt: Accept an offer
+
+In our real estate module, we want to link business logic with some buttons. The most common way to
+do this is to:
+
+- Add a button in the view, for example in the ``header`` of the view:
+
+.. code-block:: xml
+
+    <form>
+        <header>
+            <button name="action_do_something" type="object" string="Do Something"/>
+        </header>
+        <sheet>
+            <field name="name"/>
+        </sheet>
+    </form>
+
+- and link this button to business logic:
+
+.. code-block:: python
+
+    from odoo import fields, models
+
+    class TestAction(models.Model):
+        _name = "test.action"
+
+        name = fields.Char()
+
+        def action_do_something(self):
+            for record in self:
+                record.name = "Something"
+            return True
+
+By assigning ``type="object"`` to our button, the Odoo framework will execute a Python method
+with ``name="action_do_something"`` on the given model.
+
+The first important detail to note is that our method name isn't prefixed with an underscore
+(``_``). This makes our method a **public** method, which can be called directly from the Odoo
+interface (through an RPC call). Until now, all methods we created (compute, onchange) were called
+internally, so we used **private** methods prefixed by an underscore. You should always define your
+methods as private unless they need to be called from the user interface.
+
+Also note that we loop on ``self``. Always assume that a method can be called on multiple records; it's
+better for reusability.
+
+Finally, a public method should always return something so that it can be called through XML-RPC.
+When in doubt, just ``return True``.
+
+There are hundreds of examples in the Odoo source code. One example is this
+`button in a view <https://github.com/odoo/odoo/blob/cd9af815ba591935cda367d33a1d090f248dd18d/addons/crm/views/crm_lead_views.xml#L9-L11>`__
+and its
+`corresponding Python method <https://github.com/odoo/odoo/blob/cd9af815ba591935cda367d33a1d090f248dd18d/addons/crm/models/crm_lead.py#L746-L760>`__
+
+.. exercise:: Cancel and set a property as sold.
+
+    - Add the buttons 'Cancel' and 'Sold' to the ``estate.property`` model. A cancelled property
+      cannot be set as sold, and a sold property cannot be cancelled.
+
+      Refer to the first image of the **Goal** for the expected result.
+
+      Tip: in order to raise an error, you can use the :ref:`UserError<reference/exceptions>`
+      function. There are plenty of examples in the Odoo source code ;-)
+
+    - Add the buttons 'Accept' and 'Refuse' to the ``estate.property.offer`` model.
+
+      Refer to the second image of the **Goal** for the expected result.
+
+      Tip: to use an icon as a button, have a look
+      `at this example <https://github.com/odoo/odoo/blob/cd9af815ba591935cda367d33a1d090f248dd18d/addons/event/views/event_views.xml#L521>`__.
+
+    - When an offer is accepted, set the buyer and the selling price for the corresponding property.
+
+      Refer to the third image of the **Goal** for the expected result.
+
+      Pay attention: in real life only one offer can be accepted for a given property!
+
+Action Type
+===========
+
+In :doc:`05_firstui`, we created an action that was linked to a menu. You
+may be wondering if it is possible to link an action to a button. Good news, it is! One way to do it
+is:
+
+.. code-block:: xml
+
+    <button type="action" name="%(test.test_model_action)d" string="My Action"/>
+
+We use ``type="action"`` and we refer to the :term:`external identifier` in the ``name``.
+
+In the :doc:`next chapter <10_constraints>` we'll see how we can prevent
+encoding incorrect data in Odoo.
+
+
+==================================================
+SECTION: 10_constraints.rst
+PATH: developer/tutorials/server_framework_101/10_constraints.rst
+==================================================
+
+=======================
+Chapter 10: Constraints
+=======================
+
+The :doc:`previous chapter <09_actions>` introduced the ability to add
+some business logic to our model. We can now link buttons to business code, but how can we prevent
+users from entering incorrect data? For example, in our real estate module nothing prevents
+users from setting a negative expected price.
+
+Odoo provides two ways to set up automatically verified invariants:
+:func:`Python constraints <odoo.api.constrains>` and
+:attr:`SQL constraints <odoo.models.Constraint>`.
+
+SQL
+===
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/orm/models` and in the `PostgreSQL's documentation`_.
+
+.. note::
+
+    **Goal**: at the end of this section:
+
+    - Amounts should be (strictly) positive
+
+    .. image:: 10_constraints/sql_01.gif
+        :align: center
+        :alt: Constraints on amounts
+
+    - Property types and tags should have a unique name
+
+    .. image:: 10_constraints/sql_02.gif
+        :align: center
+        :alt: Constraints on names
+
+SQL objects are defined through :attr:`~odoo.models.Constraint` attributes.
+
+Simple example:
+
+.. code-block:: python
+
+    _check_percentage = models.Constraint(
+        'CHECK(percentage >= 0 AND percentage <= 100)',
+        'The percentage of an analytic distribution should be between 0 and 100.',
+    )
+
+.. exercise:: Add SQL constraints.
+
+    Add the following constraints to their corresponding models:
+
+    - A property expected price must be strictly positive
+    - A property selling price must be positive
+    - An offer price must be strictly positive
+    - A property tag name and property type name must be unique
+
+    Tip: search for the ``unique`` keyword in the Odoo codebase for examples of unique names.
+
+Restart the server with the ``-u estate`` option to see the result. Note that you might have data
+that prevents a SQL constraint from being set. An error message similar to the following might pop up:
+
+.. code-block:: text
+
+    ERROR rd-demo odoo.schema: Table 'estate_property_offer': unable to add constraint 'estate_property_offer_check_price' as CHECK(price > 0)
+
+For example, if some offers have a price of zero, then the constraint can't be applied. You can delete
+the problematic data in order to apply the new constraints.
+
+Python
+======
+
+**Reference**: the documentation related to this topic can be found in
+:func:`~odoo.api.constrains`.
+
+.. note::
+
+    **Goal**: at the end of this section, it will not be possible to accept an offer
+    lower than 90% of the expected price.
+
+    .. image:: 10_constraints/python.gif
+        :align: center
+        :alt: Python constraint
+
+SQL constraints are an efficient way of ensuring data consistency. However it may be necessary
+to make more complex checks which require Python code. In this case we need a Python constraint.
+
+A Python constraint is defined as a method decorated with
+:func:`~odoo.api.constrains` and is invoked on a recordset. The decorator
+specifies which fields are involved in the constraint. The constraint is automatically evaluated
+when any of these fields are modified . The method is expected to
+raise an exception if its invariant is not satisfied::
+
+    from odoo.exceptions import ValidationError
+
+    ...
+
+    @api.constrains('date_end')
+    def _check_date_end(self):
+        for record in self:
+            if record.date_end < fields.Date.today():
+                raise ValidationError("The end date cannot be set in the past")
+        # all records passed the test, don't return anything
+
+A simple example can be found
+`here <https://github.com/odoo/odoo/blob/274dd3bf503e1b612179db92e410b336bfaecfb4/addons/stock/models/stock_quant.py#L239-L244>`__.
+
+.. exercise:: Add Python constraints.
+
+    Add a constraint so that the selling price cannot be lower than 90% of the expected price.
+
+    Tip: the selling price is zero until an offer is validated. You will need to fine tune your
+    check to take this into account.
+
+    .. warning::
+
+        Always use the :meth:`~odoo.tools.float_utils.float_compare` and
+        :meth:`~odoo.tools.float_utils.float_is_zero` methods from `odoo.tools.float_utils` when
+        working with floats!
+
+    Ensure the constraint is triggered every time the selling price or the expected price is changed!
+
+SQL constraints are usually more efficient than Python constraints. When performance matters, always
+prefer SQL over Python constraints.
+
+Our real estate module is starting to look good. We added some business logic, and now we make sure
+the data is consistent. However, the user interface is still a bit rough. Let's see how we can
+improve it in the :doc:`next chapter <11_sprinkles>`.
+
+.. _PostgreSQL's documentation:
+.. _table_constraint:
+    https://www.postgresql.org/docs/12/ddl-constraints.html
+
+
+==================================================
+SECTION: 11_sprinkles.rst
+PATH: developer/tutorials/server_framework_101/11_sprinkles.rst
+==================================================
+
+=============================
+Chapter 11: Add The Sprinkles
+=============================
+
+Our real estate module now makes sense from a business perspective. We created
+:doc:`specific views <06_basicviews>`, added several
+:doc:`action buttons <09_actions>` and
+:doc:`constraints <10_constraints>`. However our user interface is still a bit
+rough. We would like to add some colors to the list views and make some fields and buttons conditionally
+disappear. For example, the 'Sold' and 'Cancel' buttons should disappear when the property
+is sold or cancelled since it is no longer allowed to change the state at this point.
+
+This chapter covers a very small subset of what can be done in the views. Do not hesitate to
+read the reference documentation for a more complete overview.
+
+**Reference**: the documentation related to this chapter can be found in
+:doc:`../../reference/user_interface/view_records` and
+:doc:`../../reference/user_interface/view_architectures`.
+
+Inline Views
+============
+
+.. note::
+
+    **Goal**: at the end of this section, a specific list of properties should be added to the property
+    type view:
+
+    .. image:: 11_sprinkles/inline_view.png
+      :align: center
+      :alt: Inline list view
+
+In the real estate module we added a list of offers for a property. We simply added the field
+``offer_ids`` with:
+
+.. code-block:: xml
+
+    <field name="offer_ids"/>
+
+The field uses the specific view for ``estate.property.offer``. In some cases we want to define
+a specific list view which is only used in the context of a form view. For example, we would like
+to display the list of properties linked to a property type. However, we only want to display 3
+fields for clarity: name, expected price and state.
+
+To do this, we can define *inline* list views. An inline list view is defined directly inside
+a form view. For example:
+
+.. code-block:: python
+
+    from odoo import fields, models
+
+    class TestModel(models.Model):
+        _name = "test_model"
+        _description = "Test Model"
+
+        description = fields.Char()
+        line_ids = fields.One2many("test_model_line", "model_id")
+
+
+    class TestModelLine(models.Model):
+        _name = "test_model_line"
+        _description = "Test Model Line"
+
+        model_id = fields.Many2one("test_model")
+        field_1 = fields.Char()
+        field_2 = fields.Char()
+        field_3 = fields.Char()
+
+.. code-block:: xml
+
+    <form>
+        <field name="description"/>
+        <field name="line_ids">
+            <list>
+                <field name="field_1"/>
+                <field name="field_2"/>
+            </list>
+        </field>
+    </form>
+
+In the form view of the `test_model`, we define a specific list view for `test_model_line`
+with fields ``field_1`` and ``field_2``.
+
+An example can be found
+`here <https://github.com/odoo/odoo/blob/0e12fa135882cd5095dbf15fe2f64231c6a84336/addons/event/views/event_tag_views.xml#L27-L33>`__.
+
+.. exercise:: Add an inline list view.
+
+    - Add the ``One2many`` field ``property_ids`` to the ``estate.property.type`` model.
+    - Add the field in the ``estate.property.type`` form view as depicted in the **Goal** of this
+      section.
+
+Widgets
+=======
+
+**Reference**: the documentation related to this section can be found in
+:ref:`reference/js/widgets`.
+
+.. note::
+
+    **Goal**: at the end of this section, the state of the property should be displayed using a
+    specific widget:
+
+    .. image:: 11_sprinkles/widget.png
+      :align: center
+      :alt: Statusbar widget
+
+    Four states are displayed: New, Offer Received, Offer Accepted and Sold.
+
+Whenever we've added fields to our models, we've (almost) never had to worry about how
+these fields would look like in the user interface. For example, a date picker is provided
+for a ``Date`` field and a ``One2many`` field is automatically displayed as a list. Odoo
+chooses the right 'widget' depending on the field type.
+
+However, in some cases, we want a specific representation of a field which can be done thanks to
+the ``widget`` attribute. We already used it for the ``tag_ids`` field when we used the
+``widget="many2many_tags"`` attribute. If we hadn't used it, then the field would have displayed as a
+list.
+
+Each field type has a set of widgets which can be used to fine tune its display. Some widgets also
+take extra options. An exhaustive list can be found in :ref:`reference/js/widgets`.
+
+.. exercise:: Use the status bar widget.
+
+    Use the ``statusbar`` widget in order to display the ``state`` of the ``estate.property`` as
+    depicted in the **Goal** of this section.
+
+    Tip: a simple example can be found
+    `here <https://github.com/odoo/odoo/blob/0e12fa135882cd5095dbf15fe2f64231c6a84336/addons/account/views/account_bank_statement_views.xml#L136>`__.
+
+.. warning:: Same field multiple times in a view
+
+    Add a field only **once** to a list or a form view. Adding it multiple times is
+    not supported.
+
+List Order
+==========
+
+**Reference**: the documentation related to this section can be found in
+:ref:`reference/orm/models`.
+
+.. note::
+
+    **Goal**: at the end of this section, all lists should display by default in a deterministic
+    order. Property types can be ordered manually.
+
+During the previous exercises, we created several list views. However, at no point did we specify
+which order the records had to be listed in by default. This is a very important thing for many business
+cases. For example, in our real estate module we would want to display the highest offers on top of the
+list.
+
+Model
+-----
+
+Odoo provides several ways to set a default order. The most common way is to define
+the ``_order`` attribute directly in the model. This way, the retrieved records will follow
+a deterministic order which will be consistent in all views including when records are searched
+programmatically. By default there is no order specified, therefore the records will be
+retrieved in a non-deterministic order depending on PostgreSQL.
+
+The ``_order`` attribute takes a string containing a list of fields which will be used for sorting.
+It will be converted to an order_by_ clause in SQL. For example:
+
+.. code-block:: python
+
+    from odoo import fields, models
+
+    class TestModel(models.Model):
+        _name = "test_model"
+        _description = "Test Model"
+        _order = "id desc"
+
+        description = fields.Char()
+
+Our records are ordered by descending ``id``, meaning the highest comes first.
+
+.. exercise:: Add model ordering.
+
+    Define the following orders in their corresponding models:
+
+    =================================== ===================================
+    Model                               Order
+    =================================== ===================================
+    ``estate.property``                 Descending ID
+    ``estate.property.offer``           Descending Price
+    ``estate.property.tag``             Name
+    ``estate.property.type``            Name
+    =================================== ===================================
+
+View
+----
+
+Ordering is possible at the model level. This has the advantage of a consistent order everywhere
+a list of records is retrieved. However, it is also possible to define a specific order directly
+in a view thanks to the ``default_order`` attribute
+(`example <https://github.com/odoo/odoo/blob/892dd6860733c46caf379fd36f57219082331b66/addons/crm/report/crm_activity_report_views.xml#L30>`__).
+
+Manual
+------
+
+Both model and view ordering allow flexibility when sorting records, but there is still one case
+we need to cover: the manual ordering. A user may want to sort records depending on the business
+logic. For example, in our real estate module we would like to sort the property types manually.
+It is indeed useful to have the most used types appear at the top of the list. If our real estate
+agency mainly sells houses, it is more convenient to have 'House' appear before 'Apartment'.
+
+To do so, a ``sequence`` field is used in combination with the ``handle`` widget. Obviously
+the ``sequence`` field must be the first field in the ``_order`` attribute.
+
+.. exercise:: Add manual ordering.
+
+    - Add the following field:
+
+    =================================== ======================= =======================
+    Model                               Field                   Type
+    =================================== ======================= =======================
+    ``estate.property.type``            Sequence                Integer
+    =================================== ======================= =======================
+
+    - Add the sequence to the ``estate.property.type`` list view with the correct widget.
+
+    Tip: you can find an example here:
+    `model <https://github.com/odoo/odoo/blob/892dd6860733c46caf379fd36f57219082331b66/addons/crm/models/crm_stage.py#L36>`__
+    and
+    `view <https://github.com/odoo/odoo/blob/892dd6860733c46caf379fd36f57219082331b66/addons/crm/views/crm_stage_views.xml#L23>`__.
+
+Attributes and options
+======================
+
+It would be prohibitive to detail all the available features which allow fine tuning of the look of a
+view. Therefore, we'll stick to the most common ones.
+
+Form
+----
+
+.. note::
+
+    **Goal**: at the end of this section, the property form view will have:
+
+    - Conditional display of buttons and fields
+    - Tag colors
+
+    .. image:: 11_sprinkles/form.gif
+      :align: center
+      :alt: Form view with sprinkles
+
+
+In our real estate module, we want to modify the behavior of some fields. For example, we don't
+want to be able to create or edit a property type from the form view. Instead we expect the
+types to be handled in their appropriate menu. We also want to give tags a color. In order to add these
+behavior customizations, we can add the ``options`` attribute to several field widgets.
+
+.. exercise:: Add widget options.
+
+    - Add the appropriate option to the ``property_type_id`` field to prevent the creation and the
+      editing of a property type from the property form view. Have a look at the
+      :ref:`Many2one widget documentation <reference/js/widgets>` for more info.
+
+    - Add the following field:
+
+    =================================== ======================= =======================
+    Model                               Field                   Type
+    =================================== ======================= =======================
+    ``estate.property.tag``             Color                   Integer
+    =================================== ======================= =======================
+
+    Then add the appropriate option to the ``tag_ids`` field to add a color picker on the tags.
+    Have a look at the :ref:`FieldMany2ManyTags widget documentation <reference/js/widgets>`
+    for more info.
+
+In :doc:`05_firstui`, we saw that reserved fields were used for
+specific behaviors. For example, the ``active`` field is used to automatically filter out
+inactive records. We added the ``state`` as a reserved field as well. It's now time to use it!
+A ``state`` field can be used in combination with an ``invisible`` attribute in the view to display
+buttons conditionally.
+
+.. exercise:: Add conditional display of buttons.
+
+    Use the ``invisible`` attribute to display the header buttons conditionally as depicted
+    in this section's **Goal** (notice how the 'Sold' and 'Cancel' buttons change when the state is modified).
+
+    Tip: do not hesitate to search for ``invisible=`` in the Odoo XML files for some examples.
+
+More generally, it is possible to make a field ``invisible``, ``readonly`` or ``required`` based
+on the value of other fields. Note that ``invisible`` can also be applied to other elements of
+the view such as ``button`` or ``group``.
+
+`invisible`, `readonly` and `required` can have any Python expression as value. The expression
+gives the condition in which the property applies. For example:
+
+.. code-block:: xml
+
+    <form>
+        <field name="description" invisible="not is_partner"/>
+    </form>
+
+This means that the ``description`` field is invisible when ``is_partner`` is ``False``. It is
+important to note that a field used in ``invisible`` **must** be present in the view. If it
+should not be displayed to the user, we can use the ``invisible`` attribute to hide it.
+
+.. exercise:: Use ``invisible``.
+
+    - Make the garden area and orientation invisible in the ``estate.property`` form view when
+      there is no garden.
+    - Make the 'Accept' and 'Refuse' buttons invisible once the offer state is set.
+    - Do not allow adding an offer when the property state is 'Offer Accepted', 'Sold' or
+      'Cancelled'. To do this use the ``readonly`` attribute.
+
+.. warning::
+
+    Using a (conditional) ``readonly`` attribute in the view can be useful to prevent data entry
+    errors, but keep in mind that it doesn't provide any level of security! There is no check done
+    server-side, therefore it's always possible to write on the field through a RPC call.
+
+List
+----
+
+.. note::
+
+    **Goal**: at the end of this section, the property and offer list views should have color decorations.
+    Additionally, offers and tags will be editable directly in the list, and the availability date will be
+    hidden by default.
+
+    .. image:: 11_sprinkles/decoration.png
+      :align: center
+      :alt: List view with decorations and optional field
+
+    .. image:: 11_sprinkles/editable_list.gif
+      :align: center
+      :alt: Editable list
+
+When the model only has a few fields, it can be useful to edit records directly through the list
+view and not have to open the form view. In the real estate example, there is no need to open a form view
+to add an offer or create a new tag. This can be achieved thanks to the ``editable`` attribute.
+
+.. exercise:: Make list views editable.
+
+    Make the ``estate.property.offer`` and ``estate.property.tag`` list views editable.
+
+On the other hand, when a model has a lot of fields it can be tempting to add too many fields in the
+list view and make it unclear. An alternative method is to add the fields, but make them optionally
+hidden. This can be achieved thanks to the ``optional`` attribute.
+
+.. exercise:: Make a field optional.
+
+    Make the field ``date_availability`` on the ``estate.property`` list view optional and hidden by
+    default.
+
+Finally, color codes are useful to visually emphasize records. For example, in the real estate
+module we would like to display refused offers in red and accepted offers in green. This can be achieved
+thanks to the ``decoration-{$name}`` attribute (see :ref:`reference/js/widgets` for a
+complete list):
+
+.. code-block:: xml
+
+    <list decoration-success="is_partner==True">
+        <field name="name"/>
+    </list>
+
+The records where ``is_partner`` is ``True`` will be displayed in green.
+
+.. exercise:: Add some decorations.
+
+    On the ``estate.property`` list view:
+
+    - Properties with an offer received are green
+    - Properties with an offer accepted are green and bold
+    - Properties sold are muted
+
+    On the ``estate.property.offer`` list view:
+
+    - Refused offers are red
+    - Accepted offers are green
+    - The state should not be visible anymore
+
+    Tips:
+
+    - Keep in mind that **all** fields used in attributes must be in the view!
+    - If you want to test the color of the "Offer Received" and "Offer Accepted" states, add the
+      field in the form view and change it manually (we'll implement the business logic for this later).
+
+Search
+------
+
+**Reference**: the documentation related to this section can be found in
+:ref:`reference/view_architectures/search` and :ref:`reference/view_architectures/search/defaults`.
+
+.. note::
+
+    **Goal**: at the end of this section, the available properties will be filtered by default,
+    and searching on the living area returns results where the area is larger than the given
+    number.
+
+    .. image:: 11_sprinkles/search.gif
+      :align: center
+      :alt: Default filters and domains
+
+Last but not least, there are some tweaks we would like to apply when searching. First of all, we
+want to have our 'Available' filter applied by default when we access the properties. To make this happen, we
+need to use the ``search_default_{$name}`` action context, where ``{$name}`` is the filter name.
+This means that we can define which filter(s) will be activated by default at the action level.
+
+Here is an example of an
+`action <https://github.com/odoo/odoo/blob/6decc32a889b46947db6dd4d42ef995935894a2a/addons/crm/report/crm_opportunity_report_views.xml#L115>`__
+with its
+`corresponding filter <https://github.com/odoo/odoo/blob/6decc32a889b46947db6dd4d42ef995935894a2a/addons/crm/report/crm_opportunity_report_views.xml#L68>`__.
+
+.. exercise:: Add a default filter.
+
+    Make the 'Available' filter selected by default in the ``estate.property`` action.
+
+Another useful improvement in our module would be the ability to search efficiently by living area.
+In practice, a user will want to search for properties of 'at least' the given area. It is unrealistic
+to expect users would want to find a property of an exact living area. It is always
+possible to make a custom search, but that's inconvenient.
+
+Search view ``<field>`` elements can have a ``filter_domain`` that overrides
+the domain generated for searching on the given field. In the given domain,
+``self`` represents the value entered by the user. In the example below, it is
+used to search on both ``name`` and ``description`` fields.
+
+.. code-block:: xml
+
+    <search string="Test">
+        <field name="description" string="Name and description"
+               filter_domain="['|', ('name', 'ilike', self), ('description', 'ilike', self)]"/>
+    </search>
+
+.. exercise:: Change the living area search.
+
+    Add a ``filter_domain`` to the living area to include properties with an area equal to or
+    greater than the given value.
+
+Stat Buttons
+============
+
+.. note::
+
+    **Goal**: at the end of this section, there will be a stat button on the property type form view
+    which shows the list of all offers related to properties of the given type when it is clicked on.
+
+    .. image:: 11_sprinkles/stat_button.gif
+      :align: center
+      :alt: Stat button
+
+If you've already used some functional modules in Odoo, you've probably already encountered a 'stat
+button'. These buttons are displayed on the top right of a form view and give a quick access to
+linked documents. In our real estate module, we would like to have a quick link to the offers
+related to a given property type as depicted in the **Goal** of this section.
+
+At this point of the tutorial we have already seen most of the concepts to do this. However,
+there is not a single solution and it can still be confusing if you don't know where to start from.
+We'll describe a step-by-step solution in the exercise. It can always be useful to find some
+examples in the Odoo codebase by looking for ``oe_stat_button``.
+
+The following exercise might be a bit more difficult than the previous ones since it assumes you
+are able to search for examples in the source code on your own. If you are stuck there is probably
+someone nearby who can help you ;-)
+
+The exercise introduces the concept of :ref:`reference/fields/related`. The easiest way to
+understand it is to consider it as a specific case of a computed field. The following definition
+of the ``description`` field:
+
+.. code-block:: python
+
+        ...
+
+        partner_id = fields.Many2one("res.partner", string="Partner")
+        description = fields.Char(related="partner_id.name")
+
+is equivalent to:
+
+.. code-block:: python
+
+        ...
+
+        partner_id = fields.Many2one("res.partner", string="Partner")
+        description = fields.Char(compute="_compute_description")
+
+        @api.depends("partner_id.name")
+        def _compute_description(self):
+            for record in self:
+                record.description = record.partner_id.name
+
+Every time the partner name is changed, the description is modified.
+
+.. exercise:: Add a stat button to property type.
+
+    - Add the field ``property_type_id`` to ``estate.property.offer``. We can define it as a
+      related field on ``property_id.property_type_id`` and set it as stored.
+
+    Thanks to this field, an offer will be linked to a property type when it's created. You can add
+    the field to the list view of offers to make sure it works.
+
+    - Add the field ``offer_ids`` to ``estate.property.type`` which is the One2many inverse of
+      the field defined in the previous step.
+
+    - Add the field ``offer_count`` to ``estate.property.type``. It is a computed field that counts
+      the number of offers for a given property type (use ``offer_ids`` to do so).
+
+    At this point, you have all the information necessary to know how many offers are linked to
+    a property type. When in doubt, add ``offer_ids`` and ``offer_count`` directly to the view.
+    The next step is to display the list when clicking on the stat button.
+
+    - Create a stat button on ``estate.property.type`` pointing to the ``estate.property.offer``
+      action. This means you should use the ``type="action"`` attribute (go back to the end of
+      :doc:`09_actions` if you need a refresher).
+
+    At this point, clicking on the stat button should display all offers. We still need to filter out the
+    offers.
+
+    - On the ``estate.property.offer`` action, add a domain that defines ``property_type_id``
+      as equal to the ``active_id`` (= the current record,
+      `here is an example <https://github.com/odoo/odoo/blob/df37ce50e847e3489eb43d1ef6fc1bac6d6af333/addons/event/views/event_views.xml#L162>`__)
+
+Looking good? If not, don't worry, the :doc:`next chapter
+<12_inheritance>` doesn't require stat buttons ;-)
+
+.. _order_by:
+    https://www.postgresql.org/docs/12/queries-order.html
+
+
+==================================================
+SECTION: 12_inheritance.rst
+PATH: developer/tutorials/server_framework_101/12_inheritance.rst
+==================================================
+
+=======================
+Chapter 12: Inheritance
+=======================
+
+A powerful aspect of Odoo is its modularity. A module is dedicated to a business need, but
+modules can also interact with one another. This is useful for extending the functionality of an existing
+module. For example, in our real estate scenario we want to display the list of a salesperson's properties
+directly in the regular user view.
+
+But before going through the specific Odoo module inheritance, let's see how we can alter the
+behavior of the standard CRUD (Create, Retrieve, Update or Delete) methods.
+
+Python Inheritance
+==================
+
+.. note::
+
+    **Goal**: at the end of this section:
+
+    - It should not be possible to delete a property which is not new or cancelled.
+
+    .. image:: 12_inheritance/unlink.gif
+        :align: center
+        :alt: Unlink
+
+    - When an offer is created, the property state should change to 'Offer Received'
+    - It should not be possible to create an offer with a lower price than an existing offer
+
+    .. image:: 12_inheritance/create.gif
+        :align: center
+        :alt: Create
+
+In our real estate module, we never had to develop anything specific to be able to do the
+standard CRUD actions. The Odoo framework provides the necessary
+tools to do them. In fact, such actions are already included in our model thanks to classical
+Python inheritance::
+
+    from odoo import fields, models
+
+    class TestModel(models.Model):
+        _name = "test_model"
+        _description = "Test Model"
+
+        ...
+
+Our ``class TestModel`` inherits from :class:`~odoo.models.Model` which provides
+:meth:`~odoo.models.Model.create`, :meth:`~odoo.models.Model.read`, :meth:`~odoo.models.Model.write`
+and :meth:`~odoo.models.Model.unlink`.
+
+These methods (and any other method defined on :class:`~odoo.models.Model`) can be extended to add
+specific business logic::
+
+    from odoo import fields, models
+
+    class TestModel(models.Model):
+        _name = "test_model"
+        _description = "Test Model"
+
+        ...
+
+        @api.model
+        def create(self, vals_list):
+            # Do some business logic, modify vals...
+            ...
+            # Then call super to execute the parent method
+            return super().create(vals_list)
+
+The decorator :func:`~odoo.api.model` is necessary for the :meth:`~odoo.models.Model.create`
+method because the content of the recordset ``self`` is not relevant in the context of creation,
+but it is not necessary for the other CRUD methods.
+
+It is also important to note that even though we can directly override the
+:meth:`~odoo.models.Model.unlink` method, you will almost always want to write a new method with
+the decorator :func:`~odoo.api.ondelete` instead. Methods marked with this decorator will be
+called during :meth:`~odoo.models.Model.unlink` and avoids some issues that can occur during
+uninstalling the model's module when :meth:`~odoo.models.Model.unlink` is directly overridden.
+
+In Python 3, ``super()`` is equivalent to ``super(TestModel, self)``. The latter may be necessary
+when you need to call the parent method with a modified recordset.
+
+.. danger::
+
+    - It is very important to **always** call ``super()`` to avoid breaking the flow. There are
+      only a few very specific cases where you don't want to call it.
+    - Make sure to **always** return data consistent with the parent method. For example, if
+      the parent method returns a ``dict()``, your override must also return a ``dict()``.
+
+.. exercise:: Add business logic to the CRUD methods.
+
+    - Prevent deletion of a property if its state is not 'New' or 'Cancelled'
+
+    Tip: create a new method with the :func:`~odoo.api.ondelete` decorator and remember that
+    ``self`` can be a recordset with more than one record.
+
+    - At offer creation, set the property state to 'Offer Received'. Also raise an error if the user
+      tries to create an offer with a lower amount than an existing offer.
+
+    Tip: the ``property_id`` field is available in the ``vals``, but it is an ``int``. To
+    instantiate an ``estate.property`` object, use ``self.env[model_name].browse(value)``
+    (`example <https://github.com/odoo/odoo/blob/136e4f66cd5cafe7df450514937c7218c7216c93/addons/gamification/models/badge.py#L57>`__)
+
+Model Inheritance
+=================
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/orm/inheritance`.
+
+In our real estate module, we would like to display the list of properties linked to a salesperson
+directly in the Settings / Users & Companies / Users form view. To do this, we need to add a field to
+the ``res.users`` model and adapt its view to show it.
+
+Odoo provides two *inheritance* mechanisms to extend an existing model in a modular way.
+
+The first inheritance mechanism allows modules to modify the behavior of a model defined in an
+another module by:
+
+- adding fields to the model,
+- overriding the definition of fields in the model,
+- adding constraints to the model,
+- adding methods to the model,
+- overriding existing methods in the model.
+
+The second inheritance mechanism (delegation) allows every record of a model to be linked
+to a parent model's record and provides transparent access to the
+fields of this parent record.
+
+.. image:: 12_inheritance/inheritance_methods.png
+    :align: center
+    :alt: Inheritance Methods
+
+In Odoo, the first mechanism is by far the most used. In our case, we want to add a field to an
+existing model, which means we will use the first mechanism. For example::
+
+    from odoo import fields, models
+
+    class InheritedModel(models.Model):
+        _inherit = ["inherited.model"]
+
+        new_field = fields.Char(string="New Field")
+
+A practical example where two fields are added to
+a model can be found
+`here <https://github.com/odoo/odoo/blob/60e9410e9aa3be4a9db50f6f7534ba31fea3bc29/addons/account_fleet/models/account_move.py#L39-L47>`__.
+
+By convention, each inherited model is defined in its own Python file. In our example, it would be
+``models/inherited_model.py``.
+
+.. exercise:: Add a field to Users.
+
+    - Add the following field to ``res.users``:
+
+    ===================== ================================================================
+    Field                 Type
+    ===================== ================================================================
+    property_ids          One2many inverse of the field that references the salesperson in
+                          ``estate.property``
+    ===================== ================================================================
+
+    - Add a domain to the field so it only lists the available properties.
+
+In the next section let's add the field to the view and check that everything is working well!
+
+View Inheritance
+================
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/view_records/inheritance`.
+
+.. note::
+
+    **Goal**: at the end of this section, the list of available properties linked
+    to a salesperson should be displayed in their user form view
+
+    .. image:: 12_inheritance/users.png
+        :align: center
+        :alt: Users
+
+Instead of modifying existing views in place (by overwriting them), Odoo
+provides view inheritance where children 'extension' views are applied on top of
+root views. These extension can both add and remove content from their parent view.
+
+An extension view references its parent using the ``inherit_id`` field.
+Instead of a single view, its ``arch`` field contains a number of
+``xpath`` elements that select and alter the content of their parent view:
+
+.. code-block:: xml
+
+    <record id="inherited_model_view_form" model="ir.ui.view">
+        <field name="name">inherited.model.form.inherit.test</field>
+        <field name="model">inherited.model</field>
+        <field name="inherit_id" ref="inherited.inherited_model_view_form"/>
+        <field name="arch" type="xml">
+            <!-- find field description and add the field
+                 new_field after it -->
+            <xpath expr="//field[@name='description']" position="after">
+              <field name="new_field"/>
+            </xpath>
+        </field>
+    </record>
+
+``expr``
+    An XPath_ expression selecting a single element in the parent view.
+    Raises an error if it matches no element or more than one
+``position``
+    Operation to apply to the matched element:
+
+    ``inside``
+        appends ``xpath``'s body to the end of the matched element
+    ``replace``
+        replaces the matched element with the ``xpath``'s body, replacing any ``$0`` node occurrence
+        in the new body with the original element
+    ``before``
+        inserts the ``xpath``'s body as a sibling before the matched element
+    ``after``
+        inserts the ``xpaths``'s body as a sibling after the matched element
+    ``attributes``
+        alters the attributes of the matched element using the special
+        ``attribute`` elements in the ``xpath``'s body
+
+When matching a single element, the ``position`` attribute can be set directly
+on the element to be found. Both inheritances below have the same result.
+
+.. code-block:: xml
+
+    <xpath expr="//field[@name='description']" position="after">
+        <field name="idea_ids" />
+    </xpath>
+
+    <field name="description" position="after">
+        <field name="idea_ids" />
+    </field>
+
+An example of a view inheritance extension can be found
+`here <https://github.com/odoo/odoo/blob/691d1f087040f1ec7066e485d19ce3662dfc6501/addons/account_fleet/views/account_move_views.xml#L3-L17>`__.
+
+.. exercise:: Add fields to the Users view.
+
+    Add the ``property_ids`` field to the ``base.view_users_form`` in a new notebook page.
+
+    Tip: an example an inheritance of the users' view can be found
+    `here <https://github.com/odoo/odoo/blob/691d1f087040f1ec7066e485d19ce3662dfc6501/addons/gamification/views/res_users_views.xml#L5-L14>`__.
+
+Inheritance is extensively used in Odoo due to its modular concept. Do not hesitate to read
+the corresponding documentation for more info!
+
+In the :doc:`next chapter <13_other_module>`, we will learn how to
+interact with other modules.
+
+.. _XPath: https://w3.org/TR/xpath
+
+
+==================================================
+SECTION: 13_other_module.rst
+PATH: developer/tutorials/server_framework_101/13_other_module.rst
+==================================================
+
+=======================================
+Chapter 13: Interact With Other Modules
+=======================================
+
+In the :doc:`previous chapter <12_inheritance>`, we used inheritance to
+modify the behavior of a module. In our real estate scenario, we would like to go a step further
+and be able to generate invoices for our customers. Odoo provides an Invoicing module, so it
+would be neat to create an invoice directly from our real estate module, i.e. once a property
+is set to 'Sold', an invoice is created in the Invoicing application.
+
+Concrete Example: Account Move
+==============================
+
+.. note::
+
+    **Goal**: at the end of this section:
+
+    - A new module ``estate_account`` should be created
+    - When a property is sold, an invoice should be issued for the buyer
+
+    .. image:: 13_other_module/create_inv.gif
+        :align: center
+        :alt: Invoice creation
+
+Any time we interact with another module, we need to keep in mind the modularity. If we intend
+to sell our application to real estate agencies, some may want the invoicing feature but
+others may not want it.
+
+Link Module
+-----------
+
+The common approach for such use cases is to create a 'link' module. In our case, the module
+would depend on ``estate`` and ``account`` and would include the invoice creation logic
+of the estate property. This way the real estate and the accounting modules can be installed
+independently. When both are installed, the link module provides the new feature.
+
+.. exercise:: Create a link module.
+
+    Create the ``estate_account`` module, which depends on the ``estate`` and ``account`` modules.
+    For now, it will be an empty shell.
+
+    Tip: you already did this at the
+    :doc:`beginning of the tutorial <02_newapp>`. The process is very
+    similar.
+
+When the ``estate_account`` module appears in the list, go ahead and install it! You'll notice that
+the Invoicing application is installed as well. This is expected since your module depends on it.
+If you uninstall the Invoicing application, your module will be uninstalled as well.
+
+.. _tutorials/server_framework_101/13_other_module/create:
+
+Invoice Creation
+----------------
+
+It's now time to generate the invoice. We want to add functionality to the
+``estate.property`` model, i.e. we want to add some extra logic for when a property is sold.
+Does that sound familiar? If not, it's a good idea to go back to the
+:doc:`previous chapter <12_inheritance>` since you might have missed
+something ;-)
+
+As a first step, we need to extend the action called when pressing the
+:doc:`'Sold' button <09_actions>` on a property. To do so, we need to
+create a :doc:`model inheritance <12_inheritance>` in the `estate_account`
+module for the ``estate.property`` model. For now, the overridden action will simply return the
+``super`` call. Maybe an example will make things clearer::
+
+    from odoo import models
+
+    class InheritedModel(models.Model):
+        _inherit = ["inherited.model"]
+
+        def inherited_action(self):
+            return super().inherited_action()
+
+A practical example can be found
+`here <https://github.com/odoo/odoo/blob/f1f48cdaab3dd7847e8546ad9887f24a9e2ed4c1/addons/event_sale/models/account_move.py#L7-L16>`__.
+
+.. exercise:: Add the first step of invoice creation.
+
+    - Create a ``estate_property.py`` file in the correct folder of the ``estate_account`` module.
+    - ``_inherit`` the ``estate.property`` model.
+    - Override the ``action_sold`` method (you might have named it differently) to return the ``super``
+      call.
+
+    Tip: to make sure it works, add a ``print`` or a debugger breakpoint in the overridden method.
+
+Is it working? If not, maybe check that all Python files are correctly imported.
+
+If the override is working, we can move forward and create the invoice. Unfortunately, there
+is no easy way to know how to create any given object in Odoo. Most of the time, it is necessary
+to have a look at its model to find the required fields and provide appropriate values.
+
+A good way to learn is to look at how other modules already do what you want to do. For example, one of
+the basic flows of Sales is the creation of an invoice from a sales order. This looks like a good
+starting point since it does exactly what we want to do. Take some time to read and understand the
+`_create_invoices <https://github.com/odoo/odoo/blob/f1f48cdaab3dd7847e8546ad9887f24a9e2ed4c1/addons/sale/models/sale.py#L610-L717>`__
+method. When you are done crying because this simple task looks awfully complex, we can move
+forward in the tutorial.
+
+To create an invoice, we need the following information:
+
+- a ``partner_id``: the customer
+- a ``move_type``: it has several `possible values <https://github.com/odoo/odoo/blob/f1f48cdaab3dd7847e8546ad9887f24a9e2ed4c1/addons/account/models/account_move.py#L138-L147>`__
+- a ``journal_id``: the accounting journal
+
+This is enough to create an empty invoice.
+
+.. exercise:: Add the second step of invoice creation.
+
+    Create an empty ``account.move`` in the override of the ``action_sold`` method:
+
+    - the ``partner_id`` is taken from the current ``estate.property``
+    - the ``move_type`` should correspond to a 'Customer Invoice'
+
+    Tips:
+
+    - to create an object, use ``self.env[model_name].create(values)``, where ``values``
+      is a ``dict``.
+    - the ``create`` method doesn't accept recordsets as field values.
+
+When a property is set to 'Sold', you should now have a new customer invoice created in
+Invoicing / Customers / Invoices.
+
+Obviously we don't have any invoice lines so far. To create an invoice line, we need the following
+information:
+
+- ``name``: a description of the line
+- ``quantity``
+- ``price_unit``
+
+Moreover, an invoice line needs to be linked to an invoice. The easiest and most efficient way
+to link a line to an invoice is to include all lines at invoice creation. To do this, the
+``invoice_line_ids`` field is included in the ``account.move`` creation, which is a
+:class:`~odoo.fields.One2many`. One2many and Many2many use special 'commands' which have been
+made human readable with the :class:`~odoo.fields.Command` namespace. This namespace represents
+a triplet command to execute on a set of records. The triplet was originally the only option to
+do these commands, but it is now standard to use the namespace instead. The format is to place
+them in a list which is executed sequentially. Here is a simple example to include a One2many
+field ``line_ids`` at creation of a ``test_model``::
+
+    from odoo import Command
+
+    def inherited_action(self):
+        self.env["test_model"].create(
+            {
+                "name": "Test",
+                "line_ids": [
+                    Command.create({
+                        "field_1": "value_1",
+                        "field_2": "value_2",
+                    })
+                ],
+            }
+        )
+        return super().inherited_action()
+
+.. exercise:: Add the third step of invoice creation.
+
+    Add two invoice lines during the creation of the ``account.move``. Each property sold will
+    be invoiced following these conditions:
+
+    - 6% of the selling price
+    - an additional 100.00 from administrative fees
+
+    Tip: Add the ``invoice_line_ids`` at creation following the example above.
+    For each line, we need a ``name``, ``quantity`` and ``price_unit``.
+
+This chapter might be one of the most difficult that has been covered so far, but it is the closest
+to what Odoo development will be in practice. In the :doc:`next chapter
+<14_qwebintro>`, we will introduce the templating mechanism used in Odoo.
+
+
+==================================================
+SECTION: 14_qwebintro.rst
+PATH: developer/tutorials/server_framework_101/14_qwebintro.rst
+==================================================
+
+===================================
+Chapter 14: A Brief History Of QWeb
+===================================
+
+So far the interface design of our real estate module has been rather limited. Building
+a list view is straightforward since only the list of fields is necessary. The same holds true
+for the form view: despite the use of a few tags such as ``<group>`` or ``<page>``, there
+is very little to do in terms of design.
+
+However, if we want to give a unique look to our application, it is necessary to go a step
+further and be able to design new views. Moreover, other features such as PDF reports or
+website pages need another tool to be created with more flexibility: a templating_ engine.
+
+You might already be familiar with existing engines such as Jinja (Python), ERB (Ruby) or
+Twig (PHP). Odoo comes with its own built-in engine: :ref:`reference/qweb`.
+QWeb is the primary templating engine used by Odoo. It is an XML templating engine and used
+mostly to generate HTML fragments and pages.
+
+You probably already have come across the `kanban board`_ in Odoo where the records are
+displayed in a card-like structure. We will build such a view for our real estate module.
+
+Concrete Example: A Kanban View
+===============================
+
+**Reference**: the documentation related to this topic can be found in
+:ref:`reference/view_architectures/kanban`.
+
+.. note::
+
+    **Goal**: at the end of this section a Kanban view of the properties should be created:
+
+    .. image:: 14_qwebintro/kanban.png
+        :align: center
+        :alt: Kanban view
+
+In our estate application, we would like to add a Kanban view to display our properties. Kanban
+views are a standard Odoo view (like the form and list views), but their structure is much more
+flexible. In fact, the structure of each card is a mix of form elements (including basic HTML)
+and QWeb. The definition of a Kanban view is similar to the definition of the list and form
+views, except that their root element is ``<kanban>``. In its simplest form, a Kanban view
+looks like:
+
+.. code-block:: xml
+
+    <kanban>
+        <templates>
+            <t t-name="kanban-card">
+                <div>
+                    <field name="name"/>
+                </div>
+            </t>
+        </templates>
+    </kanban>
+
+Let's break down this example:
+
+- ``<templates>``: defines a list of :ref:`reference/qweb` templates. Kanban views *must* define at
+  least one root template ``kanban-card``, which will be rendered once for each record.
+- ``<t t-name="kanban-card">``: ``<t>`` is a placeholder element for QWeb directives. In this case,
+  it is used to set the ``name`` of the template to ``kanban-card``
+- ``<field name="name"/>``: this will add the ``name`` field to the view.
+
+.. exercise:: Make a minimal kanban view.
+
+    Using the simple example provided, create a minimal Kanban view for the properties. The
+    only field to display is the ``name``.
+
+    Tip: you must add ``kanban`` in the ``view_mode`` of the corresponding
+    ``ir.actions.act_window``.
+
+Once the Kanban view is working, we can start improving it. If we want to display an element
+conditionally, we can use the ``t-if`` directive (see :ref:`reference/qweb/conditionals`).
+
+.. code-block:: xml
+
+    <kanban>
+        <field name="state"/>
+        <templates>
+            <t t-name="kanban-card">
+                <div>
+                    <field name="name"/>
+                    <div t-if="record.state.raw_value == 'new'">
+                        This is new!
+                    </div>
+                </div>
+            </t>
+        </templates>
+    </kanban>
+
+We added a few things:
+
+- ``t-if``: the ``<div>`` element is rendered if the condition is true.
+- ``record``: an object with all the requested fields as its attributes. Each field has
+  two attributes ``value`` and ``raw_value``. The former is formatted according to current
+  user parameters and the latter is the direct value from a :meth:`~odoo.models.Model.read`.
+
+In the above example, the field ``name`` was added in the ``<templates>`` element, but ``state``
+is outside of it. When we need the value of a field but don't want to display it in the view,
+it is possible to add it outside of the ``<templates>`` element.
+
+.. exercise:: Improve the Kanban view.
+
+    Add the following fields to the Kanban view: expected price, best price, selling price and
+    tags. Pay attention: the best price is only displayed when an offer is received, while the
+    selling price is only displayed when an offer is accepted.
+
+    Refer to the **Goal** of the section for a visual example.
+
+Let's give the final touch to our view: the properties must be grouped by type by default. You
+might want to have a look at the various options described in
+:ref:`reference/view_architectures/kanban`.
+
+.. exercise:: Add default grouping.
+
+    Use the appropriate attribute to group the properties by type by default. You must also prevent
+    drag and drop.
+
+    Refer to the **Goal** of the section for a visual example.
+
+Kanban views are a typical example of how it is always a good idea to start from an existing
+view and fine tune it instead of starting from scratch. There are many options and classes
+available, so... read and learn!
+
+.. _templating:
+    https://en.wikipedia.org/wiki/Template_processor
+.. _kanban board:
+    https://en.wikipedia.org/wiki/Kanban_board
+
+
+==================================================
+SECTION: 15_final_word.rst
+PATH: developer/tutorials/server_framework_101/15_final_word.rst
+==================================================
+
+==========================
+Chapter 15: The final word
+==========================
+
+Coding guidelines
+=================
+
+We will start refactoring the code to match to the Odoo coding guidelines. The guidelines aim
+to improve the quality of the Odoo Apps code.
+
+**Reference**: you will find the Odoo coding guidelines in
+:doc:`/contributing/development/coding_guidelines`.
+
+.. exercise:: Polish your code.
+
+    Refactor your code to respect the coding guidelines. Don't forget to run your linter and
+    respect the module structure, the variable names, the method name convention, the model
+    attribute order and the xml ids.
+
+Test on the runbot
+==================
+
+Odoo has its own :abbr:`CI (Continuous integration)` server named `runbot <https://runbot.odoo.com/>`__. All
+commits, branches and PR will be tested to avoid regressions or breaking of the stable versions.
+All the runs that pass the tests are deployed on their own server with demo data.
+
+.. exercise:: Play with the runbot.
+
+    Feel free to go to the runbot website and open the last stable version of Odoo to check out all the available
+    applications and functionalities.
+
+
+==================================================
+SECTION: server_framework_101.rst
+PATH: developer/tutorials/server_framework_101.rst
+==================================================
+
+:show-content:
+
+====================
+Server framework 101
+====================
+
+.. toctree::
+    :titlesonly:
+    :glob:
+
+    server_framework_101/*
+
+Welcome to the Server framework 101 tutorial! If you reached this page that means you are
+interested in the development of your own Odoo module. It might also mean that you recently
+joined the Odoo company for a rather technical position. In any case, your journey to the
+technical side of Odoo starts here.
+
+The goal of this tutorial is for you to get an insight of the most important parts of the Odoo
+development framework while developing your own Odoo module to manage real estate assets. The
+chapters should be followed in their given order since they cover the development of a new Odoo
+application from scratch in an incremental way. In other words, each chapter depends on the previous
+one.
+
+.. important::
+   Before going further, make sure you have prepared your development environment with the
+   :doc:`setup guide <setup_guide>`.
+
+Ready? Let's get started!
+
+* :doc:`server_framework_101/01_architecture`
+* :doc:`server_framework_101/02_newapp`
+* :doc:`server_framework_101/03_basicmodel`
+* :doc:`server_framework_101/04_securityintro`
+* :doc:`server_framework_101/05_firstui`
+* :doc:`server_framework_101/06_basicviews`
+* :doc:`server_framework_101/07_relations`
+* :doc:`server_framework_101/08_compute_onchange`
+* :doc:`server_framework_101/09_actions`
+* :doc:`server_framework_101/10_constraints`
+* :doc:`server_framework_101/11_sprinkles`
+* :doc:`server_framework_101/12_inheritance`
+* :doc:`server_framework_101/13_other_module`
+* :doc:`server_framework_101/14_qwebintro`
+* :doc:`server_framework_101/15_final_word`

@@ -1,0 +1,1517 @@
+
+
+==================================================
+SECTION: surveys.rst
+PATH: applications/marketing/surveys.rst
+==================================================
+
+:show-content:
+
+=======
+Surveys
+=======
+
+Companies gather valuable insights from customers and employees through surveys, aiding informed
+decision-making.
+
+With Odoo *Surveys*, users create various surveys, questionnaires, certifications, assessments, and
+so much more. These can be used to collect feedback, evaluate the success of a recent event, and
+measure the satisfaction of customers and/or employees. This process yields valuable insights into
+shifting market trends.
+
+.. seealso::
+   `Odoo Tutorials: Surveys <https://www.odoo.com/slides/surveys-62>`_
+
+.. cards::
+
+   .. card:: Create surveys
+      :target: surveys/create
+
+      Discover how to create surveys with Odoo.
+
+   .. card:: Scoring surveys
+      :target: surveys/scoring
+
+      Learn how to create and analyze survey scores with Odoo.
+
+   .. card:: Create questions
+      :target: surveys/questions
+
+      See how to create, configure, and customize all types of survey questions with Odoo.
+
+   .. card:: Live Session surveys
+      :target: surveys/live_session
+
+      Find out everything there is to know about Odoo's unique Live Session surveys.
+
+   .. card:: Survey analysis
+      :target: surveys/analysis
+
+      Explore the various ways to analyze surveys using Odoo's in-depth reporting pages.
+
+Dashboard
+=========
+
+Upon opening the *Surveys* application, Odoo presents the main dashboard of the *Surveys*
+application, otherwise known as the :guilabel:`Surveys` page.
+
+.. image:: surveys/surveys-dashboard.png
+   :align: center
+   :alt: The Odoo Surveys application dashboard in the default Kanban view.
+
+.. tip::
+   The *Surveys* dashboard can be accessed at any time throughout the application by clicking
+   :menuselection:`Surveys` from the header menu.
+
+In the upper-left corner, there is a :guilabel:`New` button. When clicked, Odoo presents a blank
+survey form that can be used to create a survey.
+
+On the dashboard, all the surveys that have been created in the database are displayed in a default
+Kanban view.
+
+From left-to-right, after the survey name, the user who is responsible for it, and the month it was
+created, each line on the *Surveys* dashboard shows the following:
+
+- Number of :guilabel:`Questions` in that particular survey
+- :guilabel:`Average Duration` of the survey (how long it typically takes a participant to complete)
+- Number of :guilabel:`Registered` participants for the survey
+- Number of times that particular survey has been :guilabel:`Completed`
+- Percentage and data bar showcasing how many people have :guilabel:`Passed` or become
+  :guilabel:`Certified`
+
+  .. note::
+     The :guilabel:`Passed` percentage and bar **only** appears when a *Required Score* has been
+     configured for that particular survey.
+
+     The :guilabel:`Certified` percentage and bar **only** appears if that particular survey has the
+     *Is a Certification* option enabled on the survey form.
+
+     If neither :guilabel:`Passed` nor :guilabel:`Certified` appear on the line, that indicates the
+     survey is without a *Required Score* and was not enabled with the *Is a Certification* option.
+
+- Number of :guilabel:`Courses` related to that survey, which **only** appears if more than one
+  course has been created and attached to a single survey
+
+.. note::
+   A half-trophy background image behind the survey name indicates that the survey is a
+   *Certification*.
+
+To the far-right of those data points on the survey lines, located on the *Surveys* application
+dashboard, are a collection of buttons.
+
+Those buttons are as follows:
+
+- :guilabel:`Share`: click to reveal a :guilabel:`Share a Survey` pop-up form that can be used to
+  invite potential participants to the survey - complete with a :guilabel:`Survey Link` that can be
+  copied and sent to potential participants, and a :guilabel:`Send by Email` toggle switch.
+
+  When the :guilabel:`Send by Email` toggle is active (green switch), additional fields appear, in
+  which :guilabel:`Recipients`, :guilabel:`Additional Emails`, and a :guilabel:`Subject` can be
+  added to the email.
+
+  Below that, a dynamic email template, complete with a :guilabel:`Start Certification` button
+  appears, which can be modified, as well, if needed.
+
+  :guilabel:`Attachments` can be added to the email, as well as an :guilabel:`Answer deadline` can
+  be set, if needed.
+
+  Once modifications are complete, click :guilabel:`Send` to send that email invite to all the email
+  addresses/contacts listed in the :guilabel:`Recipients` field.
+
+  .. image:: surveys/share-survey-popup-email-toggle.png
+     :align: center
+     :alt: The 'Share a Survey' pop-up window in Odoo Surveys with the Send by Email toggled on.
+
+  .. tip::
+     The default :guilabel:`Mail Template` for survey invites can be edited by navigating to
+     :menuselection:`Settings --> Technical --> Email Templates` and searching for `Survey: Invite`.
+
+  .. note::
+     The :guilabel:`Send by Email` toggle switch is **not** present when the survey line has zero
+     questions.
+
+     The :guilabel:`Survey Link` only appears when the survey's *Access Mode* is set to *Anyone with
+     the link*.
+
+     The :guilabel:`Additional Emails` field only appears when the survey's *Require Login* field is
+     **not** active.
+
+- :guilabel:`Test`: click to take a test version of the survey in a new tab, from the point-of-view
+  of a survey participant, in order to check for any errors or inconsistencies.
+- :guilabel:`See results`: click to reveal a new tab showcasing detailed metrics and graphical
+  representations of all survey participants, questions, and responses for deeper analysis.
+- :guilabel:`Start Live Session`: click to initiate a *Live session* survey, and reveal a session
+  manager window in a new tab. This button is **not** present for surveys that have enabled the *Is
+  a Certification* option on the survey form.
+- :guilabel:`End Live Session`: click to end a *Live session* survey that has been officially
+  started. This button option **only** appears on survey lines that have previously initiated a live
+  session.
+
+Above the buttons that are located to the far-right of the survey lines, a :guilabel:`⋮ (three
+dots)` icon appears when the cursor hovers over that particular line. When the :guilabel:`⋮ (three
+dots)` icon is clicked, a drop-down menu with some configuration-related options appear:
+
+The options are:
+
+- :guilabel:`Edit Survey`: when clicked, Odoo reveals the survey form for that particular survey,
+  which can then be modified in a number of different ways.
+- :guilabel:`Share`: when clicked, Odoo reveals the :guilabel:`Share a Survey` pop-up form that can
+  be used to invite potential participants to the survey.
+- :guilabel:`Delete`: when clicked, Odoo presents a pop-up window, wherein the user **must** confirm
+  they want to delete the survey entirely, which they can do by clicking the :guilabel:`Delete`
+  button at the bottom of the pop-up window.
+- :guilabel:`Color`: users can opt to choose a color to add to the survey line on the dashboard for
+  added organizational purposes, if needed.
+
+.. image:: surveys/three-dot-dropdown.png
+   :align: center
+   :alt: The three-dot drop-down menu of options that appears on the Odoo Surveys dashboard.
+
+Beneath the buttons that are located to the far-right of the survey lines, there is an *Activities*
+button, represented by a :guilabel:`🕘 (clock)` icon. When clicked, a mini pop-up window appears,
+from which activities related to that particular survey can be scheduled and customized.
+
+.. image:: surveys/schedule-activities-dropdown.png
+   :align: center
+   :alt: The Schedule Activities drop-down menu that appears on the Odoo Surveys dashboard.
+
+List view
+---------
+
+The *Surveys* dashboard is shown in the Kanban view, by default, but there is also a list view
+option available in the upper-right corner, represented by a :guilabel:`≣ (bars)` icon.
+
+When the :guilabel:`≣ (bars)` icon is clicked, the survey related data is displayed in a list view.
+
+.. image:: surveys/list-view.png
+   :align: center
+   :alt: The list view option located on the Odoo Surveys application dashboard.
+
+The columns shown on the *Surveys* app dashboard, while in list view, are as follows:
+
+- :guilabel:`Survey Title`
+- :guilabel:`Responsible`
+- :guilabel:`Average Duration`
+- :guilabel:`Registered`
+- :guilabel:`Success Ratio (%)`
+- :guilabel:`Avg Score (%)`
+
+.. tip::
+   Additional columns can be added to the *Surveys* application dashboard, while in list view, by
+   clicking the *additional options* drop-down menu, located to the far-right of the column titles,
+   represented by a :guilabel:`(slider with two dots)` icon.
+
+Activities view
+---------------
+
+To have the *Surveys* application dashboard display nothing but the activities associated to the
+surveys in the database, click the :guilabel:`🕘 (clock)` icon to the far-right of the other view
+options, located in the upper-right corner.
+
+.. image:: surveys/activities-view.png
+   :align: center
+   :alt: The activities view option located on the Odoo Surveys dashboard.
+
+Doing so reveals a table with rows and columns. The rows show the different surveys in the database,
+and the columns depict the various activity types.
+
+.. note::
+   A new survey cannot be created in this view, as it is solely for the purpose of creating and
+   viewing scheduled activities.
+
+Create surveys
+==============
+
+Learn about all the different options and configurations that can be utilized when creating a survey
+in Odoo.
+
+.. seealso::
+   :doc:`surveys/create`
+
+Scoring surveys
+===============
+
+Discover how to measure a survey participant's performance, or overall satisfaction, with Odoo's
+detailed (and fully customizable) survey scoring options.
+
+.. seealso::
+   :doc:`surveys/scoring`
+
+Create questions
+================
+
+With Odoo *Surveys*, there are many question types and options to choose from, providing the ability
+to create any kind of unique survey, questionnarire, and/or certification.
+
+.. seealso::
+   :doc:`surveys/questions`
+
+Live Session surveys
+====================
+
+The *Live Session* survey option available in Odoo can enhance in-person demonstrations and
+presentations, where participants' real-time responses can be used to dictate where the conversation
+goes next.
+
+.. seealso::
+   :doc:`surveys/live_session`
+
+Survey analysis
+===============
+
+Once the surveys start to come in, it is time to analyze the responses from your participants.
+Fortuantely, the in-depth reporting pages and options available in Odoo *Surveys* provide countless
+ways to examine everything related to surveys, and their submitted responses.
+
+.. seealso::
+   :doc:`surveys/analysis`
+
+.. toctree::
+   :titlesonly:
+
+   surveys/create
+   surveys/scoring
+   surveys/questions
+   surveys/live_session
+   surveys/analysis
+
+
+==================================================
+SECTION: analysis.rst
+PATH: applications/marketing/surveys/analysis.rst
+==================================================
+
+===============
+Survey analysis
+===============
+
+After surveys have been created and sent to participants, it is only a matter of time before the
+responses start to come in. When they do, it is important to know where and how to analyze them in
+the Odoo *Surveys* application.
+
+Fortunately, Odoo provides numerous ways to view survey responses, allowing users to access and
+analyze survey responses as they are submitted.
+
+See results
+===========
+
+Upon opening the :menuselection:`Surveys` application, the main dashboard reveals a list of all the
+surveys in the database, along with pertinent information related to each one.
+
+By default, every survey line showcases its number of :guilabel:`Questions`, :guilabel:`Average
+Duration`, and how many participants have :guilabel:`Registered` or :guilabel:`Completed` the
+survey.
+
+There are also elements showing the percentage of how many participants :guilabel:`Passed` (if a
+*Required Score (%)* was configured), or how many participants became :guilabel:`Certified` (if the
+*Is a Certification* option was configured).
+
+.. note::
+   To learn more about the different analytical elements found on the :guilabel:`Surveys` dashboard,
+   check out the :doc:`Survey Essentials <../surveys/create>` documentation.
+
+On the :guilabel:`Surveys` dashboard, to the far-right of each survey line displayed in the default
+list view, there is a :guilabel:`See results` button.
+
+.. image:: analysis/see-results-button.png
+   :align: center
+   :alt: The 'See Results' button present on the main dashboard of the Odoo Surveys application.
+
+When the :guilabel:`See results` button is clicked, a new browser tab opens, revealing a separate
+page filled with all of that particular survey's results and responses, with an informative
+:guilabel:`Results Overview` and some filtering drop-down menus at the top.
+
+.. image:: analysis/results-page.png
+   :align: center
+   :alt: Typical survey results page when 'See results' is clicked from the Odoo Surveys dashboard.
+
+At the top of the page, there is an :guilabel:`Edit Survey` link, in the middle of a blue header
+banner. When clicked, Odoo returns the user to the survey form for that particular survey.
+
+Beneath that, is the title of the survey, and its description, if one was configured for it on its
+survey form.
+
+To the right of the survey title, there are two drop-down menus with various filtering options,
+which can be used to personalize and segment the survey results in a number of different ways.
+
+The first filter drop-down menu is set on the default :guilabel:`All Surveys` option, meaning the
+results below are showing results and responses from all the submitted surveys, regardless if they
+have been fully completed or not.
+
+When that drop-down menu is clicked open, another option, :guilabel:`Completed surveys`, appears.
+
+.. image:: analysis/all-surveys-dropdown.png
+   :align: center
+   :alt: The 'All surveys' drop-down menu opened on the 'See results' page of the Odoo Surveys app.
+
+With that drop-down menu open, the number corresponding to each filter option appears to the right
+of each option.
+
+To the right of that drop-down menu of filter options, is another drop-down menu of filter options
+that can be used to further customize the results showcased on this page.
+
+That drop-down menu is set to the :guilabel:`Passed and Failed` option, by default. This option
+shows the results and responses from all participants who have passed or failed this particular
+survey.
+
+.. note::
+   This second drop-down menu of filter options **only** appears if the survey being analyzed has a
+   *Scoring* option configured, or if the *Is a Certification* feature has been enabled.
+
+When that second drop-down menu of filter options is clicked open, two additional options appear:
+:guilabel:`Passed only` and :guilabel:`Failed only`.
+
+.. image:: analysis/passed-failed-dropdown.png
+   :align: center
+   :alt: The 'Passed and Failed' drop-down menu on the 'See results' page of the Odoo Surveys app.
+
+Each option would filter the results below to only show responses from participants who have passed
+the survey, or who have failed the survey, respectively.
+
+Directly beneath the survey title, there is a :guilabel:`Print` button. When clicked, the entire
+results page can be printed.
+
+The :guilabel:`Results Overview` section is below the survey title, filter option drop-down menus,
+and :guilabel:`Print` button.
+
+.. image:: analysis/results-overview.png
+   :align: center
+   :alt: The 'Results Overview' section on the 'See results' page in the Odoo Surveys application.
+
+This section of the results page provides a summarized collection of useful survey-related data and
+metrics for quick analysis.
+
+Question analysis
+-----------------
+
+Directly beneath the :guilabel:`Results Overview` section is where the results and responses of the
+survey are found.
+
+.. note::
+   The various sections of the survey, if there were any, appear at the top of their corresponding
+   questions on the results page, as well, for added organization.
+
+Every question that was a part of the survey is shown, along with an in-depth breakdown, and visual
+representation, of how it was answered by participants, beneath the :guilabel:`Results Overview`
+section.
+
+Each question is displayed above its corresponding results. To the left of the question is an
+:guilabel:`👁️ (eye)` icon. When clicked, Odoo hides the visual and data-related results and
+responses. When clicked again, that question's visual and data-related results re-appear.
+
+To the far-right of the question, there are indicators to see how many participants
+:guilabel:`Responded` and how many :guilabel:`Skipped` the question.
+
+.. image:: analysis/responded-skipped-indicators.png
+   :align: center
+   :alt: The Responded and Skipped indicators on the 'See results' page in Odoo Surveys.
+
+If the question required the participant to enter in their own answer, without any options to choose
+from, like entering a specific number or date, for example, there is also an indicator to showcase
+how many users answered the question :guilabel:`Correct`.
+
+.. image:: analysis/correct-indicator.png
+   :align: center
+   :alt: Sample of a 'correct' indicator on the 'See results' page in the Odoo Surveys application.
+
+.. note::
+   Even if there is no configured *correct* response for question of this nature, the
+   :guilabel:`Correct` indicator still appears, although, it displays a `0`.
+
+   This would occur for opinion-based questions, like `When would be a good time to hold another
+   sale?`
+
+If there is only one correct response to a multiple choice question, those results and responses are
+represented by a :guilabel:`Pie Graph`. The correct answer is indicated by a :guilabel:`✔️
+(checkmark)` icon next to the correct answer option, in the legend above the graph.
+
+.. image:: analysis/pie-graph-results.png
+   :align: center
+   :alt: Typical pie graph results on the 'See results' page in the Odoo Surveys application.
+
+If there are multiple correct answer options (or no correct answers at all) for a multiple choice
+question, those results and responses are represented by a :guilabel:`Bar Graph`.
+
+.. image:: analysis/bar-graph-results.png
+   :align: center
+   :alt: Typical bar graph results on the 'See results' page in the Odoo Surveys application.
+
+Each multiple choice question has a :guilabel:`Graph` tab and an :guilabel:`Data` tab. The
+graph-related tab is shown by default.
+
+The :guilabel:`Data` tab shows all the provided :guilabel:`Answer` options for the question. The
+:guilabel:`User Choice` (with percentages and votes) along with the :guilabel:`Score` of each
+option.
+
+.. image:: analysis/data-tab.png
+   :align: center
+   :alt: Typical 'Data' tab on the 'See results' page in the Odoo Surveys application.
+
+Other question types, wherein there were no answer options for the participant to choose from, there
+is a :guilabel:`Most Common` tab and an :guilabel:`All Data` tab.
+
+The :guilabel:`Most Common` tab shows the :guilabel:`User Responses`, the :guilabel:`Occurrence`,
+and the :guilabel:`Score` (if applicable).
+
+.. image:: analysis/most-common-tab.png
+   :align: center
+   :alt: Typical 'Most Common' tab on the 'See results' page in the Odoo Surveys application.
+
+The :guilabel:`All Data` tab shows a list of all the submitted responses to that particular
+question.
+
+.. image:: analysis/all-data-tab.png
+   :align: center
+   :alt: Typical 'All Data' tab on the 'See results' page in the Odoo Surveys application.
+
+If a question is looking for participants to enter a numerical value as a response,
+:guilabel:`Maximum`, :guilabel:`Minimum`, and :guilabel:`Average` indicators appear to the far-right
+of the results tabs.
+
+.. image:: analysis/max-min-avg-indicator.png
+   :align: center
+   :alt: The Maximum, Minimum, and Average indicators on the 'See results' page in Odoo Surveys.
+
+A :guilabel:`filter` icon is also present either to the right of the :guilabel:`User Choice` column
+in a :guilabel:`Data` tab, or to the far-right of a :guilabel:`User Response` line in an
+:guilabel:`All Data` tab.
+
+.. image:: analysis/filter-icon.png
+   :align: center
+   :alt: Typical 'Filter' icon on the 'See results' page in the Odoo Surveys application.
+
+When that :guilabel:`filter` icon is clicked, Odoo returns the user to the top of the results page,
+with that chosen filter applied, showing the results of each question for participants who submitted
+that particular answer for that specific question.
+
+.. image:: analysis/applied-filter.png
+   :align: center
+   :alt: The applied filter on the 'See results' page in the Odoo Surveys application.
+
+Therefore, showcasing the remaining results for participants who answered that specific question in
+the same way. To remove that filter, and reveal all the results once again, click :guilabel:`Remove
+all filters` or click the :guilabel:`✖️ (X)` icon in the filter box at the top of the results page.
+
+Participations
+==============
+
+To view a consolidated list of participation results for a specific survey, navigate to
+:menuselection:`Surveys app`, select the desired survey from the list, and click the
+:guilabel:`Participations` smart button at the top of the survey form.
+
+.. image:: analysis/participations-smart-button.png
+   :align: center
+   :alt: The Participations smart button at the top of a survey form in Odoo Surveys.
+
+Doing so reveals a separate :guilabel:`Participations` page, showcasing the participants for that
+specific survey, along with a collection of pertinent information related to each one.
+
+.. image:: analysis/participations-page-singular-survey.png
+   :align: center
+   :alt: The Participations page for a singular survey in the Odoo Surveys application.
+
+Here, users can view information related to individual participants who took that specific survey.
+If they desire to see a more detailed breakdown of their various answers and responses, they can
+click on any participant, and Odoo reveals a separate page showing that participant's survey
+details, along with their submitted answers.
+
+.. image:: analysis/individual-participant-page.png
+   :align: center
+   :alt: An individual participant's detail form in the Odoo Surveys application.
+
+To view a consolidated list of all participants of every survey in the database, navigate to
+:menuselection:`Surveys app --> Participations`. Here, every survey in the database is shown in a
+default nested list. Beside each survey title has the number of participants in parenthesis.
+
+.. image:: analysis/participations-page-all-surveys.png
+   :align: center
+   :alt: The Participations page for all surveys in the Odoo Surveys application.
+
+When a survey is un-nested from this list, by clicking the survey title, the corresponding
+participants, along with their response-related data for that survey, appear on the page.
+
+The :guilabel:`Participations` page can also be viewed in a Kanban layout, as well.
+
+.. image:: analysis/participations-page-kanban-view.png
+   :align: center
+   :alt: The Participations page in the Kanban view in the Odoo Surveys application.
+
+.. seealso::
+   - :doc:`create`
+   - :doc:`scoring`
+
+
+==================================================
+SECTION: create.rst
+PATH: applications/marketing/surveys/create.rst
+==================================================
+
+==============
+Create surveys
+==============
+
+To create a survey in the Odoo *Surveys* application, navigate to :menuselection:`Surveys app -->
+New` to reveal a blank survey form.
+
+.. note::
+   The :guilabel:`New` button is **not** present on the *Surveys* dashboard if in the *Activities*
+   view.
+
+Survey form
+===========
+
+.. image:: create/blank-survey-form.png
+   :align: center
+   :alt: How a blank survey form looks in the Odoo Surveys application.
+
+At the top of the survey form are four radio buttons, each representing a survey style. The radio
+button options are:
+
+- :guilabel:`Survey`
+- :guilabel:`Live Session`
+- :guilabel:`Assessment`
+- :guilabel:`Custom` (selected by default)
+
+These options are here to streamline the survey-making process, by providing users with automated
+settings and options that are ideally specific to those types of surveys. Each of those survey type
+options comes equipped with its own specific selection of options.
+
+The :guilabel:`Custom` option, selected by default, offers all the options from every potential
+survey type (located in the :guilabel:`Options` tab).
+
+Beneath those radio survey type options is a blank field in which a name for the survey **must** be
+entered.
+
+Below the survey name field, is the :guilabel:`Responsible` field. Choose a user from the drop-down
+menu to be in charge of the survey. By default, the user who initially created the survey is
+selected as the default :guilabel:`Responsible`.
+
+To the right of those fields, and above the tabs, is the option to add a background image,
+represented by a :guilabel:`📷 (camera)` icon. When clicked, the option to upload an image becomes
+available. This image would be used as the background image for the entire survey. This is **not** a
+required option.
+
+Below those fields and options are four tabs: :guilabel:`Questions`, :guilabel:`Options`,
+:guilabel:`Description`, and :guilabel:`End Message`.
+
+Questions tab
+-------------
+
+View, access, add, and/or delete questions and sections to the survey in the :guilabel:`Questions`
+tab.
+
+By default, two columns are present in the :guilabel:`Questions` tab: :guilabel:`Title` (i.e. the
+question) and :guilabel:`Question Type`.
+
+If the :guilabel:`Randomized per Section` option is enabled in the :guilabel:`Options` tab of the
+survey form, a column titled, :guilabel:`# Questions Randomly Picked` appears in the
+:guilabel:`Questions` tab.
+
+Indicate whether questions require a mandatory answer by clicking the :guilabel:`(optional columns)`
+icon to the far-right of the column titles. Then, select :guilabel:`Mandatory Answer` from the
+drop-down menu to reveal the :guilabel:`Mandatory Answer` column in the :guilabel:`Questions` tab.
+
+.. image:: create/mandatory-answer-dropdown.png
+   :align: center
+   :alt: The slider drop-down menu with the Mandatory Answer option selected in Odoo Surveys.
+
+Add a question
+~~~~~~~~~~~~~~
+
+To add a question to a survey, click :guilabel:`Add a question` in the :guilabel:`Questions` tab,
+and proceed to fill out the :guilabel:`Create Sections and Questions` pop-up window that appears.
+
+To learn how to create and customize questions, refer to the :doc:`create questions <questions>`
+documentation.
+
+.. important::
+   There **must** be a survey title entered in order for the :guilabel:`Create Sections and
+   Questions` pop-up window to appear. If no title is entered for the survey, an error pop-up
+   message appears in the upper-right corner, instructing the user to enter a survey title.
+
+Add a section
+~~~~~~~~~~~~~
+
+A *section* divides the survey into organized parts, in order to visually group similar questions
+together. To make a section, click :guilabel:`Add a section` at the bottom of the
+:guilabel:`Questions` tab, proceed to type in a desired name for the section, then either press
+:kbd:`Enter` or click away.
+
+The section line appears in dark gray in the :guilabel:`Questions` tab.
+
+Then, drag-and-drop desired questions beneath a section, or drag-and-drop a section title on top of
+(i.e. *before*) the desired question(s) in the survey. Doing so populates the section with questions
+that align with its theme.
+
+If the :guilabel:`Randomized per Section` option is enabled in the :guilabel:`Options` tab of the
+survey form, the number `1` appears, by default, on the section line, beneath the :guilabel:`#
+Questions Randomly Picked` column.
+
+This indicates that `1` question from that section will be picked at random for each participant
+taking the survey, bypassing every other, non-chosen question from that section. To change that
+number, select that figure, and type in the desired number in its place. Then, either press
+:kbd:`Enter`, or click away.
+
+Options tab
+-----------
+
+In the :guilabel:`Options` tab of the survey form, there are many options to choose from, separated
+in four different sections: :guilabel:`Questions`, :guilabel:`Time & Scoring`,
+:guilabel:`Participants`, and :guilabel:`Live Session`.
+
+The options available in this tab vary on the survey type chosen, via the radio buttons at the top
+of the survey form: :guilabel:`Survey`, :guilabel:`Live Session`, :guilabel:`Assessment`, or
+:guilabel:`Custom`.
+
+The :guilabel:`Custom` survey type showcases all the possible options in the :guilabel:`Options`
+tab. So, if any of the following options do **not** appear in the :guilabel:`Options` tab, it is
+likely because the selected survey type does not offer it.
+
+Questions section
+~~~~~~~~~~~~~~~~~
+
+.. image:: create/questions-section-options-tab.png
+   :align: center
+   :alt: The Questions section of the Options tab on a survey form in Odoo Surveys.
+
+The first field in the :guilabel:`Questions` section revolves around the :guilabel:`Pagination`,
+or overall layout, of the survey.
+
+Choose between :guilabel:`One page per question`, :guilabel:`One page per section`, or
+:guilabel:`One page with all the questions` in the :guilabel:`Pagination` field.
+
+.. note::
+   If :guilabel:`One page with all the questions` is selected, all the remaining options in the
+   :guilabel:`Questions` field, apart from :guilabel:`Question Selection` is removed, as they are no
+   longer needed.
+
+Next, select one of the following options in the :guilabel:`Display Progress as` field:
+
+- :guilabel:`Percentage left`: displays the percentage of the survey remaining to participants.
+- :guilabel:`Number`: display the number of questions answered along with the total number of
+  questions to answer.
+
+In the :guilabel:`Question Selection` field choose to have the survey show :guilabel:`All questions`
+or :guilabel:`Randomized per Section`. If :guilabel:`Randomized per Section` a new column appears in
+the :guilabel:`Questions` tab, titled: :guilabel:`# Questions Randomly Picked`.
+
+In the :guilabel:`# Questions Randomly Picked` column, designate how many questions, in that
+particular section, should be chosen at random to the participant.
+
+Lastly, there is the :guilabel:`Allow Roaming` option. When enabled, participants are able to
+navigate back to previous pages in the survey.
+
+Time & Scoring section
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. image:: create/time-scoring-section-options-tab.png
+   :align: center
+   :alt: The Time and Scoring section of the Options tab on a survey form in Odoo Surveys.
+
+The first option in the :guilabel:`Time & Scoring` section is the :guilabel:`Survey Time Limit`
+option. If enabled, proceed to enter in an amount of time (in :guilabel:`minutes`) to be set as the
+time limit for the survey.
+
+Next, in the :guilabel:`Scoring` section, determine whether there should be: :guilabel:`No scoring`,
+:guilabel:`Scoring with answers after each page`, :guilabel:`Scoring with answers at the end`, or
+:guilabel:`Scoring without answers`.
+
+If the :guilabel:`No scoring` option is selected, no other options are available in this section.
+However, if any *other* :guilabel:`Scoring` option is selected, two additional fields appear:
+:guilabel:`Required Score (%)` and :guilabel:`Is a Certification`.
+
+In the :guilabel:`Required Score (%)` field, enter the minimum percentage participants **must** earn
+in order to pass the survey. Scores below this threshold are considered fails. This figure is also
+used to determine if a participant is 'certified' or not, if the :guilabel:`Is a Certification`
+option is enabled.
+
+If the :guilabel:`Is a Certification` option is enabled, that makes the survey a *Certification*,
+which is represented on the main *Surveys* app dashboard via a half-tropy image behind the survey
+title, while in the default Kanban view. Or, via a full-trophy icon, while in list view.
+
+When the :guilabel:`Is a Certification` option is enabled, three additional fields appear -- one
+beside the option, and two below.
+
+In the field that appears beside the option, users can select (and :guilabel:`Preview`) a
+certification template.
+
+Beneath that, in the :guilabel:`Certified Email Template` field, users can select a preconfigured
+email template, or create one on-the-fly, to be sent to certified participants of the survey upon
+completion.
+
+Lastly, if the :guilabel:`Give Badge` field is enabled, a preconfigured badge is then displayed on
+the contact page for that certified survey participant.
+
+Participants section
+~~~~~~~~~~~~~~~~~~~~
+
+.. image:: create/participants-section-options-tab.png
+   :align: center
+   :alt: The Participants section of the Options tab on a survey form in Odoo Surveys.
+
+The first available option in the :guilabel:`Participants` section is the :guilabel:`Access Mode`
+field. This is where users can determine who has access to the survey. Users can select either:
+:guilabel:`Anyone with the link` or :guilabel:`Invited people only`.
+
+Next, there is the option to :guilabel:`Require Login`. Enabling this feature means users **must**
+login before being able to take the survey, even if they have a valid token.
+
+Lastly, in there is the :guilabel:`Limit Attempts` field. If enabled, an additional field appears
+beside it, in which users can determine how many times users can attempt this survey.
+
+Live Session section
+~~~~~~~~~~~~~~~~~~~~
+
+.. image:: create/live-session-section-options-tab.png
+   :align: center
+   :alt: The Live Session section of the Options tab on a survey form in Odoo Surveys.
+
+.. note::
+   The :guilabel:`Live Session` section in the :guilabel:`Options` tab of the survey form **only**
+   pertains to *Live Session* surveys.
+
+The first option in the :guilabel:`Live Session` section is the :guilabel:`Session Code` field. In
+this field, enter a custom code, consisting of letters, numbers, and/or symbols, to be used by
+participants in order to access the live session survey.
+
+Next, is the :guilabel:`Session Link` field, which **cannot** be customized, but it *can* be sent
+out to potential participants.
+
+.. note::
+   If a :guilabel:`Session Code` has been entered, the URL in the :guilabel:`Session Link` field
+   ends with that specific :guilabel:`Session Code`.
+
+   If that complete :guilabel:`Session Link` (ending in the custom :guilabel:`Session Code`) is used
+   by participants to access the live session survey, that link would *already* be entered for them.
+   At that point, they'd simply have to wait until the host of the live session begins the survey,
+   and then they'd be able to enter.
+
+   If the :guilabel:`Session Link` (ending in the custom :guilabel:`Session Code`) is sent
+   **without** including the :guilabel:`Session Code` ending, participants trying to access the live
+   session, via that link, will need to enter the custom :guilabel:`Session Code` to gain access.
+
+   If the :guilabel:`Session Code` field is empty, a slightly longer, more complicated URL populates
+   the :guilabel:`Session Link` field. When participants attempt to access the live session via that
+   link (without a configured :guilabel:`Session Code`), all they have to do is wait for the host of
+   the live session to begin the survey, and they'd be able to participate.
+
+Lastly, in the :guilabel:`Live Session` section, there is the option to :guilabel:`Reward quick
+answers`. If that option is enabled, participants who submit their answer quickly receive more
+points.
+
+.. seealso::
+   :doc:`live_session`
+
+Description tab
+---------------
+
+In this non-required tab, users can enter a custom description about the survey, along with any
+explanations or guidance that a survey participant may need in order to properly participate (and
+complete) the survey.
+
+End Message tab
+---------------
+
+In this non-required tab, users can enter a custom message that participants see upon completing the
+survey.
+
+Survey form buttons
+===================
+
+Once the survey has been configured properly, and questions have been added, the user can utilize
+any of the available buttons in the upper-left corner of the survey form.
+
+.. image:: create/survey-form-buttons.png
+   :align: center
+   :alt: The various buttons on a survey form in Odoo Surveys.
+
+Those buttons are the following:
+
+- :guilabel:`Share`: click to reveal a :guilabel:`Share a Survey` pop-up form that can be used to
+  invite potential participants to the survey — complete with a :guilabel:`Survey Link` that can be
+  copied and sent to potential participants, and a :guilabel:`Send by Email` toggle switch.
+
+  .. image:: create/share-survey-popup.png
+     :align: center
+     :alt: The 'Share a Survey' pop-up window that appears in the Odoo Surveys application.
+
+  When the :guilabel:`Send by Email` toggle is in the 'on' position, indicated by a green switch,
+  additional fields appear, in which :guilabel:`Recipients` and a :guilabel:`Subject` can be added
+  to the email. Below that, a dynamic email template, complete with a :guilabel:`Start
+  Certification` button appears, which can also be modified.
+
+  .. image:: create/share-survey-popup-email-toggle.png
+     :align: center
+     :alt: The 'Share a Survey' pop-up window in Odoo Surveys with the Send by Email toggled on.
+
+  Once modifications are complete, click :guilabel:`Send` to send that email invite to all the email
+  addresses/contacts listed in the :guilabel:`Recipients` field.
+- :guilabel:`See results`: this button **only** appears if there has been at least one participant
+  who has completed the survey. Clicking :guilabel:`See results` reveals a separate tab containing
+  a visual analysis of the survey questions and responses. For more information, check out the
+  :doc:`scoring surveys <scoring>` documentation.
+- :guilabel:`Create Live Session`: clicking this button opens the *Session Manager* in a separate
+  tab. It also allows participants to access the live session, but the actual survey does **not**
+  begin until the user hosting the live session survey clicks the :guilabel:`Start` button on the
+  *Session Manager* window.
+
+  Additionally, when :guilabel:`Create Live Session` has been clicked, and the *Session Manager* tab
+  has been opened, the :guilabel:`Create Live Session` button on the survey form is replaced with
+  two new buttons: :guilabel:`Open Session Manager` and :guilabel:`Close Live Session`.
+
+  Clicking :guilabel:`Open Session Manager` opens another separate tab to the *Session Manager*, and
+  clicking :guilabel:`Close Live Session` closes, and subsequently ends, the live session.
+- :guilabel:`Test`: clicking this button opens a new tab to a test version of the survey, in order
+  for the user to check for errors or inconsistencies, from the point-of-view of a participant.
+  Users can tell if they are in a test version of the survey if there is a blue banner at the top of
+  the screen, reading: `This is a Test Survey --> Edit Survey`.
+
+  If the link in the blue banner is clicked, Odoo returns the user to the survey form.
+- :guilabel:`Print`: clicking this button opens a new tab to a printable version of the survey that
+  the user can proceed to print for their records.
+- :guilabel:`Close`: clicking this button closes the survey (i.e. archives it), which is represented
+  by a red :guilabel:`Archived` banner across the top-right corner of the survey form.
+
+  When this button is clicked, and the survey is closed, a single button appears in the upper-right
+  corner of the survey form, titled: :guilabel:`Reopen`. When :guilabel:`Reopen` is clicked the
+  survey is reopened (i.e. unarchived), and the :guilabel:`Archived` banner is removed from the
+  survey form.
+
+.. seealso::
+   - :doc:`questions`
+   - :doc:`scoring`
+
+
+==================================================
+SECTION: live_session.rst
+PATH: applications/marketing/surveys/live_session.rst
+==================================================
+
+====================
+Live Session surveys
+====================
+
+With the Odoo *Surveys* application, users can enhance in-person demonstrations and presentations
+with the *Live Session* feature.
+
+*Live Session* surveys function the same way as a normal survey, but with a host or moderator, who
+presents the questions to participants, reveals their responses in real-time, and controls the tempo
+of the survey.
+
+In *Live Session* surveys, participants access the survey experience via a custom URL, and sign in
+with an optional access code. When the survey has begun, the host presents one question at a time.
+
+Then, the audience of participants submit their answer, either via their computer or mobile device,
+and once the responses have been gathered, the host reveals all the participant's responses, in real
+time, with each answer's results displayed as a bar graph.
+
+.. image:: live_session/live-session-concept-sample.png
+   :align: center
+   :alt: Rendered concept of how a Live Session question and answer result appears in Odoo Surveys.
+
+Create Live Session survey
+==========================
+
+To create a *Live Session* survey, begin by opening the *Surveys* application. From the
+:guilabel:`Surveys` dashboard, click the :guilabel:`New` button to reveal a blank survey form.
+
+Any of the survey type options (:guilabel:`Survey`, :guilabel:`Live Session`,
+:guilabel:`Assessment`, or :guilabel:`Custom`), presented as radio buttons at the top of the survey,
+can be used to create a *Live Session*.
+
+However, selecting the :guilabel:`Live Session` survey type radio button streamlines the process
+because Odoo auto-selects the optimal settings and options for a *Live Session* survey when that
+option is selected.
+
+.. important::
+   If the :guilabel:`Is a Certification` option is enabled in the :guilabel:`Options` tab, the
+   survey **cannot** be used as a *Live Session* survey.
+
+With the desired survey radio button option selected, proceed to :doc:`create a survey
+<../surveys/create>` with :doc:`questions and sections <../surveys/questions>`.
+
+While creating questions for the *Live Session* survey, open the :guilabel:`Options` tab on the
+:guilabel:`Create Sections and Questions` pop-up form, in order to reveal the :guilabel:`Live
+Sessions` section, which only has one available feature: :guilabel:`Question Time Limit`.
+
+When the :guilabel:`Question Time Limit` option is enabled, a new field appears beside it, wherein
+the user **must** enter the desired amount of time (in seconds) the participant gets to answer the
+question.
+
+.. image:: live_session/question-time-limit-option.png
+   :align: center
+   :alt: The Live Session question time limit option for questions in the Odoo Surveys application.
+
+Options tab
+-----------
+
+After the questions have been created for the *Live Session* survey, open the :guilabel:`Options`
+tab of the survey form to further configure the survey.
+
+The :guilabel:`Options` tab is organized into four sections: :guilabel:`Questions`, :guilabel:`Time
+& Scoring`, :guilabel:`Participants`, and :guilabel:`Live Session`.
+
+Questions section
+~~~~~~~~~~~~~~~~~
+
+Regardless of the option selected for the :guilabel:`Pagination` field, the *Live Session* survey
+*only* shows :guilabel:`One page per question`, and will default to that option when the
+:guilabel:`Create Live Session` button is clicked, and a *Live Session* survey officially begins.
+
+.. note::
+   The :guilabel:`One page per question` option in the :guilabel:`Pagination` field is selected by
+   default, and no other options appear in the :guilabel:`Questions` section, when the
+   :guilabel:`Live Session` survey type radio button is selected.
+
+The :guilabel:`Display Progress as` and :guilabel:`Question Selection` options are still viable and
+active options for *Live Session* surveys, if desired, but they are **not** required.
+
+However, the :guilabel:`Allow Roaming` feature is **not** available during *Live Session* surveys
+whatsoever, as the host/moderator controls the survey, and participants have no control over what
+question they see, or when they see it.
+
+Time & Scoring section
+~~~~~~~~~~~~~~~~~~~~~~
+
+The :guilabel:`Survey Time Limit` option is **not** applicable for *Live Session* surveys. This
+option does not even appear in the :guilabel:`Time & Scoring` section of the :guilabel:`Options` tab
+if the :guilabel:`Live Session` survey type radio button option is selected.
+
+.. note::
+   While the :guilabel:`Survey Time Limit` option is not applicable for *Live Session* surveys, each
+   question *can* be affixed with its own *Question Time Limit*, via the *Options* tab of the
+   question pop-up form. Those question-specific time limits *do* work with *Live Session* surveys.
+
+If desired, any :guilabel:`Scoring` option, and subsequent :guilabel:`Required Score (%)` option are
+available to use with *Live Session* surveys.
+
+However, if the :guilabel:`Is a Certification` option is enabled, the survey **cannot** be used as a
+*Live Session* survey. The :guilabel:`Is a Certification` option does **not** appear in the
+:guilabel:`Time & Scoring` section of the :guilabel:`Options` tab if the :guilabel:`Live Session`
+survey type radio button option is selected.
+
+Participants section
+~~~~~~~~~~~~~~~~~~~~
+
+The :guilabel:`Access Mode` field is set to the :guilabel:`Anyone with the link` option when the
+survey is used as a *Live Session*. The :guilabel:`Anyone with the link` option **cannot** be
+modified if the :guilabel:`Live Session` survey type radio button option is selected.
+
+The :guilabel:`Require Login` option is available for *Live Session* surveys. However, if the
+:guilabel:`Live Session` survey type radio button option is selected, the usual :guilabel:`Limit
+Attempts` field that appears when :guilabel:`Require Login` is enabled does **not** appear, as live
+session participants only get to attempt the survey once, as the host leads them through it.
+
+Live Session section
+~~~~~~~~~~~~~~~~~~~~
+
+The :guilabel:`Session Code` field allows users to create unique codes for participants to use, in
+order to gain access to the *Live Session* survey. This code can consist of any combination of
+letters, numbers, and/or symbols.
+
+The :guilabel:`Session Code` field is **not** required, however, it is encouraged because it adds a
+level of exclusivity to the survey and, without a :guilabel:`Session Code`, the URL that appears in
+the following :guilabel:`Session Link` field becomes far more complex.
+
+.. important::
+   If a :guilabel:`Session Code` is **not** entered, participants can access the survey, via the
+   :guilabel:`Session Link` without needing a host, and the fundamental elements of the *Live
+   Session* are lost, as the survey is then just a normal questionnaire, without any real-time
+   results.
+
+With a :guilabel:`Session Code`, the URL in the non-modifiable :guilabel:`Session Link` field is
+simplified, and ends with the :guilabel:`Session Code`, preceded by `/s/`.
+
+.. example::
+   If `1212` has been entered as the :guilabel:`Session Code`, the URL in the :guilabel:`Session
+   Link` field begins with the basic URL of the database (e.g. `sample-database.odoo.com`), followed
+   by: `/s/1212`.
+
+   So, collectively, that sample :guilabel:`Session Link` would be:
+   `sample-database.odoo.com/s/1212`.
+
+.. tip::
+   If a user sends out the :guilabel:`Session Link` URL in its complete form - :guilabel:`Session
+   Code` and all - participants would *not* need to enter in a code, as it would already be entered
+   for them. That complete link places the participant in a virtual waiting room, where they simply
+   need to wait for the host to officially start the *Live Session* survey.
+
+   If a user sends out the :guilabel:`Session Link` URL - *except* for the :guilabel:`Session Code`
+   at the end (i.e. the entire URL *through* `.../s/`) - participants would be taken to a page,
+   wherein they would need to enter the specific :guilabel:`Session Code` in order to access the
+   *Live Session*.
+
+If any :guilabel:`Scoring` option has been enabled, the opportunity to :guilabel:`Reward quick
+answers` is also available with *Live Session* surveys.
+
+Start Live Session surveys
+==========================
+
+Once all the questions and configurations are complete, users can click the :guilabel:`Create Live
+Session` button at the top of the survey form. Doing so opens a new browser tab to the *Session
+Manager*.
+
+When the :guilabel:`Create Live Session` button has been clicked, and the *Live Session* has begun,
+a new :guilabel:`Open Session Manager` button appears on the survey form, which opens a new browser
+tab to the *Session Manager*. If the *Live Session* has already begun, that button leads the user to
+the question or section the *Live Session* is currently on.
+
+Additionally, a :guilabel:`Close Live Session` button appears on the survey form. When that button
+is clicked, the *Live Session* survey closes.
+
+The *Session Manager* is controlled by the host/moderator of the *Live Session* survey, and is
+typically shown on a projection or screen, so the participants can collectively view the questions
+and real-time responses, as the host/moderator guides them through the *Live Session*.
+
+.. note::
+   The participant can see and answer the questions from their computer or mobile device, but the
+   results and real-time responses can **only** be seen on the *Session Manager*.
+
+Initially, the *Session Manager* shows the title of the *Live Session* survey, the link needed to
+access it, and a :guilabel:`Waiting for attendees...` counter, which populates as participants enter
+the *Live Session* survey.
+
+Once the desired amount of participants have entered the *Live Session* survey, the host/moderator
+can click the :guilabel:`Start` button on the right side of the *Session Manager* window to begin
+the *Live Session*.
+
+.. note::
+   If the survey begins with a section title on the survey form, that section title appears in the
+   *Session Manager*, and the participant's view of the survey informs them to `Pay attention to the
+   host screen until the next question`. This message appears whenever a section title appears
+   during a *Live Session*.
+
+When the first question appears on the survey, the *Session Manager* shows the question above an
+empty bar graph, showing the potential answer options on the x-axis. The participants see the
+question and selectable answer options on their computer or mobile device.
+
+As participants submit their answers, a progress bar, in the upper-left corner of the *Session
+Manager*, fills in. This is how *Live Session* hosts/moderators know when every participant has
+submitted their responses.
+
+Then, when the desired amount of participants have submitted their responses, the host/moderator
+clicks the :guilabel:`Show Results` button on the right side of the *Session Manager* to reveal the
+collective real-time responses on the bar graph.
+
+Once the host/moderator feels like the participants have had enough time to view the real-time
+results, via the populated bar graph, they can click the :guilabel:`Show Correct Answer(s)` button
+on the right side of the *Session Manager* window. Doing so highlights the correct response, if one
+has been designated, in green. All incorrect responses are highlighted in red.
+
+When the host/moderator feels the participants have had enough time to take in the correct and
+incorrect responses, via the bar graph on the *Session Manager*, they can click the
+:guilabel:`Next` button to move on to the next portion of the survey.
+
+Repeat this process until the survey is complete.
+
+.. seealso::
+   - :doc:`create`
+   - :doc:`questions`
+   - :doc:`scoring`
+
+
+==================================================
+SECTION: questions.rst
+PATH: applications/marketing/surveys/questions.rst
+==================================================
+
+================
+Create questions
+================
+
+In Odoo *Surveys*, crafting and tailoring survey questions is crucial for :doc:`creating and
+customizing surveys <../surveys/create>`.
+
+Fortunately, Odoo provides numerous ways to configure tailored questions for any kind of survey.
+
+To access a list of *all* the questions that have been created in the database, navigate to
+:menuselection:`Surveys app --> Questions & Answers --> Questions`. There, users can view and modify
+any question from any survey.
+
+However, there is only one place in the Odoo *Surveys* application where survey questions can be
+created. To do that, navigate to a survey form, by going to :menuselection:`Surveys app --> New`, or
+by selecting any pre-existing survey from the :guilabel:`Surveys` page (:menuselection:`Surveys app
+--> Surveys`).
+
+Questions tab
+=============
+
+On a survey form, users can view, access, add, and/or delete questions (and sections) in the
+:guilabel:`Questions` tab.
+
+By default, two columns are present in the :guilabel:`Questions` tab: :guilabel:`Title` (i.e. the
+question) and :guilabel:`Question Type`.
+
+If the :guilabel:`Randomized per Section` option is enabled in the :guilabel:`Options` tab of the
+survey form, a column titled, :guilabel:`# Questions Randomly Picked` appears in the
+:guilabel:`Questions` tab.
+
+To reveal the :guilabel:`Mandatory Answer` column on the :guilabel:`Questions` tab, which indicates
+if questions require a mandatory answer or not, click the :guilabel:`(optional columns)` icon
+located to the far-right of the column titles.
+
+.. image:: questions/slider-dropdown-mandatory-answer.png
+   :align: center
+   :alt: The slider drop-down menu showing the Mandatory Answer option in Odoo Surveys.
+
+Create sections
+---------------
+
+A *section* divides the survey into organized parts, in order to visually group similar questions
+together. To make a section, click :guilabel:`Add a section` at the bottom of the
+:guilabel:`Questions` tab, proceed to type in a desired name for the section, then either press
+:kbd:`Enter` or click away.
+
+The section line appears in dark gray in the :guilabel:`Questions` tab.
+
+Then, drag-and-drop desired questions beneath a section, or drag-and-drop a section title on top of
+(i.e. *before*) the desired question(s) in the survey, in order to populate the section with
+specific questions that fit the theme of the section.
+
+If the :guilabel:`Randomized per Section` option is enabled in the :guilabel:`Options` tab of the
+survey form, the number `1` appears, by default, on the section line, beneath the :guilabel:`#
+Questions Randomly Picked` column.
+
+This indicates that `1` question from that section will be picked at random for each participant
+taking the survey, bypassing every other, non-chosen question from that section. To change that
+number, select that figure, and type in the desired number in its place. Then, either press
+:kbd:`Enter`, or click away.
+
+Create questions
+================
+
+To create questions for the survey, click :guilabel:`Add a question` in the :guilabel:`Questions`
+tab.
+
+Clicking :guilabel:`Add a question` opens the :guilabel:`Create Sections and Questions` pop-up
+window, in which a survey question can be created.
+
+.. important::
+   There **must** be a survey title entered in order for the :guilabel:`Create Sections and
+   Questions` pop-up window to appear. If no title is entered for the survey, an error pop-up
+   message appears in the upper-right corner, instructing the user to enter a survey title.
+
+When all desired configurations are complete click either :guilabel:`Save & Close` to save the
+question and return to the survey form, or :guilabel:`Save & New` to save the question and create a
+new one right away in a fresh :guilabel:`Create Sections and Questions` pop-up window.
+
+Click :guilabel:`Discard` to discard the question entirely.
+
+Create Sections and Questions pop-up window
+-------------------------------------------
+
+.. image:: questions/create-sections-questions-popup.png
+   :align: center
+   :alt: The Create Sections and Questions pop-up form in Odoo Surveys.
+
+In the :guilabel:`Create Sections and Questions` pop-up window, start by typing the question into
+the :guilabel:`Question` field, located at the top of the pop-up window.
+
+Then, choose the desired :guilabel:`Question Type`. A preview of each :guilabel:`Question Type` is
+to the right of the :guilabel:`Question Type` field, when a :guilabel:`Question Type` is selected.
+
+Choose from the following :guilabel:`Question Types`:
+
+- :guilabel:`Multiple choice: only one answer`: a multiple choice question, where only one answer is
+  permitted.
+- :guilabel:`Multiple choice: multiple answers allowed`: a multiple choice question, where more than
+  answer is permitted.
+- :guilabel:`Multiple Lines Text Box`: an open-ended question, where participants can type in a
+  multiple line response.
+- :guilabel:`Single Line Text Box`: an open-ended question, where participants can type in a single
+  line response.
+- :guilabel:`Numerical Value`: a number-based question, where participants must enter a number as a
+  response.
+- :guilabel:`Date`: a date-based question, where participants must enter a date (year-month-day) as
+  a response.
+- :guilabel:`Datetime`: a date-based question, where participants must enter a date *and* time
+  (year-month-day, hour-minute-second) as a response.
+- :guilabel:`Matrix`: a multiple-choice, multiple question, in a table/chart layout, where
+  participants are presented with different questions on each row, and different answer options on
+  each column.
+
+.. note::
+   Different features appear in the :guilabel:`Answers` and :guilabel:`Options` tabs, depending on
+   the chosen :guilabel:`Question Type`.
+
+   However, the :guilabel:`Description` tab **always** remains the same, regardless of the question
+   type chosen.
+
+Once a :guilabel:`Question Type` has been selected, there are three possible tabs where information
+can be customized for the question. These include the :guilabel:`Answers` tab (if applicable for the
+chosen :guilabel:`Question Type`), the :guilabel:`Description` tab, and the :guilabel:`Options` tab.
+
+Each tab offers a variety of different features, depending on what :guilabel:`Question Type` was
+chosen.
+
+Answers tab
+~~~~~~~~~~~
+
+The :guilabel:`Answers` tab **only** appears if the selected :guilabel:`Question Type` provides
+answer options to the participant.
+
+However, if a custom response is required to answer the selected :guilabel:`Question Type`, like a
+:guilabel:`Multiple Lines Text Box`, for example. Or, if the answer to the :guilabel:`Question Type`
+is a number, date, or datetime, the :guilabel:`Answers` tab disappears completely.
+
+If the :guilabel:`Single Line Text Box` is selected as the :guilabel:`Question Type`, the
+:guilabel:`Answers` tab remains, although it only provides two checkbox options: :guilabel:`Input
+must be an email` and :guilabel:`Save as user nickname`.
+
+.. image:: questions/single-line-answer-tab.png
+   :align: center
+   :alt: The Single Line Text box question type answers tab in Odoo Surveys.
+
+If the :guilabel:`Input must be an email` option is enabled, a new field, :guilabel:`Save as user
+email` appears. If that box is ticked, Odoo saves the participant's answer to that specific question
+as their email address.
+
+If the :guilabel:`Save as user nickname` option is enabled, Odoo saves the participant's answer as
+its nickname.
+
+For all other applicable :guilabel:`Question Type` options that provide answer options to the
+participant, the :guilabel:`Answers` tab appears the same.
+
+.. image:: questions/multiple-choice-answer-options.png
+   :align: center
+   :alt: The answer tab with a multiple choice answer option selected in Odoo Surveys.
+
+From here, users can add answer options by clicking :guilabel:`Add a line`, and typing in the
+various answer options for that question. Then, either press :kbd:`Enter` to lock in that answer
+option and immediately add another one. Or, click away to simply lock in that answer option.
+
+The entered answer options appear in the :guilabel:`Choices` column of the :guilabel:`Answers` tab.
+
+If any *Scoring* option is enabled in the :guilabel:`Options` tab of the survey form, the
+:guilabel:`Correct` and :guilabel:`Score` columns appear to the right of the :guilabel:`Choices`
+column.
+
+To mark an answer option as correct, tick the box beneath the :guilabel:`Correct` column for the
+respective question. If :guilabel:`Multiple choice: multiple answers allowed` is set as the
+:guilabel:`Question Type`, multiple answers in the :guilabel:`Choices` column can be marked as
+:guilabel:`Correct`.
+
+In the :guilabel:`Score` column, designate how many points (if any) should be rewarded to the
+participant for entering that specific answer. It is possible to enter a negative amount as the
+:guilabel:`Score` to take points away for an incorrect response.
+
+The option to upload a corresponding image to accompany the answer options is available on the
+question line, beneath the :guilabel:`Image` column, by clicking :guilabel:`Upload your file`, and
+uploading the desired image.
+
+To delete any answer option, click the :guilabel:`🗑️ (trash can)` icon to the far-right of the
+question line.
+
+An exception to that is if the :guilabel:`Matrix` option is selected as the :guilabel:`Question
+Type`. If that's chosen, the :guilabel:`Answers` tab remains, but below the typical
+:guilabel:`Choices` section, there is a :guilabel:`Rows` section. That's because the
+:guilabel:`Matrix` option provides an answer table for participants to fill out.
+
+.. image:: questions/matrix-answer-tab.png
+   :align: center
+   :alt: The answer tab with a matrix question type selected in Odoo Surveys.
+
+Description tab
+~~~~~~~~~~~~~~~
+
+In the :guilabel:`Description` tab of the :guilabel:`Create Sections and Questions` pop-up window is
+used to provide any kind of guidelines, instructions, or any other type of supplemental material
+deemed necessary to help participants answer/understand the question.
+
+Entering a description is **not** required.
+
+Options tab
+~~~~~~~~~~~
+
+In the :guilabel:`Options` tab of the :guilabel:`Create Sections and Questions` pop-up window, there
+are four available sections: :guilabel:`Answers`, :guilabel:`Constraints`, :guilabel:`Conditional
+Display`, and :guilabel:`Live Sessions`.
+
+Answers section
+***************
+
+.. note::
+   Fields in the :guilabel:`Answers` section in the :guilabel:`Options` tab of the :guilabel:`Create
+   Sections and Questions` pop-up window vary, depending on the selected :guilabel:`Question Type`
+   and overall :guilabel:`Options` configured on the survey form.
+
+Multiple Choice question types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the selected :guilabel:`Question Type` is either :guilabel:`Multiple choice: only one answer` or
+:guilabel:`Multiple choice: multiple answers allowed`, there is a :guilabel:`Show Comments Field`
+present in the :guilabel:`Answers` section.
+
+When enabled, two additional fields appear: :guilabel:`Comment Message` and :guilabel:`Comment is an
+answer`.
+
+.. image:: questions/multiple-choice-options-tab.png
+   :align: center
+   :alt: The answers section of the options tab when a multiple choice question type is selected.
+
+In the :guilabel:`Comment Message` field, type in a guiding message to help participants know what
+is expected of them (e.g. `If other, please specify`).
+
+If the :guilabel:`Comment is an answer` option is enabled, Odoo takes the participant's commented
+response as an answer, and not just commentary on the question. This is best utilized in surveys
+where there is no scoring option enabled.
+
+Multiple Lines Text Box question type
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the selected :guilabel:`Question Type` is :guilabel:`Multiple Lines Text Box`, a
+:guilabel:`Placeholder` field appears in the :guilabel:`Answers` section of the :guilabel:`Options`
+tab.
+
+.. image:: questions/multiple-lines-placeholder.png
+   :align: center
+   :alt: The placeholder field when a multiple lines text box option is chosen in Odoo Surveys.
+
+In the :guilabel:`Placeholder` field, enter a guiding direction to help participants know what they
+should write in the :guilabel:`Multiple Lines Text Box` presented to them.
+
+Single Line Text Box, Numerical Value, Date, Datetime question types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the selected :guilabel:`Question Type` is :guilabel:`Single Line Text Box`, :guilabel:`Numerical
+Value`, :guilabel:`Date`, or :guilabel:`Datetime`, two options appear in the :guilabel:`Answers`
+section of the :guilabel:`Options` tab: :guilabel:`Validate Entry` and :guilabel:`Placeholder`.
+
+If the :guilabel:`Validate Entry` option is enabled, two additional fields appear beneath:
+:guilabel:`Min/Max Limits` and :guilabel:`Validation Error`.
+
+.. image:: questions/single-line-validate-entry.png
+   :align: center
+   :alt: The answers section of the option tab when a single line text box question type is chosen.
+
+In the :guilabel:`Min/Max Limits` field, designate the minimum and maximum allowed quantities for
+that specific question.
+
+In the :guilabel:`Validation Error` field, enter a custom message that Odoo displays when an answer
+is not valid.
+
+In the :guilabel:`Placeholder` field, enter a guiding direction to help participants know what they
+should write in the :guilabel:`Multiple Lines Text Box` presented to them.
+
+Constraints section
+*******************
+
+The :guilabel:`Constraints` section in the :guilabel:`Options` tab is the same, regardless of the
+selected :guilabel:`Question Type`.
+
+.. image:: questions/constraints-section.png
+   :align: center
+   :alt: The Constraints section in the options tab in Odoo Surveys.
+
+In the :guilabel:`Constraints` section, there is one option available: :guilabel:`Mandatory Answer`.
+
+When :guilabel:`Mandatory Answer` is enabled, that means that specific question requires an answer
+from the participant before they can move on. Also, when :guilabel:`Mandatory Answer` is enabled,
+that reveals an additional field: :guilabel:`Error Message`.
+
+In the :guilabel:`Error Message` field, enter a custom error message prompting the participant to
+provide an answer for this question.
+
+Conditional Display section
+***************************
+
+:guilabel:`Conditional Display` means the question is **only** displayed if a specified conditional
+answer(s) (i.e. :guilabel:`Triggering Answers`) has been selected in a previous question(s).
+
+.. note::
+   The :guilabel:`Conditional Display` section of the :guilabel:`Options` tab is **not** available
+   when questions are randomly picked.
+
+There is only one field in the :guilabel:`Conditional Display` section: :guilabel:`Triggering
+Answers`.
+
+.. image:: questions/conditional-display-section.png
+   :align: center
+   :alt: The Conditional Display section of the options tab in the Odoo Surveys application.
+
+In the :guilabel:`Triggering Answers` field, select specific responses from previous questions that
+would trigger this question. More than one answer can be selected. Leave the field empty if the
+question should always be displayed.
+
+Live Sessions section
+*********************
+
+The option in the :guilabel:`Live Sessions` section of the :guilabel:`Options` tab are **only**
+supported by *Live Session* surveys.
+
+There is only one option available in the :guilabel:`Live Sessions` section: :guilabel:`Question
+Time Limit`.
+
+.. image:: questions/live-sessions-section.png
+   :align: center
+   :alt: The Live Sessions section of the Option tab in the Odoo Surveys application.
+
+When the :guilabel:`Question Time Limit` option is enabled, designate how much time (in
+:guilabel:`seconds`) participants have to answer the question during a *Live Session* survey.
+
+.. note::
+   Survey text colors are directly linked to the colors used for the :doc:`website theme
+   <../../websites/website/web_design/themes>`.
+
+
+==================================================
+SECTION: scoring.rst
+PATH: applications/marketing/surveys/scoring.rst
+==================================================
+
+===============
+Scoring surveys
+===============
+
+To measure a survey participant's performance, knowledge, or overall satisfaction, Odoo assigns
+points to survey answers. At the end of the survey, these points are summed up, resulting in the
+participant's final score.
+
+To add points to questions, open the :guilabel:`Surveys` application, choose the desired survey
+form, and then click on the :guilabel:`Options` tab. Under the :guilabel:`Scoring` section, choose
+between :guilabel:`Scoring with answers at the end` or :guilabel:`Scoring without answers at the
+end`.
+
+- :guilabel:`Scoring with answers at the end` shows the survey participant their answers after
+  completing the survey, and displays which questions they got right or wrong. On questions where
+  there was an incorrect answer, the correct answer will be highlighted.
+
+- :guilabel:`Scoring without answers at the end` does not show the survey participant their answer
+  choices after completing the survey, only their final score.
+
+To indicate correct answers, click on the :guilabel:`Questions tab` and choose a question. In the
+question form, check the :guilabel:`Is a correct answer` box for the choice that is the correct
+answer and attach a score value.
+
+Back on the :guilabel:`Options` tab of the survey, set the :guilabel:`Success %`. The percentage
+entered determines what percentage of correct answers is needed to pass the survey.
+
+Further on the :guilabel:`Options` tab of the survey, survey administrators can also choose to make
+the survey a certification. A certification indicates that the survey asks questions to test the
+participants' knowledge level on a subject.
+
+When enabling the :guilabel:`Is a certification` option, choose a :guilabel:`Certification email
+template`. The certification will automatically be emailed using this email template to users who
+pass the survey with a final score that is greater than or equal to the set :guilabel:`Success %`.
+
+In the :guilabel:`Candidates` section, participants can be required to log in to take the survey. If
+the :guilabel:`Login Required` setting is enabled, two new options appear: the :guilabel:`Attempts
+Limit` checkbox, which limits the number of times a participant can attempt the survey, and the
+option to :guilabel:`Give Badge`, located beneath the :guilabel:`Certification` options in the
+:guilabel:`Scoring` section.
+
+.. image:: scoring/required-score-login.png
+   :align: center
+   :alt: Setting the Required Score (percentage), login required, and certification template.
+
+Badges are displayed on the eLearning portion of a given user's portal, and are a way to set
+milestones and reward participants for passing surveys or gaining points. Besides the awardee,
+website visitors who access the :guilabel:`Courses` page will also be able to see the granted
+badges.
+
+.. image:: scoring/frontend-badges.png
+   :align: center
+   :alt: Example of how a badge looks on the eLearning portion of the website.
+
+.. seealso::
+   :doc:`questions`

@@ -1,0 +1,2334 @@
+
+
+==================================================
+SECTION: ecommerce.rst
+PATH: applications/websites/ecommerce.rst
+==================================================
+
+:nosearch:
+:show-content:
+:hide-page-toc:
+
+=========
+eCommerce
+=========
+
+Build and run your open-source online store with Odoo eCommerce. Create your products, customize the
+ordering and checkout process, configure delivery methods, handle sales and delivery orders, create
+customer accounts, and monitor your performance.
+
+.. cards::
+
+   .. card:: Products
+      :target: ecommerce/products
+      :large:
+
+      Configure your product pages, adjust the shop page layout, set up the pricing, and define
+      suggestions for optional and accessory products.
+
+   .. card:: Ordering and checkout
+      :target: ecommerce/checkout
+      :large:
+
+      Customize the ordering and checkout process with the website editor to fit your business needs.
+
+   .. card:: Delivery
+      :target: ecommerce/shipping
+      :large:
+
+      Enable and configure delivery methods to provide your customers with one or multiple options
+      upon checkout.
+
+   .. card:: Order handling
+      :target: ecommerce/order_handling
+      :large:
+
+      Handle all business documents related to your e-commerce orders: sales orders, delivery
+      orders, invoices, and legal requirements.
+
+   .. card:: Customer accounts
+      :target: ecommerce/customer_accounts
+      :large:
+
+      Define your customers' login process and grant portal access to all
+      users or a select group.
+
+   .. card:: Performance management
+      :target: ecommerce/performance
+
+      Analyze sales data to evaluate your e-commerce performance.
+
+   .. card:: Google Merchant Center
+      :target: ecommerce/google_merchant_center
+
+      Manage and submit your product data to Google with Google Merchant Center.
+
+.. note::
+   Odoo offers a :ref:`free custom domain name <domain-name/register>` to all Odoo Online databases
+   for one year. Visitors can then access your website with an address such as `www.example.com`
+   rather than the default `example.odoo.com`.
+
+.. seealso::
+   - :doc:`Website Documentation <website>`
+   - `Odoo Tutorials: Website <https://www.odoo.com/slides/website-25>`_
+   - `Odoo Tutorials: eCommerce <https://www.odoo.com/slides/ecommerce-26>`_
+
+.. toctree::
+   :titlesonly:
+
+   ecommerce/products
+   ecommerce/checkout
+   ecommerce/shipping
+   ecommerce/order_handling
+   ecommerce/b2b_b2c
+   ecommerce/customer_accounts
+   ecommerce/performance
+   ecommerce/google_merchant_center
+
+
+==================================================
+SECTION: additional_features.rst
+PATH: applications/websites/ecommerce/products/additional_features.rst
+==================================================
+
+===================
+Additional features
+===================
+
+Odoo eCommerce provides additional features for online shops, including a :ref:`product comparison
+<ecommerce/products/additional_features/product-comparison>` tool, a :ref:`wishlist
+<ecommerce/products/additional_features/wishlists>`, and :ref:`product highlight options
+<ecommerce/products/additional_features/product-highlight>`.
+
+.. _ecommerce/products/additional_features/product-comparison:
+
+Product comparison
+==================
+
+The :icon:`fa-exchange` (:guilabel:`Add to compare`) button allows website visitors to compare
+products based on their :ref:`attributes <ecommerce/categories_variants/attributes>`. Customers can
+click this button to select the products they wish to compare, then click :guilabel:`Compare` in
+the pop-up window at the bottom of the page to see the comparison summary.
+
+.. image:: additional_features/product-comparison.png
+   :alt: Product comparison window
+
+This button can be enabled independently in different sections of the website:
+
+.. tabs::
+
+   .. tab:: Product page
+
+      Go to a product page, open the website editor, go to the :guilabel:`Style` tab, navigate to
+      the :guilabel:`Products Details` section, and toggle the :icon:`fa-exchange`
+      :guilabel:`Compare` button. Once done, it becomes available on each product page that has
+      attributes.
+
+   .. tab:: Catalog page
+
+      To display the :icon:`fa-exchange` (:guilabel:`Compare`) button on the
+      :ref:`shop page <ecommerce/catalog/product-listing>`, open the website editor, go to
+      the :guilabel:`Style` tab, and click the :icon:`fa-paint-brush` (:guilabel:`paint brush`) icon
+      next to :guilabel:`Product Design`. In the :guilabel:`Actions` section, toggle the
+      :icon:`fa-exchange` (:guilabel:`Compare`) button, and choose between :guilabel:`Inline` and
+      :guilabel:`On Hover`.
+
+.. note::
+   You can only compare a maximum of four products at a time.
+
+.. tip::
+   Define :ref:`attribute categories <ecommerce/categories_variants/attribute-categories>` to group
+   similar attributes under the same section when comparing products.
+
+.. _ecommerce/products/additional_features/wishlists:
+
+Wishlist
+========
+
+The :icon:`fa-heart-o` (:guilabel:`Add to wishlist`) button allows customers to add products
+to their wishlist, i.e., save them for later. It is enabled by default and available on each
+product page.
+
+This button can be enabled independently in different sections of the website:
+
+.. tabs::
+
+   .. tab:: Product page
+
+      Go to a product page, open the website editor, go to the :guilabel:`Style` tab, navigate to
+      the :guilabel:`Products Details` section, and toggle the :icon:`fa-heart`
+      :guilabel:`Wishlist` button. Once done, it becomes available on each product page.
+
+   .. tab:: Catalog page
+
+      To display the :icon:`fa-heart-o` (:guilabel:`Wishlist`) button on the
+      :ref:`shop page <ecommerce/catalog/product-listing>`, open the website editor, go to
+      :guilabel:`Style`, and click the :icon:`fa-paint-brush` (:guilabel:`paint brush`) icon next to
+      :guilabel:`Product Design`. In the :guilabel:`Actions` section, toggle the :icon:`fa-heart`
+      (:guilabel:`Wishlist`) button and choose between :guilabel:`Fixed` and :guilabel:`Fixed -
+      On Hover`.
+
+   .. tab:: Header
+
+      To display the :icon:`fa-heart` (:guilabel:`Wishlist`) icon in the header, open the website
+      editor, click the header, navigate to the :guilabel:`Show/Hide Elements` section, and toggle
+      the :icon:`fa-heart` (:guilabel:`Wishlist`) icon next to :guilabel:`Show Empty`. If it is not
+      enabled, the wishlist icon only appears when an item has been added to the wishlist. The
+      number of items in the wishlist is also displayed next to the icon.
+
+Wishlist page
+-------------
+
+It is possible to customize the layout of the :guilabel:`My Wishlist` page. To do so, open
+the website editor while on the wishlist page, and in the :guilabel:`Style` tab under the
+:guilabel:`Wishlist Page` section, choose a :guilabel:`Products Design`. Depending on the selected
+design, adapt the layout according to :guilabel:`Desktop` or :guilabel:`Mobile` devices.
+Click the :icon:`fa-paint-brush` (:guilabel:`paint brush`) icon next to :guilabel:`Products Design`
+to access more customization options.
+
+.. tip::
+   - Customers can move products from their cart to their wishlist by clicking the :guilabel:`Save
+     for later` button in the :guilabel:`Order summary` :ref:`checkout step
+     <ecommerce/checkout/review_order>`.
+   - On the :guilabel:`My Wishlist` page, customers can move products from their wishlist to the
+     cart.
+
+.. _ecommerce/products/additional_features/product-highlight:
+
+Product highlight
+=================
+
+The eCommerce app allows you to highlight products to increase their visibility. To do so, go to
+:menuselection:`Website --> eCommerce --> Product Ribbons`. You can either use one of the
+preconfigured ribbons (:guilabel:`Sold out`, :guilabel:`Sale`, :guilabel:`Out of stock` or
+:guilabel:`New!`) or create a :guilabel:`New` one. Add a ribbon name, and select the method to
+:guilabel:`Assign` it:
+
+- :guilabel:`Manually`: assign the ribbon manually.
+- :guilabel:`On Sale`: the ribbon is displayed when the product is on sale, e.g., when using a
+  :ref:`comparison price <ecommerce/prices/permanent-discounts>`.
+- :guilabel:`When New`: the ribbon is displayed when a new product is added. Specify the number of
+  :guilabel:`days after publication` it should be displayed.
+- :guilabel:`when out of stock`: the ribbon is displayed when the product is currently no longer
+  available.
+
+Choose its :guilabel:`Position`, either :guilabel:`Left` or :guilabel:`Right`, and a
+:guilabel:`Style`, either :guilabel:`Ribbon` or :guilabel:`Badge`. Define the :guilabel:`Text Color`
+and the :guilabel:`Background Color`. Then :guilabel:`Save`. The ribbon is now available for all
+the e-commerce products.
+
+.. image:: additional_features/badge-applied.png
+   :alt: Product with badge
+
+.. tip::
+   - There are other ways to create a new product ribbon:
+
+     - Access the product form, and under the :guilabel:`Sales` tab, change or create the ribbon in
+       the :guilabel:`Ribbon` field.
+     - Edit/create ribbons from the :doc:`website editor <../../website/web_design>`.
+       To do so, go to the :guilabel:`Style` tab, and navigate to the :guilabel:`Product Details`
+       section. Click the green :icon:`fa-plus` (:guilabel:`Create`) icon next to the
+       :guilabel:`Ribbon` field or the :icon:`fa-pencil-square-o` (:guilabel:`Edit`) icon next to
+       the :guilabel:`Ribbon` label. The :guilabel:`Assign` feature is not available for
+       configuration in the website editor.
+
+       .. image:: additional_features/create-new-ribbon.png
+          :alt: Create a new ribbon in the website editor
+
+   - It is also possible to add ribbons for specific :ref:`product variants
+     <ecommerce/categories_variants/product-variants>`. To do so, go to :menuselection:`Website -->
+     eCommerce --> Products` and select a product. Click the :guilabel:`Variants` smart button,
+     choose a variant, and add a ribbon in the :guilabel:`Variant Ribbon` field of the
+     :guilabel:`Sales` section.
+
+
+==================================================
+SECTION: b2b_b2c.rst
+PATH: applications/websites/ecommerce/b2b_b2c.rst
+==================================================
+
+===========
+B2B and B2C
+===========
+
+Odoo eCommerce is designed to fulfill the needs of both B2B and B2C companies. It allows you to
+configure :doc:`prices <products/prices>`, manage :doc:`access <customer_accounts>` for specific
+customers, and :ref:`customize the website <ecommerce/b2b_b2c/multiple-websites>` to support B2B,
+B2C, or both business models.
+
+.. _ecommerce/b2b_b2c/prices:
+
+Prices
+======
+
+While B2C businesses sell directly to the end consumer with a :ref:`tax-included
+<ecommerce-price-management-tax-display>` price, B2B businesses usually :ref:`exclude taxes
+<ecommerce-price-management-tax-display>` and may even prefer to hide prices altogether, showcasing
+only their products instead.
+To configure a B2B-specific online shop, make sure the :ref:`Tax-Excluded
+<ecommerce/prices/taxes>` option is enabled, and complete the configuration to :ref:`hide the
+pricing <ecommerce/prices/hide-prices>`.
+
+.. tip::
+   To make sure that only customers with an :ref:`account and granted access
+   <ecommerce/customer_accounts/account-creation>` can see the prices, go to
+   :menuselection:`Website --> eCommerce --> Customers`, click the :icon:`fa-caret-down`
+   :guilabel:`(dropdown)` icon from the search bar, and select the :guilabel:`Archived` filter.
+   Then click the :guilabel:`Public user` card, go to the :guilabel:`Sales & Purchase` tab, and
+   add the zero-priced pricelist configured to :ref:`cover all countries
+   <ecommerce/prices/country-groups>`. Keep the :guilabel:`Public User` contact :guilabel:`Archived`
+   at all times. Website visitors now see the products without prices, while only customers with an
+   :ref:`account invitation <ecommerce/customer_accounts/account-creation>` and an assigned
+   :ref:`pricelist <ecommerce/prices/pricelists>` can view the pricing in the customer portal.
+
+.. seealso::
+   - :doc:`/applications/finance/accounting/taxes/B2B_B2C`
+   - :ref:`Discounts <ecommerce/prices/discounts>`
+
+Access request
+==============
+
+When running a B2B business, you usually :ref:`hide the pricing <ecommerce/b2b_b2c/prices>` on the
+web shop and make it available for :ref:`logged-in users <ecommerce/customer_accounts/shop-access>`
+only. To prevent anyone from signing up freely, set the :ref:`Customer Account
+<ecommerce/customer_accounts/account-creation>` setting option to :guilabel:`On invitation`.
+To create a page where customers request access, open the :doc:`website editor
+<../website/web_design>`, :ref:`create a form <website/building_blocks/form>`, customize it, and in
+the :guilabel:`Action` field, select :guilabel:`Create a customer`.
+
+.. tip::
+   You can assign tags created on a contact form under :menuselection:`Website --> Configuration
+   --> Customers` to identify what kind of customers have submitted the form. To do so, select
+   a field in the form while in :guilabel:`Edit` mode, click the :guilabel:`+ Field` button under
+   the :guilabel:`Customize` tab, and set the field's :guilabel:`Type` to :guilabel:`Tags`.
+   Toggle the tags that should be automatically assigned when a customer fills in the form and set
+   the field's :guilabel:`Visibility` to :guilabel:`Hidden`.
+
+When a customer submits the form, a new contact is automatically created in the database. The
+contact is assigned the first pricelist from the list of available pricelists, and, if applicable,
+the specified tags.
+
+Submitted requests can be found under the :menuselection:`Website --> eCommerce --> Customers`.
+Select the customer you want to :ref:`grant portal access
+<ecommerce/customer_accounts/grant-access>` to. Once done, the selected customer is able to
+view the B2B prices and products. Make sure the correct pricelist is assigned to their
+contact form.
+
+.. tip::
+   - It is also possible to hide the entire shop from the public using the :ref:`Ecommerce Access
+     <ecommerce/customer_accounts/shop-access>` setting and only make it available for logged-in
+     customers.
+   - Configure the :ref:`checkout policy <ecommerce/customer_accounts/checkout-access>` to
+     allow/disallow guest checkout for B2C businesses.
+   - Enable the :ref:`Shared Customer Accounts <ecommerce/customer_accounts/multiple-websites>`
+     feature to allow customers to use the same account on :ref:`all
+     <ecommerce/b2b_b2c/multiple-websites>` your websites.
+
+.. seealso::
+   :doc:`customer_accounts`
+
+.. _ecommerce/b2b_b2c/multiple-websites:
+
+Multiple websites
+=================
+
+Settings are website-specific, which means it is possible to configure different behaviors for
+each website. For example, you can set up a B2C website that allows :ref:`guest checkout
+<ecommerce/customer_accounts/checkout-access>` and displays :ref:`tax-included prices
+<ecommerce-price-management-tax-display>`, and a B2B website that requires :ref:`sign-in
+<ecommerce/customer_accounts/checkout-access>` and shows :ref:`tax-excluded prices
+<ecommerce-price-management-tax-display>`. However, each :ref:`pricelist
+<ecommerce/prices/pricelists>` can only be assigned to one website at a time. If you want to use
+the same pricelist on several websites, duplicate the pricelist and assign each copy to its
+corresponding website.
+
+.. tip::
+   If you are running a B2B and B2C business, we *strongly* recommend to create two :doc:`separate
+   websites <../website/configuration/multi_website>` and assign a :ref:`zero-priced pricelist
+   <ecommerce/b2b_b2c/prices>` to the B2B website and a regular pricelist to the B2C website.
+   In case, you prefer using a single website, configure it using :ref:`country groups
+   <ecommerce/prices/country-groups>` and assigning :ref:`pricelists <ecommerce/prices/pricelists>`
+   to customers, and deactivate the :ref:`Selectable <ecommerce/prices/selectable-pricelists>`
+   option.
+
+Additional features
+===================
+
+Invoice
+-------
+
+Depending on the type of business (B2B or B2C), you might want to issue an invoice. An invoice can
+either be generated automatically (for B2B) or on demand of the customer (for B2C). This process
+can be automated if (and when) the online payment is :ref:`confirmed <handling/sales>`.
+To automate invoicing, enable the :ref:`Automatic Invoice <handling/legal>` setting. If this
+feature has not been enabled, the customer only receives an order confirmation.
+
+.. _ecommerce/b2b_b2c/b2b-fields:
+
+B2B fields at checkout
+----------------------
+
+On the :guilabel:`Order summary` page, open the :doc:`website editor <../website/web_design>`, go to
+the :guilabel:`Style` tab, and toggle the :guilabel:`Show B2B Fields` switch to display B2B-specific
+additional fields like :guilabel:`VAT` or :guilabel:`Company Name` during the :ref:`delivery
+<ecommerce/checkout/delivery>` step.
+
+
+==================================================
+SECTION: catalog.rst
+PATH: applications/websites/ecommerce/products/catalog.rst
+==================================================
+
+===============
+Product catalog
+===============
+
+The e-commerce catalog displays products for customers to browse. It is organized using :ref:`product
+categories <ecommerce/categories_variants/categories>`, available :ref:`product variants
+<ecommerce/categories_variants/product-variants>`, sorting options, and navigation paths.
+Essentially, the e-commerce catalog is the shop page of your website.
+
+The product catalog features a :ref:`toolbar and some filters <ecommerce/catalog/toolbar-and-filters>`
+in the sidebar (or slide-out menu), along with a dedicated :ref:`product listing area
+<ecommerce/catalog/product-listing>`. Additionally, the shop and category pages' :ref:`layout
+<ecommerce/catalog/customize-layout>`, as well as the :ref:`e-commerce footer
+<ecommerce/catalog/footer>`, can be customized, and you can add :ref:`building blocks
+<ecommerce/catalog/catalog-blocks>` as needed.
+
+To customize the catalog, go to the shop page, click :guilabel:`Edit` in the upper-right corner,
+select the section you want to change, and navigate to the :guilabel:`Style` tab.
+
+.. _ecommerce/catalog/toolbar-and-filters:
+
+Toolbar and filters
+===================
+
+The toolbar and sidebar (or slide-out menu) provide advanced filtering tools to help customers
+search and navigate the product catalog using :ref:`categories <ecommerce/catalog/categories>` and
+:ref:`attributes <ecommerce/catalog/attributes>`.
+
+.. tip::
+   If you do not want to display a toolbar or sidebar, disable all related options in the website
+   editor, :ref:`hide attributes <ecommerce/categories_variants/attributes>`, and make sure to only
+   assign one pricelist to the website.
+
+.. _ecommerce/catalog/categories:
+
+Categories
+----------
+
+To create a :ref:`category <ecommerce/categories_variants/categories>` quick access in the toolbar
+or general access in the sidebar, click the :guilabel:`Top` and/or :guilabel:`Sidebar` button next
+to :guilabel:`Categories`, and choose a :guilabel:`Style` for them. When the :guilabel:`Sidebar` is
+selected, the option :guilabel:`Collapse Category Recursive` appears, allowing you to collapse the
+category in the sidebar.
+
+.. image:: catalog/category-quick-access-top.png
+   :alt: Category quick access in the toolbar.
+
+.. note::
+   The category filters located in the sidebar are not affected by the :guilabel:`Filters` setting.
+
+.. _ecommerce/catalog/toolbar:
+
+Toolbar
+-------
+
+It is possible to display a search bar or sort-by options in the toolbar of the shop page by
+clicking the :guilabel:`Sort By` and/or :guilabel:`Search` buttons next to the :guilabel:`Toolbar`
+label. Toggle the :guilabel:`Floating` switch on to always display the search bar, the
+:ref:`pricelist selector <ecommerce/prices/pricelists>` (if any), and sort-by options at the bottom
+of the window, even when scrolling, and select a :guilabel:`Default Sort` option.
+
+.. note::
+   The default sort applies to *all* :ref:`categories <ecommerce/categories_variants/categories>`.
+
+
+.. _ecommerce/catalog/filters:
+
+Filters
+-------
+
+Set the :guilabel:`Filters` field to:
+
+- :guilabel:`Sidebar`: to display filters in the side panel;
+- :guilabel:`Off-screen menu`: to display filters in a slide-out menu that opens when clicking
+  the :icon:`fa-sliders` :guilabel:`Filters` button in the toolbar;
+- :guilabel:`Hide`: to hide filters entirely.
+
+By default, two :guilabel:`Filters` are enabled:
+
+  - :guilabel:`Price`: Use the switch to display a :guilabel:`Price Range` bar, which
+    allows customers to filter products according to a specific price range by dragging adjustable
+    handles.
+  - :guilabel:`Tags`: Toggle the switch to display product :guilabel:`Tags` on the shop page, and
+    allow customers to filter products using those tags by going to the
+    :guilabel:`Tags` section.
+
+    .. tip::
+       To create product tags on your e-commerce, go to :menuselection:`Website --> eCommerce
+       --> Product Tags`, and click :guilabel:`New`. Add a :guilabel:`Tag` name, toggle the
+       :guilabel:`Visible to customers` switch, and select a :guilabel:`Color`. Optionally, add an
+       image. Then go to the product form, and assign the relevant tags where needed.
+
+For :doc:`rental products <../../../sales/rental>`, you can also add a :guilabel:`Rental Date`
+option to display a date range calendar to check their availability over a specific period.
+
+.. _ecommerce/catalog/attributes:
+
+Attributes
+~~~~~~~~~~
+
+When you offer :ref:`product variants <ecommerce/categories_variants/product-variants>` with
+different :ref:`attributes <ecommerce/categories_variants/attributes>`, those options appear
+in the sidebar or slide-out menu when filters are shown. The menu automatically adapts to the
+number of attribute sections:
+
+- **Up to 4 attributes**: all the attribute values are displayed.
+- **More than 4 attributes**: the sections are automatically collapsed.
+
+
+.. note::
+   - For :guilabel:`Radio` and :guilabel:`Select` :ref:`display types
+     <products/variants/attributes>`, a :guilabel:`View More` button appears when there are more
+     than **8** values, and a search field when the number of values exceeds **20**.
+   - At least two attribute values are required for the filter to be visible.
+   - The attribute filters located in the sidebar or slide-out menu are affected by the
+     :guilabel:`Filters` setting.
+
+.. seealso::
+   - :doc:`../../../sales/sales/products_prices/products/variants`
+   - :doc:`categories_variants`
+
+.. _ecommerce/catalog/product-listing:
+
+Product listing area
+====================
+
+.. _ecommerce/catalog/layout:
+
+Define the number of products to display on your shop pages by configuring the :guilabel:`Size`
+displayed per page and line, and specify the number of columns for :guilabel:`Mobile` devices.
+
+.. note::
+   The number of products displayed on a page may affect performance and page loading speed.
+
+In addition, you can manually change a product’s position on the shop page or product category page.
+To do so, click a specific product, change its :guilabel:`Size`, and :guilabel:`Re-order` it using
+the arrows in the :guilabel:`Product` section of the :guilabel:`Style` tab. The
+:icon:`fa-angle-double-left` (:guilabel:`double left arrow`) and :icon:`fa-angle-double-right`
+(:guilabel:`double right arrow`) buttons allow you to move the product to the extreme left or right,
+and the :icon:`fa-angle-left` (:guilabel:`single left arrow`) and :icon:`fa-angle-right`
+(:guilabel:`single right arrow`) buttons allow you to move it one row to the left or right. You can
+also choose or create a :ref:`ribbon or badge
+<ecommerce/products/additional_features/product-highlight>` to highlight a specific product.
+
+.. tip::
+   It is also possible to change the products' positions on the shop page by going to
+   :menuselection:`Website --> eCommerce --> Products`, switching to the list view, and
+   dragging and dropping the products within the list.
+
+.. _ecommerce/catalog/products-design:
+
+Product card design
+-------------------
+
+To customize the product cards' design, choose a :guilabel:`Products Design`, click the
+:icon:`fa-paint-brush` :guilabel:`(paint brush)` icon next to it to:
+
+- Choose a :guilabel:`Preset` layout;
+- Adapt the :guilabel:`General` design;
+- Customize the :guilabel:`Text & content` (e.g., show a :guilabel:`Description`, and
+  :guilabel:`Ratings`);
+- Customize the :guilabel:`Images`' layout (e.g., enable :guilabel:`Secondary
+  Image` to show a second image when hovering over the product image on the shop or category page);
+- Enable some :guilabel:`Actions` (e.g., :icon:`fa-shopping-cart`
+  :ref:`Add to cart <ecommerce/checkout/add-to-cart>`, :icon:`fa-exchange` :ref:`Compare
+  <ecommerce/products/additional_features/product-comparison>`, or :icon:`fa-heart` :ref:`Wishlist
+  <ecommerce/products/additional_features/wishlists>`) and customize their placement.
+
+.. tip::
+   You can also add a :ref:`variant picture <ecommerce/categories_variants/attributes>` on the
+   product card and product page.
+
+.. _ecommerce/catalog/customize-layout:
+
+Shop and category page design
+=============================
+
+The design of the shop and individual category pages can be customized as follows:
+
+- Choose whether the :guilabel:`Content Width` of the shop and category pages should be
+  :guilabel:`Regular` or :guilabel:`Full` width.
+- Define the headers: navigate to the relevant page, then change the header directly on the page
+  if needed. Toggle the :guilabel:`Show Title` and/or the :guilabel:`Center Content` switches. For
+  product category pages, toggle the :guilabel:`Show Description` switch to show the :ref:`category
+  description <ecommerce/categories_variants/categories>`.
+- Use :doc:`building blocks <../../website/web_design/building_blocks>` to add content in the
+  top/bottom section of the page, either for the entire shop page or for a specific category. In
+  the latter case, the block appears *only* when filtering by that category. To do so, move the
+  block to the far top or bottom section to display it on the general shop page or to the area
+  below the category's name at the top or beneath the product list to display it only when filtering
+  by that specific category.
+
+  .. image:: catalog/catalog-header-footer.png
+     :alt: Place building block in the header or footer.
+
+  .. tip::
+     - Adding content to an e-commerce category page helps improve the :doc:`SEO
+       <../../website/structure/seo>` strategy. Using keywords linked to the products or the
+       e-commerce categories can also increase organic traffic. Additionally, each category has its
+       own specific URL that can be pointed to and is indexed by search engines.
+     - E-commerce categories can also be added as :ref:`mega menu items
+       <website/header_footer/mega-menus>` for quick access.
+     - It is also possible to customize individual :ref:`product pages
+       <ecommerce/products/product-form>`.
+
+.. _ecommerce/catalog/catalog-blocks:
+
+Catalog blocks
+==============
+
+The :guilabel:`Catalog` :doc:`building blocks
+</applications/websites/website/web_design/building_blocks>` can be used, for example, to create
+quick access to the shop page, showcase specific product categories, highlight a specific product
+selection, or add a banner with general information or promotions.
+
+Depending on the selected template, you can :ref:`customize <website/building_blocks/edit>` the
+blocks in the :guilabel:`Style` tab.
+
+.. example::
+   .. image:: catalog/catalog-products-block.png
+      :alt: Example of a catalog block for specific products
+
+   For example, this specific :guilabel:`Catalog` block template displays a selection of
+   products and can be customized to:
+
+   - Adapt the block's design.
+   - Select a :guilabel:`Cards Design`, and :ref:`configure <ecommerce/catalog/products-design>` it
+     using the :icon:`fa-paint-brush` :guilabel:`(paint brush)` icon.
+   - Define which items are shown in the block by selecting the relevant :guilabel:`Filter` option,
+     e.g., :guilabel:`Newest Products` to show the latest arrivals.
+   - Select a specific product category in the :guilabel:`Category` dropdown list.
+   - Filter products by toggling the :guilabel:`Tags` and/or :guilabel:`Show variants` options.
+
+.. _ecommerce/catalog/footer:
+
+E-commerce-specific website footer
+==================================
+
+The :ref:`website footer <website/header_footer/footer-design>` can also be configured to use
+the e-commerce-specific template. Then, add the relevant :ref:`links <website/elements/links>`, and
+adapt the footer's text and layout as needed in the website editor. The :doc:`available payment
+methods </applications/finance/payment_providers>` are also shown in this footer. To adapt their
+display, go to the :guilabel:`Supported Payment Methods` section in the website editor.
+
+.. note::
+   It is not possible to create a customized footer per category.
+
+
+==================================================
+SECTION: categories_variants.rst
+PATH: applications/websites/ecommerce/products/categories_variants.rst
+==================================================
+
+=======================
+Categories and variants
+=======================
+
+Odoo eCommerce provides multiple ways to configure, :doc:`present <catalog>`, and sell different
+product options to customers while organizing products by category for a better overview and
+smoother navigation.
+
+.. _ecommerce/categories_variants/product-variants:
+
+Product variants
+================
+
+:doc:`Product variants </applications/sales/sales/products_prices/products/variants>` are different
+versions of the same product, created by combining :ref:`attributes <products/variants/attributes>`
+like color, size, material, etc., which can lead to differences in price and/or availability.
+
+To configure product variants for a product:
+
+#. Go to :menuselection:`Website --> Configuration --> Settings`.
+#. Scroll down to the :guilabel:`eCommerce` section and enable the
+   :guilabel:`Product Variants` feature.
+#. Access the :ref:`product form <ecommerce/products/product-form>` and go to the
+   :guilabel:`Attributes & Variants` tab.
+#. Click :guilabel:`Add a line` and select the relevant attribute and its values. Repeat this step
+   for each additional attribute.
+
+The product variants are created automatically (or not) based on the :ref:`attribute's
+configuration <products/variants/attributes>`.
+
+.. seealso::
+   :doc:`/applications/sales/sales/products_prices/products/variants`
+
+.. _ecommerce/categories_variants/attributes:
+
+Attributes
+----------
+
+Attributes refer to the characteristics of a product, such as its color or material. Each attribute
+includes a set of values.
+
+.. image:: categories_variants/attributes-values.png
+   :alt: Attributes and variants of your product
+
+Once your attributes are :ref:`created <products/variants/attributes>`, set the following options
+on the attribute form to control where and/or how they appear on the website:
+
+- :guilabel:`eCommerce Filter`: Set the field to :guilabel:`Visible` to make the attribute
+  available in the shop's filter section.
+- :guilabel:`On Product Cards`: Set the field to :guilabel:`Visible` or :guilabel:`Hover` to display
+  attributes on the product card on the shop page. These options are only available when
+  :ref:`variants are created instantly for the attribute <products/variants/attributes>`.
+
+When the field is set to :guilabel:`Visible`, the :guilabel:`Show Thumbnails` option can be toggled
+to show a product variant image instead of the attribute values.
+
+It is also possible to add a variant picture on the product card on the shop page. To do so, go to
+the product form, click the :icon:`fa-sitemap` :guilabel:`Variants` :ref:`smart button
+<products/variants/variants-smart-button>`, select a variant, and click the :icon:`fa-pencil`
+:guilabel:`(Edit)` icon to add a picture for each variant. Make sure that the :ref:`Show Thumbnails
+<ecommerce/categories_variants/attributes>` option is enabled on the attribute form.
+
+.. image:: categories_variants/variants-show-thumbnails.png
+   :alt: Variant thumbnails on product card.
+
+.. _ecommerce/categories_variants/attribute-categories:
+
+Attribute categories
+~~~~~~~~~~~~~~~~~~~~
+
+To group similar attributes under the same section when :ref:`comparing products
+<ecommerce/products/additional_features/product-comparison>`, select the relevant
+:guilabel:`eCommerce Category` or create a new one. Click the :icon:`fa-arrow-right`
+:guilabel:`(internal link)` icon next to the category name to:
+
+- Rename the category.
+- Change its :guilabel:`Sequence`.
+- Reorder the :guilabel:`Related Attributes` to define the order in which they are displayed in
+  the comparison summary.
+- Add attributes to the category by clicking :guilabel:`Add a line`.
+
+.. image:: categories_variants/attribute-categories.png
+   :alt: Comparison summary page with attribute categories.
+
+.. _ecommerce/categories_variants/categories:
+
+E-commerce categories
+=====================
+
+E-commerce categories are used to organize products into groups, making it easier for customers
+to browse the online store.
+
+.. image:: catalog/category-quick-access-top.png
+   :alt: Category quick access in the toolbar.
+
+To create e-commerce categories, go to :menuselection:`Website --> eCommerce -->
+eCommerce Categories`, and click :guilabel:`New`. On the category form, add a
+:guilabel:`Name`, optionally enter a :guilabel:`Parent` category, restrict it to a specific
+:guilabel:`Website`, and write a :guilabel:`Description`, if needed. You can also add a
+:guilabel:`Cover Image` for the category.
+
+To use :guilabel:`eCommerce categories`, go to :menuselection:`Website --> eCommerce --> Products`,
+select the product you wish to modify, go to the :guilabel:`Sales` tab, navigate to the
+:guilabel:`Ecommerce shop` section, and select the :guilabel:`Categories` it belongs to.
+
+.. note::
+   - A single product can belong to multiple e-commerce categories.
+   - Define how to :ref:`display categories <ecommerce/catalog/categories>` on the shop page.
+   - Categories that do not contain any products are not visible on the shop page.
+
+.. seealso::
+   :doc:`../products`
+
+
+==================================================
+SECTION: checkout.rst
+PATH: applications/websites/ecommerce/checkout.rst
+==================================================
+
+=====================
+Ordering and checkout
+=====================
+
+Odoo eCommerce provides several options to organize the ordering and checkout process. It offers
+different :ref:`order button <ecommerce/checkout/order-buttons>` options and sequential
+:ref:`checkout steps <ecommerce/checkout/steps>`, some of which support additional features. The
+related buttons and checkout pages can be customized using the :doc:`website editor
+<../website/web_design>`.
+
+.. _ecommerce/checkout/order-buttons:
+
+Order buttons
+=============
+
+To customize the ordering process in Odoo eCommerce, you can:
+
+- change the :ref:`Add to Cart <ecommerce/checkout/add-to-cart>` button's behavior;
+- replace it with a :ref:`customized <ecommerce/checkout/prevent-sale>` button;
+- add a :ref:`Buy now <ecommerce/checkout/buy-now>` button.
+
+.. _ecommerce/checkout/add-to-cart:
+
+Add to cart options
+-------------------
+
+Default add to cart behavior
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When clicking the :guilabel:`Add to cart` button, different actions can be triggered. To configure
+them, go to :menuselection:`Website --> Configuration --> Settings`, scroll down to the
+:guilabel:`eCommerce` section, and select one of the following options for the :guilabel:`Add to
+cart` feature:
+
+- :guilabel:`Stay on Product Page`: The customer can choose if they want to :guilabel:`Add to cart`
+  and continue shopping or :guilabel:`Go to the Checkout`.
+- :guilabel:`Go to cart`: The customer is immediately redirected to the cart.
+
+.. _ecommerce/checkout/prevent-sale:
+
+Button customization
+~~~~~~~~~~~~~~~~~~~~
+
+You can replace the :guilabel:`Add to Cart` button with a :guilabel:`Contact Us` button, which
+redirects users to the default contact form.
+
+.. note::
+   Removing the ability to add products to the cart is often used by businesses that want to display
+   an online catalog but cannot share prices publicly (e.g., to offer custom or variable pricing).
+
+To display the :guilabel:`Contact Us` button and a note saying `Not Available For Sale` , you need
+to :ref:`hide your prices <ecommerce/prices/hide-prices>` on your product page.
+
+.. image:: checkout/cart-contact-us.png
+   :alt: Contact us button on product page
+
+.. note::
+   The :guilabel:`Contact Us` button label, URL, and the *Not Available For Sale* text beneath the
+   product title and description can be modified on the product's page while in :guilabel:`Edit`
+   mode.
+
+Additional add to cart buttons
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can add additional :guilabel:`Add to Cart` buttons and link them to specific products on any
+website page.
+
+To add them, open the website editor and place the :guilabel:`Add to Cart Button` inner content
+building block. Once placed, click the button, scroll to the :guilabel:`Add to Cart Button` section,
+and configure the following:
+
+- :guilabel:`Product`: Select the product to link the button with.
+- :guilabel:`Action`: Choose if it should be an :guilabel:`Add to Cart` or :ref:`Buy Now
+  <ecommerce/checkout/buy-now>` button.
+
+.. note::
+   - If the product has variants, either choose one or leave the option on :guilabel:`Visitor's
+     Choice`, which prompts the customer to select a variant and then :guilabel:`Add to Cart` and
+     continue shopping or :guilabel:`Go to Checkout`.
+   - The default :guilabel:`Add to Cart` button does not offer those options, but its label can be
+     changed.
+
+.. tip::
+   In the website editor, it is also possible to show or hide the :icon:`fa-shopping-cart`
+   (:guilabel:`cart`) icon in the page's header. Click the header and then the
+   :icon:`fa-shopping-cart` (:guilabel:`cart`) button next to the :guilabel:`Show Empty` option
+   under the :guilabel:`Style` tab.
+
+.. _ecommerce/checkout/buy-now:
+
+Buy now
+-------
+
+To let customers choose to go to the :ref:`Order summary <ecommerce/checkout/review_order>` step
+directly, you can add an additional :guilabel:`Buy now` button. To do so, go to any product's page,
+open the website editor, go to the :guilabel:`Style` tab, and click the :icon:`fa-bolt`
+:guilabel:`Buy Now` button next to the :guilabel:`Purchase Options`.
+
+.. image:: checkout/cart-buy-now.png
+   :alt: Buy now button
+
+.. _ecommerce/checkout/reorder:
+
+Reorder products
+----------------
+
+Customers can reorder items from a previous sales order:
+
+- from their customer portal, using the :guilabel:`Order Again` button. All products from the
+  selected order are automatically added to the cart, and customers can then :guilabel:`Remove` any
+  items they don't want to reorder.
+
+  .. image:: checkout/order-again-button.png
+     :alt: Reorder button
+
+- from the cart, by clicking :guilabel:`Quick reorder` at the :ref:`Order summary step
+  <ecommerce/checkout/review_order>`. Customers can then adjust quantities as needed and click the
+  :icon:`fa-cart-plus` :guilabel:`(cart)` button next to the product(s) they want to reorder.
+
+  .. image:: checkout/cart-quick-reorder.png
+     :alt: Quick reorder button
+
+.. _ecommerce/checkout/steps:
+
+Checkout steps
+==============
+
+During the checkout process, customers are taken through the following steps:
+
+- :ref:`Order summary <ecommerce/checkout/review_order>`
+- :ref:`Address and delivery <ecommerce/checkout/delivery>`
+- :ref:`Extra info (if enabled) <ecommerce/checkout/extra_step>`
+- :ref:`Payment <ecommerce/checkout/payment>`
+- :ref:`Order confirmation <ecommerce/checkout/order_confirmation>`
+
+.. _ecommerce/checkout/customize_steps:
+
+Each step can be customized using the website editor by adding :doc:`building blocks
+<../website/web_design/building_blocks>` or opening the :guilabel:`Style` tab to enable various
+checkout options.
+
+.. note::
+   Content added through building blocks is **specific** to each step.
+
+.. tip::
+   Restrict access to the :ref:`shop <ecommerce/customer_accounts/shop-access>` and :ref:`checkout
+   <ecommerce/customer_accounts/checkout-access>` for specific customers, e.g., in a :doc:`B2B
+   <b2b_b2c>` business setup.
+
+.. _ecommerce/checkout/review_order:
+
+Order summary
+-------------
+
+The :guilabel:`Order summary` step allows customers to see the items they added to their cart,
+adjust quantities, :guilabel:`Remove` products, and :ref:`reorder products from a previous order
+<ecommerce/checkout/reorder>`. Information related to the product prices and taxes applied are also
+displayed. Customers can then click the :guilabel:`Checkout` button to continue to the :ref:`Address
+and delivery <ecommerce/checkout/delivery>` step.
+
+Open the website editor to :ref:`enable <ecommerce/checkout/customize_steps>` checkout options such
+as:
+
+- :guilabel:`Suggested Accessories`: to showcase :ref:`accessory products
+  <ecommerce/cross_upselling/accessory>`;
+- :guilabel:`Promo Code`: to allow customers to redeem :ref:`gift cards <ewallet_gift/gift-cards>`
+  or apply :doc:`discount codes <../../sales/sales/products_prices/loyalty_discount>`;
+- :guilabel:`Add to Wishlist`: :ref:`Enable wishlists
+  <ecommerce/products/additional_features/wishlists>` to allow signed-in users to remove a product
+  from their cart and add it to their wishlist using the :guilabel:`Save for later` option.
+
+.. note::
+   - If a :doc:`fiscal position <../../finance/accounting/taxes/fiscal_positions>` is detected
+     automatically, the product tax is determined based on the customer's IP address.
+   - If the installed :doc:`payment provider <../../finance/payment_providers>` supports
+     :ref:`express checkout <payment_providers/express_checkout>`, a dedicated button is displayed,
+     allowing customers to go straight from the cart to the confirmation page without filling out
+     the contact form.
+
+.. _ecommerce/checkout/delivery:
+
+Address and delivery
+--------------------
+
+Once they have reviewed their order:
+
+- Unsigned-in customers are prompted to :guilabel:`Sign in` or enter their :guilabel:`Email
+  address`, along with their delivery address and phone details;
+- Signed-in customers can select the appropriate :guilabel:`Delivery address`.
+
+They can then :doc:`choose a delivery method <shipping>`, select or enter their :guilabel:`Billing
+Address` (or toggle the :guilabel:`Same as delivery address` switch if the billing and delivery
+addresses are identical), and click :guilabel:`Confirm` to proceed to the next step.
+
+.. tip::
+   - For B2B customers, you can also :ref:`enable <ecommerce/checkout/customize_steps>` optional
+     :ref:`B2B fields <ecommerce/b2b_b2c/b2b-fields>` in the website editor.
+   - You can add a checkbox for users without an account to sign up for a newsletter. To do so, go
+     to :menuselection:`Website --> Configuration --> Settings`, scroll down to the
+     :guilabel:`eCommerce` section, enable the :guilabel:`Newsletter` feature, and select a
+     :guilabel:`Newsletter List`.
+
+.. _ecommerce/checkout/extra_step:
+
+Extra info
+----------
+
+You can add an :guilabel:`Extra Info` step in the checkout process to collect additional customer
+information through an online form, which is then included in the :ref:`sales order
+<handling/sales>`. To do so, :ref:`enable <ecommerce/checkout/customize_steps>` the :guilabel:`Extra
+Step` option in the website editor. The form can be :ref:`customized <website/building_blocks/form>`
+as needed.
+
+.. _ecommerce/checkout/payment:
+
+Payment
+-------
+
+At the :guilabel:`Payment` step, customers can :guilabel:`Choose a payment method`, enter their
+payment details, and click :guilabel:`Pay now`.
+
+To make payment methods available to customers, configure and enable one or more :doc:`payment
+provider(s) </applications/finance/payment_providers>`. To do so, go to :menuselection:`Website -->
+Configuration --> Payment Providers`, :guilabel:`Activate` the relevant payment provider, and
+:ref:`configure <payment_providers/add_new>` it.
+
+.. tip::
+   The options displayed at checkout depend on the active payment providers, the enabled
+   :ref:`payment methods <payment_providers/payment_methods>`, the :ref:`customer’s country and
+   currency <payment_providers/currencies_countries>`, and, optionally, the :ref:`maximum amount
+   <payment_providers/maximum_amount>` set for the provider.
+
+   To display an :ref:`availability <payment_providers/availability>` report for payment providers
+   and payment methods and help diagnose potential availability issues on the payment form, enable
+   the :ref:`developer mode <developer-mode>` and click the :icon:`fa-bug` (:guilabel:`bug)` icon.
+
+Terms and conditions
+~~~~~~~~~~~~~~~~~~~~
+
+To require customers to agree to the :doc:`terms and conditions
+<../../finance/accounting/customer_invoices/terms_conditions>` before payment, open the website
+editor and toggle the :guilabel:`Accept Terms` switch in the :guilabel:`Style` tab.
+
+eWallets and gift cards
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Customers can pay with an eWallet or gift card during checkout. To offer these options, go to
+:menuselection:`Website --> Configuration --> Settings` and enable :menuselection:`Discounts,
+Loyalty & Gift Card` in the :guilabel:`eCommerce` section. Then, go to :menuselection:`Website -->
+eCommerce --> Gift cards & eWallet` and :doc:`create a gift card and/or eWallet program
+</applications/sales/sales/products_prices/ewallets_giftcards>`.
+
+.. image:: checkout/payments-ewallets-giftcards.png
+   :alt: Gift card and eWallet options at checkout
+
+.. _ecommerce/checkout/order_confirmation:
+
+Order confirmation
+------------------
+
+The final step of the checkout process is the :guilabel:`Order confirmation`, which provides a
+summary of the customer's purchase details. If the :guilabel:`Automatic Invoice` setting has been
+activated in the **Sales** app's configuration settings, a sales order and invoice will
+automatically be created by Odoo.
+
+.. seealso::
+   :doc:`Order handling documentation <order_handling>`
+
+
+==================================================
+SECTION: cross_upselling.rst
+PATH: applications/websites/ecommerce/products/cross_upselling.rst
+==================================================
+
+===========================
+Cross-selling and upselling
+===========================
+
+:ref:`Cross-selling <ecommerce/cross_selling>` and
+:ref:`upselling <ecommerce/cross_upselling/alternative>` are sales techniques designed to encourage
+customers to purchase additional or higher-priced products and services from your :doc:`catalog`.
+
+.. _ecommerce/cross_selling:
+
+Cross-selling
+=============
+
+Cross-selling can be achieved by suggesting
+:ref:`optional products <ecommerce/cross_upselling/optional>` when items are added to the cart or by
+recommending :ref:`accessory products <ecommerce/cross_upselling/accessory>` on the checkout page.
+
+.. _ecommerce/cross_upselling/optional:
+
+Optional products
+-----------------
+
+**Optional products** are suggested when the customer selects a product and clicks
+:guilabel:`Add to cart`.
+
+To enable **optional products**, go to :menuselection:`Website --> eCommerce --> Products`, select a
+product, go to the :guilabel:`Sales` tab, and enter the products you wish to feature in the
+:guilabel:`Optional Products` field.
+
+.. image:: cross_upselling/add-to-cart.png
+   :alt: Optional products cross-selling
+
+.. _ecommerce/cross_upselling/accessory:
+
+Accessory products
+------------------
+
+**Accessory products** are showcased in the :guilabel:`Suggested Accessories` section during the
+:guilabel:`Review Order` step, just before proceeding to checkout.
+
+To enable **accessory products**, go to :menuselection:`Website --> eCommerce --> Products`, select
+a product, go to the :guilabel:`Sales` tab, and enter the products you wish to feature in the
+:guilabel:`Accessory Products` field.
+
+.. image:: cross_upselling/accessory-products.png
+   :alt: Suggested accessories at checkout during cart review
+
+.. _ecommerce/cross_upselling/alternative:
+
+Upselling
+=========
+
+You can display **alternative products** at the bottom of the product page as an upselling
+technique, encouraging customers to consider a more expensive variant or product than their
+initial choice by presenting appealing alternatives.
+
+.. image:: cross_upselling/cross_upselling-alternative.png
+   :alt: Alternative products on the product page
+
+To enable alternative products, navigate to :menuselection:`Website --> eCommerce --> Products`,
+select the desired product, and go to the :guilabel:`Sales` tab. In the
+:guilabel:`Alternative Products` field, add the products you want to feature.
+
+Click :guilabel:`Go to Website` to view the alternative products displayed at the bottom of the
+product page.
+
+To adjust the settings, click :guilabel:`Edit` and select the related
+:doc:`building block <../../website/web_design/building_blocks>`. In the :guilabel:`Customize`
+tab, scroll to the :guilabel:`Alternative Products` section and modify the settings as needed to
+tailor the display to your preferences.
+
+
+==================================================
+SECTION: customer_accounts.rst
+PATH: applications/websites/ecommerce/customer_accounts.rst
+==================================================
+
+=================
+Customer accounts
+=================
+
+Using customer accounts for an e-commerce enables you to :ref:`manage customers
+<ecommerce/customer_accounts/account-creation>`, control access to the :ref:`shop
+<ecommerce/customer_accounts/shop-access>`, the :ref:`checkout
+<ecommerce/customer_accounts/checkout-access>`, or the :doc:`customer portal
+<../../general/users/user_portals/portal_access>`, and support both :doc:`B2B and B2C operations
+<b2b_b2c>`.
+
+After logging in, customers can access their :doc:`customer portal
+<../../general/users/user_portals>` by clicking their username in the top-right corner of the
+screen and selecting :guilabel:`My Account`. From there, they can view all their documents in one
+place, such as quotations, orders, invoices, and more.
+
+.. image:: customer_accounts/account-log.png
+   :alt: Customer account access
+
+.. tip::
+   The customer account page can be customized with building blocks and other features through
+   the :doc:`website builder <../website/web_design>`.
+
+.. _ecommerce/customer_accounts/account-creation:
+
+Customer account creation
+=========================
+
+You can choose whether customer accounts and document access are available to everyone or restricted
+to invited users only. To do so, go to :menuselection:`Website --> Configuration --> Settings`,
+and navigate to the :guilabel:`General` section. Under :guilabel:`Customer Account`, select one
+of the following options:
+
+- :guilabel:`On invitation`: Customers can only create an account if the website owner sends them
+  an invitation.
+- :guilabel:`Free sign up`: Every website visitor can create an account and sign in. They will
+  get access to the :doc:`portal <../../general/users/user_portals>` by default.
+
+.. _ecommerce/customer_accounts/grant-access:
+
+To send an email invitation to a customer:
+
+- Go to :menuselection:`Website --> eCommerce --> Customers`.
+- Select a customer or click :guilabel:`New` to create one, ensuring an :guilabel:`Email` address
+  is set.
+- Click the :icon:`fa-cog` :guilabel:`(Actions)` icon next to the record's name at the top-left and
+  select :guilabel:`Grant portal access`.
+- In the :guilabel:`Portal Access Management` pop-up, click :guilabel:`Grant Access` to send the
+  invitation.
+
+.. tip::
+   To invite multiple customers at once, switch to the customers :icon:`oi-view-list`
+   :guilabel:`List` view, select several customers, click the :icon:`fa-cog` :guilabel:`Actions`
+   button, and select :guilabel:`Grant portal access`.
+
+Once done, the customer(s) receive an email confirming their account creation, including
+instructions on setting a password and activating their account.
+
+.. note::
+   - When selecting the :guilabel:`Free sign up`, a clickable :guilabel:`Don't have an account?`
+     link appears under the login form on the website.
+   - The :guilabel:`On invitation` option is especially useful for :ref:`B2B
+     <ecommerce/b2b_b2c/prices>` businesses that prefer to keep :ref:`prices hidden
+     <ecommerce/prices/hide-prices>` on the website and grant access only to invited customers.
+
+.. tip::
+   It is possible to configure a website form with a :guilabel:`Create a Customer` :ref:`action
+   <website/building_blocks/action>` to automatically create a customer record in the backend when
+   filled in.
+
+Access restriction
+==================
+
+Once a customer account is created, it is still possible to adjust the access rights
+either globally or for individual users:
+
+- :doc:`Revoke access or re-invite a user <../../general/users/user_portals/portal_access>`
+  using the related buttons in the :guilabel:`Portal Access Management` pop-up.
+- Restrict :ref:`access to the shop <ecommerce/customer_accounts/shop-access>`;
+- Decide whether customers need to create an account to :ref:`complete the checkout
+  <ecommerce/customer_accounts/checkout-access>`.
+
+.. tip::
+   It is also possible to define the types of documents customers have access to. To do so, click
+   your username in the upper-right corner of the website, select :guilabel:`My Account` and open
+   the :doc:`website builder <../website/web_design>`. On the :guilabel:`Style` tab, enable or
+   disable access to specific documents as needed.
+
+.. _ecommerce/customer_accounts/shop-access:
+
+Shop access
+-----------
+
+To restrict access to the entire online shop for users who are not logged-in, go to
+:menuselection:`Website --> Configuration --> Settings`, scroll to the :guilabel:`eCommerce` section
+and under :guilabel:`Ecommerce Access`, select :guilabel:`Logged in users`. Select :guilabel:`All
+users` if the shop should be visible to every website visitor.
+
+.. tip::
+   To restrict access to the shop's pricing, use :ref:`pricelists <ecommerce/prices/pricelists>`
+   with :ref:`country groups <ecommerce/prices/country-groups>`.
+
+.. _ecommerce/customer_accounts/checkout-access:
+
+Checkout access
+---------------
+
+To allow customers to checkout as guests or force them to sign in/create an account, go to
+:menuselection:`Website --> Configuration --> Settings`, scroll down to the :guilabel:`eCommerce`
+section, and configure the :guilabel:`Sign in/up at checkout` setting. The following options are
+available:
+
+- :guilabel:`Optional`: Customers can check out as guests and register later via the order
+  confirmation email to track their order.
+- :guilabel:`Disabled`: Customers can checkout as guests without creating an account.
+- :guilabel:`Mandatory`: Customers must sign in or create an account at the
+  :ref:`Order summary <ecommerce/checkout/review_order>` step to complete their purchase.
+
+.. note::
+   - Settings are specific to each website, allowing you to configure a B2C website with guest
+     checkout and a B2B website that requires customers to sign in.
+   - To use the :ref:`wishlist <ecommerce/products/additional_features/wishlists>` feature,
+     customers must create an account to save their favorite items for later.
+
+.. _ecommerce/customer_accounts/multiple-websites:
+
+Multi-website account
+=====================
+
+When managing multiple websites, it is possible to make customer accounts available across *all*
+websites, allowing each customer to use a single account. To do so, go to :menuselection:`Website
+--> Configuration --> Settings`, in the :guilabel:`General` section, enable the :guilabel:`Shared
+Customer Accounts` option.
+
+.. note::
+   When operating both :ref:`B2B and B2C online shops <ecommerce/b2b_b2c/multiple-websites>`, it is
+   recommended to use separate websites for each business model.
+
+
+==================================================
+SECTION: google_merchant_center.rst
+PATH: applications/websites/ecommerce/google_merchant_center.rst
+==================================================
+
+======================
+Google Merchant Center
+======================
+
+Google Merchant Center is a tool that allows e-commerce retailers to manage and submit product
+data to Google. It serves as a central hub to upload and maintain product details, such as images,
+prices, and descriptions so that products can appear across Google's platforms.
+
+.. note::
+   Google Merchant Center is only available for physical products and does not support services.
+
+.. tip::
+   We recommend using the tool alongside other Google services, such as :doc:`Google Search Console
+   <../website/configuration/google_search_console>`, :ref:`Google Analytics
+   <analytics/google-analytics>` or :ref:`Google Tag Manager <analytics/google-tag-manager>`
+   to obtain detailed reports on product listing issues, improve marketing strategies, increase
+   your products' online visibility, and enhance the overall sales performance.
+
+Google Merchant Center setup
+============================
+
+To connect your e-commerce with the :abbr:`GMC (Google Merchant Center)` platform, proceed as
+follows:
+
+#. Create or sign in to a Google account using the following link:
+   `<https://business.google.com/us/merchant-center>`_.
+#. Indicate that you sell products online, and enter :guilabel:`Your store's website`.
+#. Click :guilabel:`Continue`, then click :guilabel:`Continue to Merchant Center`.
+#. Enter your business details by adding the :guilabel:`Business name` and the
+   :guilabel:`Registered country`, then click the :guilabel:`Continue to Merchant Center` button.
+#. Add the relevant information and click :guilabel:`Continue`, or click :guilabel:`Do it later`
+   to skip this step for now.
+#. Go to the :guilabel:`Business info` tab in the left menu, and click :guilabel:`Confirm online
+   store`.
+#. `Verify your website's ownership <https://support.google.com/merchants/answer/11586344?hl=en&visit_id=638883410905570193-1093311043&p=help_11586344&rd=1>`_
+   in one of the following ways:
+
+   - Via :ref:`HTML tag <website/google_search_console/HTML-tag>` or :ref:`HTML file
+     <GSC-HTML-file-upload>`
+   - Via :ref:`Google Tag Manager <analytics/google-tag-manager>`
+   - Via :ref:`Google Analytics <analytics/google-analytics>`
+
+   .. tip::
+      You can also verify your website's ownership from Google Merchant Center's dashboard by
+      navigating to :menuselection:`Settings --> Business Info` in the left menu.
+
+#. Return to :abbr:`GMC (Google Merchant Center)`, click :guilabel:`Verify your online store`,
+   and :guilabel:`Continue`.
+
+.. seealso::
+   `Google Merchant Center Help <https://support.google.com/merchants/answer/12564959?hl=en>`_
+
+.. _ecommerce/google_merchant_center/linking-odoo-to-gmc:
+
+Linking Odoo to GMC
+===================
+
+.. important::
+   To use the :abbr:`GMC (Google Merchant Center)` integration in your Odoo database, at least
+   one :ref:`pricelist <ecommerce/prices/pricelists>` must be assigned to the website.
+
+#. Navigate to :menuselection:`Website --> Configuration --> Settings`, scroll to the
+   :guilabel:`Tracking & SEO` section, and enable :guilabel:`Google Merchant Center`, and
+   :guilabel:`Save`.
+
+   .. note::
+      By enabling the :guilabel:`Google Merchant Center` option, your website will
+      generate a dynamic `/gmc.xml` feed containing essential product information and availability.
+
+#. Click :guilabel:`Manage feeds`.
+#. In the :guilabel:`Product Feeds` pop-up window, select a :ref:`pricelist
+   <ecommerce/prices/pricelists>`, a :ref:`language <language/add>` and :ref:`categories
+   <ecommerce/categories_variants/categories>`, and :guilabel:`Save`.
+
+   .. note::
+      You must first enable the corresponding :doc:`language </applications/general/users/language>`
+      in the website's settings and/or create a :ref:`pricelist <ecommerce/prices/pricelists>`
+      in the foreign currency with the :ref:`Selectable <ecommerce/prices/selectable-pricelists>`
+      option enabled.
+
+#. Once done, click :guilabel:`Copy URL` on the corresponding feed.
+#. Go to the :abbr:`GMC (Google Merchant Center)` dashboard, navigate to the
+   :menuselection:`Products & store --> Products` tab in the left menu, and click :guilabel:`Add
+   products`.
+#. Choose :guilabel:`Add products from a file` and paste the URL of the copied file.
+
+   .. important::
+      Make sure to select all the countries where you intend to sell your products. You are not
+      able to proceed without selecting at least one target country. If necessary, enter
+      a :guilabel:`feed label` as well.
+
+      .. image:: google_merchant_center/gmc-feed-creation.png
+         :alt: Select countries, purpose and feed label in GMC.
+
+#. Click :guilabel:`Continue`.
+
+.. tip::
+   - Create as many feeds as needed, and on the :abbr:`GMC (Google Merchant Center)` dashboard,
+     create several :guilabel:`Product sources`. To do so, expand the :icon:`fa-caret-down`
+     :guilabel:`Products & store` menu, go to :guilabel:`Products`, click the :icon:`fa-caret-down`
+     :guilabel:`Add products` dropdown menu, and select :guilabel:`Add another product source`.
+   - To manually change the currency of the feed, go to the :guilabel:`Products` tab in :abbr:`GMC
+     (Google Merchant Center)`, click :guilabel:`Manage product sources`, and choose a
+     :guilabel:`Products source`. Navigate to the :guilabel:`Data source setup` tab, click
+     :guilabel:`Show advanced options`, and choose a :guilabel:`Currency`.
+
+.. seealso::
+   `Google Merchant Center Product Feed Specifications <https://support.google.com/merchants/answer/7052112>`_.
+
+
+==================================================
+SECTION: order_handling.rst
+PATH: applications/websites/ecommerce/order_handling.rst
+==================================================
+
+==============
+Order handling
+==============
+
+When a customer orders on your e-commerce, there are **three** record types required to be handle in
+Odoo:
+
+- :ref:`Sales orders <handling/sales>`;
+- :ref:`Delivery orders <handling/delivery>`;
+- :ref:`Invoices & legal requirements <handling/legal>`.
+
+.. _handling/sales:
+
+Sales orders
+============
+
+Order and payment status
+------------------------
+
+The first step when a customer adds a product to his cart is the creation of a quotation. Orders can
+be managed either from the **Website** or :doc:`Sales </applications/sales/sales>` app. E-commerce
+orders can automatically be assigned to a specific sales team by going to :menuselection:`Website
+--> Configuration --> Settings`. In the **Shop - Checkout Process** section, select a
+:guilabel:`Sales Team` or :guilabel:`Salesperson` to handle e-commerce orders.
+
+.. image:: order_handling/handling-salesteam.png
+   :align: center
+   :alt: Assignment of online orders to a sales team or salesperson
+
+Orders can be found under :menuselection:`Website --> eCommerce --> Orders/Unpaid Orders`. Each
+order goes through a different status:
+
+- **Quotation**: a new product is added to the cart, but the customer has *not* gone through the
+  checkout process yet;
+- **Quotation sent**: the customer has gone through the checkout process and confirmed the order,
+  but the payment is not yet confirmed;
+- **Order**: the customer has gone through the checkout process, confirmed the order, and the
+  payment is received.
+
+.. image:: order_handling/handling-status.png
+   :align: center
+   :alt: Statuses of e-commerce orders
+
+Abandoned cart
+--------------
+
+An **abandoned cart** represents an order for which the customer did **not finish** the checkout
+confirmation process. For these orders, it is possible to send an **email reminder** to the
+customer automatically. To enable that feature, go to :menuselection:`Website --> Configuration -->
+Settings` and in the :guilabel:`Email & Marketing` section, enable :guilabel:`Automatically send
+abandoned checkout emails`. Once enabled, you can set the **time-lapse** after which the email is
+sent and customize the **email template** used.
+
+.. note::
+   For abandoned cart emails, the customer must either have entered their contact details during the
+   checkout process; or be logged-in when they added the product to their cart.
+
+.. _handling/delivery:
+
+Delivery orders
+===============
+
+Delivery flow
+-------------
+
+Once a quotation has been confirmed, a delivery order is automatically created. The next step is to
+process this delivery.
+
+Packing e-commerce orders usually requires picking the product, preparing the packaging, printing the
+shipping label(s) and shipping to the customer. Depending on the number of orders, strategy, or
+resources, those steps can be considered as one or multiple actions in Odoo.
+
+An automatic email can be sent to the customer when the transfer status in Odoo is “done”. To do so,
+enable the feature in the settings of the
+:doc:`Inventory </applications/inventory_and_mrp/inventory>` app.
+
+.. note::
+   If customers are allowed to pay when picking up their order in stores or by wire transfer, the
+   quotation is **not** be confirmed and the stock is **not** be reserved. Orders must be confirmed
+   manually to reserve products in stock.
+
+.. seealso::
+   - :doc:`../../inventory_and_mrp/inventory/shipping_receiving/setup_configuration/invoicing`
+   - :doc:`../../inventory_and_mrp/inventory/shipping_receiving/setup_configuration/labels`
+   - :doc:`../../inventory_and_mrp/inventory/shipping_receiving/setup_configuration/multipack`
+
+Returns and refunds
+-------------------
+
+Customers can only return an order through an online form. It may not be possible to return products
+depending on the return strategy or type of product.
+
+Full refunds can be directly sent to customers from within the order interface. A refund-compatible
+payment provider needs to be enabled first.
+
+.. seealso::
+   - :doc:`/applications/sales/sales/products_prices/returns`
+   - :doc:`/applications/services/helpdesk/advanced/after_sales`
+   - :doc:`/applications/finance/payment_providers`
+
+.. _handling/legal:
+
+Invoice and legal requirements
+==============================
+
+The final step of an e-commerce order is to generate the invoice and send it to the customer.
+Depending on your needs, an invoice can either be generated automatically or on demand of the
+customer. This process can be automated if (and when) the online payment is :ref:`confirmed
+<handling/sales>`.
+
+To automate invoicing, go to :menuselection:`Website --> Configuration --> Settings` and in the
+:guilabel:`Invoicing` section, enable :guilabel:`Automatic Invoice`.
+
+
+==================================================
+SECTION: performance.rst
+PATH: applications/websites/ecommerce/performance.rst
+==================================================
+
+======================
+Performance management
+======================
+
+Odoo integrates a variety of tools to analyze and improve the performance of your e-commerce
+website.
+
+Data monitoring
+===============
+
+**Website** allows monitoring and analysis of the sales performance of your e-commerce. To access
+the **reporting view**, go to :menuselection:`Website --> Reporting --> eCommerce`. This dashboard
+helps you monitor everything related to sales, such as sales performance per product, category, day,
+etc.
+
+.. image:: performance/reporting.png
+   :align: center
+   :alt: Performance reporting of e-commerce
+
+By clicking :guilabel:`Measures`, you can select the type of measurement used, such as:
+
+- :guilabel:`Margin`;
+- :guilabel:`Qty Invoiced`;
+- :guilabel:`Untaxed Total`;
+- :guilabel:`Volume`;
+- ...
+
+Other options include **multiple views (Pivot, etc.), comparison** by periods or years, and directly
+:guilabel:`insert in spreadsheet`, etc.
+
+Analytics
+=========
+
+It is possible to link your Odoo website with :ref:`analytics/plausible` and
+:ref:`analytics/google-analytics`.
+
+.. _ecommerce/performance/email_queue:
+
+Email queue optimization
+========================
+
+For websites handling flash sales (e.g., event ticket sales) or experiencing high traffic spikes,
+order confirmation emails can become a performance bottleneck, potentially slowing down the checkout
+process for other customers.
+
+To improve performance, these emails can be queued and processed separately from the order
+confirmation flow. This is managed by the :guilabel:`Sales: Send pending emails` scheduled action,
+which sends queued emails as soon as possible.
+
+To enable asynchronous email sending:
+
+#. Enable the :doc:`developer mode </applications/general/developer_mode>`.
+#. Go to :menuselection:`Settings --> Technical --> System Parameters` and set the
+   :guilabel:`sale.async_emails` system parameter to `True`.
+#. Go to :menuselection:`Settings --> Technical --> Scheduled Actions` and ensure that the
+   :guilabel:`Sales: Send pending emails` scheduled action is enabled.
+
+.. caution::
+   Enabling this feature may delay order confirmation and invoice emails by a few minutes. It is
+   recommended only for high-traffic websites, as it can introduce unnecessary delays for e-commerce
+   websites with moderate traffic.
+
+
+==================================================
+SECTION: prices.rst
+PATH: applications/websites/ecommerce/products/prices.rst
+==================================================
+
+======
+Prices
+======
+
+Odoo offers multiple options to configure prices on the e-commerce. For example, you can apply
+:ref:`prices per unit <ecommerce/prices/price-per-unit>`, offer :ref:`discounts
+<ecommerce/prices/discounts>`, and set up :ref:`pricelists <ecommerce/prices/pricelists>`.
+
+.. _ecommerce/prices/taxes:
+
+Taxes
+=====
+
+To add a tax on a product, you can either set a tax in the :guilabel:`Sales Taxes` field of the
+product form or use :doc:`fiscal positions
+</applications/finance/accounting/taxes/fiscal_positions>`.
+
+.. seealso::
+   - :doc:`/applications/finance/accounting/taxes`
+   - :doc:`/applications/finance/accounting/taxes/avatax`
+
+.. _ecommerce-price-management-tax-display:
+
+Choosing the displayed price tax usually depends on a country's regulations or the type of customers
+(:doc:`B2B vs. B2C <../b2b_b2c>`). To select the type of price displayed, go to
+:menuselection:`Website --> Configuration --> Settings`, select the website, scroll down to the
+:guilabel:`eCommerce` section, and under :guilabel:`Display Product Prices` select between:
+
+- :guilabel:`Tax Excluded`: the price displayed on the website is tax-excluded, and the tax is
+  computed at the :ref:`order summary <ecommerce/checkout/review_order>` step;
+- :guilabel:`Tax Included`: the price displayed on the website is tax-included.
+
+.. note::
+   This setting is website-specific and can therefore be configured independently for every
+   website in the database.
+
+.. tip::
+   - Switch the :ref:`Tax indication <ecommerce/products/product-presentation>` toggle on in the
+     website editor to explicitly indicate if the price is `Tax excluded` or `Tax included` on the
+     product page.
+   - Enable specific :ref:`B2B fields <ecommerce/b2b_b2c/b2b-fields>` in the :ref:`delivery step
+     <ecommerce/checkout/delivery>` during the checkout using the :doc:`website editor
+     </applications/websites/website/web_design>`.
+
+.. _ecommerce/prices/price-per-unit:
+
+Price per unit
+==============
+
+To display a :doc:`price per unit
+</applications/inventory_and_mrp/inventory/product_management/configure/uom>` alongside the sales
+price on the product page, follow these steps:
+
+#. Go to :menuselection:`Website --> Configuration --> Settings`, scroll to the
+   :guilabel:`eCommerce` section, and enable :guilabel:`Product Reference Price`.
+#. :ref:`Navigate to the product form <ecommerce/products/create-products>`.
+#. Set the product's :guilabel:`Sales Price` and select the unit (e.g., :guilabel:`Units`).
+#. In the :guilabel:`Base Unit Count` field, enter the number of units in the product, then
+   select the relevant unit from the dropdown list.
+
+.. example::
+   Imagine you want to sell a 2-liter bucket of paint for $60, i.e., $30 per liter.
+
+   .. image:: prices/prices-per-unit.png
+      :alt: Cost per unit pricing on the product form.
+
+   The price per units, in this case per liter, is shown next to the sales price on the
+   product page.
+
+   .. image:: prices/price-cost-per-unit-page.png
+      :alt: Unit pricing on the product page.
+
+.. note::
+   The price per unit may be mandatory in some countries.
+
+.. seealso::
+   :doc:`/applications/inventory_and_mrp/inventory/product_management/configure/uom`
+
+.. _ecommerce/prices/pricelists:
+
+Pricelists
+==========
+
+Pricelists in Odoo allow to manage flexible pricing rules and to offer different prices and
+discounts based on currencies, time periods, purchase volumes, :ref:`customers' location
+<ecommerce/prices/geoip>`, and/or customer type.
+To enable pricelists for eCommerce, go to :menuselection:`Website --> Configuration --> Settings`,
+scroll down to the :guilabel:`eCommerce` section, enable :guilabel:`Pricelists`, and
+:guilabel:`Save`. Then, click :guilabel:`Pricelists` or go to :menuselection:`Website --> eCommerce
+--> Pricelists` and :ref:`configure <sales/products/pricelist-configuration>` the relevant
+pricelists.
+
+In the :guilabel:`Ecommerce` tab, configure options specific to online sales, such as assigning a
+:guilabel:`Website` to a pricelist, allowing customers to :ref:`select it
+<ecommerce/prices/selectable-pricelists>`, and/or adding an :ref:`E-commerce Promotional Code
+<ecommerce/prices/promotional-code>`.
+
+.. tip::
+   - If you are using several websites and you want to use the same pricelist on several of them,
+     you need to duplicate the pricelist for each website. If you do not assign any
+     website, the pricelist will not be used, unless it is :ref:`selectable
+     <ecommerce/prices/selectable-pricelists>`.
+   - Pricelists can also be :ref:`assigned to a specific customer
+     <sales/products/customer-pricelist-application>`.
+
+.. note::
+   - When pricelists are enabled in the Sales app, they are automatically enabled in the eCommerce
+     app, and vice versa.
+   - In the list of pricelists, order the pricelists by priority: the first takes
+     precedence over the second, the second over the third, and so on.
+   - It is also possible to create specific pricelists for :ref:`variants
+     <products/variants/configure-variants>`.
+
+.. seealso::
+   :doc:`/applications/sales/sales/products_prices/prices/pricing`
+
+.. _ecommerce/prices/selectable-pricelists:
+
+Selectable pricelists
+---------------------
+
+Selectable pricelists are useful, for example, when selling products in :doc:`multiple currencies
+</applications/sales/sales/products_prices/prices/currencies>` and allow customers to
+choose a pricelist using the catalog's pricelist selector located next to the :ref:`search bar
+<ecommerce/catalog/toolbar-and-filters>`.
+
+.. image:: prices/pricelist-selector.png
+   :alt: Pricelist selector on the e-commerce.
+
+To make a pricelist selectable, enable :guilabel:`Selectable`.
+
+.. note::
+   - If a pricelist is designated as :guilabel:`Selectable`, and is not assigned to a specific
+     website, then the pricelist is selectable on **all** websites.
+   - If a pricelist does *not* appear in the selector, it may be due to the following situations:
+
+      - Only one pricelist is defined as :guilabel:`Selectable` and the :ref:`contact has a
+        pricelist assigned <sales/products/customer-pricelist-application>`.
+      - Multiple selectable pricelists exist, but only those matching the customer's :ref:`country
+        group <ecommerce/prices/country-groups>` are shown. It is strongly recommended to disable
+        the :guilabel:`Selectable` option when using pricelists with country groups on the
+        e-commerce.
+
+.. seealso::
+   :ref:`sales/products/currencies/currency-specific-pricelists`
+
+.. _ecommerce/prices/geoip:
+
+GeoIP & country groups
+----------------------
+
+It is possible to display a specific pricelist based on the visitor's location and IP address by
+assigning :ref:`country groups <ecommerce/prices/country-groups>` to pricelists.
+
+.. _ecommerce/prices/country-groups:
+
+To do so, :ref:`navigate to the relevant pricelist form <ecommerce/prices/pricelists>` and select
+the appropriate :guilabel:`Country Groups`. Create or edit as many pricelists for specific regions
+as needed. For instance, select :guilabel:`European Union` to apply the pricelist to all EU member
+states.
+
+To create a new country group, click :guilabel:`Search more` in the dropdown list, then
+:guilabel:`New`. Add a :guilabel:`Group Name` and select the relevant :guilabel:`Countries`.
+Use :ref:`Custom filters <search/custom-filters>` if needed.
+
+.. note::
+   Each country group must contain at least one country.
+
+.. example::
+   Use the following filter if you want to add all non-EU countries to the country group.
+
+   `Country Groups` + `is not equal to` + `European Union`
+
+   .. image:: prices/create-country-group.png
+      :alt: Filter for country group creation.
+
+.. important::
+   - When using GeoIP to determine the appropriate pricelist, **all** pricelists used on the
+     e-commerce must have a country group assigned.
+   - It is strongly recommended to disable the :guilabel:`Selectable` option when using pricelists
+     with country groups. Indeed, all pricelists with the relevant country group are automatically
+     applied to the catalog but if one of them is marked as :ref:`Selectable
+     <ecommerce/prices/selectable-pricelists>`, the others will disappear as soon as customers
+     select the selectable pricelist.
+
+     .. example::
+        Imagine you create three pricelists:
+
+          - `EU regular prices` with the `EU` country group assigned
+          - `EU prices with discounts` with the `EU` country group assigned
+          - `US prices` with the `US` country group assigned
+
+        If the :guilabel:`Selectable` option is enabled for `EU regular prices` and
+        `US prices`, and the customer is from the European Union, only the pricelists
+        `EU regular prices` and `EU prices with discounts` will be available. However, since the
+        `EU prices with discount` list is not selectable, it will disappear once the customer selects
+        the `EU regular prices` list and prices will be displayed based on the `EU regular prices`
+        pricelist on the catalog.
+
+Pricelist application
+---------------------
+
+On the e-commerce, the *default* pricelist is automatically selected for public, non-logged in users
+when no country group is assigned. If :ref:`GeoIP and country groups <ecommerce/prices/geoip>` are
+used, public users see the pricelist of their country group by default. :ref:`Logged-in users
+<ecommerce/customer_accounts/shop-access>` with
+:ref:`assigned pricelists <sales/products/customer-pricelist-application>` see the assigned
+pricelist by default **if it is assigned to the website** they are visiting. If not, the website's
+default pricelist is applied (i.e., the first available pricelist assigned to the website and
+without a country group, following the sequence order).
+
+Assigned pricelists take precedence over country-based pricelists, when applicable, unless the
+assigned pricelist is linked to a different country group.
+
+.. example::
+   A customer from the United States visits the website. They do not have a portal account. The
+   :guilabel:`United States` pricelist is applied.
+
+   A different visitor, also from the United States, has the :guilabel:`Loyal Customer Discount`
+   pricelist assigned in their contact form. This assignment takes precedence over the country
+   group assignation, so the :guilabel:`Loyal Customer Discount` is applied.
+
+   .. image:: prices/pricelists-example.png
+      :alt: An example of various pricelists assigned to a website.
+
+
+.. _ecommerce/prices/discounts:
+
+Discounts
+=========
+
+Discounts programs
+------------------
+
+To enable :doc:`discount programs </applications/sales/sales/products_prices/loyalty_discount>`
+for your e-commerce, go to :menuselection:`Website --> Configuration --> Settings`, scroll
+down to the :guilabel:`eCommerce` section, and enable the :guilabel:`Discounts, Loyalty & Gift
+Card` feature.
+
+:ref:`Configure <sales/products/loyalty-programs>` the discount program, make sure the
+:guilabel:`Website` option is enabled, and add the relevant :ref:`Pricelist
+<ecommerce/prices/pricelists>` and :guilabel:`Website` on the program form, if needed.
+
+.. _ecommerce/prices/permanent-discounts:
+
+Permanent product discount
+--------------------------
+
+If the price of a specific product has been permanently reduced, the strikethrough strategy is
+commonly used. This involves showing the new discounted price, with the original price crossed out
+alongside it.
+
+.. image:: prices/price-strikethrough.png
+   :alt: Price strikethrough.
+
+To display a permanently discounted price, navigate to :menuselection:`Website --> Configuration
+--> Settings`, scroll down to the :guilabel:`eCommerce`, enable the :guilabel:`Comparison
+Price` option, and :guilabel:`Save`. Then, :ref:`go to the product form
+<ecommerce/products/create-products>`, enter the new (discounted) price in the
+:guilabel:`Sales Price` field and the original one (strikethrough) in the
+:guilabel:`Compare to Price` field.
+
+.. note::
+   The :guilabel:`Compare to Price` field must contain a price that is higher than the
+   :guilabel:`Sales Price` for the original price to appear with a strikethrough.
+
+.. important::
+   The :guilabel:`Compare to Price` is not displayed if discounted pricelists apply. If you want to
+   use the :guilabel:`Compare to price` with another discount, configure a pricelist with a
+   :ref:`promotional code <ecommerce/prices/promotional-code>`.
+
+Discounted pricelists
+---------------------
+
+It is also possible to create :ref:`pricelists with discounts <sales/products/price-rules>`.
+To do so, :ref:`create a pricelist <sales/products/pricelist-configuration>` and
+:ref:`configure the discount <sales/products/price-rules>`.
+
+If a :ref:`pricelist <ecommerce/prices/pricelists>` contains a :ref:`Discount
+<sales/products/price-rules>` price type, the price is striked through for applicable customers,
+even if the :ref:`Comparison Price <ecommerce/prices/permanent-discounts>` feature has not been
+enabled.
+
+.. note::
+  If using pricelists with :ref:`country groups <ecommerce/prices/geoip>`, the discounted pricelist
+  must be assigned the same country group as the one used for the non-discounted pricelist.
+
+.. _ecommerce/prices/promotional-code:
+
+E-commerce promotional code
+---------------------------
+
+To offer a discounted pricelist for customers with a specific discount code, access the relevant
+:ref:`pricelist form <ecommerce/prices/pricelists>`, go to the :guilabel:`Ecommerce` tab, and add
+an :guilabel:`E-commerce Promotional Code`, e.g., `SUMMERSALE10%`. Then, go to the :guilabel:`Sales
+Price` tab, click :guilabel:`Add a line`, and :ref:`configure the discount
+<sales/products/price-rules>`. When a customer inserts the code during the :ref:`checkout process
+<ecommerce/checkout/review_order>`, this discount is granted according to the :guilabel:`Sales
+Price` configuration.
+
+.. note::
+   Make sure that the :ref:`Promo Code <ecommerce/checkout/review_order>` option
+   in the website editor is enabled and, if using :ref:`country groups
+   <ecommerce/prices/country-groups>`, that the discounted pricelist has the same country group
+   assigned as the non-discounted pricelist.
+
+.. _ecommerce/prices/hide-prices:
+
+Hide prices
+===========
+
+Some businesses, such as :ref:`B2B shops <ecommerce/b2b_b2c/prices>` or companies that sell luxury
+or custom items, often prefer to showcase their products online without displaying their prices.
+
+To hide product prices on the e-commerce, go to :menuselection:`Website --> Configuration -->
+Settings`, enable :guilabel:`Prevent Sale of Zero Priced Product` in the :guilabel:`eCommerce`
+section, and enter a redirect URL in the :guilabel:`Button URL` field. The
+:guilabel:`Add to Cart` button on the product page is then replaced by a :guilabel:`Contact us`
+button, which can be :ref:`customized <ecommerce/checkout/prevent-sale>` if needed.
+
+After enabling this feature, either set the price to `0` for all desired products or create a
+:ref:`pricelist <ecommerce/prices/pricelists>` with all product prices set to `0`. Ensure the
+pricelist is assigned to the correct website and is listed first among the website's pricelists.
+
+.. tip::
+   - Ensure no pricelist used on the e-commerce has been marked as :guilabel:`Selectable` to prevent
+     accidentally displaying the zero-priced pricelist.
+   - To hide prices from public visitors while keeping them visible to logged-in customers, create a
+     zero-priced pricelist to be used for non-logged-in customers and :ref:`assign
+     <sales/products/customer-pricelist-application>` a regular pricelist (with actual prices) to
+     customers with :doc:`portal access <../../../general/users/user_portals/portal_access>`.
+
+.. seealso::
+   :doc:`../customer_accounts`
+
+
+==================================================
+SECTION: products.rst
+PATH: applications/websites/ecommerce/products.rst
+==================================================
+
+:show-content:
+
+========
+Products
+========
+
+**Odoo eCommerce** allows you to :ref:`add products <ecommerce/products/add-products>` and manage
+your :ref:`product pages <ecommerce/products/product-page>` directly from the Website app. It also
+allows you to add :ref:`digital files <ecommerce/products/digital-files>`, :ref:`translate
+<ecommerce/products/translation>` the product page content, and :ref:`manage the stock
+<ecommerce/products/stock-management>`.
+
+.. _ecommerce/products/add-products:
+
+Add products
+============
+
+.. _ecommerce/products/create-products:
+
+Create products
+---------------
+
+To create a product from the frontend, click :guilabel:`+ New` in the top-right corner, then
+:guilabel:`Product`. Enter the :guilabel:`Product Name`, :guilabel:`Sales Price`, the default
+:guilabel:`Customer Taxes` for local transactions, and :guilabel:`Save`. You can then update the
+product's details, add an image, and :ref:`customize <ecommerce/products/customization>` the product
+page. When you :guilabel:`Save`, the product page is automatically published.
+
+.. tip::
+   - You can also create a product from the backend by going to
+     :menuselection:`Website --> eCommerce --> Products` and clicking :guilabel:`New`.
+   - Products created from the frontend are automatically :ref:`published <website/pages/un-publish-page>`,
+     while products created from the backend are not. To publish a product, click the
+     :guilabel:`Go to Website` smart button to access the product page, then toggle the switch from
+     :guilabel:`Unpublished` to :guilabel:`Published`.
+
+.. seealso::
+   - :doc:`Create new products using the Barcode Lookup database
+     </applications/inventory_and_mrp/barcode/setup/barcodelookup>`.
+   - :doc:`Configure the Gelato connector in Odoo to synchronize the product catalog and automate
+     order fulfilment with Gelato </applications/sales/sales/gelato>`.
+
+.. _ecommerce/products/import-products:
+
+Import products
+---------------
+
+To :ref:`import product data <essentials/export_import_data/import-data>` using XLSX or CSV files,
+go to :menuselection:`Website --> eCommerce --> Products`, click the :icon:`fa-cog`
+(:guilabel:`gear`) icon, then :ref:`Import records <essentials/export_import_data/import-data>`.
+
+.. tip::
+   To publish **large batches** of products, follow these steps:
+
+   #. Go to :menuselection:`Website --> eCommerce --> Products`.
+   #. Remove the :guilabel:`Published` filter and switch to the :guilabel:`List` view.
+   #. Click the :icon:`fa-sliders` (:guilabel:`dropdown toggle`) icon and enable
+      :guilabel:`Is published`.
+   #. Click the :guilabel:`Is Published` column to re-order it by **published** or **unpublished**
+      products.
+   #. Select the products to publish by ticking their box.
+   #. In the :guilabel:`Is Published` column, tick the box for any of the selected products, then
+      :guilabel:`Confirm` to publish them.
+
+.. _ecommerce/products/product-page:
+
+Product page customization
+==========================
+
+.. _ecommerce/products/customization:
+
+Product information
+-------------------
+.. _ecommerce/products/product-form:
+
+To add general information about a product, navigate to :menuselection:`Website -->
+eCommerce --> Products` and select the product. You can configure the product page from the form
+by adding :ref:`variants <ecommerce/categories_variants/product-variants>`, :ref:`digital documents
+<ecommerce/products/digital-files>`, or :ref:`translating <ecommerce/products/translation>` content.
+
+.. _ecommerce/products/description:
+
+You can also add an e-commerce-specific product description to be displayed below
+the product name on the product's page. To do so, go to the :guilabel:`Sales`
+tab, scroll down to the :guilabel:`Ecommerce description` section, and add a description. Use Odoo's
+:doc:`rich-text editor <../../essentials/html_editor>` features to personalize the content.
+
+.. tip::
+   Click the :guilabel:`Go to Website` smart button to return to the frontend product's page.
+
+.. _ecommerce/products/product-presentation:
+
+Product presentation
+--------------------
+
+To customize the product presentation on the website, go to the :guilabel:`Shop` and click on the
+product. Click :guilabel:`Edit` to :ref:`customize <ecommerce/products/customization>` the page,
+:ref:`edit its images <ecommerce/products/image-customization>` or add
+:doc:`building blocks <../../websites/website/web_design/building_blocks>`.
+
+.. tip::
+   - When dragging and dropping a building block on the product page, placing it above or below
+     the top or bottom blue lines makes it visible on all product pages.
+   - You can edit any text on your website by clicking on it while in :guilabel:`Edit` mode.
+
+Use the :guilabel:`Customize` tab to modify the page layout or add features:
+
+- :guilabel:`Terms and Conditions`: Toggle the switch to display a link to your
+  :doc:`terms and conditions <../../finance/accounting/customer_invoices/terms_conditions>` on the
+  product page.
+
+- :guilabel:`Customers`:
+
+   - :guilabel:`Rating`: Allow logged-in portal users to submit product reviews by clicking the
+     stars below the product's name and sharing their experience in the :guilabel:`Customer Reviews`
+     section at the bottom. Reviews are visible from the product page using the :icon:`fa-plus`
+     (:guilabel:`plus`) icon next to the :guilabel:`Customer Reviews` heading or from the product
+     form's chatter. To restrict visibility to internal employees, toggle the :guilabel:`Public`
+     switch next to the review comment.
+   - :guilabel:`Share`: Add social media and email icon buttons allowing customers to share the
+     product through those channels.
+
+- :guilabel:`Quantity`: Toggle the switch to allow customers to select the product quantity
+  they want to purchase.
+
+- :guilabel:`Tax Indication`: Toggle the switch to indicate if the price is
+  :ref:`VAT included or excluded <ecommerce/prices/taxes>`.
+
+- :guilabel:`Variants`: Show all possible product :ref:`variants
+  <ecommerce/categories_variants/product-variants>` vertically as a :guilabel:`Products List`
+  or horizontally as selectable :guilabel:`Options` to compose the variant yourself.
+
+- :guilabel:`Product Tags`: Toggle the switch to display the :guilabel:`Product Template Tags` on
+  the product page and allow customers to filter products using those tags.
+
+- :guilabel:`Cart`:
+
+   - :guilabel:`Buy Now`: Add a :icon:`fa-bolt` :guilabel:`Buy Now` option to take the customer to
+     the checkout page.
+   - :guilabel:`Wishlist`: Add an :icon:`fa-heart-o` :guilabel:`Add to wishlist` option allowing
+     logged-in customers to save products in a :ref:`wishlist
+     <ecommerce/products/additional_features/wishlists>`.
+   - :guilabel:`Compare`: Add a :icon:`fa-exchange` :guilabel:`Compare` option, allowing customers
+     to :ref:`compare products <ecommerce/products/additional_features/product-comparison>`
+     based on their attributes.
+
+- :guilabel:`Specification`: Select :guilabel:`Bottom of Page` to display a detailed list of the
+  attributes and their values available for the product. This option only works for products with
+  :ref:`variants <ecommerce/categories_variants/product-variants>` if the
+  :ref:`Product comparison tool <ecommerce/products/additional_features/product-comparison>` is
+  enabled in the Website :guilabel:`Settings`.
+
+.. note::
+   - :guilabel:`Product Variants` must be enabled by going to :menuselection:`Website -->
+     Configuration --> Settings`, in the :guilabel:`eCommerce` section.
+   - Enabled functions apply to all product pages.
+   - Products with single values for their attributes do not generate variants but are still
+     displayed in the :guilabel:`Product Specifications`.
+
+.. _ecommerce/products/image-customization:
+
+Product images and videos
+-------------------------
+
+To add more media items, such as images and videos, navigate to the
+:ref:`product form <ecommerce/products/product-form>`, then go to the :guilabel:`Sales` tab
+and click :guilabel:`Add Media` under the :guilabel:`Ecommerce Media` section. In the
+:guilabel:`Select a media` pop-up window, go to the :guilabel:`Images` tab, select an image,
+click :guilabel:`Upload an image` or :guilabel:`Add URL`. Or navigate to the :guilabel:`Videos` tab,
+paste a video URL or embed code. Once done, click :guilabel:`Add`.
+
+To customize the images or videos, go to the e-commerce product page, click :guilabel:`Edit`
+and select the relevant media. In the :guilabel:`Customize` tab, use the following features:
+
+- :guilabel:`Images Width`: Changes the width of the product images displayed on the page.
+- :guilabel:`Layout`: The :guilabel:`Carousel` layout allows customers to navigate from one image to
+  the next using the :icon:`fa-angle-left` (:guilabel:`left arrow`) or :icon:`fa-angle-right`
+  (:guilabel:`right arrow`); whereas the :guilabel:`Grid` displays four images in a square layout.
+- :guilabel:`Image Zoom`: Select the zoom effect for product images: :guilabel:`Magnifier on hover`
+  :guilabel:`Pop-up on Click`, :guilabel:`Both`, or :guilabel:`None`.
+- :guilabel:`Thumbnails`: Align thumbnails on the :icon:`fa-long-arrow-left` (:guilabel:`Left`)
+  or at
+  the :icon:`fa-long-arrow-down` (:guilabel:`Bottom`).
+- :guilabel:`Main Image`: Click :guilabel:`Replace` to change the product's main image.
+- :guilabel:`Extra Images`: :guilabel:`Add` more extra images or videos (including via URL) or
+  :guilabel:`Remove all`.
+
+.. _ecommerce/products/digital-files:
+
+Digital files
+=============
+
+You can link digital files like certificates, eBooks, or user manuals to the products. These
+documents are available :ref:`before payment <ecommerce-products-digital-files-before-payment>` on
+the product page or in the customer portal
+:ref:`after checkout <ecommerce-products-digital-files-after-payment>`.
+
+To link a digital file to a product, go to the :ref:`product form <ecommerce/products/product-form>`
+and click the :guilabel:`Documents` smart button. Then, click :guilabel:`Upload` to upload a file
+directly, or for additional options, click :guilabel:`New`, then :guilabel:`Upload your file`.
+
+.. tip::
+   - You can link a URL instead of a digital file. To do so, click :guilabel:`New`, go to the
+     :guilabel:`Type` field, and select :guilabel:`URL`.
+   - To edit an existing file, click the :icon:`fa-ellipsis-v` (:guilabel:`dropdown menu`) in the
+     top-right corner of the document card and click :guilabel:`Edit`.
+
+.. _ecommerce-products-digital-files-before-payment:
+
+Digital files available before payment
+--------------------------------------
+
+To make the file available on the product page (before payment), leave the :guilabel:`Visibility`
+field blank and toggle the :guilabel:`Show on product page` switch.
+
+.. image:: products/digital-files.png
+   :alt: digital file available before payment on the  product page
+
+.. _ecommerce-products-digital-files-after-payment:
+
+Digital files available after payment
+-------------------------------------
+
+To make the file available (after payment), set the :guilabel:`Visibility` field to
+:guilabel:`Confirmed order` and turn off the :guilabel:`Show on product page` switch.
+
+.. _ecommerce/products/translation:
+
+Translation
+===========
+
+If multiple languages are available on your website, you can translate a product's information
+directly on the :ref:`product form <ecommerce/products/product-form>`. Fields that support multiple
+languages are identifiable by their abbreviation language (e.g., EN) next to their field.
+
+The e-commerce-related fields to translate are:
+
+- :guilabel:`Product name`.
+- :guilabel:`Out-of-Stock Message` (under the :guilabel:`Sales` tab).
+- :guilabel:`Sales Description` (under the :guilabel:`Sales` tab).
+
+.. note::
+   - Having untranslated content on a web page may be detrimental to the user experience and
+     :doc:`SEO <../../websites/website/structure/seo>`. You can use the
+     :doc:`Translate <../website/configuration/translate>` feature to translate the page's content.
+   - To check the language(s) of your website, go to :menuselection:`Website --> Configuration -->
+     Settings` and go to the :guilabel:`Website Info` section.
+
+.. _ecommerce/products/website-availability:
+
+Website availability
+--------------------
+
+To set the product's website availability, navigate to the :ref:`product form
+<ecommerce/products/product-form>`, go to the :guilabel:`Sales` tab, and in the
+:guilabel:`eCommerce shop` section, select the :guilabel:`Website` you wish the product to be
+available on. Leave the field blank to make the product available on *all* websites.
+
+.. note::
+   - You can make a product available on either *one* website or *all* websites, but selecting only
+     *some* websites is not possible. To sell the product on multiple specific websites without
+     making it available on all, **duplicate** the product for each website and assign the
+     corresponding website to each duplicate.
+   - Enable the :guilabel:`Is Published` toggle to make sure the product is available for website
+     visitors.
+
+.. _ecommerce/products/stock-management:
+
+Stock management
+================
+
+To enable and configure inventory management options, go to :menuselection:`Website -->
+Configuration --> Settings`, scroll down to the :guilabel:`Shop - Products` section and the
+:guilabel:`Inventory Defaults` sub-section.
+
+.. important::
+   - The **Inventory** app must be installed to see the inventory management options.
+   - To display the stock level on the product page, the :guilabel:`Product Type` field must be set
+     to :guilabel:`Storable` in the :ref:`product form <ecommerce/products/product-form>`.
+
+.. tip::
+   If a unique reference is needed for inventory management, install the :doc:`Manufacturing app
+   </applications/inventory_and_mrp/manufacturing>`, and create :doc:`Kit bills of materials
+   </applications/inventory_and_mrp/manufacturing/advanced_configuration/kit_shipping>`. Each
+   kit links its published "virtual" products to the main reference tracked in Inventory. This
+   ensures that any item sold on the website is converted into the corresponding stocked item in
+   the delivery order.
+
+Inventory
+---------
+
+In the :guilabel:`Inventory Defaults` sub-section, fill in those fields:
+
+- :doc:`Warehouse <../../inventory_and_mrp/inventory/warehouses_storage/inventory_management/warehouses>`.
+- :guilabel:`Out-of-Stock`: Enable :guilabel:`Continue Selling` to allow customers to place orders
+  even when the product is **out of stock**. Leave the box unchecked to **prevent orders**.
+- :guilabel:`Show Available Qty`: Displays the available quantity left under a specified threshold
+  on the product page. The available quantity is calculated based on the :guilabel:`On hand`
+  quantity minus the quantity already reserved for outgoing transfers.
+
+.. toctree::
+   :titlesonly:
+
+   products/catalog
+   products/prices
+   products/cross_upselling
+   products/additional_features
+   products/categories_variants
+
+
+==================================================
+SECTION: shipping.rst
+PATH: applications/websites/ecommerce/shipping.rst
+==================================================
+
+========
+Delivery
+========
+
+Odoo eCommerce allows you to configure various delivery methods, enabling customers to choose
+their preferred option at :doc:`checkout <checkout>`. These methods include :ref:`external providers
+<ecommerce/shipping/external-provider>`, :ref:`custom options <ecommerce/shipping/custom-method>`
+such as flat-rate or free shipping, local carriers via
+:doc:`Sendcloud </applications/inventory_and_mrp/inventory/shipping_receiving/setup_configuration/sendcloud_shipping>`
+or :ref:`Based on Rules <inventory/shipping/rules>`, and
+:ref:`in-store pickup <ecommerce/shipping/instore-pickup>`.
+
+.. _ecommerce/shipping/external-provider:
+
+External provider integration
+=============================
+
+To handle product delivery, you can connect your database to :doc:`third-party shipping carriers
+</applications/inventory_and_mrp/inventory/shipping_receiving/setup_configuration/third_party_shipper>`
+like :doc:`FedEx </applications/inventory_and_mrp/inventory/shipping_receiving/setup_configuration/fedex>`,
+:doc:`UPS </applications/inventory_and_mrp/inventory/shipping_receiving/setup_configuration/ups_credentials>`,
+or :doc:`DHL </applications/inventory_and_mrp/inventory/shipping_receiving/setup_configuration/dhl_credentials>`.
+A shipping connector links to these providers, automating :doc:`tracking labels
+</applications/inventory_and_mrp/inventory/shipping_receiving/setup_configuration/labels>` and shipping
+processes.
+
+To enable a third-party delivery provider, go to :menuselection:`Website --> Configuration -->
+Settings`, scroll to the :guilabel:`Delivery` section, select the desired delivery provider(s),
+and :guilabel:`Save`.
+
+Go to :menuselection:`Website --> Configuration --> Delivery Methods` and select the delivery method
+in the list to :ref:`configure it <inventory/shipping_receiving/configure-delivery-method>`.
+
+.. seealso::
+   - :doc:`Third-party shipping carriers
+     </applications/inventory_and_mrp/inventory/shipping_receiving/setup_configuration/third_party_shipper>`
+   - :doc:`Gelato </applications/sales/sales/gelato>`
+
+.. important::
+   The field used to define additional fees **must** be filled **in your third-party delivery
+   provider account**, even if you do not plan to charge customers any additional fee. If you do not
+   want to apply a fee, enter `0`. If the field is left empty, the delivery price cannot be
+   calculated, and an error message prompts the customer to select an alternative delivery method.
+
+Margin on delivery rate
+-----------------------
+
+To add an additional fee to the base shipping rate (e.g., to cover extra costs), log into your
+carrier account and set the desired fee in the related field. The shipping connector retrieves this
+fee and includes it in the final price at checkout. Contact your carrier for further assistance
+with this configuration.
+
+Alternatively, enter `0` in your third-party shipping provider account, then set the fee in Odoo.
+To do so, access the desired :ref:`shipping method's form
+<inventory/shipping_receiving/configure-delivery-method>` and enter the fee in the :guilabel:`Margin
+on Rate` field to add a percentage to the shipping costs and/or the :guilabel:`Additional margin`
+field to add a fixed amount.
+
+.. important::
+   The field used to define additional fees cannot be left empty in your third-party shipping
+   provider account.
+
+.. _ecommerce/shipping/custom-method:
+
+Custom delivery method
+======================
+
+Custom delivery methods must be created, for example:
+
+- to integrate delivery carriers through :doc:`Sendcloud
+  </applications/inventory_and_mrp/inventory/shipping_receiving/setup_configuration/sendcloud_shipping>`;
+- to configure specific rules (e.g., to offer free shipping for orders above a specific amount) for
+  a specific provider;
+- to configure :ref:`Fixed Price <inventory/shipping/fixed>` shipping, or shipping :ref:`Based on
+  Rules <inventory/shipping/rules>`.
+
+To create a custom delivery method, go to :menuselection:`Website --> Configuration --> Delivery
+Methods`, click :guilabel:`New`, and fill in the :ref:`fields
+<inventory/shipping_receiving/shipping-methods-details>`.
+
+In the :guilabel:`Provider` field, select :ref:`Based on Rules <inventory/shipping/rules>` or
+:ref:`Fixed Price <inventory/shipping/fixed>`.
+
+.. tip::
+   Upon :ref:`configuring <inventory/shipping_receiving/configure-delivery-method>` a delivery
+   method, you can:
+
+   - Restrict it :doc:`to a specific website <../website/configuration/multi_website>` by
+     selecting it in the :guilabel:`Website` field.
+   - Click the :guilabel:`Test Environment` smart button to switch to the
+     :guilabel:`Production Environment`. Then, click :guilabel:`Unpublished` to :guilabel:`Publish`
+     the delivery method and make it available to website visitors.
+   - Use the :guilabel:`Availability` tab to define :ref:`conditions
+     <inventory/shipping_receiving/availability>` for the delivery method based on the order's
+     content or destination.
+
+.. _ecommerce/shipping/instore-pickup:
+
+Click & Collect
+===============
+
+To allow customers to reserve products online and collect them in-store, follow these steps:
+
+#. Go to :menuselection:`Website --> Configuration --> Settings`.
+#. Scroll to the :guilabel:`eCommerce` section, enable :guilabel:`Click & Collect`, and
+   :guilabel:`Save`.
+#. Click :icon:`fa-arrow-right` :guilabel:`Configure Pickup Locations` to :ref:`configure
+   <inventory/shipping_receiving/configure-delivery-method>` the delivery method if needed and
+   ensure the :guilabel:`Provider` field is set to :guilabel:`Pick up in store`.
+#. In the :guilabel:`Stores` tab, click :guilabel:`Add a line` and select the warehouse(s) where
+   customers can collect their orders.
+#. Once your setup is complete, click the :guilabel:`Unpublish` button to change the status to
+   :guilabel:`Publish` and make the delivery method available to customers.
+
+.. note::
+   - When the product is in stock, a location selector is displayed on the :doc:`product
+     <products>` and :doc:`checkout <checkout>` pages. Customers cannot select a pickup location
+     if the product is out of stock at that location, unless the :ref:`Continue selling
+     <ecommerce/products/stock-management>` option for out-of-stock products is enabled.
+   - If the :ref:`Show Available Qty <ecommerce/products/stock-management>` option is enabled for a
+     product, customers can view the stock quantity available for each warehouse in the location
+     selector on the product page.
+   - Each warehouse must have a **complete address** to ensure its location is accurately displayed
+     to customers. Incomplete addresses prevent the warehouse from being shown.
+   - The :guilabel:`Click & Collect` option is not available for services.
+   - By default, the :ref:`Pay on Site <payment_providers/inperson_payments/pay_on_site>` payment
+     method is :ref:`enabled and published <payment_providers/add_new>` when the :guilabel:`Click &
+     Collect` feature is activated.

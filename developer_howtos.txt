@@ -1,0 +1,2028 @@
+
+
+==================================================
+SECTION: howtos.rst
+PATH: developer/howtos.rst
+==================================================
+
+:show-content:
+:hide-page-toc:
+
+=============
+How-to guides
+=============
+
+.. toctree::
+   howtos/scss_tips
+   howtos/javascript_field
+   howtos/javascript_view
+   howtos/javascript_client_action
+   howtos/standalone_owl_application
+   howtos/frontend_owl_components
+   howtos/website_themes
+
+   howtos/company
+   howtos/create_reports
+   howtos/accounting_localization
+   howtos/translations
+   howtos/connect_device
+
+   howtos/upgrade_custom_db
+
+Frontend development
+====================
+
+.. cards::
+
+   .. card:: Write lean easy-to-maintain CSS
+      :target: howtos/scss_tips
+
+      Follow this guide to keep the technical debt of your CSS code under control.
+
+   .. card:: Customize a field
+      :target: howtos/javascript_field
+
+      Learn how to customize field components in the web framework.
+
+   .. card:: Customize a view type
+      :target: howtos/javascript_view
+
+      Learn how to customize view types in the web framework.
+
+   .. card:: Create a client action
+      :target: howtos/javascript_client_action
+
+      Learn how to create client actions in the web framework.
+
+   .. card:: Create a standalone Owl application
+      :target: howtos/standalone_owl_application
+
+      Learn how to create a public-facing Owl application outside of the web client using a
+      controller and the web framework.
+
+   .. card:: Use Owl components on the portal and website
+      :target: howtos/frontend_owl_components
+
+      Learn how to use Owl components on the portal and website.
+
+   .. card:: Website themes
+      :target: howtos/website_themes
+
+      Learn how to customize your website by creating a custom theme.
+
+Server-side development
+=======================
+
+.. cards::
+
+   .. card:: Multi-company guidelines
+      :target: howtos/company
+
+      Learn how to manage multiple companies and deal with the records-related specificities of a
+      multi-company environment.
+
+   .. card:: Create customized reports
+      :target: howtos/create_reports
+
+      Learn how to create customized reports with SQL Views.
+
+   .. card:: Accounting localization
+      :target: howtos/accounting_localization
+
+      Learn how to build a localization module, create bank operation models and dynamic reports.
+
+   .. card:: Translating modules
+      :target: howtos/translations
+
+      Learn how to provide translation abilities to your module.
+
+   .. card:: Connect with a device
+      :target: howtos/connect_device
+
+      Learn how to enable a module to detect and communicate with an IoT device.
+
+Custom development
+==================
+
+.. cards::
+
+   .. card:: Upgrade a customized database
+      :target: howtos/upgrade_custom_db
+
+      Learn how to upgrade a customized database, as well as the code and data of its custom
+      modules.
+
+
+==================================================
+SECTION: company.rst
+PATH: developer/howtos/company.rst
+==================================================
+
+
+.. _reference/howtos/company:
+
+========================
+Multi-company Guidelines
+========================
+
+.. warning::
+
+    This tutorial requires good knowledge of Odoo.
+    Please refer to the :doc:`../tutorials/server_framework_101` tutorial first if needed.
+
+As of version 13.0, a user can be logged in to multiple companies at once. This allows the user to
+access information from multiple companies, but also to create/edit records in a multi-company
+environment.
+
+If not managed correctly, it may be the source of a lot of inconsistent multi-company behaviors.
+For instance, a user logged in to both companies A and B could create a sales order in company A and
+add products belonging to company B to it. It is only when the user logs out from company B that
+access errors will occur for the sales order.
+
+To correctly manage multi-company behaviors, Odoo's ORM provides multiple features:
+
+- :ref:`Company-dependent fields <howto/company/company_dependent>`
+- :ref:`Multi-company consistency <howto/company/check_company>`
+- :ref:`Default company <howto/company/default_company>`
+- :ref:`Views <howto/company/views>`
+- :ref:`Security rules <howto/company/security>`
+
+.. _howto/company/company_dependent:
+
+Company-dependent fields
+------------------------
+
+When a record is available from multiple companies, we must expect that different values will be
+assigned to a given field depending on the company from which the value is set.
+
+For the field of the same record to support several values, it must be defined with the attribute
+`company_dependent` set to `True`.
+
+.. code-block:: python
+
+   from odoo import api, fields, models
+
+   class Record(models.Model):
+       _name = 'record.public'
+
+       info = fields.Text()
+       company_info = fields.Text(company_dependent=True)
+       display_info = fields.Text(string='Infos', compute='_compute_display_info')
+
+       @api.depends_context('company')
+       def _compute_display_info(self):
+           for record in self:
+               record.display_info = record.info + record.company_info
+
+.. note:: The `_compute_display_info` method is decorated with `depends_context('company')`
+          (see :attr:`~odoo.api.depends_context`) to ensure that the computed field is recomputed
+          depending on the current company (`self.env.company`).
+
+When a company-dependent field is read, the current company is used to retrieve its value. In other
+words, if a user is logged in to companies A and B with A as the main company and creates a record for
+company B, the value of company-dependent fields will be that of company A.
+
+To read the values of company-dependent fields set by another company than the current one, we need
+to ensure the company we are using is the correct one.  This can be done with :meth:`~odoo.models.Model.with_company`,
+which updates the current company.
+
+.. code-block:: python
+
+   # Accessed as the main company (self.env.company)
+   val = record.company_dependent_field
+
+   # Accessed as the desired company (company_B)
+   val = record.with_company(company_B).company_dependent_field
+   # record.with_company(company_B).env.company == company_B
+
+.. warning::
+
+    Whenever you are computing/creating/... things that may behave differently
+    in different companies, you should make sure whatever you are doing is done
+    in the right company. It doesn't cost much to always use `with_company` to
+    avoid problems later.
+
+    .. code-block:: python
+
+       @api.onchange('field_name')
+       def _onchange_field_name(self):
+        self = self.with_company(self.company_id)
+        ...
+
+       @api.depends('field_2')
+       def _compute_field_3(self):
+        for record in self:
+          record = record.with_company(record.company_id)
+          ...
+
+.. _howto/company/check_company:
+
+Multi-company consistency
+-------------------------
+
+When a record is made shareable between several companies by the means of a `company_id` field, we
+must take care that it cannot be linked to the record of another company through a relational field.
+For instance, we do not want to have a sales order and its invoice belonging to different companies.
+
+To ensure this multi-company consistency, you must:
+
+* Set the class attribute `_check_company_auto` to `True`.
+* Define relational fields with the attribute `check_company` set to `True` if their model has a
+  `company_id` field.
+
+On each :meth:`~odoo.models.Model.create` and :meth:`~odoo.models.Model.write`, automatic checks
+will be triggered to ensure the multi-company consistency of the record.
+
+.. code-block:: python
+
+   from odoo import fields, models
+
+   class Record(models.Model):
+       _name = 'record.shareable'
+       _check_company_auto = True
+
+       company_id = fields.Many2one('res.company')
+       other_record_id = fields.Many2one('other.record', check_company=True)
+
+.. note:: The field `company_id` must not be defined with `check_company=True`.
+
+.. currentmodule:: odoo.models
+.. automethod:: Model._check_company
+
+.. warning:: The `check_company` feature performs a strict check! It means that if a record has no
+             `company_id` (i.e., the field is not required), it cannot be linked to a record whose
+             `company_id` is set.
+
+.. note::
+
+    When no domain is defined on the field and `check_company` is set to `True`, a default domain is
+    added: `['|', '('company_id', '=', False), ('company_id', '=', company_id)]`
+
+.. _howto/company/default_company:
+
+Default company
+---------------
+
+When the field `company_id` is made required on a model, a good practice is to set a default
+company. It eases the setup flow for the user or even guarantees its validity when the company is
+hidden from view. Indeed, the company is usually hidden if the user does not have access to
+multiple companies (i.e., when the user does not have the group `base.group_multi_company`).
+
+.. code-block:: python
+
+   from odoo import api, fields, models
+
+   class Record(models.Model):
+       _name = 'record.restricted'
+       _check_company_auto = True
+
+       company_id = fields.Many2one(
+           'res.company', required=True, default=lambda self: self.env.company
+       )
+       other_record_id = fields.Many2one('other.record', check_company=True)
+
+
+.. _howto/company/views:
+
+Views
+-----
+
+As stated in :ref:`above <howto/company/default_company>`, the company is usually hidden
+from view if the user does not have access to multiple companies. This is assessed with the group
+`base.group_multi_company`.
+
+.. code-block:: xml
+
+   <record model="ir.ui.view" id="record_form_view">
+       <field name="name">record.restricted.form</field>
+       <field name="model">record.restricted</field>
+       <field name="arch" type="xml">
+           <form>
+               <sheet>
+                   <group>
+                       <group>
+                           <field name="company_id" groups="base.group_multi_company"/>
+                           <field name="other_record_id"/>
+                       </group>
+                   </group>
+               </sheet>
+           </form>
+       </field>
+   </record>
+
+
+.. _howto/company/security:
+
+Security rules
+--------------
+
+When working with records shared across companies or restricted to a single company, we must take
+care that a user does not have access to records belonging to other companies.
+
+This is achieved with security rules based on `company_ids`, which contain the current companies of
+the user (the companies the user checked in the multi-company widget).
+
+.. code-block:: xml
+
+    <!-- Shareable Records -->
+    <record model="ir.rule" id="record_shared_company_rule">
+        <field name="name">Shared Record: multi-company</field>
+        <field name="model_id" ref="model_record_shared"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">
+            ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+.. code-block:: xml
+
+    <!-- Company-restricted Records -->
+    <record model="ir.rule" id="record_restricted_company_rule">
+        <field name="name">Restricted Record: multi-company</field>
+        <field name="model_id" ref="model_record_restricted"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">
+            [('company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+.. todo:: check_company on company_dependent fields.
+
+
+==================================================
+SECTION: connect_device.rst
+PATH: developer/howtos/connect_device.rst
+==================================================
+
+=====================
+Connect with a device
+=====================
+
+IoT Drivers allow any Odoo module to communicate in real-time with any device
+connected to the IoT Box. Communication with the IoT Box goes both ways, so the
+Odoo client can send commands to and receive information from any of the
+supported devices.
+
+To add support for a device, all we need is:
+
+- an `Interface`, to detect connected devices of a specific type
+- a `Driver`, to communicate with an individual device
+
+At each boot, the IoT Box will load all of the Interfaces and Drivers that can
+be located on the connected Odoo instance. Each module can contain an
+`iot_handlers` directory that will be copied to the IoT Box. The structure of
+this directory is the following
+
+.. code-block:: text
+
+    your_module
+    ├── ...
+    └── iot_handlers
+        ├── drivers
+        │   ├── DriverName.py
+        │   └── ...
+        │
+        └── interfaces
+            ├── InterfaceName.py
+            └── ...
+
+Detect Devices
+==============
+
+Devices connected to the IoT Box are detected through `Interfaces`. There is an
+Interface for each supported connection type (USB, Bluetooth, Video,
+Printers, Serial, etc.). The interface maintains a list of detected devices
+and associates them with the right Driver.
+
+Supported devices will appear both on the IoT Box Homepage that you can access
+through its IP address and in the IoT module of the connected Odoo instance.
+
+Interface
+---------
+
+The role of the Interface is to maintain a list of devices connected through a
+determined connection type. Creating a new interface requires
+
+- Extending the `Interface` class
+- Setting the `connection_type` class attribute
+- Implementing the `get_devices` method, that should return a dictionary
+  containing data about each detected device. This data will be given as
+  argument to the constructors and `supported` method of the Drivers.
+
+.. note::
+    Setting the `_loop_delay` attribute will modify the interval between calls
+    to `get_devices`. By default, this interval is set to 3 seconds.
+
+.. code-block:: python
+
+    from odoo.addons.hw_drivers.interface import Interface
+
+    class InterfaceName(Interface):
+        connection_type = 'ConnectionType'
+
+        def get_devices(self):
+            return {
+                'device_identifier_1': {...},
+                ...
+            }
+
+Driver
+------
+
+Once the interface has retrieved the list of detected devices, it will loop
+through all of the Drivers that have the same `connection_type` attribute and
+test their respective `supported` method on all detected devices. If the
+supported method of a Driver returns `True`, an instance of this Driver will be
+created for the corresponding device.
+
+.. note::
+    `supported` methods of drivers are given a priority order. The `supported`
+    method of a child class will always be tested before the one of its parent.
+    This priority can be adjusted by modifying the `priority` attribute of the
+    Driver.
+
+Creating a new Driver requires:
+
+- Extending `Driver`
+- Setting the `connection_type` class attribute.
+- Setting the `device_type`, `device_connection` and `device_name` attributes.
+- Defining the `supported` method
+
+.. code-block:: python
+
+    from odoo.addons.hw_drivers.driver import Driver
+
+    class DriverName(Driver):
+        connection_type = 'ConnectionType'
+
+        def __init__(self, identifier, device):
+            super(NewDriver, self).__init__(identifier, device)
+            self.device_type = 'DeviceType'
+            self.device_connection = 'DeviceConnection'
+            self.device_name = 'DeviceName'
+
+        @classmethod
+        def supported(cls, device):
+            ...
+
+Communicate With Devices
+========================
+
+Once your new device is detected and appears in the IoT module, the next step
+is to communicate with it. Since the box only has a local IP address, it can
+only be reached from the same local network. Communication, therefore, needs to
+happen on the browser-side, in JavaScript.
+
+The process depends on the direction of the communication:
+- From the browser to the box, through `Actions`_
+- From the box to the browser, through `Longpolling`_
+
+Both channels are accessed from the same JS object, the `DeviceProxy`, which is
+instantiated using the IP of the IoT Box and the device identifier.
+
+.. code-block:: javascript
+
+    var DeviceProxy = require('iot.DeviceProxy');
+
+    var iot_device = new DeviceProxy({
+        iot_ip: iot_ip,
+        identifier: device_identifier
+    });
+
+Actions
+-------
+
+Actions are used to tell a selected device to execute a specific action,
+such as taking a picture, printing a receipt, etc.
+
+.. note::
+    It must be noted that no “answer” will be sent by the box on this route,
+    only the request status. The answer to the action, if any, has to be
+    retrieved via the longpolling.
+
+An action can be performed on the DeviceProxy Object.
+
+.. code-block:: javascript
+
+    iot_device.action(data);
+
+In your driver, define an `action` method that will be executed when called
+from an Odoo module. It takes the data given during the call as argument.
+
+.. code-block:: python
+
+    def action(self, data):
+        ...
+
+Longpolling
+-----------
+
+When any module in Odoo wants to read data from a specific device, it creates a
+listener identified by the IP/domain of the box and the device identifier and
+passes it a callback function to be called every time the device status
+changes. The callback is called with the new data as argument.
+
+.. code-block:: javascript
+
+    iot_device.add_listener(this._onValueChange.bind(this));
+
+    _onValueChange: function (result) {
+        ...
+    }
+
+In the Driver, an event is released by calling the `device_changed` function
+from the `event_manager`. All callbacks set on the listener will then be called
+with `self.data` as argument.
+
+.. code-block:: python
+
+    from odoo.addons.hw_drivers.event_manager import event_manager
+
+    class DriverName(Driver):
+        connection_type = 'ConnectionType'
+
+        def methodName(self):
+            self.data = {
+                'value': 0.5,
+                ...
+            }
+            event_manager.device_changed(self)
+
+
+==================================================
+SECTION: create_reports.rst
+PATH: developer/howtos/create_reports.rst
+==================================================
+
+=========================
+Create customized reports
+=========================
+
+SQL views are a technique for creating customized reports to show data that cannot be
+shown with existing models' fields and views. In other words, this technique helps avoid
+unnecessary creation and calculation of additional fields solely for data analysis
+purposes.
+
+Create a model
+==============
+
+A SQL view is created in a similar manner as a standard model:
+
+.. code-block:: python
+
+  from odoo import fields, models
+
+
+  class ModuleReport(models.Model):
+      _name = 'module.report'
+      _description = "Module Report"
+      _rec_name = 'module_field'
+      _auto = False
+
+Where the attributes:
+
+- `_auto = False` indicates that we do not want to store the model in the database
+- `_rec_name` indicates which of the model's fields represents a record's name (i.e. the
+  name that will be used in the navigation breadcrumb when opening a record's form view)
+
+and its fields are defined in the same way as a standard model, except every field is
+marked as `readonly=True`.
+
+.. note::
+   Don't forget to add your new model to your security file.
+
+Populate the model
+==================
+
+There are 2 ways to populate a SQL view's table:
+
+- override the `BaseModel.init()` method,
+- set the `_table_query` property.
+
+Regardless of which way is used, a SQL query will be executed to populate the model.
+Therefore, any SQL commands can be used to collect and/or calculate the data needed
+and you are expected to keep in mind that you are bypassing the ORM (i.e. it is a
+good idea to read through :ref:`reference/security` if you haven't already). The columns
+returned from the `SELECT` will populate the model's fields, so ensure that your column
+names match your field names, or use alias names that match.
+
+.. tabs::
+
+   .. tab:: Overriding `BaseModel.init()`
+
+      In most cases, overriding the `BaseModel.init()` method is the standard and better option to
+      use. It requires the import of `tools` and is typically written as follows:
+
+      .. code-block:: python
+
+         def init(self):
+             tools.drop_view_if_exists(self.env.cr, self._table)
+             self.env.cr.execute("""CREATE or REPLACE VIEW %s as (
+                                    SELECT
+                                       %s
+                                    FROM
+                                       %s
+                 )""" % (self._table, self._select(), self._from()))
+
+      `tools.drop_view_if_exists` ensures that a conflicting view is not created when the
+      SQL query is executed. It is standard to separate the different parts of the query to
+      allow for easier model extension. Exactly how the query is split up across methods is not
+      standardized, but at minimum, the `_select` and `_from` methods are common, and of course,
+      all these methods will return strings.
+
+      .. seealso::
+         `Example: a SQL view using an override of BaseModel.init()
+         <{GITHUB_PATH}/addons/project/report/project_report.py>`_
+
+   .. tab:: Using `_table_query`
+
+      The ``_table_query`` property is used when the view depends on the context. It is typically
+      written as follows:
+
+      .. code-block:: python
+
+          @property
+          def _table_query(self):
+              return 'SELECT %s FROM %s' % (self._select(), self._from())
+
+      and follows the same `_select` and `_from` methods standards as `BaseModel.init()`.
+
+      An example of when the property should be used instead of overriding `BaseModel.init()`
+      is in a multi-company and multi-currency environment where currency related amounts need
+      to be converted using currency exchange rates when the user switches between companies.
+
+      .. seealso::
+         `Example: a SQL view using _table_query
+         <{GITHUB_PATH}/addons/account/report/account_invoice_report.py>`_
+
+Use the model
+=============
+
+Views and menu items for your SQL views are created and used in the same way as any
+other Odoo model. You are all set to start using your SQL view. Have fun!
+
+Extra tips
+==========
+
+.. tip::
+   A common mistake in SQL views is not considering the duplication of certain data
+   due to table JOINs. This can lead to miscounting when using a field's `aggregator`
+   and/or the pivot view. It is best to test your SQL view with sufficient data to ensure the
+   resulting field values are as you expect.
+
+.. tip::
+   If you have a field that you do not want as a measure (i.e., in your pivot or graph views), add
+   `store=False` to it, and it will not show.
+
+
+==================================================
+SECTION: frontend_owl_components.rst
+PATH: developer/howtos/frontend_owl_components.rst
+==================================================
+
+============================================
+Use Owl components on the portal and website
+============================================
+
+In this article, you will learn how you can leverage Owl components on the portal
+and website.
+
+Overview
+========
+
+To use Owl components on the website or portal, you will need to do a few things:
+
+- Create your Owl component and register it in the `public_components` registry
+- Add that component to the `web.assets_frontend` bundle
+- Add an `<owl-component>` tag to a website or portal page to use the component
+
+1. Creating the Owl component
+=============================
+
+To keep things simple, let's start with a very straightforward component that just renders
+"Hello, World!". This will let us know at a glance if our setup is working.
+
+First, create the template in :file:`/your_module/static/src/portal_component/your_component.xml`.
+
+.. code-block:: xml
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <templates xml:space="preserve">
+        <t t-name="your_module.YourComponent">
+            Hello, World!
+        </t>
+    </templates>
+
+Then create the JavaScript file for that component in :file:`/your_module/static/src/portal_component/your_component.js`,
+and add it to the `public_components` registry:
+
+.. code-block:: js
+
+    import { Component } from "@odoo/owl";
+    import { registry } from "@web/core/registry"
+
+    export class YourComponent extends Component {
+        static template = "your_module.YourComponent";
+        static props = {};
+    }
+
+    registry.category("public_components").add("your_module.YourComponent", YourComponent);
+
+
+.. seealso::
+   :ref:`Owl components reference<frontend/components>`.
+
+
+2. Adding your component to the `web.assets_frontend` bundle
+============================================================
+
+The `web.assets_frontend` bundle is the assets bundle that is used by the portal and
+website, you'll want to add your component's code to that bundle so that the public
+components service can find your component and mount it. In your module's manifest,
+in the assets section, add an entry for `web.assets_frontend` and add your component's
+files:
+
+.. code-block:: py
+
+    {
+        # ...
+        'assets': {
+            'web.assets_frontend': [
+                'your_module/static/src/portal_component/**/*',
+            ],
+        }
+    }
+
+.. seealso::
+    :ref:`Module manifest reference<reference/module/manifest>`.
+
+3. Adding an `<owl-component>` tag to a page
+============================================
+
+Now we need add an `<owl-component>` tag that will serve as the target for the component
+to be mounted. For the sake of this example, we'll add it directly to the portal's
+home page with an xpath in :file:`/your_module/views/templates.xml`.
+
+.. code-block:: xml
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <template id="your_module.portal_my_home" inherit_id="portal.portal_my_home">
+            <xpath expr="//*[hasclass('o_portal_my_home')]" position="before">
+                <owl-component name="your_module.YourComponent" />
+            </xpath>
+        </template>
+    </odoo>
+
+Don't forget to add this file to the data section of your assets bundle:
+
+.. code-block:: py
+
+    {
+        # ...
+        'data': [
+            'views/templates.xml',
+        ]
+    }
+
+And that's it! If you open the home page of the portal you should see the message
+"Hello, World!" at the top of the page.
+
+Points of caution
+=================
+
+Owl components are rendered entirely in JavaScript by the browser. This can cause
+some issues:
+
+- Layout shift
+- Poorer indexing by search engines
+
+For these reasons, you should only use Owl components on the portal and website for
+specific use cases described below.
+
+Layout shift
+------------
+
+When a page initially renders content, and that content subsequently moves ("shifts")
+within the page, this is referred to as a layout shift. When using Owl components in
+the portal or website, all of the HTML that surrounds the Owl component is rendered
+by the server and is the first thing that will be displayed to the user. When JavaScript
+starts running, Owl will mount your component, which will likely cause the surrounding
+elements to move around on the page. This can cause poor user experience: the user sees
+an element on the page that was initially rendered and with which they want to interact,
+so they move their cursor or finger above that element. Just as they're about to click,
+the Owl component is mounted, and the element they want to interact with is moved.
+They click and interact with the Owl app instead.
+
+This can be a frustrating experience, so you should be careful when designing your
+page that the Owl component will not move elements around. This can be achieved in
+various ways, e.g. by positioning it below all other existing elements, not having
+other interactive elements around, or reserving a fixed space for the Owl component
+using CSS.
+
+
+.. seealso::
+  `Cumulative Layout Shift on web.dev <https://web.dev/articles/cls>`_
+
+
+Poorer indexing by search engines
+---------------------------------
+
+When search engines build their index of the content of the web, they use web crawlers
+to find pages and analyze their content to show these pages in their
+search results. While modern search engines are generally capable of executing JavaScript
+code and should generally be able to view and index content rendered in JavaScript,
+they may not index the content as fast and penalize the page in search results.
+
+Because most search engines do not reveal the exact way that they crawl and index
+web pages, it's not always easy to know the extent of the impact that client-side rendering
+can have on your search engine scores. While it's unlikely to make or break your SEO
+strategy, you should still only use Owl components when they are adding real value
+over server-side rendering.
+
+When to use Owl components on the portal and website
+====================================================
+
+As explained in the previous sections, using Owl component can slightly degrade user
+experience if you're not careful and may also hinder your SEO. So when should you
+choose to use Owl components in these places? Here are some general guidelines.
+
+When you don't care about SEO
+-----------------------------
+
+If a page cannot be indexed by search engines because it's not available to the public,
+e.g. anything in the user portal, SEO performance is not a concern, as web crawlers
+cannot access these pages anyway. There are also some things that you do not want or
+care about indexing, e.g. if you want to have a page where the user can choose a date
+and time for an appointment, you probably don't want search engines to index the dates
+on which an appointment is possible at a specific moment in time.
+
+When you need strong interactivity
+----------------------------------
+
+The decision to use Owl is a trade-off between the previously mentioned disadvantages
+and the effort that Owl saves you by making it easy to build richly interactive user
+experiences. The main reason to use Owl is when you want to build an interface that
+can react in real time to user inputs without requiring the page to reload. If you
+mainly want to show static content to the user, you probably shouldn't use an Owl
+component.
+
+
+==================================================
+SECTION: javascript_client_action.rst
+PATH: developer/howtos/javascript_client_action.rst
+==================================================
+
+
+.. _howtos/javascript_client_action:
+
+======================
+Create a client action
+======================
+
+A client action triggers an action that is entirely implemented in the client side.
+One of the benefits of using a client action is the ability to create highly customized interfaces
+with ease. A client action is typically defined by an OWL component; we can also use the web
+framework and use services, core components, hooks,...
+
+#. Create the :ref:`client action <reference/actions/client>`, don't forget to
+   make it accessible.
+
+   .. code-block:: xml
+
+      <record model="ir.actions.client" id="my_client_action">
+          <field name="name">My Client Action</field>
+          <field name="tag">my_module.MyClientAction</field>
+      </record>
+
+#. Create a component that represents the client action.
+
+   .. code-block:: js
+      :caption: :file:`my_client_action.js`
+
+      import { registry } from "@web/core/registry";
+
+      import { Component } from  "@odoo/owl";
+
+      class MyClientAction extends Component {
+          static template = "my_module.clientaction";
+      }
+
+      // remember the tag name we put in the first step
+      registry.category("actions").add("my_module.MyClientAction", MyClientAction);
+
+   .. code-block:: xml
+      :caption: :file:`my_client_action.xml`
+
+      <?xml version="1.0" encoding="UTF-8" ?>
+      <templates xml:space="preserve">
+          <t t-name="awesome_tshirt.clientaction">
+              Hello world
+          </t>
+      </templates>
+
+
+==================================================
+SECTION: javascript_field.rst
+PATH: developer/howtos/javascript_field.rst
+==================================================
+
+
+=================
+Customize a field
+=================
+
+Subclass an existing field component
+====================================
+
+Let's take an example where we want to extends the `BooleanField` to create a boolean field
+displaying "Late!" in red whenever the checkbox is checked.
+
+#. Create a new widget component extending the desired field component.
+
+   .. code-block:: javascript
+      :caption: :file:`late_order_boolean_field.js`
+
+      import { registry } from "@web/core/registry";
+      import { BooleanField } from "@web/views/fields/boolean/boolean_field";
+      import { Component, xml } from "@odoo/owl";
+
+      class LateOrderBooleanField extends BooleanField {
+         static template = "my_module.LateOrderBooleanField";
+      }
+
+#. Create the field template.
+
+   The component uses a new template with the name `my_module.LateOrderBooleanField`. Create it by
+   inheriting the current template of the `BooleanField`.
+
+   .. code-block:: xml
+      :caption: :file:`late_order_boolean_field.xml`
+
+      <?xml version="1.0" encoding="UTF-8" ?>
+      <templates xml:space="preserve">
+          <t t-name="my_module.LateOrderBooleanField" t-inherit="web.BooleanField">
+              <xpath expr="//CheckBox" position="after">
+                    <span t-if="props.value" class="text-danger"> Late! </span>
+              </xpath>
+          </t>
+      </templates>
+
+#. Register the component to the fields registry.
+
+   .. code-block::
+      :caption: :file:`late_order_boolean_field.js`
+
+      registry.category("fields").add("late_boolean", LateOrderBooleanField);
+
+#. Add the widget in the view arch as an attribute of the field.
+
+   .. code-block:: xml
+
+      <field name="somefield" widget="late_boolean"/>
+
+Create a new field component
+============================
+
+Assume that we want to create a field that displays a simple text in red.
+
+#. Create a new Owl component representing our new field
+
+   .. code-block:: js
+      :caption: :file:`my_text_field.js`
+
+      import { standardFieldProps } from "@web/views/fields/standard_field_props";
+      import { Component, xml } from "@odoo/owl";
+      import { registry } from "@web/core/registry";
+
+      export class MyTextField extends Component {
+         static template = xml`
+            <input t-att-id="props.id" class="text-danger" t-att-value="props.value" onChange.bind="onChange" />
+         `;
+         static props = { ...standardFieldProps };
+         static supportedTypes = ["char"];
+
+         /**
+         * @param {boolean} newValue
+         */
+         onChange(newValue) {
+            this.props.update(newValue);
+         }
+      }
+
+   The imported `standardFieldProps` contains the standard props passed by the `View` such as
+   the `update` function to update the value, the `type` of the field in the model, the
+   `readonly` boolean, and others.
+
+#. In the same file, register the component to the fields registry.
+
+   .. code-block:: js
+      :caption: :file:`my_text_field.js`
+
+      registry.category("fields").add("my_text_field", MyTextField);
+
+   This maps the widget name in the arch to its actual component.
+
+#. Add the widget in the view arch as an attribute of the field.
+
+   .. code-block:: xml
+
+      <field name="somefield" widget="my_text_field"/>
+
+
+==================================================
+SECTION: javascript_view.rst
+PATH: developer/howtos/javascript_view.rst
+==================================================
+
+=====================
+Customize a view type
+=====================
+
+Subclass an existing view
+=========================
+
+Assume we need to create a custom version of a generic view. For example, a kanban view with some
+extra ribbon-like widget on top (to display some specific custom information). In that case, this
+can be done in a few steps:
+
+#. Extend the kanban controller/renderer/model and register it in the view registry.
+
+   .. code-block:: js
+      :caption: :file:`custom_kanban_controller.js`
+
+      import { KanbanController } from "@web/views/kanban/kanban_controller";
+      import { kanbanView } from "@web/views/kanban/kanban_view";
+      import { registry } from "@web/core/registry";
+
+      // the controller usually contains the Layout and the renderer.
+      class CustomKanbanController extends KanbanController {
+          static template = "my_module.CustomKanbanView";
+
+          // Your logic here, override or insert new methods...
+          // if you override setup(), don't forget to call super.setup()
+      }
+
+      export const customKanbanView = {
+          ...kanbanView, // contains the default Renderer/Controller/Model
+          Controller: CustomKanbanController,
+      };
+
+      // Register it to the views registry
+      registry.category("views").add("custom_kanban", customKanbanView);
+
+   In our custom kanban, we defined a new template. We can either inherit the kanban controller
+   template and add our template pieces or we can define a completely new template.
+
+   .. code-block:: xml
+      :caption: :file:`custom_kanban_controller.xml`
+
+      <?xml version="1.0" encoding="UTF-8" ?>
+      <templates>
+          <t t-name="my_module.CustomKanbanView" t-inherit="web.KanbanView">
+              <xpath expr="//Layout" position="before">
+                  <div>
+                      Hello world !
+                  </div>
+              </xpath>
+          </t>
+      </templates>
+
+#. Use the view with the `js_class` attribute in arch.
+
+   .. code-block:: xml
+
+      <kanban js_class="custom_kanban">
+          <templates>
+              <t t-name="kanban-card">
+                  <!--Your comment-->
+              </t>
+          </templates>
+      </kanban>
+
+The possibilities for extending views are endless. While we have only extended the controller
+here, you can also extend the renderer to add new buttons, modify how records are presented, or
+customize the dropdown, as well as extend other components such as the model and `buttonTemplate`.
+
+Create a new view from scratch
+==============================
+
+Creating a new view is an advanced topic. This guide highlight only the essential steps.
+
+#. Create the controller.
+
+    The primary role of a controller is to facilitate the coordination between various components
+    of a view, such as the Renderer, Model, and Layout.
+
+   .. code-block:: js
+      :caption: :file:`beautiful_controller.js`
+
+      import { Layout } from "@web/search/layout";
+      import { useService } from "@web/core/utils/hooks";
+      import { Component, onWillStart, useState} from "@odoo/owl";
+
+      export class BeautifulController extends Component {
+          static template = "my_module.View";
+          static components = { Layout };
+
+          setup() {
+              this.orm = useService("orm");
+
+              // The controller create the model and make it reactive so whenever this.model is
+              // accessed and edited then it'll cause a rerendering
+              this.model = useState(
+                  new this.props.Model(
+                      this.orm,
+                      this.props.resModel,
+                      this.props.fields,
+                      this.props.archInfo,
+                      this.props.domain
+                  )
+              );
+
+              onWillStart(async () => {
+                  await this.model.load();
+              });
+          }
+      }
+
+   The template of the Controller displays the control panel with Layout and also the
+   renderer.
+
+   .. code-block:: xml
+      :caption: :file:`beautiful_controller.xml`
+
+      <?xml version="1.0" encoding="UTF-8"?>
+      <templates xml:space="preserve">
+          <t t-name="my_module.View">
+              <Layout display="props.display" className="'h-100 overflow-auto'">
+                  <t t-component="props.Renderer" records="model.records" propsYouWant="'Hello world'"/>
+              </Layout>
+          </t>
+      </templates>
+
+#. Create the renderer.
+
+    The primary function of a renderer is to generate a visual representation of data by rendering
+    the view that includes records.
+
+   .. code-block:: js
+      :caption: :file:`beautiful_renderer.js`
+
+      import { Component } from "@odoo/owl";
+      export class BeautifulRenderer extends Component {
+          static template = "my_module.Renderer";
+      }
+
+   .. code-block:: xml
+      :caption: :file:`beautiful_renderer.xml`
+
+      <?xml version="1.0" encoding="UTF-8"?>
+      <templates xml:space="preserve">
+          <t t-name="my_module.Renderer">
+              <t t-esc="props.propsYouWant"/>
+              <t t-foreach="props.records" t-as="record" t-key="record.id">
+                  // Show records
+              </t>
+          </t>
+      </templates>
+
+#. Create the model.
+
+   The role of the model is to retrieve and manage all the necessary data in the view.
+
+   .. code-block:: js
+      :caption: :file:`beautiful_model.js`
+
+      import { KeepLast } from "@web/core/utils/concurrency";
+
+      export class BeautifulModel {
+          constructor(orm, resModel, fields, archInfo, domain) {
+              this.orm = orm;
+              this.resModel = resModel;
+              // We can access arch information parsed by the beautiful arch parser
+              const { fieldFromTheArch } = archInfo;
+              this.fieldFromTheArch = fieldFromTheArch;
+              this.fields = fields;
+              this.domain = domain;
+              this.keepLast = new KeepLast();
+          }
+
+          async load() {
+              // The keeplast protect against concurrency call
+              const { length, records } = await this.keepLast.add(
+                  this.orm.webSearchRead(this.resModel, this.domain, [this.fieldsFromTheArch], {})
+              );
+              this.records = records;
+              this.recordsLength = length;
+          }
+      }
+
+   .. note::
+
+      For advanced cases, instead of creating a model from scratch, it is also possible to use
+      `RelationalModel`, which is used by other views.
+
+#. Create the arch parser.
+
+   The role of the arch parser is to parse the arch view so the view has access to the information.
+
+   .. code-block:: js
+      :caption: :file:`beautiful_arch_parser.js`
+
+      import { XMLParser } from "@web/core/utils/xml";
+
+      export class BeautifulArchParser extends XMLParser {
+          parse(arch) {
+              const xmlDoc = this.parseXML(arch);
+              const fieldFromTheArch = xmlDoc.getAttribute("fieldFromTheArch");
+              return {
+                  fieldFromTheArch,
+              };
+          }
+      }
+
+#. Create the view and combine all the pieces together, then register the view in the views
+   registry.
+
+   .. code-block:: js
+      :caption: :file:`beautiful_view.js`
+
+      import { registry } from "@web/core/registry";
+      import { BeautifulController } from "./beautiful_controller";
+      import { BeautifulArchParser } from "./beautiful_arch_parser";
+      import { BeautifylModel } from "./beautiful_model";
+      import { BeautifulRenderer } from "./beautiful_renderer";
+
+      export const beautifulView = {
+          type: "beautiful",
+          display_name: "Beautiful",
+          icon: "fa fa-picture-o", // the icon that will be displayed in the Layout panel
+          multiRecord: true,
+          Controller: BeautifulController,
+          ArchParser: BeautifulArchParser,
+          Model: BeautifulModel,
+          Renderer: BeautifulRenderer,
+
+          props(genericProps, view) {
+              const { ArchParser } = view;
+              const { arch } = genericProps;
+              const archInfo = new ArchParser().parse(arch);
+
+              return {
+                  ...genericProps,
+                  Model: view.Model,
+                  Renderer: view.Renderer,
+                  archInfo,
+              };
+          },
+      };
+
+      registry.category("views").add("beautifulView", beautifulView);
+
+#. Declare the :ref:`view <reference/view_records/structure>` in the arch.
+
+   .. code-block:: xml
+
+      ...
+      <record id="my_beautiful_view" model="ir.ui.view">
+        <field name="name">my_view</field>
+        <field name="model">my_model</field>
+        <field name="arch" type="xml">
+            <beautiful fieldFromTheArch="res.partner"/>
+        </field>
+      </record>
+      ...
+
+
+==================================================
+SECTION: scss_tips.rst
+PATH: developer/howtos/scss_tips.rst
+==================================================
+
+===============================
+Write lean easy-to-maintain CSS
+===============================
+
+There are many ways to lean and simplify SCSS. The first step is to establish if custom code is
+needed at all.
+
+Odoo's webclient has been designed to be modular, meaning that (potentially all) classes can be
+shared across views. Check the code before creating a new class. Chances are that there is already a
+class or an HTML tag doing exactly what you're looking for.
+
+On top of that, Odoo relies on `Bootstrap
+<https://getbootstrap.com/docs/5.1/getting-started/introduction/>`_ (BS), one of the most complete
+CSS frameworks available. The framework has been customized in order to match Odoo's design (both
+community and enterprise versions), meaning that you can use any BS class directly in Odoo and
+achieve a visual result that is consistent with our UI.
+
+.. warning::
+   - The fact that a class achieves the desired visual result doesn't necessarily mean that it's the
+     right one for the job. Be aware of classes triggering JS behaviors, for example.
+   - Be careful about class semantics. Applying a **button class** to a **title** is not only
+     semantically wrong, it may also lead to migration issues and visual inconsistencies.
+
+The following sections describe tips to strip-down SCSS lines **when custom-code is the only way to
+go**.
+
+.. _tutorials/scss_tips/browser_defaults:
+
+Browser defaults
+================
+
+By default, each browser renders content using a *user agent stylesheet*. To overcome
+inconsistencies between browsers, some of these rules are overridden by `Bootstrap Reboot
+<https://getbootstrap.com/docs/5.1/content/reboot/>`_.
+
+At this stage all "browser-specific-decoration" rules have been stripped away, but a big chunk of
+rules defining basic layout information is maintained (or reinforced by *Reboot* for consistency
+reasons).
+
+You can rely on these rules.
+
+.. example::
+
+   Applying `display: block;` to a `<div/>` is normally not necessary.
+
+   .. code-block:: css
+
+      div.element {
+         display: block;
+         /* not needed 99% of the time */
+      }
+
+.. example::
+
+   In this instance, you may opt to switching the HTML tag rather than adding a new CSS rule.
+
+   .. code-block:: css
+
+      span.element {
+         display: block;
+         /* replace <span> with <div> instead
+            to get 'display: block' by default */
+      }
+
+Here's a non-comprehensive list of default rules:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Tag / Attribute
+     - Defaults
+   * - `<div/>`, `<section/>`, `<header/>`, `<footer/>`...
+     - `display: block`
+   * - `<span/>`, `<a/>`, `<em/>`, `<b/>`...
+     - `display: inline`
+   * - `<button/>`, `<label/>`, `<output/>`...
+     - `display: inline-block`
+   * - `<img/>`, `<svg/>`
+     - `vertical-align: middle`
+   * - `<summary/>`, `[role="button"]`
+     - `cursor: pointer;`
+   * - `<q/>`
+     - | `:before {content: open-quote}`
+       | `:after  {content: close-quote}`
+   * - ...
+     - ...
+
+.. seealso::
+   `Bootstrap Reboot on GitHub
+   <https://github.com/twbs/bootstrap/blob/1a6fdfae6b/scss/_reboot.scss>`_
+
+.. _tutorials/scss_tips/html_tags:
+
+HTML tags
+=========
+
+It may seem obvious, but the simplest and most **consistent** way of making text look like a title
+is to use a header tag (`<h1>`, `<h2>`, ...). Besides reboot rules, mostly all tags carry decorative
+styles defined by Odoo.
+
+.. rst-class:: bg-light
+.. example::
+
+   .. container:: alert alert-danger
+
+      Don't
+
+      .. tabs::
+
+         .. code-tab:: html XML
+
+            <span class="o_module_custom_title">
+               Hello There!
+            </span>
+
+            <span class="o_module_custom_subtitle">
+               I'm a subtitle.
+            </span>
+
+         .. code-tab:: css SCSS
+
+            .o_module_custom_title {
+               display: block;
+               font-size: 120%;
+               font-weight: bold;
+               animation: 1s linear 1s mycustomAnimation;
+            }
+
+            .o_module_custom_subtitle {
+               display: block;
+               font-size: 12px;
+               font-weight: bold;
+               animation: 2s linear 1s mycustomAnimation;
+            }
+
+   .. container:: alert alert-success
+
+      Do
+
+      .. tabs::
+
+         .. code-tab:: html XML
+
+            <h5 class="o_module_custom_title">
+               Hello There!
+            </h5>
+
+            <div class="o_module_custom_subtitle">
+               <b><small>I'm a subtitle.</small></b>
+            </div>
+
+         .. code-tab:: css SCSS
+
+            .o_module_custom_title {
+               animation: 1s linear 1s mycustomAnimation;
+            }
+
+            .o_module_custom_subtitle {
+               animation: 2s linear 1s mycustomAnimation;
+            }
+
+.. note::
+   Besides reducing the amount of code, a modular-design approach (use classes, tags, mixins...)
+   keeps the visual result consistent and easily **maintainable**.
+
+   Following the last example, if Odoo titles' design changes, these changes will be applied in the
+   `o_module_custom_title` element too since it's using an `<h5>` tag.
+
+.. _tutorials/scss_tips/utility_classes:
+
+Utility classes
+===============
+
+Our framework defines a multitude of utility classes designed to cover almost all
+layout/design/interaction needs. The simple fact that a class already exists justifies its use over
+custom CSS whenever possible.
+
+Take the example of `position-relative`.
+
+.. code-block:: css
+
+   position-relative {
+      position: relative !important;
+   }
+
+Since a utility-class is defined, any CSS line with the declaration `position: relative` is
+**potentially** redundant.
+
+Odoo relies on the default `Bootstrap utility-classes
+<https://getbootstrap.com/docs/5.1/utilities/background/>`_ stack and defines its own using
+`Bootstrap API <https://getbootstrap.com/docs/5.1/utilities/api/>`_.
+
+.. seealso::
+   - `Bootstrap utility classes <https://getbootstrap.com/docs/5.1/utilities/api/>`_
+   - `Odoo custom utilities on github
+     <{GITHUB_PATH}/addons/web/static/src/scss/utilities_custom.scss>`_
+
+.. _tutorials/scss_tips/utility_classes/downside:
+
+Handling utility-classes verbosity
+----------------------------------
+
+The downside of utility-classes is the potential lack of readability.
+
+.. example::
+
+   .. code-block:: html
+
+      <myComponent t-attf-class="d-flex border px-lg-2 card
+      {{props.readonly ? 'o_myComponent_disabled' : ''}}
+      card d-lg-block position-absolute {{props.active ?
+      'o_myComponent_active' : ''}}  myComponent px-3"/>
+
+To overcome the issue you may combine different approaches:
+
+- in Qweb attributes, only use classes to be toggled *on-the-fly*;
+- use new lines for each attribute;
+- order classes using the convention `[odoo component] [bootstrap component] [css declaration order]`.
+
+.. example::
+
+   .. code-block:: html
+
+      <myComponent
+         t-att-class="{
+            o_myComponent_disabled: props.readonly,
+            o_myComponent_active: props.active
+         }"
+         class="myComponent card position-absolute d-flex d-lg-block border px-3 px-lg-2"
+      />
+
+.. seealso::
+   :ref:`Odoo CSS properties order <contributing/coding_guidelines/scss/properties_order>`
+
+
+==================================================
+SECTION: standalone_owl_application.rst
+PATH: developer/howtos/standalone_owl_application.rst
+==================================================
+
+===================================
+Create a standalone Owl application
+===================================
+
+For any number of reasons, you may want to have a standalone Owl application that isn't a part of
+the web client. One example in Odoo is the self-ordering application, that lets customers order
+food from their phone. In this chapter we will go into what's required to achieve something like this.
+
+Overview
+========
+
+To have a standalone Owl app, a few things are required:
+
+- a root component for the application
+- an assets bundle that contains the setup code
+- a QWeb view that calls the assets bundle
+- a controller that renders the view
+
+1. Root component
+=================
+
+To keep things simple, let's start with a very straightforward component that just renders
+"Hello, World!". This will let us know at a glance if our setup is working.
+
+First, create the template in :file:`/your_module/static/src/standalone_app/root.xml`.
+
+.. code-block:: xml
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <templates xml:space="preserve">
+        <t t-name="your_module.Root">
+            Hello, World!
+        </t>
+    </templates>
+
+Then create the JavaScript file for that component in :file:`/your_module/static/src/standalone_app/root.js`.
+
+.. code-block:: js
+
+    import { Component } from "@odoo/owl";
+
+    export class Root extends Component {
+        static template = "your_module.Root";
+        static props = {};
+    }
+
+It's generally a good idea to have the application setup code that mounts the component in a separate
+file. Create the JavaScript file that will mount the app in :file:`/your_module/static/src/standalone_app/app.js`.
+
+.. code-block:: js
+
+    import { whenReady } from "@odoo/owl";
+    import { mountComponent } from "@web/env";
+    import { Root } from "./root";
+
+    whenReady(() => mountComponent(Root, document.body));
+
+The `mountComponent` utility function will take care of creating the Owl application and configuring
+it correctly: it will create an environment, start the :ref:`services<frontend/services>`, make sure
+the app is translated and give the app access to the templates from your assets bundle, among other
+things.
+
+.. seealso::
+   :ref:`Owl components reference<frontend/components>`.
+
+
+2. Creating an assets bundle containing our code
+================================================
+
+In the manifest of your module, create a new :ref:`assets bundle<reference/assets_bundle>`.
+It should include the `web._assets_core` bundle, which contains the Odoo JavaScript
+framework and the core libraries it needs (e.g. Owl and luxon), after which you can have a
+glob that adds all the files for your application in the bundle.
+
+.. code-block:: py
+    :emphasize-lines: 9-10
+
+    {
+        # ...
+        'assets': {
+            'your_module.assets_standalone_app': [
+                ('include', 'web._assets_helpers'),
+                'web/static/src/scss/pre_variables.scss',
+                'web/static/lib/bootstrap/scss/_variables.scss',
+                ('include', 'web._assets_bootstrap'),
+                ('include', 'web._assets_core'),
+                'your_module/static/src/standalone_app/**/*',
+            ],
+        }
+    }
+
+The other lines are bundles and scss files that are required to make Bootstrap work. They are
+mandatory, as the components of the web framework use bootstrap classes for their styling and
+layout.
+
+.. caution::
+    Make sure that the files for your standalone app are only added to this bundle, if you already
+    have a definition for `web.assets_backend` or `web.assets_frontend` and they have globs, make
+    sure these globs don't match the files for your standalone app, otherwise the startup code for
+    your app will conflict with the existing startup code in those bundles.
+
+.. seealso::
+    :ref:`Module manifest reference<reference/module/manifest>`.
+
+3. XML view that calls the assets bundle
+========================================
+
+Now that we have created our assets bundle, we need to create a
+:ref:`QWeb view <reference/view_architectures/qweb>` that uses that assets bundle.
+
+.. code-block:: xml
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <template id="your_module.standalone_app">&lt;!DOCTYPE html&gt;
+            <html>
+                <head>
+                    <script type="text/javascript">
+                        var odoo = {
+                            csrf_token: "<t t-nocache="The csrf token must always be up to date." t-esc="request.csrf_token(None)"/>",
+                            debug: "<t t-out="debug"/>",
+                            __session_info__: <t t-esc="json.dumps(session_info)"/>,
+                        };
+                    </script>
+                    <t t-call-assets="your_module.assets_standalone_app" />
+                </head>
+                <body/>
+            </html>
+        </template>
+    </odoo>
+
+This template only does two things: it initializes the `odoo` global variable, then calls the assets
+bundle we just defined. Initializing the `odoo` global variable is a necessary step. This variable
+should be an object that contains the following:
+
+- The CSRF token, which is required to interact with HTTP controllers in many cases.
+- The debug value, which is used in many places to add additional logging or developer-friendly checks.
+- `__session_info__`, that contains information from the server that is always needed and for which
+  we don't want to perform an additional request. More on this in the next section.
+
+4. Controller that renders the view
+===================================
+
+Now that we have the view, we need to make it accessible to the user. For that purpose, we will create
+an :ref:`HTTP controller<reference/controllers>` that renders that view and returns it to the user.
+
+.. code-block:: py
+
+    from odoo.http import request, route, Controller
+
+    class YourController(Controller):
+        @route("/your_module/standalone_app", auth="public")
+        def standalone_app(self):
+            return request.render(
+                'your_module.standalone_app',
+                {
+                    'session_info': request.env['ir.http'].get_frontend_session_info(),
+                }
+            )
+
+Notice how we're giving the template `session_info`. We get it from the `get_frontend_session_info`
+method, and it will end up containing information used by the web framework, such as the current
+user's ID if they are logged in, the server version, the Odoo edition, etc.
+
+At this point, if you open the url `/your_module/standalone_app` in your brower, you should
+see a blank page with the text "Hello, World!". At this point, you can start actually writing the
+code for your app.
+
+
+==================================================
+SECTION: upgrade_custom_db.rst
+PATH: developer/howtos/upgrade_custom_db.rst
+==================================================
+
+=============================
+Upgrade a customized database
+=============================
+
+Upgrading to a new version of Odoo can be challenging, especially if the database you work on
+contains custom modules. This page intent is to explain the technical process of upgrading a
+database with customized modules. Refer to :doc:`Upgrade documentation </administration/upgrade>`
+for guidance on how to upgrade a database without customized modules.
+
+We consider a custom module, any module that extends the standard code of Odoo and that was not
+built with the Studio app. Before upgrading such a module, or before requesting its upgrade, have a
+look at the :ref:`upgrade-sla` to make sure who's responsible for it.
+
+While working on what we refer to as the **custom upgrade** of your database, keep in mind the goals
+of an upgrade:
+
+#. Stay supported
+#. Get the latest features
+#. Enjoy the performance improvement
+#. Reduce the technical debt
+#. Benefit from security improvements
+
+With every new version of Odoo, changes are introduced. These changes can impact modules on which
+customization have been developed. This is the reason why upgrading a database that contains custom
+modules requires additional steps in order to upgrade the source code.
+
+These are the steps to follow to upgrade customized databases:
+
+#. :ref:`Stop the developments and challenge them <upgrade_custom/stop_developments>`.
+#. :ref:`Request an upgraded database <upgrade_custom/request_upgrade>`.
+#. :ref:`Make your module installable on an empty database <upgrade_custom/empty_database>`.
+#. :ref:`Make your module installable on the upgraded database <upgrade_custom/upgraded_database>`.
+#. :ref:`Test extensively and do a rehearsal <upgrade_custom/testing_rehearsal>`.
+#. :ref:`Upgrade the production database <upgrade_custom/production>`.
+
+.. _upgrade_custom/stop_developments:
+
+Step 1: Stop the developments
+=============================
+
+Starting an upgrade requires commitment and development resources. If developments keep being made
+at the same time, those features will need to be re-upgraded and tested every time you change them.
+This is why we recommend a complete freeze of the codebase when starting the upgrade process.
+Needless to say, bug fixing is exempt from this recommendation.
+
+Once you have stopped development, it is a good practice to assess the developments made and compare
+them with the features introduced between your current version and the version you are targeting.
+Challenge the developments as much as possible and find functional workarounds. Removing redundancy
+between your developments and the standard version of Odoo will lead to an eased upgrade process
+and reduce technical debt.
+
+.. note::
+   You can find information on the changes between versions in the `Release Notes
+   <https:/odoo.com/page/release-notes>`_.
+
+.. _upgrade_custom/request_upgrade:
+
+Step 2: Request an upgraded database
+====================================
+
+Once the developments have stopped for the custom modules and the implemented features have been
+challenged to remove redundancy and unnecessary code, the next step is to request an upgraded test
+database. To do so, follow the steps mentioned in :ref:`upgrade-request-test`, depending on the
+hosting type of your database.
+
+The purpose of this stage is not to start working with the custom modules in the upgraded database,
+but to make sure the standard upgrade process works seamlessly, and the test database is delivered
+properly. If that's not the case, and the upgrade request fails, request the assistance of Odoo via
+the `support page <https://odoo.com/help?stage=migration>`_ by selecting the option related to
+testing the upgrade.
+
+.. _upgrade_custom/empty_database:
+
+Step 3: Empty database
+======================
+
+Before working on an upgraded test database, we recommend to make the custom developments work on an
+empty database in the targeted version of your upgrade. This ensures that the customization is
+compatible with the new version of Odoo, allows to analyze how it behaves and interacts with the new
+features, and guarantees that they will not cause any issues when upgrading the database.
+
+Making the custom modules work in an empty database also helps avoid changes and wrong
+configurations that might be present in the production database (like studio customization,
+customized website pages, email templates or translations). They are not intrinsically related to
+the custom modules and that can raise unwanted issues in this stage of the upgrade process.
+
+To make custom modules work on an empty database we advise to follow these steps:
+
+#. :ref:`upgrade_custom/empty_database/modules_installable`
+#. :ref:`upgrade_custom/empty_database/test_fixes`
+#. :ref:`upgrade_custom/empty_database/clean_code`
+#. :ref:`Make standard tests run successfully <upgrade_custom/empty_database/standard_test>`
+
+.. _upgrade_custom/empty_database/modules_installable:
+
+Make custom modules installable
+-------------------------------
+
+The first step is to make the custom modules installable in the new Odoo version.
+This means, starting by ensuring there are no tracebacks or warnings during their installation.
+For this, install the custom modules, one by one, in an empty database of the new Odoo version and
+fix the tracebacks and warnings that arise from that.
+
+This process will help detect issues during the installation of the modules. For example:
+
+- Invalid module dependencies.
+- Syntax change: assets declaration, OWL updates, attrs.
+- References to standard fields, models, views not existing anymore or renamed.
+- Xpath that moved or were removed from views.
+- Methods renamed or removed.
+- ...
+
+.. _upgrade_custom/empty_database/test_fixes:
+
+Test and fixes
+--------------
+
+Once there are no more tracebacks when installing the modules, the next step is to test them.
+Even if the custom modules are installable on an empty database, this does not guarantee there are
+no errors during their execution. Because of this, we encourage to test thoroughly all the
+customization to make sure everything is working as expected.
+
+This process will help detect further issues that are not identified during the module installation
+and can only be detected in runtime. For example, deprecated calls to standard python or OWL
+functions, non-existing references to standard fields, etc.
+
+We recommend to test all the customization, especially the following elements:
+
+- Views
+- Email templates
+- Reports
+- Server actions and automated actions
+- Changes in the standard workflows
+- Computed fields
+
+We also encourage to write automated tests to save time during the testing iterations, increase the
+test coverage, and ensure that the changes and fixes introduced do not break the existing flows.
+If there are tests already implemented in the customization, make sure they are upgraded to the new
+Odoo version and run successfully, fixing issues that might be present.
+
+.. _upgrade_custom/empty_database/clean_code:
+
+Clean the code
+--------------
+
+At this stage of the upgrade process, we also suggest to clean the code as much as possible.
+This includes:
+
+- Remove redundant and unnecessary code.
+- Remove features that are now part of Odoo standard, as described in
+  :ref:`upgrade_custom/stop_developments`.
+- Clean commented code if it is not needed anymore.
+- Refactor the code (functions, fields, views, reports, etc.) if needed.
+
+.. _upgrade_custom/empty_database/standard_test:
+
+Standard tests
+--------------
+
+Once the previous steps are completed, we advise to make sure all standard tests associated to the
+dependencies of the custom module pass.
+Standard tests ensure the validation of the code logic and prevent data corruption.
+They will help you identify bugs or unwanted behavior before you work on your database.
+
+In case there are standard test failing, we suggest to analyze the reason for their failure:
+
+- The customization changes the standard workflow: Adapt the standard test to your workflow.
+- The customization did not take into account a special flow: Adapt your customization to ensure it
+  works for all the standard workflows.
+
+
+.. _upgrade_custom/upgraded_database:
+
+Step 4: Upgraded database
+=========================
+
+Once the custom modules are installable and working properly in an empty database, it is time to
+make them work on an :ref:`upgraded database <upgrade-request-test>`.
+
+To make sure the custom code is working flawlessly in the new version, follow these steps:
+
+- :ref:`upgrade_custom/upgraded_database/migrate_data`
+- :ref:`upgrade_custom/upgraded_database/test_custom`
+
+.. _upgrade_custom/upgraded_database/migrate_data:
+
+Migrate the data
+----------------
+
+During the upgrade of the custom modules, you might have to use :doc:`upgrade scripts
+<../reference/upgrades/upgrade_scripts>` to reflect changes from the source code to their
+corresponding data. Together with the upgrade scripts, you can also make use of the
+:doc:`../reference/upgrades/upgrade_utils` and its helper functions.
+
+- Any technical data that was renamed during the upgrade of the custom code (models, fields,
+  external identifiers) should be renamed using upgrade scripts to avoid data loss during the
+  module upgrade. See also: :meth:`rename_field`, :meth:`rename_model`, :meth:`rename_xmlid`.
+- Data from standard models removed from the source code of the newer Odoo version and from the
+  database during the standard upgrade process might need to be recovered from the old model table
+  if it is still present.
+
+   .. example::
+      Custom fields for model ``sale.subscription`` are not automatically migrated from Odoo 15 to
+      Odoo 16 (when the model was merged into ``sale.order``). In this case, a SQL query can be
+      executed on an upgrade script to move the data from one table to the other. Take into account
+      that all columns/fields must already exist, so consider doing this in a ``post-`` script (See
+      :ref:`upgrade-scripts/phases`).
+
+      .. spoiler::
+
+         .. code-block:: python
+
+            def migrate(cr, version):
+               cr.execute(
+                  """
+                  UPDATE sale_order so
+                     SET custom_field = ss.custom_field
+                    FROM sale_subscription ss
+                   WHERE ss.new_sale_order_id = so.id
+                  """
+               )
+
+         Check the documentation for more information on :doc:`../reference/upgrades/upgrade_scripts`.
+
+Upgrade scripts can also be used to:
+
+- Ease the processing time of an upgrade. For example, to store the value of computed stored fields
+  on models with an excessive number of records by using SQL queries.
+- Recompute fields in case the computation of their value has changed. See also
+  :meth:`recompute_fields`.
+- Uninstall unwanted custom modules. See also :meth:`remove_module`.
+- Correct faulty data or wrong configurations.
+
+Running and testing upgrade scripts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. tabs::
+
+   .. group-tab:: Odoo Online
+
+      As the instalation of custom modules containing Python files is not allowed on Odoo Online
+      databases, it is not possible to run upgrade scripts on this platform.
+
+   .. group-tab:: Odoo.sh
+
+      As explained on the `Odoo.sh` tab of :ref:`upgrade-request-test`, Odoo.sh is integrated with
+      the upgrade platform.
+
+      Once the upgrade of a staging branch is on "Update on commit" mode, each time a commit is
+      pushed on the branch, the upgraded backup is restored and all the custom modules are updated.
+      This update includes the execution of the upgrade scripts.
+
+      When upgrading the production database, the execution of the upgrade scripts is also part of
+      the update of the custom modules done by the platform when the upgraded database is restored.
+
+   .. group-tab:: On-premise
+
+      Once you receive the upgraded dump of the database from the `Upgrade platform
+      <https://upgrade.odoo.com>`_, deploy the database and update all the custom modules by
+      invoking the command :doc:`odoo-bin </developer/reference/cli>` in the shell.
+      To update the custom modules, use the option: `-u <modules>,
+      --update <modules>`.
+
+      .. important::
+         As mentioned in the :doc:`CLI documentation </developer/reference/cli>`, the command used
+         to call the CLI depends on how you installed Odoo.
+
+.. _upgrade_custom/upgraded_database/test_custom:
+
+Test the custom modules
+-----------------------
+
+To make sure the custom modules work properly with your data in the upgraded database, they need to
+be tested as well. This helps ensure both the standard and the custom data stored in the database
+are consistent and that nothing was lost during the upgrade process.
+
+Things to pay attention to:
+
+- Views not working: During the upgrade, if a view causes issues because of its content, it gets
+  disabled. You can find the information on disabled views on the Upgrade report. This view needs to
+  be activated again (or removed if not useful anymore). To achieve this, we recommend the use of
+  upgrade scripts.
+- :doc:`Module data <../tutorials/define_module_data>` not updated: Custom records that have the
+  ``noupdate`` flag are not updated when upgrading the module in the new database. For the custom
+  data that needs to be updated due to changes in the new version, we recommend to use upgrade
+  scripts to do so. See also: :meth:`update_record_from_xml`.
+
+.. _upgrade_custom/testing_rehearsal:
+
+Step 5: Testing and rehearsal
+=============================
+
+When the custom modules are working properly in the upgraded database, it is crucial to do another
+round of testing to assess the database usability and detect any issues that might have gone
+unnoticed in previous tests. For further information about testing the upgraded database, check
+:ref:`upgrade-testing`.
+
+As mentioned in :ref:`upgrade-production`, both standard upgrade scripts and your database are
+constantly evolving. Therefore it is highly recommended to frequently request new upgraded test
+databases and ensure that the upgrade process is still successful.
+
+In addition to that, make a full rehearsal of the upgrade process the day before upgrading the
+production database to avoid undesired behavior during the upgrade and to detect any issue that
+might have occurred with the migrated data.
+
+.. _upgrade_custom/production:
+
+Step 6: Production upgrade
+==========================
+
+Once you are confident about upgrading your production database, follow the process described on
+:ref:`upgrade-production`, depending on the hosting type of your database.

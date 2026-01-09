@@ -1,0 +1,1178 @@
+
+
+==================================================
+SECTION: campaign_templates.rst
+PATH: applications/marketing/marketing_automation/campaign_templates.rst
+==================================================
+
+:nosearch:
+
+==================
+Campaign templates
+==================
+
+.. toctree::
+   :titlesonly:
+
+   campaign_templates/double_optin
+
+
+==================================================
+SECTION: double_optin.rst
+PATH: applications/marketing/marketing_automation/campaign_templates/double_optin.rst
+==================================================
+
+=============
+Double Opt-in
+=============
+
+A *double opt-in*, also referred to as a *confirmed opt-in*, may be required in some countries
+for marketing communications, due to anti-SPAM laws. Confirming consent has several other benefits,
+as well: it validates email addresses, avoids spam/robo subscribers, keeps mailing lists clean, and
+only includes engaged contacts in the mailing list.
+
+When the *Double Opt-in* campaign template is used, a new mailing list titled, *Confirmed contacts*
+is created in the *Email Marketing* app, and any new mailing list contacts that are added to the
+default *Newsletter* mailing list are sent a confirmation email to double opt-in. The contacts that
+click on the confirmation link in the email are automatically added to the *Confirmed contacts*
+mailing list in Odoo.
+
+.. important::
+   When using the *Double Opt-in* campaign template, only the contacts in the *Confirmed contacts
+   mailing* list are considered to have confirmed their consent.
+
+.. _marketing_automation/template/using-double-optin:
+
+Use the Double Opt-in campaign template
+=======================================
+
+Open the :menuselection:`Marketing Automation` app, and select the :guilabel:`Double Opt-in`
+campaign template to create a new campaign for confirming consent.
+
+.. tip::
+   The campaign templates do **not** display, by default, when there are existing *Marketing
+   Automation* campaigns. To display the campaign templates, type the name of a campaign (that does
+   not exist in the database) into the :guilabel:`Search...` bar, then press :kbd:`Enter`.
+
+   For example, searching for `empty` displays the campaign template cards again, as long as there
+   is not a campaign with the name "empty" in the database.
+
+Campaign configuration
+----------------------
+
+Upon creation of the campaign, the campaign form loads with a new preconfigured campaign.
+
+The :guilabel:`Target` and :guilabel:`Filter` configurations of the campaign are as follows:
+
+- :guilabel:`Name`: `Double Opt-in`
+- :guilabel:`Responsible`\*: The user who created the campaign.
+- :guilabel:`Target`: :guilabel:`Mailing Contact`
+- :guilabel:`Unicity based on`: :guilabel:`Email (Mailing Contact)`
+- :guilabel:`Filter`:
+
+  - :guilabel:`Email` :guilabel:`is set`
+  - :guilabel:`Blacklist` :guilabel:`is not` :guilabel:`set`
+  - :guilabel:`Mailing lists` :guilabel:`contains` `Newsletter`
+
+\* The :guilabel:`Responsible` field is only visible with :ref:`developer-mode` activated.
+
+.. important::
+   The :guilabel:`Target` model of the campaign should **not** be modified. Changing the
+   :guilabel:`Target` model with activities in the :guilabel:`Workflow` invalidates the existing
+   activities in the :guilabel:`Workflow`.
+
+   The *Double Opt-in* campaign template is intended to **only** use the :guilabel:`Mailing Contact`
+   model.
+
+The campaign loads two activities in the :guilabel:`Workflow` section of the campaign: an email
+activity, with a child server action activity that triggers *on click*.
+
+By default, the `Confirmation` email activity is set to trigger :guilabel:`1 Hours` after the
+beginning of the workflow. In other words, the email is sent 1 hour after a new contact is added to
+the *Newsletter* mailing list.
+
+The email activity uses the preconfigured *Confirmation* email template, which contains a button for
+the contact to click to confirm their consent.
+
+To modify the email template, select the :icon:`fa-envelope-o` :guilabel:`Templates` smart button at
+the top of the campaign form. Then, in the list of templates, select the `Confirmation` email
+template.
+
+Be sure to personalize the contents of the email template; however, it is recommended to keep the
+contents of double opt-in confirmation emails short and to-the-point.
+
+The default confirmation button, in the body of the template, links directly to the database's
+website homepage. Click on the button to edit the button text and URL.
+
+.. tip::
+   To provide a streamlined experience for the contact, consider :doc:`creating a page on the
+   website <../../../websites/website/structure/pages>` that expresses gratitude to the contact for
+   confirming their subscription to the mailing list. Add the link to that page in the URL of the
+   confirmation button.
+
+.. important::
+   The email template should only include a single call-to-action link for confirmation, other than
+   an unsubscribe link.
+
+   Any click on a link (or button) included in the confirmation email, besides the unsubscribe
+   button, triggers the *Add to list* server action.
+
+   The child activity *Add to list* server action's *On click* trigger cannot differentiate between
+   multiple URLs in an email, besides the `/unsubscribe_from_list` unsubscribe button that is
+   included in any one of the footer blocks.
+
+The `Add to list` server action activity triggers immediately after a click in the parent
+`Confirmation` email activity is detected.
+
+When triggered, the `Add to list` activity executes the *Add To Confirmed List* server action,
+automatically adding the contact to the *Confirmed contacts* mailing list, if they are not already
+in the mailing list.
+
+To modify the server action, select the title of the activity to open the :guilabel:`Open:
+Activities` pop-up window and edit the server action activities configuration.
+
+.. tip::
+   Consider setting an :guilabel:`Expiry Duration` to prevent executing the activity after a
+   specific amount of time.
+
+.. important::
+   It is not recommended to modify the preconfigured Python code in the :guilabel:`Add To Confirmed
+   List` server action, as doing so may trigger a change in the database's pricing plan.
+
+Once the campaign configuration is complete, consider :doc:`launching a test <../testing_running>`
+to verify the campaign executes as expected. If the campaign testing is successful,
+:guilabel:`Start` the campaign to begin sending double opt-in confirmation emails to *Newsletter*
+mailing list contacts, and fill the *Confirmed contacts* mailing list with engaged contacts.
+
+.. _marketing_automation/template/double-optin-usecase:
+
+Double Opt-in use-case
+======================
+
+.. example::
+   To prepare for sending newsletter marketing emails on an Odoo database, a mailing contact list
+   must be procured. One way of collecting subscribers is through a sign-up form on the website that
+   adds contacts to the *Newsletter* mailing list on the form submission.
+
+   .. image:: double_optin/newsletter-signup.png
+      :align: center
+      :alt: Newsletter sign-up form on Odoo website footer.
+
+   Before sending any marketing emails, :ref:`use the Double Opt-in campaign template
+   <marketing_automation/template/using-double-optin>` in the *Marketing Automation* app to confirm
+   marketing email consent from the contacts in the *Newsletter* mailing list.
+
+   After launching the *Double Opt-in* campaign, view the contacts that have double opt-in in the
+   *Confirmed contacts* mailing list (:menuselection:`Email Marketing app --> Mailing Lists -->
+   Mailing Lists`).
+
+   .. image:: double_optin/double-optin-metrics.png
+      :align: center
+      :alt: Activity metrics on the campaign form.
+
+   Now, the *Confirmed contacts* mailing list is ready to be used for sending newsletter marketing
+   emails from an Odoo database.
+
+.. seealso::
+   - :doc:`../understanding_metrics`
+   - :doc:`../../email_marketing/mailing_lists`
+   - :doc:`../../email_marketing`
+
+
+==================================================
+SECTION: marketing_automation.rst
+PATH: applications/marketing/marketing_automation.rst
+==================================================
+
+:show-content:
+
+====================
+Marketing Automation
+====================
+
+Use the Odoo **Marketing Automation** application to create dynamic campaigns with actions that
+automatically occur within a defined duration, such as sending a series of timed mass emails or
+engaging with leads based on their interactions with marketing campaigns.
+
+While the application is designed to be user-friendly for creating, launching, and reviewing
+marketing campaigns, it also provides advanced features to automate repetitive tasks throughout the
+database.
+
+Get started by creating a :ref:`new campaign from scratch <marketing_automation/campaigns>` or start
+with a :ref:`campaign template <marketing_automation/campaign-templates>`.
+
+.. seealso::
+   - `Odoo Tutorials: Marketing <https://www.odoo.com/slides/marketing-27>`_
+   - `Magic Sheet - Marketing Automation [PDF]
+     <https://drive.google.com/drive/folders/1MMMGcYIG1tm160jC2JaXVc_D5b6x3cJd>`_
+
+.. cards::
+
+   .. card:: Audience targeting
+      :target: marketing_automation/target_audience
+
+      Configure the target audience for a campaign.
+
+   .. card:: Workflow activities
+      :target: marketing_automation/workflow_activities
+
+      Define the activities that occur within a campaign.
+
+   .. card:: Testing/running campaigns
+      :target: marketing_automation/testing_running
+
+      Launch a test or run a campaign.
+
+   .. card:: Campaign metrics
+      :target: marketing_automation/understanding_metrics
+
+      Review the metrics of a campaign.
+
+Configuration
+=============
+
+To begin, make sure the **Marketing Automation** application is :ref:`installed <general/install>`.
+
+.. important::
+   Installing the **Marketing Automation** application also installs the :doc:`Email Marketing
+   <email_marketing>` app, as most features of Odoo **Marketing Automation** are dependent on that
+   specific application.
+
+   Additionally, install the :doc:`CRM <../sales/crm>` and :doc:`SMS Marketing <sms_marketing>`
+   applications to access *all* of the features available in **Marketing Automation**.
+
+   The following documentation assumes that all three of these dependent applications are installed
+   on the database.
+
+.. _marketing_automation/campaigns:
+
+Campaigns
+=========
+
+A *campaign* refers to a workflow of activities that are automatically executed to a target
+audience, based on predefined filters, triggers, and durations of activities.
+
+A new campaign can be created from scratch or from a :ref:`template
+<marketing_automation/campaign-templates>`.
+
+To create a campaign, navigate to the :menuselection:`Marketing Automation` application and click
+the :guilabel:`New` button to reveal a new campaign form.
+
+.. _marketing_automation/campaign-templates:
+
+Campaign templates
+------------------
+
+Odoo provides six campaign templates to help users get started. The campaign template cards **only**
+display when there are no existing campaigns in the database. Once a campaign has been created, the
+template cards on the *Campaigns* dashboard are replaced with a Kanban view of the existing
+campaigns.
+
+To get started with a template, navigate to the :menuselection:`Marketing Automation` application,
+from the main Odoo dashboard, to open the :guilabel:`Campaigns` dashboard, which displays six
+:doc:`campaign template <marketing_automation/campaign_templates>` cards:
+
+- | :icon:`fa-tag` :guilabel:`Tag Hot Contacts`
+  | :guilabel:`Send a welcome email to contacts and tag them if they click it.`
+- | :icon:`fa-hand-peace-o` :guilabel:`Welcome Flow`
+  | :guilabel:`Send a welcome email to new subscribers, remove the address that bounced.`
+- | :icon:`fa-check-square` :doc:`Double Opt-in
+    <marketing_automation/campaign_templates/double_optin>`
+  | :guilabel:`Send an email to new recipients to confirm their consent.`
+- | :icon:`fa-search` :guilabel:`Commercial prospection`
+  | :guilabel:`Send a free catalog and follow-up according to reactions.`
+- | :icon:`fa-phone` :guilabel:`Schedule Calls`
+  | :guilabel:`If a lead is created for existing contact, schedule a call with their salesperson.`
+- | :icon:`fa-star` :guilabel:`Prioritize Hot leads`
+  | :guilabel:`Send an email to new leads and assign them a high priority if they open it.`
+
+.. image:: marketing_automation/campaigns-dashboard.png
+   :alt: Six campaign template cards on the Campaigns dashboard of the Marketing Automation app.
+
+These templates are designed to be used as starting points for creating new campaigns. Click one of
+the template cards to open the campaign form.
+
+.. tip::
+   To display the campaign template cards again after a campaign has been created, type the name of
+   a campaign that does **not** exist in the database into the search bar, then press :kbd:`Enter`.
+
+   For example, searching for `empty` displays the campaign template cards again, as long as there
+   is not a campaign with the name "empty" in the database.
+
+Targets and filters
+===================
+
+On the campaign form, the :guilabel:`Target` and :guilabel:`Filter` section, also referred to as the
+domain, contains the fields used to define the target audience for the campaign's reach (i.e.,
+the unique contact records in the database).
+
+The target audience specifies the type of records available for use in the campaign, such as
+*Lead/Opportunity*, *Event Registration*, *Contact*, and more.
+
+Records
+-------
+
+The contacts in the system that fit the specified criteria for a campaign are referred to as
+*records*.
+
+The number of records that are displayed next to the campaign :guilabel:`Filter` represent the total
+number of records the campaign is targeting.
+
+Participants
+------------
+
+The records that are engaged by the campaign are referred to as *participants*.
+
+The number of participants engaged in a test run are shown in the *Tests* smart button, which
+displays on the top of the campaign form after a test has been run.
+
+The number of participants engaged in a running, or stopped, campaign are shown in the
+*Participants* smart button at the top of the campaign form.
+
+.. seealso::
+   :doc:`Audience targeting <marketing_automation/target_audience>`
+
+Workflow
+========
+
+A *workflow* consists of an activity, many activities, or a sequence of activities organized in a
+campaign. A campaign's workflow is defined in the :guilabel:`Workflow` section of the campaign form.
+
+Activities
+----------
+
+*Activities* are the methods of communication or server actions, organized in a workflow, that are
+executed within a campaign. Once running, each activity displays the number of participants that
+are engaged by the activity as *Success* and *Rejected* counts.
+
+To create one of the following activities, click :guilabel:`Add new activity` in the
+:guilabel:`Workflow` section of the campaign form:
+
+- :ref:`Email <marketing_automation/email-activity-type>`: an email that is sent to the target
+  audience.
+- :ref:`Server action <marketing_automation/sa-activity-type>`: an internal action within the
+  database that is executed.
+- :ref:`SMS <marketing_automation/sms-activity-type>`: a text message that is sent to the target
+  audience.
+
+.. seealso::
+   :doc:`marketing_automation/workflow_activities`
+
+Testing and running
+===================
+
+Once a campaign has been created, it can be tested to ensure the workflow is functioning as
+expected, to check for errors, and correct any mistakes before it reaches its target audience.
+
+After testing, the campaign can be launched to start engaging the target audience. The campaign can
+also be launched *without* testing, if the user is confident in the workflow.
+
+.. seealso::
+   :doc:`marketing_automation/testing_running`
+
+Reporting
+=========
+
+A range of reporting metrics are available to measure the success of each campaign. Navigate to
+:menuselection:`Marketing Automation app --> Reporting` to access the following menu options:
+
+- :guilabel:`Link Tracker`: displays the metrics of links to track the number of clicks.
+- :guilabel:`Traces`: displays the results of all activities from all campaigns.
+- :guilabel:`Participants`: displays an overview of the participants of all campaigns.
+
+Additionally, each activity within the workflow of a campaign displays its engagement metrics.
+
+.. seealso::
+   :doc:`marketing_automation/understanding_metrics`
+
+.. toctree::
+   :titlesonly:
+
+   marketing_automation/target_audience
+   marketing_automation/workflow_activities
+   marketing_automation/testing_running
+   marketing_automation/understanding_metrics
+   marketing_automation/campaign_templates
+
+
+==================================================
+SECTION: target_audience.rst
+PATH: applications/marketing/marketing_automation/target_audience.rst
+==================================================
+
+==================
+Audience targeting
+==================
+
+The :guilabel:`Target` and :guilabel:`Filter` fields on the campaign form, also referred to as the
+*domain*, contain the parameters used to define the target audience for the campaign's reach (i.e.,
+the unique contact records in the database, and imported list, etc.).
+
+- :guilabel:`Target`: specifies the type of records available for use in the campaign, such as
+  :guilabel:`Lead/Opportunity`, :guilabel:`Event Registration`, :guilabel:`Contact`, The assigned
+  records model determines the fields that are available throughout the campaign, including the
+  fields available in the :guilabel:`Filter` section, and in dynamic placeholders.
+- :guilabel:`Save as Favorite Filter`: saves the current :guilabel:`Filter` for future use with the
+  current :guilabel:`Target` model, and can be managed from the :menuselection:`Marketing Automation
+  app --> Configuration --> Favorite Filters` menu.
+- :guilabel:`Unicity based on`: specifies the :guilabel:`Target` model field where duplicates should
+  be avoided. Traditionally, the :guilabel:`Email` field is used, but any available field can be
+  used.
+- :guilabel:`Filter`: contains an interactive form with configurable logic to further refine the
+  targeting parameters under the chosen :guilabel:`Target` model. See more details in the
+  :ref:`marketing_automation/defining-filters` section.
+- :guilabel:`Include archived`: allows or disallows the inclusion of archived records in the target
+  audience.
+
+.. tip::
+   A :guilabel:`Responsible` user can be assigned to the campaign by activating
+   :ref:`developer-mode`.
+
+.. note::
+   Each activity in a campaign's workflow can target a subset of the target audience; see the
+   :doc:`workflow_activities` documentation for more information.
+
+.. _marketing_automation/defining-filters:
+
+Defining filters
+================
+
+The default campaign :guilabel:`Filter` configuration is set to :guilabel:`Match all records`,
+indicating that the campaign is targeting **all** records of the :guilabel:`Target` model.
+
+To refine the :guilabel:`Filter` rules of a campaign, click the :guilabel:`➕ Add condition` button
+to reveal a new row with configurable rule parameters. See the :ref:`Search, filter, and group
+records <search/custom-filters>` documentation for more information on how to create filter rules.
+
+.. image:: target_audience/domain-filters.png
+   :align: center
+   :alt: A new filter rule row on the campaign form Filters.
+
+At the bottom of the filter rules is a :guilabel:`# record(s)` button, which indicates the total
+number of records targeted by this domain. Select the :guilabel:`# record(s)` button to open a
+:guilabel:`Selected records` pop-up window, in which the targeted records can be viewed.
+
+.. tip::
+   Activate :ref:`developer-mode` to reveal each field's technical name and data type, as well as
+   the :guilabel:`# Code editor` text area below the filter rules, to view and edit the domain
+   manually.
+
+.. example::
+   To target all leads and opportunities from the *CRM* app that are in the *New* stage, and have an
+   expected revenue greater than $1,000, the following should be entered:
+
+   - :guilabel:`Target`: `Lead/Opportunity`
+   - :guilabel:`Unicity based on`: `Email (Lead/Opportunity)`
+   - :guilabel:`Filter`: :guilabel:`Match` :guilabel:`all 🔽 (down arrow)` :guilabel:`of the
+     following rules:`
+
+     #. :guilabel:`Stage` :guilabel:`is in` :guilabel:`New`
+     #. :guilabel:`Expected Revenue` :guilabel:`>` `1,000`
+     #. :guilabel:`any 🔽 (down arrow)` :guilabel:`of:`
+
+        - :guilabel:`Type` :guilabel:`=` :guilabel:`Lead`
+        - :guilabel:`Type` :guilabel:`=` :guilabel:`Opportunity`
+
+   With the above configuration, the campaign targets :guilabel:`157 record(s)`.
+
+   .. image:: target_audience/filter-scenario-one.png
+      :align: center
+      :alt: A domain configuration in a Marketing Automation campaign.
+
+.. seealso::
+   - :ref:`Domain developer documentation <reference/orm/domains>`
+   - :doc:`workflow_activities`
+   - :doc:`testing_running`
+   - :doc:`understanding_metrics`
+
+
+==================================================
+SECTION: testing_running.rst
+PATH: applications/marketing/marketing_automation/testing_running.rst
+==================================================
+
+=========================
+Testing/running campaigns
+=========================
+
+The Odoo *Marketing Automation* app allows users to test marketing campaigns (and mailings) before
+officially running them to check for errors and correct any mistakes before it reaches its target
+audience.
+
+Test campaigns
+==============
+
+To test a marketing campaign, open the :menuselection:`Marketing Automation app`, and select the
+desired campaign to test, which reveals the campaign's detail form.
+
+On the campaign detail form, make sure the campaign already has activities configured in the
+workflow (or build a campaign by following the directions on :doc:`workflow_activities`
+documentation).
+
+.. note::
+   Testing marketing automation campaigns is meant to be performed in the production version of the
+   database. Duplicate (or trial) databases have limited email sending capabilities.
+
+To start a test, click the :guilabel:`Launch a Test` button at the top of the campaign form, to the
+right of the :guilabel:`Start` button.
+
+.. image:: testing_running/launch-test.png
+   :align: center
+   :alt: Launch a test button on a campaign detail form in Odoo Marketing Automation.
+
+When clicked, a :guilabel:`Launch a test` pop-up window appears.
+
+.. image:: testing_running/launch-test-popup-window.png
+   :align: center
+   :alt: Launch a test pop-up window that appears in Odoo Markting Automation.
+
+In the :guilabel:`Launch a test` pop-up window, click the :guilabel:`Pick or create a/an Contact to
+generate a Test Participant` field to reveal a drop-down menu of contacts. From this drop-down menu,
+select an existing contact (or create a new one) to run the test on.
+
+.. note::
+   Only one contact can be selected from the :guilabel:`Launch a test` pop-up window.
+
+To create a new contact directly from the :guilabel:`Launch a test` pop-up window, start typing the
+name of the new contact in the blank field, and click :guilabel:`Create and edit...`.
+
+.. image:: testing_running/new-contact-from-launch-test-popup.png
+   :align: center
+   :alt: Typing in a new contact directly from the launch a test pop-up window in Odoo.
+
+Doing so reveals a blank :guilabel:`Create Record` pop-up form, in which the necessary contact
+information (:guilabel:`Email`, :guilabel:`Mobile`, etc.) *must* be entered, in order for the test
+to work. When the necessary information is entered, click :guilabel:`Save & Close`.
+
+.. image:: testing_running/blank-contact-form.png
+   :align: center
+   :alt: A blank contact form from a launch test pop-up window in Odoo Marketing Automation.
+
+When all the necessary fields have been entered, click :guilabel:`Save & Close` to return to the
+:guilabel:`Launch a test` pop-up window.
+
+Once a contact is selected, click :guilabel:`Launch` to reveal the campaign test page.
+
+.. image:: testing_running/test-screen.png
+   :align: center
+   :alt: Test screen in Odoo Marketing Automation.
+
+On the campaign test page, the name of the :guilabel:`Record` being tested is visible, along with
+the precise time this test workflow was started in the :guilabel:`Workflow Started On` field.
+Beneath that, in the :guilabel:`Workflow` section is the first activity (or activities) in the
+workflow that's being tested.
+
+To start a test, click the :guilabel:`Run` button, represented by a :guilabel:`▶️ (play button)`
+icon beside the first activity in the workflow. When clicked, the page reloads, and Odoo shows the
+various results (and analytics) connected to that specific activity as they occur, in real-time.
+
+.. note::
+   If a child activity is scheduled beneath a parent activity, that child activity will be revealed
+   slightly indented in the workflow, once that parent activity has been run, via the :guilabel:`▶️
+   (play button)` icon.
+
+.. image:: testing_running/workflow-test-progress.png
+   :align: center
+   :alt: Workflow test progress in Odoo Marketing Automation.
+
+Once all the workflow activities are completed, the test ends, and the status bar (in the
+upper-right corner) moves to the :guilabel:`Completed` stage.
+
+To stop a test before all the workflow activities are completed, click the :guilabel:`Stop` button
+in the upper-left corner of the campaign test page.
+
+Run campaigns
+=============
+
+To run a campaign, navigate to :menuselection:`Marketing Automation app`, and select the desired
+campaign to run.
+
+On the campaign detail form, with all the desired activities ready in the :guilabel:`Workflow`
+section, click :guilabel:`Start` in the upper-left corner to officially run the campaign to the
+configured target audience specified on the campaign detail form.
+
+Clicking :guilabel:`Start` launches the campaign, and the status bar of the campaign switches to
+:guilabel:`Running`, which is located in the upper-right corner of the campaign detail form.
+
+.. image:: testing_running/campaign-running-status.png
+   :align: center
+   :alt: The status of a marketing campaign changing to running in the upper-right corner.
+
+.. note::
+   If some participants are already running on a campaign, and was stopped for any reason, clicking
+   the :guilabel:`Start` button again prompts a pop-up warning. This warning advises the user to
+   click an :guilabel:`Update` button to apply any modifications made to the campaign.
+
+   .. image:: testing_running/workflow-modification-warning.png
+      :align: center
+      :alt: The workflow has been modified warning pop-up window of a marketing campaign form.
+
+   Be aware that participants that had already gone through an entire campaign in its original state
+   **can** be reintroduced into the newly-modified campaign, and new traces could be created for
+   them.
+
+Then, as the mailings and actions are triggered in the :guilabel:`Workflow`, the various stats and
+data related to each activity appear in each activity block. There is also a series of stat-related
+smart buttons that appear at the top of the campaign detail form, as well.
+
+These analytical smart buttons will *also* populate with real-time data as the campaign progresses:
+:guilabel:`Templates`, :guilabel:`Clicks`, :guilabel:`Tests`, :guilabel:`Participants`.
+
+.. image:: testing_running/campaign-smart-buttons.png
+   :align: center
+   :alt: The row of smart buttons that appear in a currently running marketing campaign in Odoo.
+
+Stop campaigns
+==============
+
+To stop a campaign that's currently running, navigate to the :menuselection:`Marketing Automation
+app`, and select the desired campaign to stop. On the campaign detail form, click the
+:guilabel:`Stop` button in the upper-left corner.
+
+.. image:: testing_running/stop-button-campaign-form.png
+   :align: center
+   :alt: The stop button on a typical campaign detail form in Odoo Marketing Automation application.
+
+When clicked, the campaign is officially stopped, and the status changes to :guilabel:`Stopped` in
+the upper-right corner of the campaign detail form.
+
+.. image:: testing_running/campaign-stopped-status-bar.png
+   :align: center
+   :alt: Marketing campaign's stopped status on a campaign detail form in Odoo Marketing Automation.
+
+.. seealso::
+   - :doc:`Campaign configuration <../marketing_automation>`
+   - :doc:`target_audience`
+   - :doc:`workflow_activities`
+
+
+==================================================
+SECTION: understanding_metrics.rst
+PATH: applications/marketing/marketing_automation/understanding_metrics.rst
+==================================================
+
+================
+Campaign metrics
+================
+
+*Campaign metrics* are detailed statistics and analytics within a marketing campaign, measuring its
+success and effectiveness. Triggered marketing activities populate relevant activity blocks with
+real-time metrics, in the campaign detail form.
+
+Activity analytics
+==================
+
+In the :guilabel:`Workflow` section of a campaign detail form in the *Marketing Automation* app,
+where the various campaign activities are located, a collection of useful data can be found on every
+individual activity block, like number of communications :guilabel:`Sent`, percentage of messages
+that have been :guilabel:`Clicked`, and more.
+
+.. image:: understanding_metrics/activity-analytics-block-sample.png
+   :align: center
+   :alt: An activity block in the workflow section with useful analytical data in Odoo.
+
+To the left of the activity block, the configured :doc:`trigger time <workflow_activities>` is
+displayed as a duration (either :guilabel:`Hours`, :guilabel:`Days`, :guilabel:`Weeks`, or
+:guilabel:`Months`) if it corresponds to period after the workflow begins.
+
+.. note::
+   If the trigger time is dependent on another activity or triggering action (e.g. :guilabel:`Mail:
+   Replied`, etc.) the time is displayed, along with the necessary action for that activity to be
+   activated (e.g. `Replied after 2 Hours`).
+
+   .. image:: understanding_metrics/replied-after-activity-time-trigger.png
+      :align: center
+      :alt: Time trigger display when dependent on another activity in Odoo Marketing Automation.
+
+In the activity block, an icon represents each activity type. An :guilabel:`✉️ (envelope)` icon
+means the activity is an email. Three tiny, interlocking :guilabel:`⚙️ (gear)` icons means the
+activity is an internal action. And, a small, basic :guilabel:`📱 (mobile)` icon means the activity
+is an SMS.
+
+.. tip::
+   The activity type name is also displayed in smaller font below the activity title.
+
+Beside the activity icon, at the top of the activity block, is the title of the activity. To the
+right of the activity title, there are :guilabel:`Edit` and :guilabel:`Delete` buttons.
+
+Click :guilabel:`Edit` to open the :guilabel:`Open: Activities` pop-up form for that specific
+activity, in which that activity can be modified. Click the :guilabel:`Delete` button to completely
+delete that specific activity from the workflow.
+
+.. seealso::
+   :doc:`workflow_activities`
+
+Activity graph tab
+------------------
+
+In every activity block, the :guilabel:`Graph (pie chart icon)` tab is open by default, displaying
+related metrics as a simple line graph. The success metrics are represented in `green` and the
+rejected metrics are represented in `red`.
+
+Numerical representations of both :guilabel:`Success` and :guilabel:`Rejected` activities are shown
+to the right of the line graph.
+
+.. tip::
+   Hovering over any point in the line graph of the activity block reveals a notated breakdown of
+   data for that specific date.
+
+   .. image:: understanding_metrics/graph-breakdown-data.png
+      :align: center
+      :alt: Hovering over any point in line graph reveals notated breakdown of data in Odoo.
+
+Beneath the graph in the activity block, for *Email* or *SMS* activity types, a line of accessible
+data figures provide a bird's eye view of the campaign activity, including: :guilabel:`Sent`
+(numerical), :guilabel:`Clicked` (percentage), :guilabel:`Replied` (percentage), and
+:guilabel:`Bounced` (percentage).
+
+.. tip::
+   Clicking any of those stats on the :guilabel:`DETAILS` line, beneath the line graph, reveals a
+   separate page containing every specific record for that particular data point.
+
+Activity filter tab
+-------------------
+
+Next to the :guilabel:`Graph` tab on the activity block, there's the option to open a
+:guilabel:`Filter` tab (represented by a :guilabel:`filter/funnel` icon).
+
+.. image:: understanding_metrics/activity-filter-tab.png
+   :align: center
+   :alt: What a campaign activity filter tab looks like in Odoo Marketing Automation.
+
+Clicking the :guilabel:`Filter` tab on an activity block, reveals what the specific filters are for
+that particular campaign activity, and how many records in the database match that specific
+criteria.
+
+.. tip::
+   Clicking the :guilabel:`records` link beneath the displayed filter reveals a separate pop-up
+   window containing a list of all the records that match that specific campaign activity rule(s).
+
+Link tracker
+============
+
+Odoo tracks all URLs used in marketing campaigns. To access and analyze those URLs, navigate to
+:menuselection:`Marketing Automation app --> Reporting --> Link Tracker`. Doing so reveals a
+:guilabel:`Link Statistics` page, wherein all campaign-related URLs can be analyzed.
+
+.. image:: understanding_metrics/campaign-link-tracker.png
+   :align: center
+   :alt: What a campaign activity filter tab looks like in Odoo Marketing Automation.
+
+The default view on the :guilabel:`Link Statistics` page is the :guilabel:`Bar Chart` view, but
+there are different view options available in the upper-left corner. There is the option to view the
+statistics as a :guilabel:`Line Chart` or :guilabel:`Pie Chart`.
+
+Beside that, there is also the option to view the statistics as :guilabel:`Stacked`, and the data
+can be put into :guilabel:`Descending` or :guilabel:`Ascending` order.
+
+To the far-left of the view options, there is the :guilabel:`Measures` drop-down menu. When clicked,
+the options to view the :guilabel:`Number of Clicks` or total :guilabel:`Count` are available. And,
+to the right of the :guilabel:`Measures` drop-down menu, there's the ability to add any data to a
+spreadsheet by clicking the :guilabel:`Insert in Spreadsheet` button.
+
+Also, in the upper-right corner of the :guilabel:`Link Statistics` page, to the far-right of the
+search bar, there are additional view options to choose from: the default :guilabel:`Graph` view,
+the :guilabel:`Pivot` table view, and the :guilabel:`List` view.
+
+Traces
+======
+
+Odoo tracks all activities used in every marketing campaign. The data related to these activities
+can be accessed and analyzed in the :guilabel:`Traces` page, which can be found by navigating to
+:menuselection:`Marketing Automation app --> Reporting --> Traces`.
+
+.. image:: understanding_metrics/traces-page-marketing-automation.png
+   :align: center
+   :alt: The Traces page in the Odoo Marketing Automation application.
+
+The default view on the :guilabel:`Traces` page is the :guilabel:`Bar Chart` view, but there are
+different view options available in the upper-left corner. There is the option to view the
+statistics as a :guilabel:`Line Chart` or :guilabel:`Pie Chart`.
+
+At the top of the graph, there's a color key, informing the user which activities have been
+:guilabel:`Processed`, :guilabel:`Scheduled`, and :guilabel:`Rejected`. There's also an outline
+indicator to inform users of the :guilabel:`Sum` of certain activities, as well.
+
+Beside the various view option in the upper-left corner of the :guilabel:`Traces` page, there is
+also the option to view the statistics as :guilabel:`Stacked`, and the data can be put into
+:guilabel:`Descending` or :guilabel:`Ascending` order.
+
+To the far-left of the view options, there is the :guilabel:`Measures` drop-down menu. When clicked,
+the options to view the :guilabel:`Document ID` or total :guilabel:`Count` are available. And, to
+the right of the :guilabel:`Measures` drop-down menu, there's the ability to add any data to a
+spreadsheet by clicking the :guilabel:`Insert in Spreadsheet` button.
+
+Also, in the upper-right corner of the :guilabel:`Link Statistics` page, to the far-right of the
+search bar, there are additional view options to choose from: the default :guilabel:`Graph` view,
+the :guilabel:`Pivot` table view, and the :guilabel:`List` view.
+
+Participants
+============
+
+Odoo tracks all participants related to every marketing campaign. The data related to these
+participants can be accessed and analyzed in the :guilabel:`Participants` page, which can be found
+by navigating to :menuselection:`Marketing Automation app --> Reporting --> Participants`.
+
+.. image:: understanding_metrics/participants-page-marketing-automation.png
+   :align: center
+   :alt: The Participants page in the Odoo Marketing Automation application.
+
+The default view on the :guilabel:`Participants` page is the :guilabel:`Pie Chart` view, but there
+are different view options available in the upper-left corner. There is the option to view the
+statistics as a :guilabel:`Line Chart` or :guilabel:`Bar Chart`.
+
+At the top of the graph, there's a color key that describes the type of participants found in the
+graph.
+
+To the far-left of the view options, there is the :guilabel:`Measures` drop-down menu. When clicked,
+the options to view the :guilabel:`Record ID` or total :guilabel:`Count` are available. And, to the
+right of the :guilabel:`Measures` drop-down menu, there's the ability to add any data to a
+spreadsheet by clicking the :guilabel:`Insert in Spreadsheet` button.
+
+Also, in the upper-right corner of the :guilabel:`Link Statistics` page, to the far-right of the
+search bar, there are additional view options to choose from: the default :guilabel:`Graph` view,
+the :guilabel:`Pivot` table view, and the :guilabel:`List` view.
+
+
+==================================================
+SECTION: workflow_activities.rst
+PATH: applications/marketing/marketing_automation/workflow_activities.rst
+==================================================
+
+============================
+Campaign workflow activities
+============================
+
+A *workflow* is the overall *activity* structure of a marketing automation campaign. There can only
+be a single workflow in each campaign. However, a workflow can be made up of any number of
+:ref:`activities <marketing_automation/activities>` to meet the needs of the campaign.
+
+.. figure:: workflow_activities/workflow-activities.png
+   :align: center
+   :alt: A workflow in an Odoo Marketing Automation campaign.
+
+   Workflow sequence of three activities; the last child activity has a :ref:`trigger type
+   <marketing_automation/trigger-type>` of **Mail: not opened**.
+
+.. _marketing_automation/activities:
+
+Activities
+==========
+
+Activities are the methods of communication or server actions, organized in a workflow, that are
+executed within a campaign; they are the building blocks of the campaign's workflow.
+
+A new activity can be added to the workflow on a campaign form by selecting an existing campaign or
+:ref:`creating a new campaign <marketing_automation/campaigns>` from the :menuselection:`Marketing
+Automation app --> Campaigns` dashboard, then clicking the :guilabel:`Add new activity` button in
+the :guilabel:`Workflow` section. Doing so opens the :guilabel:`Create Activities` pop-up window.
+
+First, define the name of the activity in the :guilabel:`Activity Name` field, and select the
+:ref:`type of activity <marketing_automation/activity-types>` to be executed from the
+:guilabel:`Activity Type` field.
+
+Then, configure the activity's :ref:`Trigger <marketing_automation/trigger>`, and optionally, the
+:ref:`Expiry Duration <marketing_automation/expiry-duration>` and the :ref:`DOMAIN
+<marketing_automation/activity-domain>` of the activity.
+
+Once the activity is fully configured, click :guilabel:`Save & Close` to add it to the campaign's
+workflow, or click :guilabel:`Save & New` to add the activity to the workflow and open a new
+:guilabel:`Create Activities` pop-up window to add another activity. Clicking :guilabel:`Discard`
+closes the pop-up window without saving the activity.
+
+.. image:: workflow_activities/create-activities.png
+   :align: center
+   :alt: The create activities pop-up window.
+
+.. _marketing_automation/activity-types:
+
+Activity types
+--------------
+
+There are three different types of activities available in the *Marketing Automation* app:
+
+- :ref:`Email <marketing_automation/email-activity-type>`: an email that is sent to the target
+  audience.
+- :ref:`Server action <marketing_automation/sa-activity-type>`: an internal action within the
+  database that is executed.
+- :ref:`SMS <marketing_automation/sms-activity-type>`: a text message that is sent to the target
+  audience.
+
+.. _marketing_automation/email-activity-type:
+
+Email
+~~~~~
+
+If :guilabel:`Email` is selected as the :guilabel:`Activity Type`, the option to :guilabel:`Pick a
+Template` in the :guilabel:`Mail Template` field is available.
+
+To create a new template directly from the :guilabel:`Mail Template` field, start typing the title
+of the new template, then select :guilabel:`Create and edit...` to reveal a :guilabel:`Create
+Marketing Template` pop-up window. Proceed to create and configure the new email template.
+
+.. image:: workflow_activities/email-activity-type.png
+   :align: center
+   :alt: The create and edit email drop-down option on create activities pop-up window.
+
+Once the email template is configured, click :guilabel:`Save & Close` to save the activity, and
+return to the :guilabel:`Create Activities` pop-up window, in order to continue to configure the
+:ref:`trigger <marketing_automation/trigger>`.
+
+.. note::
+   The title used for the :guilabel:`Mail Template` **must** be unique from any other mail template
+   titles in the campaign, and it also serves as the subject of the email.
+
+.. seealso::
+   :doc:`Creating and configuring email templates <../email_marketing>`
+
+.. _marketing_automation/sa-activity-type:
+
+Server action
+~~~~~~~~~~~~~
+
+If :guilabel:`Server Action` is selected as the :guilabel:`Activity Type`, the option to
+:guilabel:`Pick a Server Action` in the :guilabel:`Server Action` field is available. This field is
+a drop-down menu containing all the pre-configured server actions for the campaign's
+:guilabel:`Target` model. Optionally, :ref:`create a new server action
+<marketing_automation/create-sa>`.
+
+.. image:: workflow_activities/sa-activity-type.png
+   :align: center
+   :alt: The Server Action drop-down menu on create activities pop-up window.
+
+After selecting a pre-configured server action, no other activity type configuration is needed.
+Click :guilabel:`Save & Close` to save the activity, and return to the :guilabel:`Create Activities`
+pop-up window, in order to configure the :ref:`trigger <marketing_automation/trigger>`.
+
+.. tip::
+   To view all server actions in the database, activate :ref:`developer-mode`, and navigate to
+   :menuselection:`Settings app --> Technical --> Actions --> Server Actions` dashboard.
+
+.. _marketing_automation/create-sa:
+
+Create a new server action
+**************************
+
+The option to create a new server action is also available. To do so, type in the :guilabel:`Server
+Action` field a title for the new action, then click :guilabel:`Create and edit...`. Doing so
+reveals a blank :guilabel:`Create Server Action` pop-up window, wherein a custom server action can
+be created and configured.
+
+.. image:: workflow_activities/create-sa.png
+   :align: center
+   :alt: The Create Server Action pop-up window.
+
+On the :guilabel:`Create Server Action` pop-up window, select the :guilabel:`Type` of server action.
+The configuration fields change, depending on the selected :guilabel:`Type`:
+
+- :guilabel:`Update Record`: update the values of a record.
+- :guilabel:`Create Activity`: create an activity with the *Discuss* app.
+- :guilabel:`Send Email`: post a message, a note, or send an email with the *Discuss* app.
+- :guilabel:`Send SMS`: send an SMS, and log them on documents, with the *SMS* app.
+- :guilabel:`Add Followers` or :guilabel:`Remove Followers`: add or remove followers on a record
+  with the *Discuss* app.
+- :guilabel:`Create Record`: create a new record with new values.
+- :guilabel:`Execute Code`: execute a block of Python code.
+- :guilabel:`Send Webhook Notification`: send a POST request to an external system.
+- :guilabel:`Execute Existing Actions`: define an action that triggers several other server
+  actions.
+
+Once the server action is configured, click :guilabel:`Save & Close` to save the activity, and
+return to the :guilabel:`Create Activities` pop-up window, in order to configure the :ref:`trigger
+<marketing_automation/trigger>`.
+
+.. tip::
+   Some of the server action types have advanced configurations available when :ref:`developer-mode`
+   is activated, such as specifying the :guilabel:`Allowed Groups` that can execute this server
+   action.
+
+.. _marketing_automation/sms-activity-type:
+
+SMS
+~~~
+
+If :guilabel:`SMS` is selected as the :guilabel:`Activity Type`, the option to :guilabel:`Pick a
+Template` in the :guilabel:`SMS Template` field is available.
+
+To create a new template directly from the :guilabel:`SMS Template` field, start typing the title of
+the new template, and select :guilabel:`Create and edit...` to reveal a :guilabel:`Create Marketing
+Template` pop-up window. Proceed to create and configure the new SMS template.
+
+.. image:: workflow_activities/sms-activity-type.png
+   :align: center
+   :alt: The create and edit email drop-down option on create activities pop-up window.
+
+Once the SMS template is configured, click :guilabel:`Save & Close` to save the activity, and return
+to the :guilabel:`Create Activities` pop-up window, in order to configure the :ref:`trigger
+<marketing_automation/trigger>`.
+
+.. seealso::
+   :doc:`Creating and configuring SMS templates <../sms_marketing>`
+
+.. _marketing_automation/trigger:
+
+Trigger
+-------
+
+Once an :ref:`activity type <marketing_automation/activity-types>` is configured, the next step in
+the :guilabel:`Create Activities` pop-up window is to define when the activity should be executed.
+This is done in the :guilabel:`Trigger` field group.
+
+.. image:: workflow_activities/trigger.png
+   :align: center
+   :alt: The trigger field group on Create Activities pop-up window.
+
+To set an execution delay for the activity from when the :ref:`trigger type
+<marketing_automation/trigger-type>` occurs, type a whole number in the *interval number* input
+(e.g. `2` is valid, `0` is also valid, and `1.5` is not).
+
+Next, select the unit of time for the interval number in the *interval type* drop-down menu, the
+options are: :guilabel:`Hours`, :guilabel:`Days`, :guilabel:`Weeks`, and :guilabel:`Months`.
+
+.. example::
+   If the interval number is set to `0` and the interval type is set to :guilabel:`Hours`, the
+   activity will be executed immediately after the trigger type occurs (at the next scheduled run of
+   the :ref:`Mail: Email Queue Manager cron <email-issues-outgoing-execution-time>`).
+
+.. _marketing_automation/trigger-type:
+
+Trigger type
+~~~~~~~~~~~~
+
+To define the event occurrence that sets the activity into motion, select a *trigger type* from the
+drop-down menu:
+
+- :guilabel:`beginning of workflow`: the activity is executed when the campaign is started.
+
+All other trigger types reveal a drop-down menu :guilabel:`Activity` field containing all of the
+other activities in the campaign. Selecting one of these types converts this activity into a
+:ref:`child activity <marketing_automation/child-activities>` to be executed directly after the
+selected :guilabel:`Activity`:
+
+- :guilabel:`another activity`: to be executed after another activity in the campaign.
+- :guilabel:`Mail: opened`: the activity's email was opened by the participant.
+- :guilabel:`Mail: not opened`: the activity's email was **not** opened by the participant.
+- :guilabel:`Mail: replied`: the activity's email was replied to by the participant.
+- :guilabel:`Mail: not replied`: the activity's email was **not** replied to by the participant.
+- :guilabel:`Mail: clicked`: a link in the activity's email was clicked by the participant.
+- :guilabel:`Mail: not clicked`: a link in the activity's email was **not** clicked by the
+  participant.
+- :guilabel:`Mail: bounced`: the activity's email has bounced.
+- :guilabel:`SMS: clicked`: a link in the activity's SMS was clicked by the participant.
+- :guilabel:`SMS: not clicked`: a link in the activity's SMS was **not** clicked by the participant.
+- :guilabel:`SMS: bounced`: the activity's SMS has bounced.
+
+.. example::
+   If the trigger type is set to :guilabel:`Mail: clicked`, this activity is converted to a
+   :ref:`child activity <marketing_automation/child-activities>` and will execute **after** a
+   participant clicks on a link from the parent activity defined in the :guilabel:`Activity` field.
+
+.. _marketing_automation/expiry-duration:
+
+Expiry duration
+---------------
+
+Optionally, an :guilabel:`Expiry Duration` can be defined in the :guilabel:`Create Activities`
+pop-up window to cancel the execution of this activity after a specific amount of time. Selecting
+this checkbox reveals the :guilabel:`Cancel after` field with *interval* and *interval type* inputs.
+
+Type a whole number in the interval number input (e.g. `2` is valid, `0` is also valid, and `1.5`
+is not). Then, select the unit of time for the interval number in the interval type drop-down menu,
+the options are: :guilabel:`Hours`, :guilabel:`Days`, :guilabel:`Weeks`, and :guilabel:`Months`.
+
+.. example::
+   If the interval number is set to `2` and the interval type is set to :guilabel:`Days`, the
+   activity will be cancelled if it has not been executed within 2 days of the trigger type.
+
+.. _marketing_automation/activity-domain:
+
+Activity domain
+---------------
+
+The :guilabel:`DOMAIN` section of the :guilabel:`Create Activities` pop-up window contains fields to
+further filter the target audience of the activity.
+
+The :guilabel:`Activity Filter` field focuses this activity, **and** its :ref:`child activities
+<marketing_automation/child-activities>`, even further on a specific group of the campaign's filter.
+The process is the same as :ref:`defining filters <marketing_automation/defining-filters>` for the
+campaign, and the fields that are available to filter are also specific to the :guilabel:`Target`
+of the campaign.
+
+The :guilabel:`# record(s)` beside the :guilabel:`Activity Filter` field indicates how many records
+are currently being targeted by this :guilabel:`Activity Filter`.
+
+The :guilabel:`Applied Filter` displays the combined filters from the :guilabel:`Activity Filter`
+and the inherited campaign :doc:`Filter <target_audience>`. This field is read-only.
+
+The :guilabel:`# record(s)` beside the :guilabel:`Applied Filter` field indicates how many records,
+in total, are currently being targeted by the activity.
+
+.. _marketing_automation/child-activities:
+
+Child activities
+================
+
+Activities that are connected to, and triggered by, another activity are known as, *child
+activities*.
+
+The activity that triggers a child activity is known as its *parent activity*.
+
+A child activity can be added to a campaign's workflow by hovering over the :guilabel:`➕ Add child
+activity` button, located beneath the desired parent activity.
+
+The child activity's :ref:`trigger types <marketing_automation/trigger-type>` are specific to the
+parent :ref:`activity type <marketing_automation/activity-types>` (*Email*, *SMS*, or *Server
+Action*), and are as follows:
+
+.. tabs::
+
+   .. tab:: Email
+
+      .. image:: workflow_activities/email-trigger-types.png
+         :align: center
+         :alt: The trigger types for child activities of an email activity.
+
+      Each trigger the child activity on the following conditions of the parent activity:
+
+      - :guilabel:`Add Another Activity`: to be executed after the parent activity.
+      - :guilabel:`Opened`: the email was opened by the participant.
+      - :guilabel:`Not Opened`: the email was **not** opened by the participant.
+      - :guilabel:`Replied`: the email was replied to by the participant.
+      - :guilabel:`Not Replied`: the email was **not** replied to by the participant.
+      - :guilabel:`Clicked`: a link in the email was clicked by the participant.
+      - :guilabel:`Not Clicked`: a link in the email was **not** clicked by the participant.
+      - :guilabel:`Bounced`: the email has bounced.
+
+   .. tab:: Server Action
+
+      .. image:: workflow_activities/sa-trigger-types.png
+         :align: center
+         :alt: The trigger types for child activities of a server action activity.
+
+      Triggers the child activity on the following condition of the parent activity:
+
+      - :guilabel:`Add Another Activity`: to be executed after the parent activity.
+
+   .. tab:: SMS
+
+      .. image:: workflow_activities/sms-trigger-types.png
+         :align: center
+         :alt: The trigger types for child activities of an SMS activity.
+
+      Each trigger the child activity on the following conditions of the parent activity:
+
+      - :guilabel:`Add Another Activity`: to be executed after the parent activity.
+      - :guilabel:`Clicked`: a link in the SMS was clicked by the participant.
+      - :guilabel:`Not Clicked`: a link in the SMS was **not** clicked by the participant.
+      - :guilabel:`Bounced`: the SMS has bounced.
+
+Once a trigger type is selected, the :guilabel:`Create Activities` pop-up window opens to configure
+the child activity. The process is the same as :ref:`creating a new activity
+<marketing_automation/activities>`, with the exception that the :guilabel:`Trigger` field is
+pre-filled with the selected trigger type, and the :guilabel:`Activity` field has the parent
+activity selected.
+
+.. seealso::
+   - :doc:`testing_running`
+   - :doc:`understanding_metrics`
+   - :doc:`target_audience`

@@ -1,0 +1,909 @@
+
+
+==================================================
+SECTION: maintenance.rst
+PATH: applications/inventory_and_mrp/maintenance.rst
+==================================================
+
+:nosearch:
+:show-content:
+:hide-page-toc:
+:show-toc:
+
+===========
+Maintenance
+===========
+
+**Odoo Maintenance** helps extend the effectiveness of equipment by keeping track of maintenance
+requirements.
+
+.. seealso::
+   - `Odoo Tutorials: Managing Equipment Maintenance
+     <https://www.odoo.com/slides/slide/managing-equipment-maintenance-709>`_
+
+.. toctree::
+   :titlesonly:
+
+   maintenance/add_new_equipment
+   maintenance/maintenance_calendar
+   maintenance/maintenance_requests
+   maintenance/maintenance_setup
+
+
+==================================================
+SECTION: add_new_equipment.rst
+PATH: applications/inventory_and_mrp/maintenance/add_new_equipment.rst
+==================================================
+
+=================
+Add new equipment
+=================
+
+.. _maintenance/equipment_management/add_new_equipment:
+
+In Odoo, *equipment* refers to any item that is used in everyday operations, including the
+manufacturing of products. This can mean a piece of machinery on a production line, a tool that is
+used in different locations, or a computer in an office space. Equipment registered in Odoo can be
+owned by the company that uses the Odoo database, or by a third party, such as a vendor in the case
+of equipment rentals.
+
+Using Odoo *Maintenance*, it is possible to track individual pieces of equipment, along with
+information about their maintenance requirements. To add a new piece of equipment, navigate to the
+:guilabel:`Maintenance` module, select :menuselection:`Equipments --> Machines & Tools --> Create`,
+and configure the equipment as follows:
+
+- :guilabel:`Equipment Name`: the product name of the piece of equipment
+- :guilabel:`Equipment Category`: the category that the equipment belongs to; for example,
+  computers, machinery, tools, etc.; new categories can be created by navigating to
+  :menuselection:`Configuration --> Equipment Categories` and clicking :guilabel:`Create`
+- :guilabel:`Company`: the company that owns the equipment; again, this can be the company that uses
+  the Odoo database, or a third-party company
+- :guilabel:`Used By`: specify if the equipment is used by a specific employee, department, or both;
+  select :guilabel:`Other` to specify both an employee and a department
+- :guilabel:`Maintenance Team`: the team responsible for servicing the equipment; new teams can be
+  created by navigating to :menuselection:`Configuration --> Maintenance Teams` and
+  selecting :guilabel:`Create`; the members of each team can also be assigned from this page
+- :guilabel:`Technician`: the person responsible for servicing the equipment; this can be used to
+  assign a specific individual in the event that no maintenance team is assigned or when a specific
+  member of the assigned team should always be responsible for the equipment; any person added to
+  Odoo as a user can be assigned as a technician
+- :guilabel:`Used in location`: the location where the equipment is used; this is a simple text
+  field that can be used to specify locations that are not work centers, like an office, for
+  example
+- :guilabel:`Work Center`: if the equipment is used at a work center, specify it here; equipment can
+  also be assigned to a work center by navigating to :menuselection:`Maintenance --> Equipments -->
+  Work Centers`, selecting a work center or creating a new one using the :guilabel:`Create` button,
+  and clicking the :guilabel:`Equipment` tab on the work center form
+
+.. image:: add_new_equipment/new-equipment-form.png
+   :align: center
+   :alt: An example of a fully configured new equipment form.
+
+Include additional product information
+--------------------------------------
+
+The :guilabel:`Product Information` tab at the bottom of the page can be used to provide further
+details about the piece of equipment:
+
+- :guilabel:`Vendor`: the vendor that the equipment was purchased from
+- :guilabel:`Vendor Reference`: the reference code assigned to the vendor
+- :guilabel:`Model`: the specific model of the piece of equipment
+- :guilabel:`Serial Number`: the unique serial number of the equipment
+- :guilabel:`Effective Date`: the date that the equipment became available for use; this is used to
+  calculate the :abbr:`MTBF (Mean Time Between Failures)`
+- :guilabel:`Cost`: the amount the equipment was purchased for
+- :guilabel:`Warranty Expiration Date`: the date on which the equipment's warranty will expire
+
+.. image:: add_new_equipment/new-equipment-product-information.png
+   :align: center
+   :alt: The product information tab for the new piece of equipment.
+
+Add maintenance details
+-----------------------
+
+The :guilabel:`Maintenance` tab at the bottom of the page provides information about the failure
+frequency of the piece of equipment:
+
+- :guilabel:`Expected Mean Time Between Failure`: the average number of days the equipment is
+  expected to operate between failures. This number can be configured manually.
+- :guilabel:`Mean Time Between Failure`: the average number of days the equipment operates between
+  failures. This number is calculated automatically based on previous failures, and cannot
+  be configured manually.
+- :guilabel:`Estimated Next Failure`: the estimated date the equipment may experience its next
+  failure.
+  This date is calculated automatically based on the data in the :guilabel:`Mean Time Between
+  Failure` and :guilabel:`Latest Failure` fields, and cannot be configured manually.
+- :guilabel:`Latest Failure`: the most recent date on which the equipment failed. This date is based
+  on the creation date of the equipment's most recent maintenance request, and cannot be configured
+  manually.
+- :guilabel:`Mean Time To Repair`: the average number of days needed to repair the equipment. This
+  number is calculated automatically based on the duration of previous maintenance requests, and
+  cannot be configured manually.
+
+.. image:: add_new_equipment/new-equipment-maintenance.png
+   :align: center
+   :alt: The maintenance tab for a piece of equipment.
+
+.. tip::
+   To see any open maintenance requests for a piece of equipment, go to the page for the equipment,
+   and click the :guilabel:`Maintenance` smart button at the top of the page.
+
+
+==================================================
+SECTION: maintenance_calendar.rst
+PATH: applications/inventory_and_mrp/maintenance/maintenance_calendar.rst
+==================================================
+
+====================
+Maintenance calendar
+====================
+
+.. |MO| replace:: :abbr:`MO (Manufacturing Order)`
+
+Avoiding equipment breakdowns, and blocks in warehouse work centers, requires constant equipment
+maintenance. Timely corrective maintenance for machines and tools that break unexpectedly, as well
+as preventive maintenance to ensure that such issues are avoided, are key to keeping warehouse
+operations running smoothly.
+
+In Odoo *Maintenance*, users can access the *Maintenance Calendar* to create, schedule, and edit
+both corrective and preventive maintenance requests, to stay on top of equipment and work centers.
+
+Create maintenance request
+==========================
+
+Maintenance requests can be created directly from the *Maintenance Calendar*. To access the
+calendar, navigate to :menuselection:`Maintenance app --> Maintenance --> Maintenance Calendar`.
+
+To create a new request, click anywhere on the calendar. Doing so opens a :guilabel:`New Event`
+pop-up window. In the :guilabel:`Name:` field, assign a title to the new request.
+
+.. image:: maintenance_calendar/maintenance-calendar-new-event-popup.png
+   :align: center
+   :alt: New event creation pop-up window.
+
+Clicking :guilabel:`Create` on the pop-up window saves the new request with no additional details.
+If the request's creation should be cancelled, click :guilabel:`Cancel`.
+
+To add more details and schedule the request for a specific date and time, click :guilabel:`Edit`.
+
+Clicking :guilabel:`Edit` opens a blank maintenance request form, where various details about the
+request can be filled out.
+
+Edit maintenance request
+------------------------
+
+In the :guilabel:`Request` field, assign a title to the new request. In the :guilabel:`Created By`
+field, from the drop-down menu, select which user the request was created by. By default, this field
+populates with the user actually creating the request.
+
+.. image:: maintenance_calendar/maintenance-calendar-new-request-form.png
+   :align: center
+   :alt: New maintenance request form creation.
+
+In the :guilabel:`For` field, from the drop-down menu, select if this request is being created for a
+piece of :guilabel:`Equipment`, or a :guilabel:`Work Center`.
+
+.. note::
+   If :guilabel:`Work Center` is selected in the :guilabel:`For` field's drop-down menu, two
+   additional fields appear on the form: :guilabel:`Work Center` and :guilabel:`Block Workcenter`.
+
+   In the :guilabel:`Work Center` field, select which work center in the warehouse this maintenance
+   request applies to.
+
+   If the :guilabel:`Block Workcenter` option's checkbox is ticked, it is not possible to plan work
+   orders, or other maintenance requests, in this work center during the time that this request is
+   being performed.
+
+If :guilabel:`Equipment` is selected in the :guilabel:`For` field, which it is by default, select
+which machine or tool requires maintenance from the :guilabel:`Equipment` field. Once a specific
+piece of equipment is selected, a greyed-out :guilabel:`Category` field appears, listing the
+*Equipment Category* to which the equipment belongs.
+
+In the :guilabel:`Worksheet Template` field, if necessary, click the drop-down menu to select a
+worksheet template. These templates are custom templates that can be filled out by the employee
+performing the maintenance.
+
+Under the :guilabel:`Category` field, the :guilabel:`Request Date` field displays the date requested
+for the maintenance to happen.
+
+The :guilabel:`Maintenance Type` field provides two selectable radio button options:
+:guilabel:`Corrective` and :guilabel:`Preventive`.
+
+:guilabel:`Corrective` maintenance is for requests that arise for immediate needs, such as broken
+equipment, while :guilabel:`Preventive` maintenance is for planned requests, to avoid breakdowns in
+the future.
+
+If this request is tied to a specific |MO|, select that |MO| from the :guilabel:`Manufacturing
+Order` field.
+
+From the drop-down menu for the :guilabel:`Team` field, select the desired maintenance team who will
+perform the maintenance. In the :guilabel:`Responsible` field, select the technician responsible for
+the request.
+
+.. image:: maintenance_calendar/maintenance-calendar-filled-out-form.png
+   :align: center
+   :alt: Filled-out details of maintenance request form.
+
+In the :guilabel:`Scheduled Date` field, click the date to open a calendar popover. From this
+popover, select the planned date of the maintenance, and click :guilabel:`Apply` to save the date.
+
+In the :guilabel:`Duration` field, enter the the amount of hours (in a `00:00` format) that the
+maintenance is planned to take.
+
+In the :guilabel:`Priority` field, choose a priority between one and three :guilabel:`⭐⭐⭐ (stars)`.
+This indicates the importance of the maintenance request.
+
+If working in a multi-company environment, from the drop-down menu in the :guilabel:`Company` field,
+select the company to which this maintenance request belongs.
+
+At the bottom of the form, there are two tabs: :guilabel:`Notes` and :guilabel:`Instructions`.
+
+In the :guilabel:`Notes` tab, type out any internal notes for the team or technician assigned to the
+request, if necessary.
+
+In the :guilabel:`Instructions` tab, if necessary, select one of the three radio button options to
+provide maintenance instructions to the assigned team or technician. The available methods for
+providing instructions are via :guilabel:`PDF`, :guilabel:`Google Slide`, or :guilabel:`Text`.
+
+.. image:: maintenance_calendar/maintenance-calendar-instructions-tab.png
+   :align: center
+   :alt: Instructions tab options on maintenance request form.
+
+Calendar elements
+=================
+
+The *Maintenance Calendar* provides various views, search functions, and filters to help keep track
+of the progress of ongoing and planned maintenance requests.
+
+The following sections describe elements found across various views of the calendar.
+
+Filters and Favorites
+---------------------
+
+To access the maintenance calendar, navigate to :menuselection:`Maintenance app --> Maintenance -->
+Maintenance Calendar`.
+
+To add and remove filters for sorting data on the *Maintenance Calendar*, click the :guilabel:`🔻
+(triangle pointed down)` icon, to the right of the search bar at the top of the page.
+
+The left-hand side of the resulting drop-down menu lists all the different :guilabel:`Filters` users
+can select. By default, :guilabel:`To Do` and :guilabel:`Active` are selected, so all open requests
+are displayed.
+
+.. tip::
+   To add a custom filter to the :guilabel:`Maintenance Calendar`, click :guilabel:`Add Custom
+   Filter`, under the :guilabel:`Filters` section of the drop-down menu. This opens an
+   :guilabel:`Add Custom Filter` pop-up window.
+
+   From this pop-up window, configure the properties of the new rule for the filter. Once ready,
+   click :guilabel:`Add`.
+
+The right-hand side of the drop-down menu lists the :guilabel:`Favorites`, or any searches that have
+been saved as a favorite to be revisited at a later date.
+
+.. image:: maintenance_calendar/maintenance-calendar-favorites-popover.png
+   :align: center
+   :alt: Favorites section of filters drop-down menu.
+
+To save a new :guilabel:`Favorite` search, select the desired :guilabel:`Filters`. Then, click
+:guilabel:`Save current search`. In the field directly below :guilabel:`Save current search`, assign
+a name to the search.
+
+Under the assigned name, there are two options, to save the current search either as the
+:guilabel:`Default filter`, or as a :guilabel:`Shared` filter.
+
+Selecting :guilabel:`Default filter` sets this filter as the default when opening this calendar
+view.
+
+Selecting the :guilabel:`Shared` filter makes this filter available to other users.
+
+Once ready, click :guilabel:`Save`. When clicked, the new :guilabel:`Favorite` filter appears in the
+:guilabel:`Favorites` column, and a :guilabel:`⭐ (gold star)` icon appears with the filter's name in
+the search bar.
+
+Views
+-----
+
+The :guilabel:`Maintenance Calendar` is available in six different views: :guilabel:`Calendar`
+(default), :guilabel:`Kanban`, :guilabel:`List`, :guilabel:`Pivot`, :guilabel:`Graph`, and
+:guilabel:`Activity`.
+
+.. image:: maintenance_calendar/maintenance-calendar-view-type-icons.png
+   :align: center
+   :alt: Different view type icons for maintenance calendar.
+
+Calendar view
+~~~~~~~~~~~~~
+
+:guilabel:`Calendar` is the default view displayed when the :guilabel:`Maintenance Calendar` is
+opened. There are a number of options in this view type for sorting and grouping information about
+maintenance requests.
+
+In the top-left corner of the page, there is a drop-down menu set to :guilabel:`Week`, by default.
+Clicking that drop-down menu reveals the different periods of time, in which the calendar can be
+viewed: :guilabel:`Day`, :guilabel:`Month`, and :guilabel:`Year`. There is also an option to
+:guilabel:`Show weekends`, selected by default. If unselected, weekends are not shown on the
+calendar.
+
+.. image:: maintenance_calendar/maintenance-calendar-period-dropdown.png
+   :align: center
+   :alt: Calendar period drop-down menu options.
+
+To the left of this menu, there is a :guilabel:`⬅️ (left arrow)` icon and a :guilabel:`➡️ (right
+arrow)` icon. Clicking these arrows moves the calendar backward or forward in time, respectively.
+
+To the right of the drop-down menu set to :guilabel:`Week`, by default, is a :guilabel:`Today`
+button. Clicking this button resets the calendar to view today's date, no matter which point in time
+is being viewed before clicking it.
+
+At the far-right side of the page is a sidebar column, containing a minimized calendar set to
+today's date, and a :guilabel:`Technician` list, displaying all the *Technicians* with requests
+currently open. Click the :guilabel:`(panel)` icon at the top of this sidebar to open or close the
+sidebar.
+
+.. note::
+   The :guilabel:`Technician` list only displays if technicians are assigned to open requests, and
+   individual technicians are only listed, if they are listed as :guilabel:`Responsible` on at least
+   **one** maintenance request form.
+
+Kanban view
+~~~~~~~~~~~
+
+With the :guilabel:`Kanban` view, all open maintenance requests are displayed in Kanban-style
+columns, in their respective stages of the maintenance process.
+
+Each maintenance request appears on its own task card, and each task card can be dragged-and-dropped
+to a different stage of the Kanban pipeline.
+
+Each column has a name (i.e. :guilabel:`In Progress`). Hovering at the top of a column reveals a
+:guilabel:`⚙️ (gear)` icon. Clicking the :guilabel:`⚙️ (gear)` icon reveals a list of options for
+that column: :guilabel:`Fold`, :guilabel:`Edit`, :guilabel:`Automations`, and :guilabel:`Delete`.
+
+.. image:: maintenance_calendar/maintenance-calendar-kanban-column.png
+   :align: center
+   :alt: Column options for stage in Kanban view.
+
+Clicking :guilabel:`Fold` folds the column to hide its contents.
+
+Clicking :guilabel:`Edit` opens an :guilabel:`Edit: (stage name)` pop-up window, with the
+corresponding stage name, wherein the column's details can be edited. The following are the column
+options that can be edited:
+
+.. image:: maintenance_calendar/maintenance-calendar-edit-stage-popup.png
+   :align: center
+   :alt: Edit In Progress pop-up window.
+
+- :guilabel:`Name`: the name of the stage in the Kanban pipeline.
+- :guilabel:`Folded in Maintenance Pipe`: when checked, this stage's column is folded by default in
+  the :guilabel:`Kanban` view type.
+- :guilabel:`Request Confirmed`: when this box is not ticked, and the maintenance request type is
+  set to *Work Center*, no leave is created for the respective work center when a maintenance
+  request is created. If the box *is* ticked, the work center is automatically blocked for the
+  listed duration, either at the specified date, or as soon as possible, if the work center is
+  unavailable.
+- :guilabel:`Sequence`: the order in the maintenance process, in which this stage appears.
+- :guilabel:`Request Done`: if ticked, this box indicates this stage is the final step of the
+  maintenance process. Requests moved to this stage are closed.
+
+Once ready, click :guilabel:`Save & Close`. If no changes have been made, click :guilabel:`Discard`,
+or click the :guilabel:`X` icon to close the pop-up window.
+
+List view
+~~~~~~~~~
+
+With the :guilabel:`List` view selected, all open maintenance requests are displayed in a list, with
+information about each request listed in its respective row.
+
+The columns of information displayed in this view type are the following:
+
+- :guilabel:`Subjects`: the name assigned to the maintenance request.
+- :guilabel:`Employee`: the employee who originally created the maintenance request.
+- :guilabel:`Technician`: the technician responsible for the maintenance request.
+- :guilabel:`Category`: the category the equipment being repaired belongs to.
+- :guilabel:`Stage`: the stage of the maintenance process the request is currently in.
+- :guilabel:`Company`: if in a multi-company environment, the company in the database the request is
+  assigned to.
+
+Pivot view
+~~~~~~~~~~
+
+With the :guilabel:`Pivot` view selected, maintenance requests are displayed in a pivot table, and
+can be customized to show different data metrics.
+
+To add more data to the pivot table, click the :guilabel:`Measures` button to reveal a drop-down
+menu. By default, :guilabel:`Count` is selected. Additional options to add to the table are
+:guilabel:`Additional Leaves to Plan Ahead`, :guilabel:`Duration`, and :guilabel:`Repeat Every`.
+
+.. image:: maintenance_calendar/maintenance-calendar-measures-menu.png
+   :align: center
+   :alt: Measures options on Pivot view page.
+
+To the right of the :guilabel:`Measures` button is the :guilabel:`Insert in Spreadsheet` button.
+Clicking this button opens a pop-up window titled :guilabel:`Select a spreadsheet to insert your
+pivot.`.
+
+There are two tabs in this pop-up window: :guilabel:`Spreadsheets` and :guilabel:`Dashboards`. Click
+into one of these tabs, and select a spreadsheet or dashboard in the database to add this pivot
+table to. Once ready, click :guilabel:`Confirm`. If this table shouldn't be added to a spreadsheet
+or dashboard, click :guilabel:`Cancel`, or click the :guilabel:`X` icon to close the pop-up window.
+
+To the right of the :guilabel:`Insert in Spreadsheet` button are three buttons:
+
+- :guilabel:`Flip axis`: the x and y axis of the pivot data table flip.
+- :guilabel:`Expand all`: all the available rows and columns of the pivot data table expand fully.
+- :guilabel:`Download xlsx`: the pivot data table is downloaded as an .xlsx file.
+
+Graph view
+~~~~~~~~~~
+
+With the graph view selected, the following options appear between the search bar and visual
+representation of the data. These graph-specific options are located to the right of the
+:guilabel:`Measures` and :guilabel:`Insert in Spreadsheet` buttons.
+
+.. image:: maintenance_calendar/maintenance-calendar-graph-view-icons.png
+   :align: center
+   :alt: Graph type icons on Graph view page.
+
+There are three different types of graphs available to users to view the data:
+
+- :guilabel:`Bar Chart`: the data is displayed in a bar chart.
+- :guilabel:`Line Chart`: the data is displayed in a line chart.
+- :guilabel:`Pie Chart`: the data is displayed in a pie chart.
+
+When viewing the data as a :guilabel:`Bar Chart` graph, the data can be formatted in the following
+ways:
+
+- :guilabel:`Stacked`: the data is stacked on the graph.
+- :guilabel:`Descending`: the data is displayed in descending order.
+- :guilabel:`Ascending`: the data is displayed in ascending order.
+
+When viewing the data as a :guilabel:`Line Chart` graph, the data can be formatted in the following
+ways:
+
+- :guilabel:`Stacked`: the data is stacked on the graph.
+- :guilabel:`Cumulative`: the data is increasingly accumulated.
+- :guilabel:`Descending`: the data is displayed in descending order.
+- :guilabel:`Ascending`: the data is displayed in ascending order.
+
+When viewing the data as a :guilabel:`Pie Chart` graph, all relevant data is displayed by default,
+and no additional formatting options are available.
+
+Activity view
+~~~~~~~~~~~~~
+
+With the :guilabel:`Activity` view selected, all open maintenance requests are listed in their own
+row, with the ability to schedule activities related to those requests.
+
+.. image:: maintenance_calendar/maintenance-calendar-activity-view-type.png
+   :align: center
+   :alt: Maintenance requests on Activity view.
+
+Maintenance requests are listed in the :guilabel:`Maintenance Request` column as activities.
+Clicking a request opens a :guilabel:`Maintenance Request` popover that indicates the status of the
+request, and the responsible technician. To schedule an activity directly from the popover, click
+:guilabel:`➕ Schedule an activity`. This opens a :guilabel:`Schedule Activity` pop-up window.
+
+From the pop-up window, choose the :guilabel:`Activity Type`, provide a :guilabel:`Summary`,
+schedule a :guilabel:`Due Date`, and choose the responsible user in the :guilabel:`Assigned to`
+field.
+
+.. image:: maintenance_calendar/maintenance-calendar-schedule-activity-popover.png
+   :align: center
+   :alt: Schedule Activity pop-up window.
+
+Type any additional notes for the new activity in the blank space under the greyed-out
+:guilabel:`Log a note...` field. When clicked, this changes to :guilabel:`Type "/" for commands`.
+
+Once ready, click :guilabel:`Schedule` to schedule the activity. Alternatively, click
+:guilabel:`Schedule & Mark as Done` to close the activity, click :guilabel:`Done & Schedule Next` to
+close the activity and open a new one, or click :guilabel:`Cancel` to cancel the activity.
+
+With the :guilabel:`Activity` view selected, each activity type available when scheduling an
+activity is listed as its own column. These columns are :guilabel:`Email`, :guilabel:`Call`,
+:guilabel:`Meeting`, :guilabel:`Maintenance Request`, :guilabel:`To-Do`, :guilabel:`Upload
+Document`, :guilabel:`Request Signature`, and :guilabel:`Grant Approval`.
+
+To schedule an activity with that specific activity type, click into any blank box on the
+corresponding row for the desired maintenance request, and click the :guilabel:`➕ (plus)` icon. This
+opens an :guilabel:`Odoo` pop-up window, wherein the activity can be scheduled.
+
+.. image:: maintenance_calendar/maintenance-calendar-odoo-activity-popup.png
+   :align: center
+   :alt: Odoo pop-up schedule activity window.
+
+.. seealso::
+   - :doc:`maintenance_requests`
+   - :doc:`add_new_equipment`
+
+
+==================================================
+SECTION: maintenance_requests.rst
+PATH: applications/inventory_and_mrp/maintenance/maintenance_requests.rst
+==================================================
+
+====================
+Maintenance requests
+====================
+
+.. |MO| replace:: :abbr:`MO (Manufacturing Order)`
+
+In order to keep equipment and work centers functioning properly, it is often necessary to perform
+maintenance on them. This can include preventive maintenance, intended to prevent equipment from
+breaking down, or corrective maintenance, which is used to fix equipment that is broken or otherwise
+unusable.
+
+In Odoo **Maintenance**, users can create *maintenance requests* to schedule and track the progress
+of equipment and work center maintenance.
+
+Maintenance access rights
+=========================
+
+To create a maintenance request for equipment, a user has to have access to the equipment they are
+submitting the request for. This can be done in one of two ways:
+
+ - If a user is granted :guilabel:`Equipment Manager` level access rights for the **Maintenance**
+   app, they have access to all of the equipment in the app. To view or edit the access rights for a
+   user, navigate to :menuselection:`Settings --> Manager Users` and click a user's profile to open
+   it. On the :guilabel:`Access Rights` tab, scroll to the :guilabel:`Supply Chain` section, and in
+   the :guilabel:`Maintenance` field, select :guilabel:`Equipment Manager` from the drop-down menu.
+
+   .. image:: maintenance_requests/equipment-manager.png
+      :alt: The Supply Chain access rights on a user record.
+
+ - If a user does not require full access to all equipment, they can be assigned as a *Follower* to
+   one or more pieces of equipment. This allows them to create maintenance requests for that piece
+   of equipment, without altering access rights. To add a user as a follower, navigate to
+   :menuselection:`Maintenance --> Equipment --> Machines & Tools`, and click on a piece of
+   equipment to open it. In the *chatter* for the record, click on the :icon:`fa-user`
+   :guilabel:`(user)` icon to open the list of followers. Click :guilabel:`Add Followers`. On the
+   :guilabel:`Add followers to this document` pop-up, select the appropriate user from the
+   :guilabel:`Followers` drop-down. To send a message alerting users that they have been added as a
+   follower, slide the :guilabel:`Notify Recipients` toggle to active. When finished, click
+   :guilabel:`Add Followers`.
+
+   .. image:: maintenance_requests/add-followers.png
+      :alt: The followers list on an equipment record, with the add followers button highlighted.
+
+Create maintenance request
+==========================
+
+To create a new maintenance request, navigate to :menuselection:`Maintenance app --> Maintenance -->
+Maintenance Requests`, and click :guilabel:`New`.
+
+Begin filling out the form by entering a descriptive title in the :guilabel:`Request` field (e.g.,
+`Drill not working`).
+
+The :guilabel:`Created By` field auto-populates with the user creating the request, but a different
+user can be selected by clicking on the drop-down menu.
+
+In the :guilabel:`For` drop-down menu, select :guilabel:`Equipment` if the maintenance request is
+being created for a piece of equipment, or :guilabel:`Work Center` if it is being created for a work
+center.
+
+Depending on the option selected in the :guilabel:`For` field, the next field is titled either
+:guilabel:`Equipment` or :guilabel:`Work Center`. Using the drop-down menu for either field, select
+a piece of equipment or a work center.
+
+If the *Custom Maintenance Worksheets* setting is enabled in the **Maintenance** app's settings, a
+:guilabel:`Worksheet Template` field appears below the :guilabel:`Equipment` or :guilabel:`Work
+Center` field. If necessary, use this field to select a worksheet to be filled out by the employee
+performing the maintenance.
+
+The next field is titled :guilabel:`Request Date`, and is set by default to the date on which the
+maintenance request is created. This date cannot be changed by the user.
+
+In the :guilabel:`Maintenance Type` field, select the :guilabel:`Corrective` option if the request
+is intended to fix an existing issue, or the :guilabel:`Preventive` option if the request is
+intended to prevent issues from occurring in the future.
+
+If the request is being created to address an issue that arose during a specific manufacturing order
+(MO), select it in the :guilabel:`Manufacturing Order` field.
+
+If an |MO| was selected in the :guilabel:`Manufacturing Order` field, a :guilabel:`Work Order` field
+appears below it. If the issue arose during a specific work order, specify it in this field.
+
+In the :guilabel:`Team` field, select the maintenance team that is responsible for managing the
+request. If a specific team member is responsible, select them in the :guilabel:`Responsible` field.
+
+The :guilabel:`Scheduled Date` field is used to specify the date on which maintenance should take
+place, and the time it should begin. Choose a date by clicking on the field to open a calendar in a
+pop-up window, and then select a day on the calendar. Enter an hour and minute in the two fields
+below the calendar, and click :guilabel:`Apply` to save the date and time.
+
+The :guilabel:`Duration` field is used to specify the time it takes to complete the maintenance
+request. Use the text-entry field to enter the time in a `00:00` format.
+
+If :guilabel:`Work Center` was selected in the :guilabel:`For` field, a :guilabel:`Block Workcenter`
+checkbox appears below the :guilabel:`Duration` field. Enable the checkbox to prevent work orders or
+other maintenance from being scheduled at the specified work center while the maintenance request is
+being processed.
+
+The :guilabel:`Priority` field is used to communicate the importance (or urgency) of the maintenance
+request. Assign the request a priority between zero and three :icon:`fa-star` :guilabel:`(star)`
+icons, by clicking on the desired star number. Requests assigned a higher priority appear above
+those with a lower priority, on the Kanban board used to track the progression of maintenance
+requests.
+
+In the :guilabel:`Notes` tab at the bottom of the form, enter any relevant details about the
+maintenance request (why the maintenance issue arose, when it occurred, etc.).
+
+The :guilabel:`Instructions` tab is used to include instructions for how maintenance should be
+performed. Select one of the three options, and then include the instructions as detailed below:
+
+- :guilabel:`PDF`: click the :guilabel:`Upload your file` button to open the device's file manager,
+  and then select a file to upload.
+- :guilabel:`Google Slide`: enter a :guilabel:`Google Slide link` in the text-entry field that
+  appears after the option is selected.
+- :guilabel:`Text`: enter the instructions in the text-entry field that appears after the option is
+  selected.
+
+.. image:: maintenance_requests/request-form.png
+   :align: center
+   :alt: A maintenance request form filled out for a piece of equipment.
+
+Process maintenance request
+===========================
+
+Once a maintenance request has been created, it appears in the *New Request* stage of the
+*Maintenance Requests* page, which can be accessed by navigating to :menuselection:`Maintenance app
+--> Maintenance --> Maintenance Requests`.
+
+Maintenance requests can be moved to different stages by dragging and dropping them. They can also
+be moved by clicking on a request to open it in a new page, and then selecting the desired stage
+from the stage indicator bar, located above the top-right corner of the request's form.
+
+Successful maintenance requests should be moved to the :guilabel:`Repaired` stage, indicating that
+the specified piece of equipment or work center is repaired.
+
+Failed maintenance requests should be moved to the :guilabel:`Scrap` stage, indicating the specified
+piece of equipment, or work center, could not be repaired, and must instead be scrapped.
+
+
+==================================================
+SECTION: maintenance_setup.rst
+PATH: applications/inventory_and_mrp/maintenance/maintenance_setup.rst
+==================================================
+
+=================
+Maintenance setup
+=================
+
+.. |MTBF| replace:: :abbr:`MTBF (Mean Time Between Failure)`
+.. |MTTR| replace:: :abbr:`MTTR (Mean Time To Repair)`
+
+Odoo *Maintenance* helps companies schedule corrective and preventive maintenance on equipment used
+in their warehouse. This helps companies avoid equipment breakdowns, blocks in warehouse work
+centers, and emergency repair costs.
+
+Maintenance teams
+=================
+
+When creating maintenance requests, a *maintenance team* can be assigned to the request as the team
+responsible for handling the request.
+
+To view existing maintenance teams, navigate to :menuselection:`Maintenance app --> Configuration
+--> Maintenance Teams`.
+
+From the resulting :guilabel:`Teams` page, a list of all existing teams (if any) is displayed, with
+the :guilabel:`Team Name`, :guilabel:`Team Members`, and :guilabel:`Company` listed in the columns,
+by default.
+
+.. image:: maintenance_setup/maintenance-setup-teams-list.png
+   :align: center
+   :alt: List of Teams on Maintenance Teams page.
+
+To add a new team, click :guilabel:`New`. This adds a blank line at the bottom of the list of teams.
+In the blank field that appears below the :guilabel:`Team Name` column, assign a name to the new
+maintenance team.
+
+In the :guilabel:`Team Members` column, click the field to reveal a drop-down menu with existing
+users in the database. Choose which users should be members of the new maintenance team.
+
+Click :guilabel:`Search More...` to open a :guilabel:`Search: Team Members` pop-up window to search
+for users **not** shown on the initial drop-down menu.
+
+.. image:: maintenance_setup/maintenance-setup-search-team-members.png
+   :align: center
+   :alt: Search: Team Members pop-up window.
+
+In the :guilabel:`Company` column, if in a multi-company environment, click the drop-down menu to
+select the company in the database to which this new maintenance team belongs.
+
+Once ready, click :guilabel:`Save` to save changes.
+
+.. tip::
+   The team members assigned to maintenance teams are also referred to as *Technicians*, when
+   viewing the *Maintenance Calendar*.
+
+   Navigate to :menuselection:`Maintenance app --> Maintenance --> Maintenance Calendar`, and click
+   on an existing maintenance request. From the resulting popover, locate the :guilabel:`Technician`
+   field. The name listed in the field is the team member, and is the user responsible for that
+   particular request.
+
+   .. image:: maintenance_setup/maintenance-setup-popover-technician.png
+      :align: center
+      :alt: Maintenance request popover with Technician field shown.
+
+   At the far-right side of the page is a sidebar column, containing a minimized calendar set to
+   today's date, and a :guilabel:`Technician` list, displaying all the technicians (or team members)
+   with requests currently open.
+
+Equipment
+=========
+
+In Odoo *Maintenance*, *equipment* refers to machines and tools used internally in warehouse work
+centers. Equipment can include technology such as computers or tablets, power tools, machines used
+for manufacturing, and more.
+
+Equipment categories
+--------------------
+
+Each piece of equipment belongs to an *equipment category*. Before adding new equipment, make sure
+that a fitting equipment category is created.
+
+To create a new equipment category, navigate to :menuselection:`Maintenance app --> Configuration
+--> Equipment Categories`, and click :guilabel:`New`. Doing so opens a blank equipment category
+form.
+
+.. image:: maintenance_setup/maintenance-setup-category-form.png
+   :align: center
+   :alt: Equipment category form with various information filled out.
+
+On the blank form, assign a name in the :guilabel:`Category Name` field.
+
+In the :guilabel:`Responsible` field, assign a user to be responsible for the equipment in this
+category, if necessary. By default, the user who creates the category is selected as
+:guilabel:`Responsible`, by default.
+
+If in a multi-company environment, click the drop-down menu in the :guilabel:`Company` field, and
+select the company in the database to whom the equipment in this category belongs.
+
+In the :guilabel:`Email Alias` field, assign an email alias to this category, if necessary.
+
+In the :guilabel:`Comments` field, type any comments or notes for internal users to reference in
+relation to this category, if necessary.
+
+.. note::
+   Once a new equipment category is created, all equipment belonging to that category, as well as
+   any past or currently open maintenance requests, are available from the equipment category form.
+
+   Navigate to :menuselection:`Maintenance app --> Configuration --> Equipment Categories`, and
+   select a category to view. Locate the :guilabel:`Equipment` and :guilabel:`Maintenance` smart
+   buttons at the top of the form.
+
+   .. image:: maintenance_setup/maintenance-setup-smart-buttons.png
+      :align: center
+      :alt: Equipment and Maintenance smart buttons on equipment category form.
+
+   Click the :guilabel:`Equipment` smart button to view all equipment belonging to this category.
+   Click the :guilabel:`Maintenance` smart button to view any past, or currently open, maintenance
+   requests.
+
+Machines & tools
+----------------
+
+To add new equipment, navigate to :menuselection:`Maintenance app --> Equipment --> Machines &
+Tools`, and click :guilabel:`New`. This opens a blank equipment form.
+
+In the :guilabel:`Name` field, assign a name for the new equipment. In the :guilabel:`Equipment
+Category` field, click the drop-down menu and select which category this new equipment should belong
+to.
+
+If in a multi-company environment, click the drop-down menu in the :guilabel:`Company` field, and
+select the company in the database to whom the new equipment belongs.
+
+In the :guilabel:`Used By` field, select from one of three radio button options:
+:guilabel:`Department`, :guilabel:`Employee`, or :guilabel:`Other`.
+
+.. image:: maintenance_setup/maintenance-setup-new-equipment-left-side.png
+   :align: center
+   :alt: Left-hand side of information fields on new equipment form.
+
+If :guilabel:`Department` is selected, a :guilabel:`Department` field appears below the
+:guilabel:`Used By` field. Click the drop-down menu and select the department that uses this
+equipment.
+
+If :guilabel:`Employee` is selected, an :guilabel:`Employee` field appears below the :guilabel:`Used
+By` field. Click the drop-down menu, and select the employee who uses this equipment.
+
+If the :guilabel:`Other` option is selected, both the :guilabel:`Department` and
+:guilabel:`Employee` fields appear below the :guilabel:`Used By` field. Click the drop-down menus
+for the respective fields, and choose which department and employee uses this equipment.
+
+In the :guilabel:`Maintenance Team` field, select the team responsible for this equipment. In the
+:guilabel:`Technician` field, select the team member/user responsible for this equipment.
+
+.. image:: maintenance_setup/maintenance-setup-new-equipment-right-side.png
+   :align: center
+   :alt: Right-hand side of information fields on new equipment form.
+
+In the :guilabel:`Used in location` field, enter the location wherein this equipment will be used,
+if not in an internal work center (e.g. in an office).
+
+In the :guilabel:`Work Center` field, click the drop-down menu, and select which work center this
+equipment will be used in.
+
+In the blank space under the :guilabel:`Description` tab at the bottom of the form, add any relevant
+information describing the equipment for users to reference.
+
+Product Information tab
+~~~~~~~~~~~~~~~~~~~~~~~
+
+To add any relevant information while creating a new piece of equipment, from the equipment form,
+click the :guilabel:`Product Information` tab.
+
+.. image:: maintenance_setup/maintenance-setup-product-information.png
+   :align: center
+   :alt: Product Information tab with available fields below it.
+
+In the :guilabel:`Vendor` field, add the vendor from which the equipment was purchased. In the
+:guilabel:`Vendor Reference` field, add the product reference number obtained from the vendor, if
+applicable.
+
+In the :guilabel:`Model` field, specify which model this equipment is, if applicable. If the
+equipment is serialized, add a serial number in the :guilabel:`Serial Number` field.
+
+In the :guilabel:`Effective Date` field, click the date to reveal a calendar popover, and select a
+date. This date indicates when this equipment was first put in use, and will be used to compute the
+Mean Time Between Failure (MTBF) in the equipment's :guilabel:`Maintenance` tab.
+
+In the :guilabel:`Cost` field, specify how much the equipment cost to acquire, if applicable.
+
+If the equipment is covered under a warranty, specify the :guilabel:`Warranty Expiration Date` by
+selecting a date from the calendar popover in that field.
+
+Maintenance tab
+~~~~~~~~~~~~~~~
+
+Various maintenance metrics are available for each piece of equipment, and are automatically
+computed, based on corrective maintenance, and planned preventive maintenance.
+
+To view the maintenance metrics for a specific piece of equipment, from the equipment form, click
+the :guilabel:`Maintenance` tab.
+
+.. image:: maintenance_setup/maintenance-setup-metrics.png
+   :align: center
+   :alt: Maintenance tab on equipment form showing computed metrics fields.
+
+Doing so reveals the following fields:
+
+- :guilabel:`Expected Mean Time Between Failure`: the amount of time (in days) before the next
+  failure is expected. This is the **only** field not greyed-out, and the **only** field users can
+  edit.
+- :guilabel:`Mean Time Between Failure`: the amount of time (in days) between reported failures.
+  This value is computed based on completed corrective maintenances.
+- :guilabel:`Estimated Next Failure`: the date on which the next failure is expected. This date is
+  computed as the Latest Failure Date + |MTBF|.
+- :guilabel:`Latest Failure`: The date of the latest failure. The value in this field updates once a
+  failure is reported for this equipment.
+- :guilabel:`Mean Time To Repair`: the amount of time (in days) it takes to repair this equipment
+  upon failure. This value updates once a maintenance request is completed for this equipment.
+
+Work centers
+============
+
+To view the work centers where equipment is being used, and how the equipment is being used in them,
+navigate to :menuselection:`Maintenance app --> Equipment --> Work Centers`, and click into a work
+center.
+
+From the resulting work center form, click the :guilabel:`Equipment` tab to view all machines and
+tools being used in that specific work center.
+
+Each piece of equipment is listed with certain relevant information: the :guilabel:`Equipment Name`,
+the responsible :guilabel:`Technician`, the :guilabel:`Equipment Category` it belongs to, and a few
+important maintenance metrics: its |MTBF|, |MTTR|, and :guilabel:`Est. Next Failure` date.
+
+.. image:: maintenance_setup/maintenance-setup-work-center.png
+   :align: center
+   :alt: List of equipment included in a work center.
+
+.. tip::
+   To add new equipment to a work center directly from the work center form, click :guilabel:`Add a
+   line` under the :guilabel:`Equipment` tab. This opens an :guilabel:`Add: Maintenance Equipment`
+   pop-up window.
+
+   From the pop-up window, select the equipment that should be added to the work center, and click
+   :guilabel:`Select`.
+
+.. seealso::
+   :doc:`add_new_equipment`
